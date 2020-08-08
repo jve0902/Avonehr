@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const config = require("./config");
+
 const app = express();
 
 app.use(express.static("public"));
@@ -12,13 +14,11 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   const help = `
     <pre>
-      Welcome to the AvonHealth API!
+      Welcome to the Clinios API!
       Use an x-access-token header to work with your own data:
       fetch(url, { headers: { 'x-access-token': 'whatever-you-want' }})
       The following endpoints are available:
-      GET /patients
-      DELETE /patients/:id
-      patients /patient { text }
+      GET /users
     </pre>
   `;
 
