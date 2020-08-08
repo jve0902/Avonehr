@@ -1,0 +1,14 @@
+const dotenv = require("dotenv");
+const result = dotenv.config({ debug: true, override: true });
+
+module.exports = {
+  port: process.env.PORT || 5001,
+  origin: process.env.ORIGIN || `http://localhost:${exports.port}`,
+  dbconfig: {
+    HOST: process.env.HOST,
+    USER: process.env.DBUSER,
+    PASSWORD: process.env.DBPASSWORD,
+    PORT: process.env.DBPORT,
+    DB: process.env.DB,
+  },
+};
