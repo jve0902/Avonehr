@@ -1,4 +1,4 @@
-# clinios
+# Clinios
 
 ## Stack
 
@@ -20,3 +20,18 @@ To run:
 
 1. `yarn start` or `npm run dev`
 2. Open [http://localhost:3000](http://localhost:3000)
+
+## API
+
+Setup:
+
+1. `cd server`
+2. `yarn or npm install`
+3. Make sure your Postgres database is running on your machine
+4. `yarn dev` for development `yarn start` for production
+5. copy `.env.sample` into `.env` and fill in credentials
+
+To run:
+
+1. `yarn dev` or `npm run dev`
+2. API end point would be `http://localhost:5001`

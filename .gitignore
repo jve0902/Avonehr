@@ -41,3 +41,13 @@ yarn-error.log*
 /client/.env.production.local
 
 #server
+/server/node_modules
+/server/.pnp
+/server/.pnp.js
+
+# misc
+/server/.DS_Store
+/server/.env.local
+/server/.env.development.local
+/server/.env.test.local
+/server/.env.production.local
