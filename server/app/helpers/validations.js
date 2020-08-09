@@ -1,4 +1,3 @@
-import env from "../../env";
 
 /**
  * isValidEmail helper method
@@ -47,4 +46,6 @@ const empty = (input) => {
   }
 };
 
-export { isValidEmail, validatePassword, isEmpty, empty };
+const validations = { isValidEmail, validatePassword, isEmpty, empty };
+
+module.exports = validations;
