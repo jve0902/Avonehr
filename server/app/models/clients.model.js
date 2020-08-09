@@ -19,8 +19,8 @@ const Client = function (Client) {
   this.created = new Date();
 };
 
-Client.getAllSystems = function (result) {
-  sql.query("Select * from clients", function (err, res) {
+Client.getAllClients = function (result) {
+  sql.query("Select * from client", function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(null, err);

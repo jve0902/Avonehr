@@ -1,6 +1,7 @@
 "user strict";
 const mysql = require("mysql");
-const dbConfig = require("../config/db.config.js");
+const config = require("./../../config.js");
+const dbConfig = config.dbconfig;
 
 // Create a connection to the database
 const connection = mysql.createConnection({

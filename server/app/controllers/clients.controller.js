@@ -1,5 +1,6 @@
+"use strict";
 
-
+const Clients = require("../models/clients.model.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
 /**
@@ -9,7 +10,10 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
  * @returns {object} clients array
  */
 const getAllClients = async (req, res) => {
-  return res.status(status.success).send(successMessage);
+  Clients.getAllClients(function (err, clients) {
+    if (err) res.status(status.error).send(err);
+    return res.status(status.success).send(clients);
+  });
 };
 
 
