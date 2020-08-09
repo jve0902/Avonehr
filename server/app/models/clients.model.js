@@ -1,5 +1,5 @@
 "user strict";
-const sql = require("./db.js");
+const { configuration, makeDb } = require("../db/db.js");
 
 //Client object constructor
 const Client = function (Client) {
@@ -19,17 +19,22 @@ const Client = function (Client) {
   this.created = new Date();
 };
 
-Client.getAllClients = function (result) {
-  sql.query("Select * from client", function (err, res) {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-    } else {
-      console.log("clients : ", res);
+Client.getAllClients = async function (result) {
+  const db = makeDb( configuration );
+try {
+  const { rows } = await db.query( 'Select * from client' );
+  const dbResponse = rows[0];
 
-      result(null, res);
-    }
-  });
+  return dbResponse;
+
+} catch ( err ) {
+  // handle the error
+    console.log("error: ", err);
+      return err
+} finally {
+  await db.close();
+}
+
 };
 
 module.exports = Client;
