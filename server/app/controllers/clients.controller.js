@@ -12,7 +12,8 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getAllClients = async (req, res) => {
   const db = makeDb( configuration );
   try {
-    const rows = await db.query( 'SELECT id, name, code, code_patient, address, address2, city, state, postal, country, phone, fax, email, created FROM client' );
+    const rows = await db.query( 
+      'SELECT id, name, code, code_patient, address, address2, city, state, postal, country, phone, fax, email, functional_range, created FROM client' );
     const dbResponse = rows[0];
 
    if (!dbResponse) {
