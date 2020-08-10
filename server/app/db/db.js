@@ -12,8 +12,18 @@ const configuration = {
   database: dbConfig.DB,
 }
 
-// Create a connection to the database
-//const connection = mysql.createConnection(config);
+async function withTransaction( db, callback ) {
+  try {
+    await db.beginTransaction();
+    await callback();
+    await db.commit();
+  } catch ( err ) {
+    await db.rollback();
+    throw err;
+  } finally {
+    await db.close();
+  }
+}
 
 function makeDb( configuration ) {
   const connection = mysql.createConnection( configuration );
@@ -28,16 +38,11 @@ function makeDb( configuration ) {
   };
 }
 
-/*
-// open the MySQL connection
-connection.connect((error) => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-}); */
 
 const db = {
   configuration,
-  makeDb
+  makeDb,
+  withTransaction
 };
 
 module.exports = db;

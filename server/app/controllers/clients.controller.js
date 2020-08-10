@@ -12,7 +12,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getAllClients = async (req, res) => {
   const db = makeDb( configuration );
   try {
-    const rows = await db.query( 'Select * from client' );
+    const rows = await db.query( 'SELECT id, name, code, code_patient, address, address2, city, state, postal, country, phone, fax, email, created FROM client' );
     const dbResponse = rows[0];
 
    if (!dbResponse) {
@@ -29,10 +29,19 @@ const getAllClients = async (req, res) => {
   } finally {
     await db.close();
   }
-
 };
 
-const clients = { getAllClients };
+/**
+ * create a client
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} clients array
+ */
+const create = async (req, res) => {
+  return res.status(status.created).send(successMessage);
+}
+
+const clients = { create, getAllClients };
 
 module.exports = clients;
 
