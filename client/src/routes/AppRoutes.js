@@ -42,7 +42,11 @@ class AppRouter extends Component {
               exact
             />
             <RouteWithLayout layout={Main} path="/signup" component={SignUp} />
-            <RouteWithLayout layout={Main} path="/login" component={Login} />
+            <RouteWithLayout
+              layout={Main}
+              path="/login_corp"
+              component={Login}
+            />
             <Route path="*" component={NotFound} />
           </Switch>
         </AuthProvider>
