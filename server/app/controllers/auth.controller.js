@@ -40,7 +40,35 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.signin = (req, res) => {
-  successMessage.message = "From Auth v1 Signin";
-  return res.status(status.created).send(successMessage);
+exports.signin = async (req, res) => {
+  const db = makeDb(configuration);
+  const doctors_data_username = req.body.doctors_data_username;
+  if (doctors_data_username) {
+    const rows = await db.query(
+      "SELECT * FROM client WHERE doctors_data_username = ?",
+      [doctors_data_username]
+    );
+    const dbResult = rows[0];
+    if (!dbResult) {
+      errorMessage.error = "Client Cannot be found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    const isPasswordValid = bcrypt.compareSync(
+      req.body.doctors_data_password,
+      dbResult.doctors_data_password
+    );
+
+    if (!isPasswordValid) {
+      errorMessage.error = "Wrong password!";
+      return res.status(status.unauthorized).send(errorMessage);
+    }
+
+    delete dbResult.doctors_data_password; // delete password from response
+    successMessage.data = dbResult;
+    res.status(status.success).send(successMessage);
+  }
+
+  errorMessage.error = "Body content can not be empty!";
+  return res.status(status.notfound).send(errorMessage);
 };
