@@ -6,6 +6,8 @@ export const closeSnackbar = () => {
   };
 };
 
+export const signupPatient = () => {};
+
 export const logOut = () => {
   localStorage.removeItem("patient");
   return {

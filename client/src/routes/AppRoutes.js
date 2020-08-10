@@ -41,10 +41,14 @@ class AppRouter extends Component {
               component={ResetPassword}
               exact
             />
-            <RouteWithLayout layout={Main} path="/signup" component={SignUp} />
             <RouteWithLayout
               layout={Main}
-              path="/login_corp"
+              path="/signup_client"
+              component={SignUp}
+            />
+            <RouteWithLayout
+              layout={Main}
+              path="/login_client"
               component={Login}
             />
             <Route path="*" component={NotFound} />

@@ -80,7 +80,7 @@ const Login = () => {
                 <LockOutlinedIcon className={classes.lockIcon} />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Login
+                Physician Login
               </Typography>
               <form className={classes.form} noValidate>
                 <TextField
@@ -136,7 +136,7 @@ const Login = () => {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="/signup" variant="body2">
+                    <Link href="/signup_client" variant="body2">
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>

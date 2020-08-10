@@ -78,12 +78,6 @@ const Header = ({ ...props }) => {
               <div className={classes.navItems}>
                 {isAuth ? (
                   <React.Fragment>
-                    <RouterLink
-                      to="/dashboard/account"
-                      className={classes.link}
-                    >
-                      Account
-                    </RouterLink>
                     <IconButton
                       className={classes.signOutButton}
                       color="inherit"
@@ -94,20 +88,11 @@ const Header = ({ ...props }) => {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <RouterLink to="/about" className={classes.link}>
-                      About
-                    </RouterLink>
-                    <RouterLink to="/library" className={classes.link}>
-                      Library
-                    </RouterLink>
-                    <RouterLink to="/signup" className={classes.link}>
+                    <RouterLink to="/signup_client" className={classes.link}>
                       Sign Up
                     </RouterLink>
-                    <RouterLink to="/login" className={classes.link}>
+                    <RouterLink to="/login_client" className={classes.link}>
                       Login
-                    </RouterLink>
-                    <RouterLink to="/contact" className={classes.link}>
-                      Contact
                     </RouterLink>
                   </React.Fragment>
                 )}

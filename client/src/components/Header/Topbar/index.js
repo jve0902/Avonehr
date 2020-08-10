@@ -58,9 +58,6 @@ const Topbar = ({ dispatch, ...props }) => {
             </RouterLink>
             <div className={classes.flexGrow} />
             <Hidden mdDown>
-              <RouterLink to="/dashboard/account" className={classes.link}>
-                Account
-              </RouterLink>
               <IconButton
                 className={classes.signOutButton}
                 color="inherit"
@@ -71,9 +68,6 @@ const Topbar = ({ dispatch, ...props }) => {
             </Hidden>
 
             <Hidden lgUp>
-              <RouterLink to="/dashboard/account" className={classes.link}>
-                Account
-              </RouterLink>
               <IconButton color="inherit" onClick={onSidebarOpen}>
                 <MenuIcon />
               </IconButton>
