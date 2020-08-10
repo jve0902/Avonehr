@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { signupPatient } from "./../../store/auth/actions";
 
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import PracticeForm from "../../components/signup/PracticeForm";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,9 +54,10 @@ const SignUp = ({ success, dispatch, ...props }) => {
                 <LockOutlinedIcon className={classes.lockIcon} />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign Up
+                Physician Sign Up
               </Typography>
-              {success ? <Success /> : <Form onFormSubmit={handleFormSubmit} />}
+              <PracticeForm />
+              {/*   {success ? <Success /> : <Form onFormSubmit={handleFormSubmit} />} */}
             </div>
           </Container>
         );
