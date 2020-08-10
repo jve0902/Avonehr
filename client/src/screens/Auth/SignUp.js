@@ -16,6 +16,9 @@ import { AuthConsumer } from "./../../providers/AuthProvider";
 import PracticeForm from "../../components/signup/PracticeForm";
 
 const useStyles = makeStyles((theme) => ({
+  pageTitle: {
+    marginBottom: theme.spacing(3),
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -53,7 +56,11 @@ const SignUp = ({ success, dispatch, ...props }) => {
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon className={classes.lockIcon} />
               </Avatar>
-              <Typography component="h1" variant="h5">
+              <Typography
+                component="h1"
+                variant="h2"
+                className={classes.pageTitle}
+              >
                 Physician Sign Up
               </Typography>
               <PracticeForm />

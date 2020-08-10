@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   lockIcon: {
     fontSize: "40px",
   },
+  pageTitle: {
+    marginBottom: theme.spacing(3),
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -79,7 +82,12 @@ const Login = () => {
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon className={classes.lockIcon} />
               </Avatar>
-              <Typography component="h1" variant="h5">
+
+              <Typography
+                component="h1"
+                variant="h2"
+                className={classes.pageTitle}
+              >
                 Physician Login
               </Typography>
               <form className={classes.form} noValidate>

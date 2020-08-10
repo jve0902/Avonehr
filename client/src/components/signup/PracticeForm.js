@@ -5,10 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import Typography from "@material-ui/core/Typography";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -18,6 +15,19 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+  },
+  formSectionTitle: {
+    marginBottom: theme.spacing(1),
+  },
+  personalFormTitle: {
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2),
+  },
+  checkbox: {
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 
@@ -32,24 +42,33 @@ const PracticeForm = () => {
   const [phone, setPhone] = React.useState(null);
   const [fax, setFax] = React.useState(null);
   const [url, setUrl] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
+  const [practiceEmail, setPracticeEmail] = React.useState(null);
   const [ein, setEin] = React.useState(null);
   const [npi, setNpi] = React.useState(null);
   const [clientCode, setClientCode] = React.useState(null);
+
+  const [firstName, setFirstName] = React.useState(null);
+  const [lastName, setLastName] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [personalNPI, setPersonalNPI] = React.useState(null);
+  const [medicalLicenseNumber, setMedicalLicenseNumber] = React.useState(null);
   const [password, setPassword] = React.useState(null);
-  const [gender, setGender] = React.useState("");
   const [termsAndConditions, setTermsAndConditions] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleChange = (event) => {
-    setGender(event.target.value);
-  };
-
   return (
     <form className={classes.form} noValidate>
+      <Typography
+        component="h3"
+        variant="h4"
+        color="textPrimary"
+        className={classes.formSectionTitle}
+      >
+        Practice Information
+      </Typography>
       <TextField
         value={name}
         variant="outlined"
@@ -158,7 +177,7 @@ const PracticeForm = () => {
         onChange={(event) => setUrl(event.target.value)}
       />
       <TextField
-        value={email}
+        value={practiceEmail}
         variant="outlined"
         margin="dense"
         fullWidth
@@ -167,7 +186,7 @@ const PracticeForm = () => {
         name="email"
         autoComplete="email"
         autoFocus
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event) => setPracticeEmail(event.target.value)}
       />
       <TextField
         value={ein}
@@ -205,13 +224,96 @@ const PracticeForm = () => {
         autoFocus
         onChange={(event) => setClientCode(event.target.value)}
       />
+      <Typography
+        component="h3"
+        variant="h4"
+        color="textPrimary"
+        className={classes.personalFormTitle}
+      >
+        Your Personal Information
+      </Typography>
+      <TextField
+        value={firstName}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="firstName"
+        label="Your Firstname"
+        name="firstName"
+        autoComplete="firstName"
+        autoFocus
+        onChange={(event) => setFirstName(event.target.value)}
+      />
+      <TextField
+        value={lastName}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="lastName"
+        label="Your Lastname"
+        name="lastName"
+        autoComplete="lastName"
+        autoFocus
+        onChange={(event) => setLastName(event.target.value)}
+      />
+      <TextField
+        value={email}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="email"
+        label="Your Email Address"
+        name="email"
+        autoComplete="email"
+        autoFocus
+        onChange={(event) => setEmail(event.target.value)}
+      />
+      <TextField
+        value={personalNPI}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="personalNPI"
+        label="Your NPI Number"
+        name="personalNPI"
+        autoComplete="personalNPI"
+        autoFocus
+        onChange={(event) => setPersonalNPI(event.target.value)}
+      />
+      <TextField
+        value={medicalLicenseNumber}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="medicalLicenseNumber"
+        label="Your Medical License Number"
+        name="medicalLicenseNumber"
+        autoComplete="medicalLicenseNumber"
+        autoFocus
+        onChange={(event) => setMedicalLicenseNumber(event.target.value)}
+      />
+      <TextField
+        value={password}
+        variant="outlined"
+        margin="dense"
+        fullWidth
+        id="password"
+        label="Your Password"
+        name="password"
+        autoComplete="password"
+        autoFocus
+        onChange={(event) => setPassword(event.target.value)}
+      />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
         label={
           <div>
             <span>
-              I have read and agree to the{" "}
-              <Link href="/terms-and-condition">terms and conditions</Link>
+              Check here to indicate that you have read and agree to the terms
+              of the{" "}
+              <Link href="/terms-and-condition">
+                Clinios Customer Aggrements
+              </Link>
             </span>
           </div>
         }
@@ -219,18 +321,17 @@ const PracticeForm = () => {
         onChange={() => setTermsAndConditions(!termsAndConditions)}
       />
       <Button
-        disabled={!email || !password || !gender || !termsAndConditions}
         fullWidth
         variant="contained"
         color="primary"
         className={classes.submit}
-        onClick={(event) => alert(email, password, gender)}
+        onClick={(event) => alert("Submit button")}
       >
         Sign up
       </Button>
       <Grid container>
         <Grid item xs>
-          <Link href="/login" variant="body2">
+          <Link href="/login_client" variant="body2">
             Already a member? Login here
           </Link>
         </Grid>
