@@ -6,14 +6,14 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import Form from "./../../components/signup/Form";
+
 import Success from "./../../components/signup/Success";
 import { useHistory } from "react-router-dom";
 import { signupPatient } from "./../../store/auth/actions";
 
 import { AuthConsumer } from "./../../providers/AuthProvider";
 import PracticeForm from "../../components/signup/PracticeForm";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
@@ -35,12 +35,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({ success, dispatch, ...props }) => {
+const SignUp = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const success = useSelector(
+    (state) => state.auth.success || false,
+    shallowEqual
+  );
 
-  const handleFormSubmit = (email, password, gender) => {
-    //dispatch(signupPatient(email, password, gender));
+  const handleFormSubmit = (data) => {
+    dispatch(signupPatient(data));
   };
 
   return (
@@ -63,8 +68,11 @@ const SignUp = ({ success, dispatch, ...props }) => {
               >
                 Physician Sign Up
               </Typography>
-              <PracticeForm />
-              {/*   {success ? <Success /> : <Form onFormSubmit={handleFormSubmit} />} */}
+              {success ? (
+                <Success />
+              ) : (
+                <PracticeForm onFormSubmit={handleFormSubmit} />
+              )}
             </div>
           </Container>
         );
@@ -73,10 +81,4 @@ const SignUp = ({ success, dispatch, ...props }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    success: state.auth.success,
-  };
-};
-
-export default connect(mapStateToProps)(SignUp);
+export default SignUp;

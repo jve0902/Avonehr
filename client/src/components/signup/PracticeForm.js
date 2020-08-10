@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -31,34 +31,55 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PracticeForm = () => {
+const PracticeForm = ({ onFormSubmit, ...props }) => {
   const classes = useStyles();
-  const [name, setName] = React.useState(null);
-  const [address, setAddress] = React.useState(null);
-  const [address2, setAddress2] = React.useState(null);
-  const [city, setCity] = React.useState(null);
-  const [state, setState] = React.useState(null);
-  const [zipCode, setZipCode] = React.useState(null);
-  const [phone, setPhone] = React.useState(null);
-  const [fax, setFax] = React.useState(null);
-  const [url, setUrl] = React.useState(null);
-  const [practiceEmail, setPracticeEmail] = React.useState(null);
-  const [ein, setEin] = React.useState(null);
-  const [npi, setNpi] = React.useState(null);
-  const [clientCode, setClientCode] = React.useState(null);
+  const [name, setName] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [address2, setAddress2] = useState(null);
+  const [city, setCity] = useState(null);
+  const [state, setState] = useState(null);
+  const [zipCode, setZipCode] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [fax, setFax] = useState(null);
+  const [url, setUrl] = useState(null);
+  const [practiceEmail, setPracticeEmail] = useState(null);
+  const [ein, setEin] = useState(null);
+  const [npi, setNpi] = useState(null);
+  const [clientCode, setClientCode] = useState(null);
 
-  const [firstName, setFirstName] = React.useState(null);
-  const [lastName, setLastName] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [personalNPI, setPersonalNPI] = React.useState(null);
-  const [medicalLicenseNumber, setMedicalLicenseNumber] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
-  const [termsAndConditions, setTermsAndConditions] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [personalNPI, setPersonalNPI] = useState(null);
+  const [medicalLicenseNumber, setMedicalLicenseNumber] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [termsAndConditions, setTermsAndConditions] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleFormSubmission = () => {
+    const data = {
+      name: name,
+      code: clientCode,
+      address: address,
+      address2: address2,
+      city: city,
+      state: state,
+      postal: zipCode,
+      phone: phone,
+      fax: fax,
+      email: practiceEmail,
+      website: url,
+      ein: ein,
+      npi: npi,
+      code: clientCode,
+      doctors_data_username: practiceEmail,
+      doctors_data_password: password,
+    };
+    onFormSubmit(data);
+  };
   return (
     <form className={classes.form} noValidate>
       <Typography
@@ -325,7 +346,7 @@ const PracticeForm = () => {
         variant="contained"
         color="primary"
         className={classes.submit}
-        onClick={(event) => alert("Submit button")}
+        onClick={(event) => handleFormSubmission(event)}
       >
         Sign up
       </Button>
@@ -336,9 +357,6 @@ const PracticeForm = () => {
           </Link>
         </Grid>
       </Grid>
-      <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </form>
   );
 };
