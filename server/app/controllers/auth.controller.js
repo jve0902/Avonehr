@@ -10,17 +10,12 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 exports.validate = (method) => {
   switch (method) {
     case "createUser": {
-      return [
-        body("name", "name can not be empty").isEmpty(),
-        body("email", "Invalid email").exists().isEmail(),
-        body("phone").optional().isInt(),
-        body("status").optional().isIn(["enabled", "disabled"]),
-      ];
+      return [body("email", "Invalid email").exists().isEmail()];
     }
   }
 };
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -49,9 +44,16 @@ exports.signup = async (req, res) => {
       errorMessage.error = "User Cannot be registered";
       res.status(status.notfound).send(errorMessage);
     }
-    successMessage.message = "User succesfullly registered!";
-    successMessage.data = dbResponse.insertId;
-    res.status(status.created).send(successMessage);
+
+    if (dbResponse.insertId) {
+      const rows = await db.query(
+        `SELECT id, name, email FROM client WHERE id = ${dbResponse.insertId}`
+      );
+      successMessage.message = "User succesfullly registered!";
+      successMessage.data = dbResponse.insertId;
+      successMessage.data = rows[0];
+      res.status(status.created).send(successMessage);
+    }
   } catch (err) {
     // handle the error
     errorMessage.error = err.message;

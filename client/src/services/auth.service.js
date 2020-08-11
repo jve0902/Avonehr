@@ -21,6 +21,9 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
+  sendEmailVerification(user) {
+    return axios.post(API_URL + `email/send/confirmation/${user}`);
+  }
   passwordChangeRequest(email) {
     return axios.post(API_URL + `reset_password/user/${email}`);
   }

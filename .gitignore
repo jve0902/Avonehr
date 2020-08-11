@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 #client
+/client/.env
 /client/node_modules
 /client/.pnp
 /client/.pnp.js

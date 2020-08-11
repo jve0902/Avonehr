@@ -6,6 +6,7 @@ import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
 
 import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
+import EmailConfirmation from "../screens/EmailConfirmation";
 import Home from "../screens/Home";
 import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
@@ -39,6 +40,12 @@ class AppRouter extends Component {
               layout={Main}
               path="/password/reset/:patientId/:token"
               component={ResetPassword}
+              exact
+            />
+            <RouteWithLayout
+              layout={Main}
+              path="/email/confirmation/:userId/:token"
+              component={EmailConfirmation}
               exact
             />
             <RouteWithLayout

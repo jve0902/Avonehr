@@ -4,13 +4,14 @@ const router = express.Router();
 
 // email Routes
 
-router.post(
-  "/email/confirmation",
-  controller.validate("sendConfirmationEmail"),
-  controller.signupConfirmation
+router.get(
+  "/email/confirmation/:userId/:token",
+  controller.validate("verifyConfirmationEmail"),
+  controller.verifyConfirmation
 ); // verify confirmation
+
 router.post(
-  "/email/send/confirmation",
+  "/email/send/verification",
   controller.validate("sendConfirmationEmail"),
   controller.sendSignupConfirmationEmail
 ); // Send Signup confirmation email

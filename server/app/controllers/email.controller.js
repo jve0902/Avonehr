@@ -17,8 +17,8 @@
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
-const { body, validationResult } = require("express-validator");
+const { configuration, makeDb } = require("../db/db.js");
+const { body, param, validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -39,16 +39,26 @@ exports.validate = (method) => {
         body("email", "Invalid email").exists().isEmail(),
       ];
     }
+    case "verifyConfirmationEmail": {
+      return [
+        param("token", "token can not be empty").exists(),
+        param("userId", "UserId can not be empty").exists(),
+      ];
+    }
   }
 };
 
-// `secret` is passwordHash concatenated with patient's createdAt,
-// so if someones gets a patient token they still need a timestamp to intercept.
-const usePasswordHashToMakeToken = (patient) => {
-  const passwordHash = patient.password;
-  const patientId = patient._id;
-  const secret = passwordHash + "-" + patient.createdAt;
-  const token = jwt.sign({ patientId }, secret, {
+/**
+ * `secret` is passwordHash concatenated with user's createdAt,
+ * so if someones gets a user token they still need a timestamp to intercept.
+ * @param {object} user
+ * @returns {string} token
+ */
+const usePasswordHashToMakeToken = (user) => {
+  const passwordHash = user.password;
+  const userId = user.id;
+  const secret = passwordHash + "-" + user.createdAt;
+  const token = jwt.sign({ userId }, secret, {
     expiresIn: 3600, // 1 hour
   });
   return token;
@@ -60,7 +70,52 @@ const usePasswordHashToMakeToken = (patient) => {
  * @param {object} res
  * @returns {object} response
  */
-exports.signupConfirmation = async (req, res) => {};
+exports.verifyConfirmation = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
+
+  const db = makeDb(configuration);
+  //TODO: Check if user is already verified
+  const userRows = await db.query(
+    "SELECT id, name, email, doctors_data_password, isVerified, created FROM client WHERE id = ?",
+    [req.params.userId]
+  );
+  if (userRows.length > 0 && userRows[0].isVerified) {
+    successMessage.message = "User is already verified!";
+    successMessage.isVerified = true;
+    return res.status(status.success).send(successMessage);
+  }
+  //TODO: Check Token validity and check if user exist with the userId
+  const rows = await db.query(
+    `SELECT * from token where client_id=${req.params.userId}`
+  );
+  if (rows.length < 1) {
+    errorMessage.message = "Couldn't find the record";
+    return res.status(status.notfound).send(errorMessage);
+  }
+
+  if (req.params.userId == rows[0].client_id) {
+    //TODO: Update isVerified field on client table
+    const clientUpdate = await db.query(
+      "UPDATE client SET isVerified=1 WHERE id = ?",
+      [req.params.userId]
+    );
+    //TODO: Remove verification token from token table
+    const tokenUpdate = await db.query(
+      "UPDATE token SET token=null WHERE client_id = ?",
+      [req.params.userId]
+    );
+    successMessage.data = "Your Email address successfully verified!";
+    return res.status(status.success).send(successMessage);
+  } else {
+    errorMessage.error = "Invalid request!";
+    return res.status(status.error).send(errorMessage);
+  }
+};
 
 /**
  * Send signup confirmation email
@@ -68,24 +123,47 @@ exports.signupConfirmation = async (req, res) => {};
  * @param {object} res
  * @returns {object} response
  */
-exports.sendSignupConfirmationEmail = async (req, res) => {
+exports.sendSignupConfirmationEmail = async (req, res, next) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.error = errors.array();
     return res.status(status.error).send(errorMessage);
   }
-  const user = req.body;
+  const rows = await db.query(
+    "SELECT id, name, email, password, created,  FROM client WHERE email = ?",
+    [req.body.email]
+  );
+
+  if (rows.length < 1) {
+    errorMessage.error = "We couldn't find any record with that email address.";
+    return res.status(status.notfound).send(errorMessage);
+  }
+
+  const user = rows[0];
   const accesstToken = usePasswordHashToMakeToken(user);
   const url = getEmailVerificationURL(user, accesstToken);
   const emailTemplate = signUpConfirmationTemplate(user, url);
+
+  //TODO:: Insert these records into token Table
+  const db = makeDb(configuration);
+  const tokenData = {
+    client_id: user.id,
+    token: accesstToken,
+  };
+  const dbResponse = await db.query("INSERT INTO token set ?", tokenData);
+  if (!dbResponse.insertId) {
+    errorMessage.error = "Couldn't insert into token table";
+    res.status(status.notfound).send(errorMessage);
+  }
+
   // send mail with defined transport object
   let info = await transporter.sendMail(emailTemplate);
 
   console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-  (successMessage.message = "Message sent: %s"), info.messageId;
+  successMessage.message = ("Message sent: %s", info.messageId);
   return res.status(status.success).send(successMessage);
 };
 
