@@ -17,15 +17,30 @@
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const db = require("./../models");
+
+const { body, validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const Patient = db.patient;
 
+const { errorMessage, successMessage, status } = require("./../helpers/status");
 const {
+  transporter,
   getPasswordResetURL,
+  getEmailVerificationURL,
   resetPasswordTemplate,
-} = require("./../helper/email");
+  signUpConfirmationTemplate,
+} = require("./../helpers/email");
+
+exports.validate = (method) => {
+  switch (method) {
+    case "sendConfirmationEmail": {
+      return [
+        body("email", "Email can not be empty").exists(),
+        body("email", "Invalid email").exists().isEmail(),
+      ];
+    }
+  }
+};
 
 // `secret` is passwordHash concatenated with patient's createdAt,
 // so if someones gets a patient token they still need a timestamp to intercept.
@@ -37,6 +52,55 @@ const usePasswordHashToMakeToken = (patient) => {
     expiresIn: 3600, // 1 hour
   });
   return token;
+};
+
+/**
+ * Check confirmation token and validate user
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
+exports.signupConfirmation = async (req, res) => {};
+
+/**
+ * Send signup confirmation email
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
+exports.sendSignupConfirmationEmail = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
+  const user = req.body;
+  const accesstToken = usePasswordHashToMakeToken(user);
+  const url = getEmailVerificationURL(user, accesstToken);
+  const emailTemplate = signUpConfirmationTemplate(user, url);
+  // send mail with defined transport object
+  let info = await transporter.sendMail(emailTemplate);
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  (successMessage.message = "Message sent: %s"), info.messageId;
+  return res.status(status.success).send(successMessage);
+};
+
+exports.resendSignupConfirmationEmail = async (req, res) => {
+  const accesstToken = usePasswordHashToMakeToken(user);
+  const url = getPasswordResetURL(user, accesstToken);
+  const emailTemplate = signUpConfirmationTemplate(user, url);
+  // send mail with defined transport object
+  let info = await transporter.sendMail(emailTemplate);
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 };
 
 /*** Calling this function with a registered patient's email sends an email IRL ***/

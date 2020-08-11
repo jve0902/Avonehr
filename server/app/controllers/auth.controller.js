@@ -2,11 +2,32 @@
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { body, validationResult } = require("express-validator/check");
 const Client = require("./../models/client.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
+exports.validate = (method) => {
+  switch (method) {
+    case "createUser": {
+      return [
+        body("name", "name can not be empty").isEmpty(),
+        body("email", "Invalid email").exists().isEmail(),
+        body("phone").optional().isInt(),
+        body("status").optional().isIn(["enabled", "disabled"]),
+      ];
+    }
+  }
+};
+
 exports.signup = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
+
   const db = makeDb(configuration);
   let data = req.body;
   data.doctors_data_password = bcrypt.hashSync(

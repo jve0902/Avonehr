@@ -5,7 +5,11 @@ const router = express.Router();
 
 // auth Routes
 
-router.post("/auth/signup", controller.signup);
+router.post(
+  "/auth/signup",
+  controller.validate("createUser"),
+  controller.signup
+);
 router.post("/auth/login", controller.signin);
 
 module.exports = router;

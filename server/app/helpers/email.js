@@ -1,3 +1,16 @@
+"use strict";
+const nodemailer = require("nodemailer");
+
+// create reusable transporter object using the default SMTP transport
+let transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  auth: {
+    user: "darron.corkery@ethereal.email",
+    pass: "5bT1JNjZtp7EDVSqZT",
+  },
+});
+
 const signUpConfirmationTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN;
   const to = user.email;
@@ -14,8 +27,11 @@ const signUpConfirmationTemplate = (user, url) => {
   return { from, to, subject, html };
 };
 
-const getPasswordResetURL = (patient, token) =>
-  `http://localhost:3000/password/reset/${patient._id}/${token}`;
+const getEmailVerificationURL = (user, token) =>
+  `http://localhost:3000/email/confirmation/${user.id}/${token}`;
+
+const getPasswordResetURL = (user, token) =>
+  `http://localhost:3000/password/reset/${user.id}/${token}`;
 
 const resetPasswordTemplate = (patient, url) => {
   const from = process.env.EMAIL_LOGIN;
@@ -35,8 +51,11 @@ const resetPasswordTemplate = (patient, url) => {
 };
 
 const email = {
+  transporter, // for development only
+  getEmailVerificationURL,
   getPasswordResetURL,
   resetPasswordTemplate,
   signUpConfirmationTemplate,
 };
+
 module.exports = email;
