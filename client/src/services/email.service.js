@@ -6,6 +6,9 @@ class EmailService {
   sendEmailVerification(user) {
     return axios.post(API_URL + `/send/verification/`, user);
   }
+  resendEmailVerification(user) {
+    return axios.post(API_URL + `/resend/verification/`, user);
+  }
   emailVerify(userId, token) {
     return axios.get(API_URL + `/confirmation/${userId}/${token}`);
   }

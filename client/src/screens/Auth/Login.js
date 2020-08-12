@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import { loginAction } from "./../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,7 +58,7 @@ const Login = () => {
       localStorage.password = password;
       localStorage.rememberme = isChecked;
     }
-    //dispatch(loginPatient(email, password, login));
+    dispatch(loginAction(email, password, login));
     event.preventDefault();
   };
 
@@ -72,6 +73,7 @@ const Login = () => {
   return (
     <AuthConsumer>
       {({ isAuth, login }) => {
+        console.log("isAuth", isAuth);
         if (isAuth) {
           history.push("/");
         }

@@ -16,7 +16,8 @@ router.post(
   controller.sendSignupConfirmationEmail
 ); // Send Signup confirmation email
 router.post(
-  "/email/confirmation/resend/:userId/:token",
+  "/email/resend/verification",
+  controller.validate("resendConfirmationEmail"),
   controller.resendSignupConfirmationEmail
 ); // Resend Signup confirmation email
 router.post(

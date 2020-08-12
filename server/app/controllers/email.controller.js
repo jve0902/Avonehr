@@ -14,6 +14,8 @@
  * invalidating the secret key that references the old password
  * Reference: https://www.smashingmagazine.com/2017/11/safe-password-resets-with-json-web-tokens/
  **/
+"use strict";
+const nodemailer = require("nodemailer");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -35,8 +37,20 @@ exports.validate = (method) => {
   switch (method) {
     case "sendConfirmationEmail": {
       return [
-        body("email", "Email can not be empty").exists(),
-        body("email", "Invalid email").exists().isEmail(),
+        body("email")
+          .exists()
+          .withMessage("Email address must be provided!")
+          .isEmail()
+          .withMessage("Must be a valid email address"),
+      ];
+    }
+    case "resendConfirmationEmail": {
+      return [
+        body("email")
+          .exists()
+          .withMessage("Email address must be provided!")
+          .isEmail()
+          .withMessage("Must be a valid email address"),
       ];
     }
     case "verifyConfirmationEmail": {
@@ -149,7 +163,6 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
   const url = getEmailVerificationURL(user, accesstToken);
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
-  //TODO:: Insert these records into token Table
   const tokenData = {
     client_id: user.client_id,
     user_id: user.id,
@@ -172,17 +185,66 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
 };
 
 exports.resendSignupConfirmationEmail = async (req, res) => {
-  const accesstToken = usePasswordHashToMakeToken(user);
-  const url = getPasswordResetURL(user, accesstToken);
-  const emailTemplate = signUpConfirmationTemplate(user, url);
-  // send mail with defined transport object
-  let info = await transporter.sendMail(emailTemplate);
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
 
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+  //TODO #1: Check into token table with provided user ID or email
+  const db = makeDb(configuration);
 
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  //Check where user already signed up or not
+  const userRows = await db.query(
+    "SELECT id, email, firstName, lastName, password, created FROM user WHERE id = ?",
+    [req.body.id]
+  );
+  if (userRows.length < 1) {
+    errorMessage.message = "We could find recored with this E-mail address!";
+    return res.status(status.notfound).send(errorMessage);
+  }
+  const emailUser = userRows[0];
+
+  const tokenRows = await db.query(
+    "SELECT id, client_id, user_id, token, created_at FROM token WHERE user_id = ?",
+    [req.body.id]
+  );
+
+  if (tokenRows.length < 1) {
+    //TODO #2: if there is no record on token then create new token and send email notification
+    const accesstToken = usePasswordHashToMakeToken(emailUser);
+    const url = getEmailVerificationURL(emailUser, accesstToken);
+    const emailTemplate = signUpConfirmationTemplate(emailUser, url);
+    // send mail with defined transport object
+    let info = await transporter.sendMail(emailTemplate);
+
+    successMessage.message =
+      "We have email verification link on your email address!";
+    return res.status(status.success).send(successMessage);
+
+    console.info("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    // Preview only available when sending through an Ethereal account
+    console.info("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
+  if (tokenRows.length > 0) {
+    let user = tokenRows[0];
+    //TODO #2: if token exists then resend email with that access token
+    const accesstToken = user.token;
+    const url = getEmailVerificationURL(emailUser, accesstToken);
+    const emailTemplate = signUpConfirmationTemplate(emailUser, url);
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail(emailTemplate);
+    successMessage.message =
+      "We have email verification link on your email address!";
+    return res.status(status.success).send(successMessage);
+    console.info("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    // Preview only available when sending through an Ethereal account
+    console.info("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
 };
 
 /*** Calling this function with a registered patient's email sends an email IRL ***/

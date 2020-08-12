@@ -63,7 +63,7 @@ export const verificationEmail = (userId, token) => {
         if (response.data.isVerified) {
           dispatch(emailAlreadyVerified(response.data.message));
         }
-        dispatch(emailSuccess());
+        dispatch(verificationEmailSuccess());
       },
       (error) => {
         console.log("EmailService emailVerify error:", error);

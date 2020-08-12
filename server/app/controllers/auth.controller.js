@@ -124,8 +124,12 @@ exports.signin = async (req, res) => {
     errorMessage.message = "Wrong password!";
     return res.status(status.unauthorized).send(errorMessage);
   }
-  //TODO: Generate and add access Token
-  dbResult.token = "user-access-token-goes-here";
+
+  const token = jwt.sign({ id: dbResult.id }, process.env.JWT_SECRET, {
+    //expiresIn: 86400, // 24 hours
+    expiresIn: 2 * 60, // 2minutes
+  });
+  dbResult.accessToken = token;
   delete dbResult.password; // delete password from response
   successMessage.data = dbResult;
   res.status(status.success).send(successMessage);
