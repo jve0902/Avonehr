@@ -6,6 +6,7 @@ import {
   setError,
   setSuccess,
 } from "../../store/common/actions";
+import { sendVerificationEmail } from "./../email/actions";
 import AuthService from "../../services/auth.service";
 import EmailService from "../../services/email.service";
 
@@ -50,20 +51,6 @@ export const verificationEmail = (userId, token) => {
   };
 };
 
-export const sendVerificationEmail = (data) => {
-  return (dispatch) => {
-    dispatch(startFetching());
-    EmailService.sendEmailVerification(data).then(
-      (response) => {
-        console.log("EmailService.sendEmailVerification:", response);
-      },
-      (error) => {
-        console.log("EmailService error:", error);
-      }
-    );
-  };
-};
-
 export const signupPatient = (data) => {
   return (dispatch) => {
     dispatch(startFetching());
@@ -71,10 +58,13 @@ export const signupPatient = (data) => {
       (response) => {
         dispatch(signupComplete(response));
         //TODO: Send email verification email
+        /**
+         * {"status":"success","message":"User succesfullly registered!","data":{"user":{"id":11,"client_id":68,"firstName":null,"lastName":null,"email":"d@domain.com"},"client":{"id":68,"name":"Pracitce name","email":null}}}
+         */
         if (response.data) {
-          dispatch(sendVerificationEmail(response.data.data));
+          dispatch(sendVerificationEmail(response.data.data.user));
         }
-        dispatch(setSuccess(`${data.email} ${response.message}`));
+        dispatch(setSuccess(`${response.data.message}`));
         dispatch(fetchingCompleted());
       },
       (error) => {

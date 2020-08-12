@@ -60,25 +60,34 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
     setOpen(false);
   };
   const handleFormSubmission = () => {
-    const data = {
-      name: name,
-      code: clientCode,
-      address: address,
-      address2: address2,
-      city: city,
-      state: state,
-      postal: zipCode,
-      phone: phone,
-      fax: fax,
-      email: practiceEmail,
-      website: url,
-      ein: ein,
-      npi: npi,
-      code: clientCode,
-      doctors_data_username: practiceEmail,
-      doctors_data_password: password,
+    const formData = {
+      client: {
+        name: name,
+        code: clientCode,
+        address: address,
+        address2: address2,
+        city: city,
+        state: state,
+        postal: zipCode,
+        phone: phone,
+        fax: fax,
+        email: practiceEmail,
+        website: url,
+        ein: ein,
+        npi: npi,
+        code: clientCode,
+      },
+      user: {
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        npi: personalNPI,
+        medical_license: medicalLicenseNumber,
+        password: password,
+      },
     };
-    onFormSubmit(data);
+
+    onFormSubmit(formData);
   };
   return (
     <form className={classes.form} noValidate>
@@ -322,6 +331,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Your Password"
         name="password"
         autoComplete="password"
+        type="password"
         autoFocus
         onChange={(event) => setPassword(event.target.value)}
       />

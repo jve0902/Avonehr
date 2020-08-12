@@ -81,7 +81,7 @@ exports.verifyConfirmation = async (req, res) => {
   const db = makeDb(configuration);
   //TODO: Check if user is already verified
   const userRows = await db.query(
-    "SELECT id, name, email, doctors_data_password, isVerified, created FROM client WHERE id = ?",
+    "SELECT id, client_id, firstName, lastName, email, password, isVerified, created FROM user WHERE id = ?",
     [req.params.userId]
   );
   if (userRows.length > 0 && userRows[0].isVerified) {
@@ -91,25 +91,28 @@ exports.verifyConfirmation = async (req, res) => {
   }
   //TODO: Check Token validity and check if user exist with the userId
   const rows = await db.query(
-    `SELECT * from token where client_id=${req.params.userId}`
+    `SELECT * from token where user_id=${req.params.userId}`
   );
   if (rows.length < 1) {
     errorMessage.message = "Couldn't find the record";
     return res.status(status.notfound).send(errorMessage);
   }
 
-  if (req.params.userId == rows[0].client_id) {
-    //TODO: Update isVerified field on client table
-    const clientUpdate = await db.query(
-      "UPDATE client SET isVerified=1 WHERE id = ?",
+  if (req.params.userId == rows[0].user_id) {
+    if (req.params.token !== rows[0].token) {
+      errorMessage.message = "Access token broken. Check your email!";
+      return res.status(status.error).send(errorMessage);
+    }
+    const userUpdate = await db.query(
+      "UPDATE user SET isVerified=1 WHERE id = ?",
       [req.params.userId]
     );
     //TODO: Remove verification token from token table
     const tokenUpdate = await db.query(
-      "UPDATE token SET token=null WHERE client_id = ?",
+      "UPDATE token SET token=null WHERE user_id = ?",
       [req.params.userId]
     );
-    successMessage.data = "Your Email address successfully verified!";
+    successMessage.message = "Your Email address successfully verified!";
     return res.status(status.success).send(successMessage);
   } else {
     errorMessage.error = "Invalid request!";
@@ -130,8 +133,9 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
     errorMessage.error = errors.array();
     return res.status(status.error).send(errorMessage);
   }
+  const db = makeDb(configuration);
   const rows = await db.query(
-    "SELECT id, name, email, password, created,  FROM client WHERE email = ?",
+    "SELECT id, client_id, firstName, lastName, email, password, created FROM user WHERE email = ?",
     [req.body.email]
   );
 
@@ -146,9 +150,9 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
   //TODO:: Insert these records into token Table
-  const db = makeDb(configuration);
   const tokenData = {
-    client_id: user.id,
+    client_id: user.client_id,
+    user_id: user.id,
     token: accesstToken,
   };
   const dbResponse = await db.query("INSERT INTO token set ?", tokenData);

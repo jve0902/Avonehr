@@ -4,6 +4,8 @@ import {
   EMAIL_ERROR,
   EMAIL_SUCCESS,
   EMAIL_ALREADY_VERIFIED,
+  VERIFICATION_EMAIL_SUCCESS,
+  VERIFICATION_EMAIL_FAILED,
 } from "./types";
 // CAll common action creator to set error
 import {
@@ -34,6 +36,14 @@ const emailSuccess = (data) => ({
 const emailError = (data) => ({
   type: EMAIL_ERROR,
   data,
+});
+
+const verificationEmailSuccess = () => ({
+  type: VERIFICATION_EMAIL_SUCCESS,
+});
+
+const verificationEmailFailed = () => ({
+  type: VERIFICATION_EMAIL_FAILED,
 });
 
 export const emailAlreadyVerified = (data) => {
@@ -78,13 +88,14 @@ export const verificationEmail = (userId, token) => {
 
 export const sendVerificationEmail = (data) => {
   return (dispatch) => {
-    dispatch(startFetching());
     EmailService.sendEmailVerification(data).then(
       (response) => {
+        dispatch(verificationEmailSuccess());
         console.log("EmailService.sendEmailVerification:", response);
       },
       (error) => {
         console.log("EmailService error:", error);
+        dispatch(verificationEmailFailed());
       }
     );
   };

@@ -10,6 +10,12 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 
 exports.validate = (method) => {
   switch (method) {
+    case "login": {
+      return [
+        check("email", "Email can not empty!").exists().isEmail(),
+        check("password", "Password can not empty!").exists().not().isEmpty(),
+      ];
+    }
     case "createUser": {
       return [
         check("client.name", "Client name can not empty!")
@@ -90,34 +96,37 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = async (req, res) => {
-  const db = makeDb(configuration);
-  const doctors_data_username = req.body.doctors_data_username;
-  if (doctors_data_username) {
-    const rows = await db.query(
-      "SELECT * FROM client WHERE doctors_data_username = ?",
-      [doctors_data_username]
-    );
-    const dbResult = rows[0];
-    if (!dbResult) {
-      errorMessage.error = "Client Cannot be found";
-      return res.status(status.notfound).send(errorMessage);
-    }
-
-    const isPasswordValid = bcrypt.compareSync(
-      req.body.doctors_data_password,
-      dbResult.doctors_data_password
-    );
-
-    if (!isPasswordValid) {
-      errorMessage.error = "Wrong password!";
-      return res.status(status.unauthorized).send(errorMessage);
-    }
-
-    delete dbResult.doctors_data_password; // delete password from response
-    successMessage.data = dbResult;
-    res.status(status.success).send(successMessage);
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
   }
 
-  errorMessage.error = "Body content can not be empty!";
-  return res.status(status.notfound).send(errorMessage);
+  const db = makeDb(configuration);
+
+  const rows = await db.query(
+    "SELECT id, client_id, firstName, lastName, password, created  FROM user WHERE email = ?",
+    [req.body.email]
+  );
+  const dbResult = rows[0];
+  if (!dbResult) {
+    errorMessage.message = "User Cannot be found";
+    return res.status(status.notfound).send(errorMessage);
+  }
+
+  const isPasswordValid = bcrypt.compareSync(
+    req.body.password,
+    dbResult.password
+  );
+
+  if (!isPasswordValid) {
+    errorMessage.message = "Wrong password!";
+    return res.status(status.unauthorized).send(errorMessage);
+  }
+  //TODO: Generate and add access Token
+  dbResult.token = "user-access-token-goes-here";
+  delete dbResult.password; // delete password from response
+  successMessage.data = dbResult;
+  res.status(status.success).send(successMessage);
 };

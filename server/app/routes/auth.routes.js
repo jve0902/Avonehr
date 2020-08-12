@@ -10,6 +10,6 @@ router.post(
   controller.validate("createUser"),
   controller.signup
 );
-router.post("/auth/login", controller.signin);
+router.post("/auth/login", controller.validate("login"), controller.signin);
 
 module.exports = router;

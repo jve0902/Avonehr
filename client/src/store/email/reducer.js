@@ -4,6 +4,8 @@ import {
   EMAIL_ERROR,
   EMAIL_SUCCESS,
   EMAIL_ALREADY_VERIFIED,
+  VERIFICATION_EMAIL_SUCCESS,
+  VERIFICATION_EMAIL_FAILED,
 } from "./types";
 
 const initialState = {
@@ -37,6 +39,22 @@ const reducer = (state = initialState, action) => {
         message: action.data,
       };
     case EMAIL_ERROR:
+      return {
+        ...state,
+        error: true,
+        loading: false,
+        success: false,
+        message: action.data,
+      };
+    case VERIFICATION_EMAIL_SUCCESS:
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        success: true,
+        message: action.data,
+      };
+    case VERIFICATION_EMAIL_FAILED:
       return {
         ...state,
         error: true,
