@@ -2,20 +2,35 @@
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { body, validationResult } = require("express-validator/check");
+const { body, check, validationResult } = require("express-validator/check");
 const Client = require("./../models/client.model");
+const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
 exports.validate = (method) => {
   switch (method) {
     case "createUser": {
-      return [body("email", "Invalid email").exists().isEmail()];
+      return [
+        check("client.name", "Client name can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.code", "Client code can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("user.email", "User email can not empty!").exists().isEmail(),
+        check("user.password", "User password can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+      ];
     }
   }
 };
 
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -24,12 +39,10 @@ exports.signup = async (req, res, next) => {
   }
 
   const db = makeDb(configuration);
-  let data = req.body;
-  data.doctors_data_password = bcrypt.hashSync(
-    req.body.doctors_data_password,
-    8
-  );
-  const new_client = new Client(data);
+  let client = req.body.client;
+  let user = req.body.user;
+  user.password = bcrypt.hashSync(user.password, 8);
+  const new_client = new Client(client);
 
   //handles null error
   if (!new_client) {
@@ -38,20 +51,33 @@ exports.signup = async (req, res, next) => {
   }
 
   try {
-    const dbResponse = await db.query("INSERT INTO client set ?", new_client);
+    const clientResponse = await db.query(
+      "INSERT INTO client set ?",
+      new_client
+    );
 
-    if (!dbResponse.insertId) {
+    if (!clientResponse.insertId) {
       errorMessage.error = "User Cannot be registered";
       res.status(status.notfound).send(errorMessage);
     }
 
-    if (dbResponse.insertId) {
-      const rows = await db.query(
-        `SELECT id, name, email FROM client WHERE id = ${dbResponse.insertId}`
+    if (clientResponse.insertId) {
+      user.client_id = clientResponse.insertId; //add user foreign key client_id from clientResponse
+      const new_user = new User(user);
+      const userResponse = await db.query("INSERT INTO user set ?", new_user);
+      const clientRows = await db.query(
+        `SELECT id, name, email FROM client WHERE id = ${clientResponse.insertId}`
+      );
+      const userRows = await db.query(
+        `SELECT id, client_id, firstName, lastName, email FROM user WHERE id = ${userResponse.insertId}`
       );
       successMessage.message = "User succesfullly registered!";
-      successMessage.data = dbResponse.insertId;
-      successMessage.data = rows[0];
+      const responseData = {
+        user: userRows[0],
+        client: clientRows[0],
+      };
+      successMessage.data = clientResponse.insertId;
+      successMessage.data = responseData;
       res.status(status.created).send(successMessage);
     }
   } catch (err) {
