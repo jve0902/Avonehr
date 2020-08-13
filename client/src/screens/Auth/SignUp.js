@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -9,7 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Success from "./../../components/signup/Success";
 import { useHistory } from "react-router-dom";
-import { signupPatient } from "./../../store/auth/actions";
+import { signupComplete } from "./../../store/auth/actions";
+import { sendVerificationEmail } from "./../../store/email/actions";
+import { setSuccess } from "./../../store/common/actions";
+import AuthService from "./../../services/auth.service";
 
 import { AuthConsumer } from "./../../providers/AuthProvider";
 import PracticeForm from "../../components/signup/PracticeForm";
@@ -39,15 +42,28 @@ const SignUp = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState([]);
   const success = useSelector(
     (state) => state.auth.success || false,
     shallowEqual
   );
 
   const handleFormSubmit = (data) => {
-    dispatch(signupPatient(data));
+    AuthService.register(data).then(
+      (response) => {
+        if (response.data) {
+          dispatch(signupComplete(response.data.data.user));
+          dispatch(sendVerificationEmail(response.data.data.user));
+        }
+        dispatch(setSuccess(`${response.data.message}`));
+      },
+      (error) => {
+        setErrors(error.response.data);
+      }
+    );
   };
 
+  console.log("errors:", errors);
   return (
     <AuthConsumer>
       {({ isAuth }) => {
@@ -71,7 +87,10 @@ const SignUp = () => {
               {success ? (
                 <Success />
               ) : (
-                <PracticeForm onFormSubmit={handleFormSubmit} />
+                <PracticeForm
+                  onFormSubmit={handleFormSubmit}
+                  errors={errors.error}
+                />
               )}
             </div>
           </Container>

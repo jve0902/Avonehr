@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -6,8 +6,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Alert from "@material-ui/lab/Alert";
+import _ from "lodash";
+import TextFieldWithError from "./TextFieldWithError";
+import AuthService from "./../../services/auth.service";
+import { getAcronym } from "./../../utils/helpers";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -46,7 +49,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
   const [ein, setEin] = useState(null);
   const [npi, setNpi] = useState(null);
   const [clientCode, setClientCode] = useState(null);
-
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -54,16 +56,18 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
   const [medicalLicenseNumber, setMedicalLicenseNumber] = useState(null);
   const [password, setPassword] = useState(null);
   const [termsAndConditions, setTermsAndConditions] = useState(false);
-  const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [fieldErrors, setFieldErrors] = useState([]);
+
+  useEffect(() => {
+    const clientCode = getAcronym(name);
+    setClientCode(clientCode);
+  }, [name]);
+
   const handleFormSubmission = () => {
     const formData = {
       client: {
         name: name,
-        code: clientCode,
         address: address,
         address2: address2,
         city: city,
@@ -89,6 +93,72 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
 
     onFormSubmit(formData);
   };
+
+  const validatePasswod = (event) => {
+    if (event.target.value.length < 8) {
+      setFieldErrors([
+        ...fieldErrors,
+        {
+          value: event.target.value,
+          msg: "Too Weak. Must be atleast 8 Characters",
+          param: "user.password",
+        },
+      ]);
+    } else {
+      const updatedErrors = fieldErrors.filter(
+        (error) => error.param !== "user.password"
+      );
+      setFieldErrors(updatedErrors);
+    }
+  };
+  const practiceErrors =
+    props.errors && props.errors.filter((err) => err.param.includes("client"));
+  const userErrors =
+    props.errors && props.errors.filter((err) => err.param.includes("user"));
+
+  const getFieldError = (target, fieldName) => {
+    let value = "client." + fieldName;
+    if (target) {
+      value = target + "." + fieldName;
+    }
+    return fieldErrors && fieldErrors.filter((err) => err.param === value);
+  };
+  const handleAjaxValidation = (event, target) => {
+    if (!event.target) {
+      return;
+    }
+    if (!target) {
+      target = "client";
+    }
+
+    AuthService.validate({
+      fieldName: event.target.name,
+      value: event.target.value,
+      target,
+    }).then(
+      (response) => {
+        //Remove errors record with param
+        const updatedErrors = fieldErrors.filter(
+          (error) => error.param !== response.data.message.param
+        );
+        console.log("updatedErrors:", updatedErrors);
+        setFieldErrors(updatedErrors);
+      },
+      (error) => {
+        console.log("error.response.data.message", error.response.data.message);
+        console.log("fieldErrors:", fieldErrors);
+
+        const uniqueFieldErrors = _.uniqWith(
+          [...fieldErrors, error.response.data.message],
+          _.isEqual
+        );
+        setFieldErrors(uniqueFieldErrors);
+      }
+    );
+  };
+
+  console.log("fieldErrors", fieldErrors);
+  console.log("fieldErrors.length > 0", fieldErrors.length > 0);
   return (
     <form className={classes.form} noValidate>
       <Typography
@@ -99,18 +169,19 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       >
         Practice Information
       </Typography>
-      <TextField
-        value={name}
-        variant="outlined"
-        margin="dense"
-        required
-        fullWidth
-        id="name"
+      {practiceErrors &&
+        practiceErrors.map((error, index) => (
+          <Alert severity="error" key={index}>
+            {error.msg}
+          </Alert>
+        ))}
+      <TextFieldWithError
+        fieldName="name"
         label="Practice name"
-        name="name"
-        autoComplete="name"
-        autoFocus
-        onChange={(event) => setName(event.target.value)}
+        value={name}
+        handleOnChange={(event) => setName(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "name")}
       />
       <TextField
         variant="outlined"
@@ -170,89 +241,61 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         autoFocus
         onChange={(event) => setZipCode(event.target.value)}
       />
-      <TextField
-        value={phone}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="phone"
+      <TextFieldWithError
+        fieldName="phone"
         label="Practice phone"
-        name="phone"
-        autoComplete="phone"
-        autoFocus
-        onChange={(event) => setPhone(event.target.value)}
+        value={phone}
+        handleOnChange={(event) => setPhone(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "phone")}
       />
-      <TextField
-        value={fax}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="fax"
+      <TextFieldWithError
+        fieldName="fax"
         label="Practice Fax"
-        name="fax"
-        autoComplete="fax"
-        autoFocus
-        onChange={(event) => setFax(event.target.value)}
+        value={fax}
+        handleOnChange={(event) => setFax(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "fax")}
       />
-      <TextField
-        value={url}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="url"
+      <TextFieldWithError
+        fieldName="website"
         label="Practice Website URL"
-        name="url"
-        autoComplete="url"
-        autoFocus
-        onChange={(event) => setUrl(event.target.value)}
+        value={url}
+        handleOnChange={(event) => setUrl(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "website")}
       />
-      <TextField
-        value={practiceEmail}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="email"
+      <TextFieldWithError
+        fieldName="email"
         label="Practice Email"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={(event) => setPracticeEmail(event.target.value)}
+        value={practiceEmail}
+        handleOnChange={(event) => setPracticeEmail(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "email")}
       />
-      <TextField
-        value={ein}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="ein"
+      <TextFieldWithError
+        fieldName="ein"
         label="Practice EIN Number"
-        name="ein"
-        autoComplete="ein"
-        autoFocus
-        onChange={(event) => setEin(event.target.value)}
+        value={ein}
+        handleOnChange={(event) => setEin(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "ein")}
       />
-      <TextField
-        value={npi}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="npi"
+      <TextFieldWithError
+        fieldName="npi"
         label="Practice NPI Number"
-        name="npi"
-        autoComplete="npi"
-        autoFocus
-        onChange={(event) => setNpi(event.target.value)}
+        value={npi}
+        handleOnChange={(event) => setNpi(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "npi")}
       />
-      <TextField
-        value={clientCode}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="clientCode"
+      <TextFieldWithError
+        fieldName="code"
         label="Client Code"
-        name="clientCode"
-        autoComplete="clientCode"
-        autoFocus
-        onChange={(event) => setClientCode(event.target.value)}
+        value={clientCode}
+        handleOnChange={(event) => setClientCode(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "code")}
       />
       <Typography
         component="h3"
@@ -262,6 +305,12 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       >
         Your Personal Information
       </Typography>
+      {userErrors &&
+        userErrors.map((error, index) => (
+          <Alert severity="error" key={index}>
+            {error.msg}
+          </Alert>
+        ))}
       <TextField
         value={firstName}
         variant="outlined"
@@ -286,54 +335,38 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         autoFocus
         onChange={(event) => setLastName(event.target.value)}
       />
-      <TextField
-        value={email}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="email"
+      <TextFieldWithError
+        fieldName="email"
         label="Your Email Address"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={(event) => setEmail(event.target.value)}
+        value={email}
+        handleOnChange={(event) => setEmail(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event, "user")}
+        errors={getFieldError("user", "email")}
       />
-      <TextField
-        value={personalNPI}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="personalNPI"
+      <TextFieldWithError
+        fieldName="npi"
         label="Your NPI Number"
-        name="personalNPI"
-        autoComplete="personalNPI"
-        autoFocus
-        onChange={(event) => setPersonalNPI(event.target.value)}
+        value={personalNPI}
+        handleOnChange={(event) => setPersonalNPI(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event, "user")}
+        errors={getFieldError("user", "npi")}
       />
-      <TextField
-        value={medicalLicenseNumber}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="medicalLicenseNumber"
+      <TextFieldWithError
+        fieldName="medical_license"
         label="Your Medical License Number"
-        name="medicalLicenseNumber"
-        autoComplete="medicalLicenseNumber"
-        autoFocus
-        onChange={(event) => setMedicalLicenseNumber(event.target.value)}
+        value={medicalLicenseNumber}
+        handleOnChange={(event) => setMedicalLicenseNumber(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event, "user")}
+        errors={getFieldError("user", "medical_license")}
       />
-      <TextField
-        value={password}
-        variant="outlined"
-        margin="dense"
-        fullWidth
-        id="password"
+      <TextFieldWithError
+        fieldName="password"
         label="Your Password"
-        name="password"
-        autoComplete="password"
         type="password"
-        autoFocus
-        onChange={(event) => setPassword(event.target.value)}
+        value={password}
+        handleOnChange={(event) => setPassword(event.target.value)}
+        handleOnBlur={(event) => validatePasswod(event)}
+        errors={getFieldError("user", "password")}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
@@ -341,10 +374,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
           <div>
             <span>
               Check here to indicate that you have read and agree to the terms
-              of the{" "}
-              <Link href="/terms-and-condition">
-                Clinios Customer Aggrements
-              </Link>
+              of the <Link href="/agreement">Clinios Customer Aggrements</Link>
             </span>
           </div>
         }
@@ -352,6 +382,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         onChange={() => setTermsAndConditions(!termsAndConditions)}
       />
       <Button
+        disabled={fieldErrors.length > 0 || !termsAndConditions}
         fullWidth
         variant="contained"
         color="primary"

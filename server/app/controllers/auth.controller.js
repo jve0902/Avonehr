@@ -18,7 +18,47 @@ exports.validate = (method) => {
     }
     case "createUser": {
       return [
-        check("client.name", "Client name can not empty!")
+        check("client.name", "Practice name can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.address", "Practice address can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.city", "Practice city can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.state", "Practice state can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.postal", "Practice postal can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.phone", "Practice phone can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.fax", "Practice fax can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.email", "Practice email can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.website", "Practice website can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.ein", "Practice ein can not empty!")
+          .exists()
+          .not()
+          .isEmpty(),
+        check("client.npi", "Practice npi can not empty!")
           .exists()
           .not()
           .isEmpty(),
@@ -33,6 +73,40 @@ exports.validate = (method) => {
           .isEmpty(),
       ];
     }
+  }
+};
+
+exports.fieldValiate = async (req, res) => {
+  if (!req.body.fieldName && !req.body.value) {
+    errorMessage.message = "body content must be provided!";
+    return res.status(status.error).send(errorMessage);
+  }
+  let tableName = "client"; // By default let if look into client table
+  if (req.body.target) {
+    tableName = req.body.target;
+  }
+  const db = makeDb(configuration);
+  try {
+    const rows = await db.query(
+      `SELECT id, ${req.body.fieldName} FROM ${tableName} WHERE ${req.body.fieldName} = ?`,
+      [req.body.value]
+    );
+    if (rows.length > 0) {
+      errorMessage.message = {
+        value: req.body.value,
+        msg: `${req.body.value} already taken.`,
+        param: `${tableName}.${req.body.fieldName}`,
+      };
+      return res.status(status.inValid).send(errorMessage);
+    }
+    successMessage.message = {
+      value: req.body.value,
+      msg: `${req.body.value} can be used.`,
+      param: `${tableName}.${req.body.fieldName}`,
+    };
+    res.status(status.success).send(successMessage);
+  } catch (error) {
+    return res.status(status.notfound).send(JSON.stringify(error));
   }
 };
 
@@ -56,6 +130,8 @@ exports.signup = async (req, res) => {
     res.status(status.error).send(errorMessage);
   }
 
+  //TODO: Check if same clientname already exists into our system
+  //TODO: Check if same client code already exists into our system
   try {
     const clientResponse = await db.query(
       "INSERT INTO client set ?",

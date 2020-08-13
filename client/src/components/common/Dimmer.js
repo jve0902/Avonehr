@@ -2,7 +2,7 @@ import React from "react";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { closeSnackbar } from "../../store/auth/actions";
 
@@ -17,10 +17,6 @@ const useStyles = makeStyles((theme) => ({
 const Dimmer = ({ isOpen }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const success = useSelector(
-    (state) => state.auth.success || false,
-    shallowEqual
-  );
   const handleClose = () => {
     dispatch(closeSnackbar());
   };

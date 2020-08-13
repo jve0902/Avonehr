@@ -32,7 +32,7 @@ export const closeSnackbar = () => {
   };
 };
 
-const signupComplete = (data) => ({
+export const signupComplete = (data) => ({
   type: SIGNUP_COMPLETED,
   data,
 });
@@ -117,6 +117,7 @@ export const signupPatient = (data) => {
         dispatch(fetchingCompleted());
       },
       (error) => {
+        console.log("error.res.data", error.response.data);
         const resMessage =
           (error.response &&
             error.response.data &&

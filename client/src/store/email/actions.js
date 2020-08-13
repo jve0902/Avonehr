@@ -1,19 +1,12 @@
 import {
   EMAIL_PENDING,
-  EMAIL_COMPLETED,
   EMAIL_ERROR,
-  EMAIL_SUCCESS,
   EMAIL_ALREADY_VERIFIED,
   VERIFICATION_EMAIL_SUCCESS,
   VERIFICATION_EMAIL_FAILED,
 } from "./types";
 // CAll common action creator to set error
-import {
-  startFetching,
-  fetchingCompleted,
-  setError,
-  setSuccess,
-} from "../../store/common/actions";
+import { setError, setSuccess } from "../../store/common/actions";
 
 import EmailService from "../../services/email.service";
 
@@ -23,33 +16,24 @@ export const startEmail = () => {
   };
 };
 
-const emailComplete = (data) => ({
-  type: EMAIL_COMPLETED,
-  data,
-});
-
-const emailSuccess = (data) => ({
-  type: EMAIL_SUCCESS,
-  data,
-});
-
 const emailError = (data) => ({
   type: EMAIL_ERROR,
   data,
 });
 
-const verificationEmailSuccess = () => ({
+const verificationEmailSuccess = (message) => ({
   type: VERIFICATION_EMAIL_SUCCESS,
+  data: message,
 });
 
 const verificationEmailFailed = () => ({
   type: VERIFICATION_EMAIL_FAILED,
 });
 
-export const emailAlreadyVerified = (data) => {
+export const emailAlreadyVerified = (message) => {
   return {
     type: EMAIL_ALREADY_VERIFIED,
-    data,
+    data: message,
   };
 };
 
@@ -63,7 +47,7 @@ export const verificationEmail = (userId, token) => {
         if (response.data.isVerified) {
           dispatch(emailAlreadyVerified(response.data.message));
         }
-        dispatch(verificationEmailSuccess());
+        dispatch(verificationEmailSuccess(response.data.message));
       },
       (error) => {
         console.log("EmailService emailVerify error:", error);

@@ -52,6 +52,9 @@ class AuthService {
       return false;
     }
   }
+  validate(data) {
+    return axios.post(API_URL + `field/validate`, data);
+  }
 }
 
 export default new AuthService();

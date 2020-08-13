@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
-import Link from "@material-ui/core/Link";
+import React, { useEffect, useCallback } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { verificationEmail } from "./../store/email/actions";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -50,9 +47,15 @@ const EmailConfirmation = ({ ...props }) => {
     (state) => state.email.message || false,
     shallowEqual
   );
-  useEffect(() => {
+
+  const initFetch = useCallback(() => {
     dispatch(verificationEmail(params.userId, params.token));
-  }, []);
+  }, [dispatch, params]);
+
+  useEffect(() => {
+    initFetch();
+  }, [initFetch]);
+
   let severity = "error";
   if (error) {
     severity = "error";

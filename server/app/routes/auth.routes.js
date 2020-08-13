@@ -11,5 +11,6 @@ router.post(
   controller.signup
 );
 router.post("/auth/login", controller.validate("login"), controller.signin);
+router.post("/auth/field/validate", controller.fieldValiate);
 
 module.exports = router;

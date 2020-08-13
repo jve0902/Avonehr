@@ -23,8 +23,8 @@ const VerificationSuccess = ({ isEmailVerified }) => {
         {isEmailVerified ? (
           <p>
             Your can login here:{" "}
-            <Link href={`${process.env.REACT_APP_SITE_URL}signup_client`}>
-              {`${process.env.REACT_APP_SITE_URL}signup_client`}
+            <Link href={`${process.env.REACT_APP_SITE_URL}login_client`}>
+              {`${process.env.REACT_APP_SITE_URL}login_client`}
             </Link>
           </p>
         ) : (
@@ -32,8 +32,8 @@ const VerificationSuccess = ({ isEmailVerified }) => {
             <p>Thank you for confirming your email address. </p>
             <p>
               Your login page would be{" "}
-              <Link href={`${process.env.REACT_APP_SITE_URL}signup_client`}>
-                {`${process.env.REACT_APP_SITE_URL}signup_client`}
+              <Link href={`${process.env.REACT_APP_SITE_URL}login_client`}>
+                {`${process.env.REACT_APP_SITE_URL}login_client`}
               </Link>
             </p>
           </React.Fragment>

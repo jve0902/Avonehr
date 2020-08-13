@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import RouteWithLayout from "./RouteWithLayout";
-import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
-
 import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
 import EmailConfirmation from "../screens/EmailConfirmation";
@@ -12,6 +10,7 @@ import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
+import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
@@ -25,6 +24,11 @@ class AppRouter extends Component {
         <AuthProvider>
           <Switch>
             <RouteWithLayout layout={Main} path="/" component={Home} exact />
+            <RouteWithLayout
+              layout={Main}
+              path="/agreement"
+              component={Agreement}
+            />
             <RouteWithLayout
               layout={Main}
               path="/contact"

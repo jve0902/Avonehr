@@ -144,7 +144,7 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    errorMessage.error = errors.array();
+    errorMessage.message = errors.array();
     return res.status(status.error).send(errorMessage);
   }
   const db = makeDb(configuration);
