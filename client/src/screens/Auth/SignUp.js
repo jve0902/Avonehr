@@ -4,9 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-
 import { makeStyles } from "@material-ui/core/styles";
-
 import Success from "./../../components/signup/Success";
 import { useHistory } from "react-router-dom";
 import { signupComplete } from "./../../store/auth/actions";
@@ -62,8 +60,6 @@ const SignUp = () => {
       }
     );
   };
-
-  console.log("errors:", errors);
   return (
     <AuthConsumer>
       {({ isAuth }) => {

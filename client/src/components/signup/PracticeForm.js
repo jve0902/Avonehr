@@ -36,25 +36,25 @@ const useStyles = makeStyles((theme) => ({
 
 const PracticeForm = ({ onFormSubmit, ...props }) => {
   const classes = useStyles();
-  const [name, setName] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [address2, setAddress2] = useState(null);
-  const [city, setCity] = useState(null);
-  const [state, setState] = useState(null);
-  const [zipCode, setZipCode] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [fax, setFax] = useState(null);
-  const [url, setUrl] = useState(null);
-  const [practiceEmail, setPracticeEmail] = useState(null);
-  const [ein, setEin] = useState(null);
-  const [npi, setNpi] = useState(null);
-  const [clientCode, setClientCode] = useState(null);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [personalNPI, setPersonalNPI] = useState(null);
-  const [medicalLicenseNumber, setMedicalLicenseNumber] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [phone, setPhone] = useState("");
+  const [fax, setFax] = useState("");
+  const [url, setUrl] = useState("");
+  const [practiceEmail, setPracticeEmail] = useState("");
+  const [ein, setEin] = useState("");
+  const [npi, setNpi] = useState("");
+  const [clientCode, setClientCode] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [personalNPI, setPersonalNPI] = useState("");
+  const [medicalLicenseNumber, setMedicalLicenseNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [termsAndConditions, setTermsAndConditions] = useState(false);
 
   const [fieldErrors, setFieldErrors] = useState([]);

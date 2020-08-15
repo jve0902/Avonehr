@@ -1,15 +1,31 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
+let mailConfig;
+if (process.env.NODE_ENV === "production") {
+  // all emails are delivered to destination
+  mailConfig = {
+    host: "smtp.sendgrid.net",
+    port: 587,
+    auth: {
+      user: "real.user",
+      pass: "verysecret",
+    },
+  };
+} else {
+  // all emails are catched by ethereal.email
+  mailConfig = {
+    host: "smtp.ethereal.email",
+    port: 587,
+    auth: {
+      user: process.env.ETHEREAL_EMAIL,
+      pass: process.env.ETHEREAL_PASS,
+    },
+  };
+}
+
 // create reusable transporter object using the default SMTP transport
-let transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  auth: {
-    user: "dianna76@ethereal.email",
-    pass: "aZgcaMs7tBwUtdmMsX",
-  },
-});
+let transporter = nodemailer.createTransport(mailConfig);
 
 const signUpConfirmationTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN;
@@ -28,10 +44,10 @@ const signUpConfirmationTemplate = (user, url) => {
 };
 
 const getEmailVerificationURL = (user, token) =>
-  `http://localhost:3000/email/confirmation/${user.id}/${token}`;
+  `${process.env.CLIENT_URL}/email/confirmation/${user.id}/${token}`;
 
 const getPasswordResetURL = (user, token) =>
-  `http://localhost:3000/password/reset/${user.id}/${token}`;
+  `${process.env.CLIENT_URL}/password/reset/${user.id}/${token}`;
 
 const resetPasswordTemplate = (patient, url) => {
   const from = process.env.EMAIL_LOGIN;

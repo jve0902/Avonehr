@@ -73,7 +73,6 @@ const Login = () => {
   return (
     <AuthConsumer>
       {({ isAuth, login }) => {
-        console.log("isAuth", isAuth);
         if (isAuth) {
           history.push("/");
         }
@@ -84,7 +83,6 @@ const Login = () => {
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon className={classes.lockIcon} />
               </Avatar>
-
               <Typography
                 component="h1"
                 variant="h2"

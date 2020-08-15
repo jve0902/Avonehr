@@ -36,7 +36,7 @@ const TextFieldWithError = ({
 TextFieldWithError.propTypes = {
   fieldName: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   handleOnChange: PropTypes.func.isRequired,
   handleOnBlur: PropTypes.func.isRequired,
   errors: PropTypes.array.isRequired,
