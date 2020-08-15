@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = process.env.API_URL || "http://localhost:5001/api/auth/";
+const API_URL =
+  `${process.env.REACT_APP_API_URL}api/v1/auth/` ||
+  "http://localhost:5000/api/v1/auth/";
 
 class AuthService {
   login(user) {
@@ -10,8 +12,10 @@ class AuthService {
         password: user.password,
       })
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+        console.log("response.data", response.data.data);
+        debugger;
+        if (response.data.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data.data));
         }
         return response.data;
       });
@@ -21,6 +25,9 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
+  sendEmailVerification(user) {
+    return axios.post(API_URL + `email/send/confirmation/${user}`);
+  }
   passwordChangeRequest(email) {
     return axios.post(API_URL + `reset_password/user/${email}`);
   }
@@ -31,11 +38,7 @@ class AuthService {
   }
 
   register(user) {
-    return axios.post(API_URL + "signup", {
-      email: user.email,
-      password: user.password,
-      gender: user.gender,
-    });
+    return axios.post(API_URL + "signup", user);
   }
 
   getCurrentUser() {
@@ -50,6 +53,9 @@ class AuthService {
     } else {
       return false;
     }
+  }
+  validate(data) {
+    return axios.post(API_URL + `field/validate`, data);
   }
 }
 

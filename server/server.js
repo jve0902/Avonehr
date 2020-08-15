@@ -2,14 +2,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const config = require("./config");
+const config = require("./config.js");
+
+const clientsRoute = require("./app/routes/client.routes");
+const authRoute = require("./app/routes/auth.routes");
+const emailRoute = require("./app/routes/email.routes");
 
 const app = express();
 
-app.use(express.static("public"));
+// Add middleware for parsing URL encoded bodies (which are usually sent by browser)
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// Add middleware for parsing JSON and urlencoded data and populating `req.body`
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   const help = `
@@ -25,6 +30,10 @@ app.get("/", (req, res) => {
   res.send(help);
 });
 
-app.listen(config.port, () => {
-  console.log("Server listening on port %s, Ctrl+C to stop", config.port);
+app.use("/api/v1", clientsRoute);
+app.use("/api/v1", authRoute);
+app.use("/api/v1", emailRoute);
+
+app.listen(config.port).on("listening", () => {
+  console.log(`🚀 are live on ${config.port}`);
 });

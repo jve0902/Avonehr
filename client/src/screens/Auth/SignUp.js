@@ -1,5 +1,99 @@
-import React from "react";
+import React, { useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
+import Success from "./../../components/signup/Success";
+import { useHistory } from "react-router-dom";
+import { signupComplete } from "./../../store/auth/actions";
+import { sendVerificationEmail } from "./../../store/email/actions";
+import { setSuccess } from "./../../store/common/actions";
+import AuthService from "./../../services/auth.service";
 
-export default function SignUp() {
-  return <h1>Auth/SignUp</h1>;
-}
+import { AuthConsumer } from "./../../providers/AuthProvider";
+import PracticeForm from "../../components/signup/PracticeForm";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+
+const useStyles = makeStyles((theme) => ({
+  pageTitle: {
+    marginBottom: theme.spacing(3),
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: "transparent",
+    color: theme.palette.text.secondary,
+  },
+  lockIcon: {
+    fontSize: "40px",
+  },
+}));
+
+const SignUp = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState([]);
+  const success = useSelector(
+    (state) => state.auth.success || false,
+    shallowEqual
+  );
+
+  const handleFormSubmit = (data) => {
+    AuthService.register(data).then(
+      (response) => {
+        if (response.data) {
+          dispatch(signupComplete(response.data.data.user));
+          dispatch(sendVerificationEmail(response.data.data.user));
+        }
+        dispatch(setSuccess(`${response.data.message}`));
+      },
+      (error) => {
+        setErrors(error.response.data);
+      }
+    );
+  };
+  return (
+    <AuthConsumer>
+      {({ isAuth }) => {
+        if (isAuth) {
+          history.push("/profile");
+        }
+        return (
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <LockOutlinedIcon className={classes.lockIcon} />
+              </Avatar>
+              <Typography
+                component="h1"
+                variant="h2"
+                className={classes.pageTitle}
+              >
+                Physician Sign Up
+              </Typography>
+              {success ? (
+                <Success />
+              ) : (
+                <PracticeForm
+                  onFormSubmit={handleFormSubmit}
+                  errors={errors.error}
+                />
+              )}
+            </div>
+          </Container>
+        );
+      }}
+    </AuthConsumer>
+  );
+};
+
+export default SignUp;
