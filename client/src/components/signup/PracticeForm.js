@@ -222,7 +222,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice city"
         name="city"
         autoComplete="city"
-        autoFocus
         onChange={(event) => setCity(event.target.value)}
       />
       <TextField
@@ -234,7 +233,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice state"
         name="state"
         autoComplete="state"
-        autoFocus
         onChange={(event) => setState(event.target.value)}
       />
       <TextField
@@ -246,7 +244,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice Zipcode"
         name="zipcode"
         autoComplete="zipcode"
-        autoFocus
         onChange={(event) => setZipCode(event.target.value)}
       />
       <TextFieldWithError
@@ -328,7 +325,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Your Firstname"
         name="firstName"
         autoComplete="firstName"
-        autoFocus
         onChange={(event) => setFirstName(event.target.value)}
       />
       <TextField
@@ -340,7 +336,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Your Lastname"
         name="lastName"
         autoComplete="lastName"
-        autoFocus
         onChange={(event) => setLastName(event.target.value)}
       />
       <TextFieldWithError
