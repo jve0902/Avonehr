@@ -64,7 +64,7 @@ const SignUp = () => {
     <AuthConsumer>
       {({ isAuth }) => {
         if (isAuth) {
-          history.push("/profile");
+          history.push("/");
         }
         return (
           <Container component="main" maxWidth="xs">

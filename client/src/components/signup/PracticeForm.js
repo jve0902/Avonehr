@@ -135,26 +135,34 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       fieldName: event.target.name,
       value: event.target.value,
       target,
-    }).then(
-      (response) => {
-        //Remove errors record with param
-        const updatedErrors = fieldErrors.filter(
-          (error) => error.param !== response.data.message.param
-        );
-        console.log("updatedErrors:", updatedErrors);
-        setFieldErrors(updatedErrors);
-      },
-      (error) => {
-        console.log("error.response.data.message", error.response.data.message);
-        console.log("fieldErrors:", fieldErrors);
+    })
+      .then(
+        (response) => {
+          //Remove errors record with param
+          const updatedErrors = fieldErrors.filter(
+            (error) => error.param !== response.data.message.param
+          );
+          console.log("updatedErrors:", updatedErrors);
+          setFieldErrors(updatedErrors);
+        },
+        (error) => {
+          console.log("error.status", error);
 
-        const uniqueFieldErrors = _.uniqWith(
-          [...fieldErrors, error.response.data.message],
-          _.isEqual
-        );
-        setFieldErrors(uniqueFieldErrors);
-      }
-    );
+          if (!error.response) {
+            // network error
+            console.error(error);
+          } else {
+            const uniqueFieldErrors = _.uniqWith(
+              [...fieldErrors, error.response.data.message],
+              _.isEqual
+            );
+            setFieldErrors(uniqueFieldErrors);
+          }
+        }
+      )
+      .catch((err) => {
+        console.log("catch err", err);
+      });
   };
 
   console.log("fieldErrors", fieldErrors);
