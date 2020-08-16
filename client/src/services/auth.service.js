@@ -12,8 +12,6 @@ class AuthService {
         password: user.password,
       })
       .then((response) => {
-        console.log("response.data", response.data.data);
-        debugger;
         if (response.data.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data.data));
         }
@@ -54,6 +52,7 @@ class AuthService {
       return false;
     }
   }
+
   validate(data) {
     return axios.post(API_URL + `field/validate`, data);
   }
