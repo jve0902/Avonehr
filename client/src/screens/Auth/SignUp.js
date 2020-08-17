@@ -60,6 +60,7 @@ const SignUp = () => {
       }
     );
   };
+
   return (
     <AuthConsumer>
       {({ isAuth }) => {

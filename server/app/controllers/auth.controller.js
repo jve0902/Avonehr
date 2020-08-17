@@ -130,8 +130,39 @@ exports.signup = async (req, res) => {
     res.status(status.error).send(errorMessage);
   }
 
-  //TODO: Check if same clientname already exists into our system
-  //TODO: Check if same client code already exists into our system
+  //TODO: check again that this client does not already exist
+
+  const existingClientRows = await db.query(
+    `SELECT 1 FROM client WHERE name='${client.name}' OR phone='${client.phone}'  OR fax='${client.fax}'
+    OR website='${client.website}' OR email='${client.email}' OR ein='${client.ein}' OR npi='${client.npi}' OR code='${client.code}' LIMIT 1`
+  );
+
+  if (existingClientRows.length > 0) {
+    errorMessage.error = [
+      {
+        value: JSON.stringify(client),
+        msg: "Client is already in our system. Try different names",
+        param: "client.body",
+      },
+    ];
+    return res.status(status.error).send(errorMessage);
+  }
+
+  const existingUserRows = await db.query(
+    `SELECT 1 FROM user WHERE email='${user.email}' OR npi='${user.npi}'  OR medical_license='${user.medical_license}' LIMIT 1`
+  );
+
+  if (existingUserRows.length > 0) {
+    errorMessage.error = [
+      {
+        value: JSON.stringify(client),
+        msg: "User is already in our system. Try different names",
+        param: "user.body",
+      },
+    ];
+    return res.status(status.error).send(errorMessage);
+  }
+
   try {
     const clientResponse = await db.query(
       "INSERT INTO client set ?",

@@ -111,6 +111,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       setFieldErrors(updatedErrors);
     }
   };
+
   const practiceErrors =
     props.errors && props.errors.filter((err) => err.param.includes("client"));
   const userErrors =
