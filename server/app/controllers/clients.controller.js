@@ -1,8 +1,4 @@
 "use strict";
-const fs = require("fs");
-const path = require("path");
-const PDFDocument = require("pdfkit");
-
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
@@ -87,11 +83,11 @@ const PDF = async (req, res) => {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat, mauris vel eleifend pharetra, purus risus scelerisque nulla, aliquam maximus turpis felis eget ante. Integer interdum metus id bibendum tincidunt. Nunc faucibus lorem metus, ut luctus neque blandit quis. Nullam sed tortor eget orci placerat dictum non a quam. Proin aliquam nulla in dolor aliquet mollis. Nulla scelerisque lobortis libero vitae rhoncus. Duis sed neque risus. Aliquam id nulla finibus, dapibus mauris quis, consequat nisi. Nunc suscipit maximus purus, eu semper metus iaculis lobortis. Curabitur bibendum ligula ac ante placerat, a volutpat ligula posuere. Pellentesque sit amet dolor a velit dignissim gravida. Maecenas tempus ornare suscipit. Vivamus ullamcorper lacinia mi eget sagittis. Pellentesque hendrerit dolor eget dui cursus vulputate.",
     user: {
       id: "2131",
-      clientId: "11112222",
+      client_id: "11112222",
       firstname: "Ruhul",
       lastname: "Amin",
-      date: "Jan 1 2020 1:00:00PM",
-      ip: "192.168.100.100",
+      sign_dt: "Jan 1 2020 1:00:00PM",
+      sign_ip_address: "192.168.100.100",
       company: "Company Name",
     },
   };

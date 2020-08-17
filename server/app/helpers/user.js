@@ -15,19 +15,19 @@ const generatePDF = async (content, user) => {
     const pdfPath = path.join(
       "app",
       "client",
-      `c${user.clientId}_u${user.id}_contract` + ".pdf"
+      `c${user.client_id}_u${user.id}_contract` + ".pdf"
     );
     const pdfDoc = new PDFDocument({ size: "A4", margin: 50 });
     pdfDoc.text(content);
 
     // Footer
-    pdfDoc.text(`Signed: ${user.date}`, 50, pdfDoc.page.height - 160, {
+    pdfDoc.text(`Signed: ${user.sign_dt}`, 50, pdfDoc.page.height - 160, {
       width: 410,
       align: "left",
     });
     pdfDoc.text(`Name: ${user.firstname} ${user.lastname}`);
-    pdfDoc.text(`IP Address: ${user.ip}`);
-    pdfDoc.text(`Company: ${user.company}`);
+    pdfDoc.text(`IP Address: ${user.sign_ip_address}`);
+    pdfDoc.text(`Company: ${user.company || "Company hardcoded"}`);
     pdfDoc.text(`UserID: ${user.id}`);
 
     pdfDoc.end();

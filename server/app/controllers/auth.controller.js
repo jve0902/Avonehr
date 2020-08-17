@@ -7,6 +7,7 @@ const Client = require("./../models/client.model");
 const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
+const { generatePDF } = require("../helpers/user");
 
 exports.validate = (method) => {
   switch (method) {
@@ -192,14 +193,27 @@ exports.signup = async (req, res) => {
         `SELECT id, name, email FROM client WHERE id = ${clientResponse.insertId}`
       );
       const userRows = await db.query(
-        `SELECT id, client_id, firstName, lastName, email FROM user WHERE id = ${userResponse.insertId}`
+        `SELECT id, client_id, firstname, lastname, email, sign_ip_address, sign_dt FROM user WHERE id = ${userResponse.insertId}`
       );
       successMessage.message = "User succesfullly registered!";
       const responseData = {
         user: userRows[0],
         client: clientRows[0],
       };
+      // Create contract PDF
+      const contractRows = await db.query(
+        "SELECT id, contract, created FROM contract WHERE created=(select max(created) from contract)"
+      );
+      const contractContent = contractRows[0];
+      const pdf = await generatePDF(contractContent, userRows[0]);
+
+      //end Create contract PDF
+
+      // #set up basic data for new client with the following:
+
+      // END set up basic data for new client
       successMessage.data = clientResponse.insertId;
+      responseData.contractLink = pdf;
       successMessage.data = responseData;
       res.status(status.created).send(successMessage);
     }
