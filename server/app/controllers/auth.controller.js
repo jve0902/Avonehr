@@ -120,6 +120,11 @@ exports.signup = async (req, res) => {
 
   const db = makeDb(configuration);
   let client = req.body.client;
+  client.calendar_start_time = "8:00";
+  client.calendar_end_time = "18:00";
+  client.functional_range = true;
+  client.concierge_lab_ordering = false;
+
   let user = req.body.user;
   user.password = bcrypt.hashSync(user.password, 8);
   const new_client = new Client(client);
@@ -129,8 +134,6 @@ exports.signup = async (req, res) => {
     errorMessage.error = "Operation was not successful";
     res.status(status.error).send(errorMessage);
   }
-
-  //TODO: check again that this client does not already exist
 
   const existingClientRows = await db.query(
     `SELECT 1 FROM client WHERE name='${client.name}' OR phone='${client.phone}'  OR fax='${client.fax}'
@@ -176,6 +179,13 @@ exports.signup = async (req, res) => {
 
     if (clientResponse.insertId) {
       user.client_id = clientResponse.insertId; //add user foreign key client_id from clientResponse
+      user.admin = 1;
+      user.sign_dt = new Date();
+      const forwarded = req.headers["x-forwarded-for"];
+      const userIP = forwarded
+        ? forwarded.split(/, /)[0]
+        : req.connection.remoteAddress;
+      user.sign_ip_address = userIP;
       const new_user = new User(user);
       const userResponse = await db.query("INSERT INTO user set ?", new_user);
       const clientRows = await db.query(

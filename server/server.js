@@ -15,6 +15,7 @@ app.use(cors());
 // Add middleware for parsing JSON and urlencoded data and populating `req.body`
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.set("trust proxy", true);
 
 app.get("/", (req, res) => {
   const help = `
