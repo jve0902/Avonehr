@@ -32,6 +32,8 @@ const {
   resetPasswordTemplate,
   signUpConfirmationTemplate,
 } = require("./../helpers/email");
+const moment = require("moment");
+const { use } = require("../routes/email.routes.js");
 
 exports.validate = (method) => {
   switch (method) {
@@ -93,44 +95,43 @@ exports.verifyConfirmation = async (req, res) => {
   }
 
   const db = makeDb(configuration);
-  //TODO: Check if user is already verified
-  const userRows = await db.query(
-    "SELECT id, client_id, firstName, lastName, email, password, isVerified, created FROM user WHERE id = ?",
-    [req.params.userId]
-  );
-  if (userRows.length > 0 && userRows[0].isVerified) {
-    successMessage.message = "User is already verified!";
-    successMessage.isVerified = true;
-    return res.status(status.success).send(successMessage);
-  }
-  //TODO: Check Token validity and check if user exist with the userId
-  const rows = await db.query(
-    `SELECT * from token where user_id=${req.params.userId}`
-  );
-  if (rows.length < 1) {
-    errorMessage.message = "Couldn't find the record";
-    return res.status(status.notfound).send(errorMessage);
-  }
+  try {
+    //TODO: Check if user is already verified
+    const userRows = await db.query(
+      "SELECT id, token, email_confirm_dt FROM user WHERE id = ?",
+      [req.params.userId]
+    );
 
-  if (req.params.userId == rows[0].user_id) {
-    if (req.params.token !== rows[0].token) {
-      errorMessage.message = "Access token broken. Check your email!";
-      return res.status(status.error).send(errorMessage);
+    let user = userRows[0];
+    if (user) {
+      //Check if user is already confirmed his/her email
+      if (user.email_confirm_dt && !user.token) {
+        successMessage.message = "User is already verified!";
+        successMessage.data = user;
+        return res.status(status.success).send(successMessage);
+      }
+      // update email_confirm_dt if it's null and remove token
+      const now = moment().format("YYYY-MM-DD HH:mm:ss");
+      const userUpdate = await db.query(
+        `UPDATE user SET email_confirm_dt='${now}', token=null WHERE id = ?`,
+        [req.params.userId]
+      );
+      user.email_confirm_dt = now;
+      successMessage.data = user;
+      successMessage.message = "Your Email address successfully verified!";
+      return res.status(status.success).send(successMessage);
+    } else {
+      // Couldn't find the record
+      errorMessage.message =
+        "Couldn't find the record. Validation link might be broken. Check your email address";
+      return res.status(status.notfound).send(errorMessage);
     }
-    const userUpdate = await db.query(
-      "UPDATE user SET isVerified=1 WHERE id = ?",
-      [req.params.userId]
-    );
-    //TODO: Remove verification token from token table
-    const tokenUpdate = await db.query(
-      "UPDATE token SET token=null WHERE user_id = ?",
-      [req.params.userId]
-    );
-    successMessage.message = "Your Email address successfully verified!";
-    return res.status(status.success).send(successMessage);
-  } else {
-    errorMessage.error = "Invalid request!";
+  } catch (error) {
+    // handle the error
+    errorMessage.error = error;
     return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
   }
 };
 
@@ -140,7 +141,7 @@ exports.verifyConfirmation = async (req, res) => {
  * @param {object} res
  * @returns {object} response
  */
-exports.sendSignupConfirmationEmail = async (req, res, next) => {
+exports.sendSignupConfirmationEmail = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -163,16 +164,10 @@ exports.sendSignupConfirmationEmail = async (req, res, next) => {
   const url = getEmailVerificationURL(user, accesstToken);
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
-  const tokenData = {
-    client_id: user.client_id,
-    user_id: user.id,
-    token: accesstToken,
-  };
-  const dbResponse = await db.query("INSERT INTO token set ?", tokenData);
-  if (!dbResponse.insertId) {
-    errorMessage.error = "Couldn't insert into token table";
-    res.status(status.notfound).send(errorMessage);
-  }
+  //TODO:: update token field on that user table
+  const userUpdate = await db.query(
+    `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
+  );
 
   // send mail with defined transport object
   let info = await transporter.sendMail(emailTemplate);
@@ -192,59 +187,37 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 
-  //TODO #1: Check into token table with provided user ID or email
   const db = makeDb(configuration);
 
   //Check where user already signed up or not
   const userRows = await db.query(
-    "SELECT id, email, firstName, lastName, password, created FROM user WHERE id = ?",
+    "SELECT id, email, firstname, lastname, token, email_confirm_dt, created FROM user WHERE id = ?",
     [req.body.id]
   );
   if (userRows.length < 1) {
-    errorMessage.message = "We could find recored with this E-mail address!";
+    errorMessage.error = "We couldn't find any record with that email address.";
     return res.status(status.notfound).send(errorMessage);
   }
-  const emailUser = userRows[0];
 
-  const tokenRows = await db.query(
-    "SELECT id, client_id, user_id, token, created_at FROM token WHERE user_id = ?",
-    [req.body.id]
-  );
-
-  if (tokenRows.length < 1) {
-    //TODO #2: if there is no record on token then create new token and send email notification
-    const accesstToken = usePasswordHashToMakeToken(emailUser);
-    const url = getEmailVerificationURL(emailUser, accesstToken);
-    const emailTemplate = signUpConfirmationTemplate(emailUser, url);
-    // send mail with defined transport object
-    let info = await transporter.sendMail(emailTemplate);
-
-    successMessage.message =
-      "We have email verification link on your email address!";
-    return res.status(status.success).send(successMessage);
-
-    console.info("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    // Preview only available when sending through an Ethereal account
-    console.info("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  const user = userRows[0];
+  let accesstToken;
+  if (user.token) {
+    accesstToken = user.token;
+  } else {
+    accesstToken = usePasswordHashToMakeToken(user);
+    //update token field on that user table
+    const userUpdate = await db.query(
+      `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
+    );
   }
-  if (tokenRows.length > 0) {
-    let user = tokenRows[0];
-    //TODO #2: if token exists then resend email with that access token
-    const accesstToken = user.token;
-    const url = getEmailVerificationURL(emailUser, accesstToken);
-    const emailTemplate = signUpConfirmationTemplate(emailUser, url);
+  const url = getEmailVerificationURL(user, accesstToken);
+  const emailTemplate = signUpConfirmationTemplate(user, url);
+  // send mail with defined transport object
+  let info = await transporter.sendMail(emailTemplate);
 
-    // send mail with defined transport object
-    let info = await transporter.sendMail(emailTemplate);
-    successMessage.message =
-      "We have email verification link on your email address!";
-    return res.status(status.success).send(successMessage);
-    console.info("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    // Preview only available when sending through an Ethereal account
-    console.info("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  }
+  successMessage.message =
+    "We have email verification link on your email address!";
+  return res.status(status.success).send(successMessage);
 };
 
 /*** Calling this function with a registered patient's email sends an email IRL ***/

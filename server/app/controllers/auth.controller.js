@@ -145,7 +145,7 @@ exports.signup = async (req, res) => {
     errorMessage.error = [
       {
         value: JSON.stringify(client),
-        msg: "Client is already in our system. Try different names",
+        msg: "Client is already in our system. Try with different values",
         param: "client.body",
       },
     ];
@@ -160,7 +160,7 @@ exports.signup = async (req, res) => {
     errorMessage.error = [
       {
         value: JSON.stringify(client),
-        msg: "User is already in our system. Try different names",
+        msg: "User is already in our system. Try different values",
         param: "user.body",
       },
     ];
@@ -174,7 +174,7 @@ exports.signup = async (req, res) => {
     );
 
     if (!clientResponse.insertId) {
-      errorMessage.error = "User Cannot be registered";
+      errorMessage.error = "Client Cannot be registered";
       res.status(status.notfound).send(errorMessage);
     }
 
@@ -186,6 +186,7 @@ exports.signup = async (req, res) => {
       const userIP = forwarded
         ? forwarded.split(/, /)[0]
         : req.connection.remoteAddress;
+      //TODO: for localhost ::1 might be taken. Need further test
       user.sign_ip_address = userIP;
       const new_user = new User(user);
       const userResponse = await db.query("INSERT INTO user set ?", new_user);
@@ -205,8 +206,7 @@ exports.signup = async (req, res) => {
         "SELECT id, contract, created FROM contract WHERE created=(select max(created) from contract)"
       );
       const contractContent = contractRows[0];
-      const pdf = await generatePDF(contractContent, userRows[0]);
-
+      const pdf = await generatePDF(contractContent.contract, userRows[0]);
       //end Create contract PDF
 
       successMessage.data = clientResponse.insertId;
