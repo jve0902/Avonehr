@@ -11,11 +11,18 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import AuthService from "./../../services/auth.service";
+import EmailService from "../../services/email.service";
 import { AuthConsumer } from "./../../providers/AuthProvider";
-import { loginAction } from "./../../store/auth/actions";
+import {
+  partialLoginComplete,
+  loginComplete,
+} from "./../../store/auth/actions";
+import { setError } from "./../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,6 +58,8 @@ const Login = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isChecked, setIsChecked] = React.useState(false);
+  const [isRedirect, setIsRedirect] = React.useState(false);
+  const [errors, setErrors] = React.useState("");
 
   const onFormSubmit = (event, login) => {
     if (isChecked && email !== "") {
@@ -58,8 +67,71 @@ const Login = () => {
       localStorage.password = password;
       localStorage.rememberme = isChecked;
     }
-    dispatch(loginAction(email, password, login));
-    event.preventDefault();
+
+    AuthService.login({
+      email: email,
+      password: password,
+    }).then(
+      (res) => {
+        console.log(" AuthService.login:", res);
+        dispatch(loginComplete(res.data));
+        login(); // Call AuthProvider login
+      },
+      (error) => {
+        console.log("error.response.data", error.response.data);
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        let severity = "error";
+        if (error.response.status === 403) {
+          severity = "warning";
+        }
+
+        setErrors(resMessage);
+        if (
+          error.response.data &&
+          error.response.data.user &&
+          error.response.data.user.sign_dt === null
+        ) {
+          setTimeout(function () {
+            setIsRedirect(true);
+          }, 3000);
+
+          //set user info to Redux to re-use on user_registration.png
+          dispatch(partialLoginComplete(error.response.data.user));
+        }
+        if (
+          error.response.data &&
+          error.response.data.user &&
+          error.response.data.user.email_confirm_dt === null
+        ) {
+          //Send email verification link
+          EmailService.resendEmailVerification(error.response.data.user).then(
+            (response) => {
+              console.info(
+                "resendEmailVerification response",
+                response.response
+              );
+            },
+            (error) => {
+              console.error(
+                "resendEmailVerification error.response",
+                error.response
+              );
+            }
+          );
+        }
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      }
+    );
   };
 
   useEffect(() => {
@@ -76,6 +148,9 @@ const Login = () => {
         if (isAuth) {
           history.push("/");
         }
+        if (isRedirect) {
+          history.push("/signup");
+        }
         return (
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -90,6 +165,8 @@ const Login = () => {
               >
                 Physician Login
               </Typography>
+              {errors && <Alert severity="error">{errors}</Alert>}
+
               <form className={classes.form} noValidate>
                 <TextField
                   value={email}

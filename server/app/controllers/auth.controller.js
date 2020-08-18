@@ -2,12 +2,15 @@
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const moment = require("moment");
 const { body, check, validationResult } = require("express-validator/check");
 const Client = require("./../models/client.model");
 const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
+const user = require("../helpers/user");
+const { use } = require("../routes/email.routes");
 
 exports.validate = (method) => {
   switch (method) {
@@ -234,31 +237,54 @@ exports.signin = async (req, res) => {
   const db = makeDb(configuration);
 
   const rows = await db.query(
-    "SELECT id, client_id, firstName, lastName, password, created  FROM user WHERE email = ?",
+    "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
     [req.body.email]
   );
-  const dbResult = rows[0];
-  if (!dbResult) {
-    errorMessage.message = "User Cannot be found";
+  const user = rows[0];
+  if (!user) {
+    errorMessage.message = "User not found";
+    errorMessage.user = user;
     return res.status(status.notfound).send(errorMessage);
   }
-
-  const isPasswordValid = bcrypt.compareSync(
-    req.body.password,
-    dbResult.password
+  const clientRows = await db.query(
+    "SELECT id, name  FROM client WHERE id = ?",
+    [user.client_id]
   );
+
+  if (!user.sign_dt) {
+    errorMessage.message =
+      "The password for this additional user can not be reset until user registration has first been completed.";
+    delete user.password; // delete password from response
+    user.client = clientRows[0];
+    errorMessage.user = user;
+    return res.status(status.unauthorized).send(errorMessage);
+  }
+  if (!user.email_confirm_dt) {
+    errorMessage.message =
+      "Login can not be done until the email address is confirmed.  Please see the request in your email inbox.";
+    delete user.password; // delete password from response
+    errorMessage.user = user;
+    return res.status(status.unauthorized).send(errorMessage);
+  }
+  const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
 
   if (!isPasswordValid) {
     errorMessage.message = "Wrong password!";
+    errorMessage.user = user;
     return res.status(status.unauthorized).send(errorMessage);
   }
 
-  const token = jwt.sign({ id: dbResult.id }, process.env.JWT_SECRET, {
+  //TODO:: update user login_dt
+  const now = moment().format("YYYY-MM-DD HH:mm:ss");
+  const userUpdate = await db.query(
+    `UPDATE user SET login_dt='${now}' WHERE id =${user.id}`
+  );
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     //expiresIn: 86400, // 24 hours
     expiresIn: 2 * 60, // 2minutes
   });
-  dbResult.accessToken = token;
-  delete dbResult.password; // delete password from response
-  successMessage.data = dbResult;
+  user.accessToken = token;
+  delete user.password; // delete password from response
+  successMessage.data = user;
   res.status(status.success).send(successMessage);
 };

@@ -16,9 +16,9 @@
  **/
 "use strict";
 const nodemailer = require("nodemailer");
-
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const moment = require("moment");
 const { configuration, makeDb } = require("../db/db.js");
 const { body, param, validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
@@ -32,8 +32,6 @@ const {
   resetPasswordTemplate,
   signUpConfirmationTemplate,
 } = require("./../helpers/email");
-const moment = require("moment");
-const { use } = require("../routes/email.routes.js");
 
 exports.validate = (method) => {
   switch (method) {

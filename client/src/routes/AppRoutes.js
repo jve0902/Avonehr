@@ -10,6 +10,7 @@ import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
+import UserSignUp from "../screens/Auth/UserSignUp";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
@@ -56,6 +57,11 @@ class AppRouter extends Component {
               layout={Main}
               path="/signup_client"
               component={SignUp}
+            />
+            <RouteWithLayout
+              layout={Main}
+              path="/signup"
+              component={UserSignUp}
             />
             <RouteWithLayout
               layout={Main}
