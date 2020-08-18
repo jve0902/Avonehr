@@ -7,6 +7,7 @@ const config = require("./config.js");
 const clientsRoute = require("./app/routes/client.routes");
 const authRoute = require("./app/routes/auth.routes");
 const emailRoute = require("./app/routes/email.routes");
+const testRoute = require("./app/routes/test.routes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", clientsRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", emailRoute);
+app.use("/api/v1", testRoute);
 
 app.listen(config.port).on("listening", () => {
   console.log(`🚀 are live on ${config.port}`);

@@ -209,9 +209,6 @@ exports.signup = async (req, res) => {
 
       //end Create contract PDF
 
-      // #set up basic data for new client with the following:
-
-      // END set up basic data for new client
       successMessage.data = clientResponse.insertId;
       responseData.contractLink = pdf;
       successMessage.data = responseData;

@@ -52,3 +52,7 @@ yarn-error.log*
 /server/.env.development.local
 /server/.env.test.local
 /server/.env.production.local
+
+# Test Routes and Controller in gitignore
+/server/app/routes/test.routes.js
+/server/app/controllers/test.controller.js
