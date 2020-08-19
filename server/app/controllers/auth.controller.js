@@ -3,81 +3,19 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { check, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const Client = require("./../models/client.model");
 const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
 
-exports.validate = (method) => {
-  switch (method) {
-    case "login": {
-      return [
-        check("email", "Email can not empty!").exists().isEmail(),
-        check("password", "Password can not empty!").exists().not().isEmpty(),
-      ];
-    }
-    case "createUser": {
-      return [
-        check("client.name", "Practice name can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.address", "Practice address can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.city", "Practice city can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.state", "Practice state can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.postal", "Practice postal can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.phone", "Practice phone can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.fax", "Practice fax can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.email", "Practice email can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.website", "Practice website can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.ein", "Practice ein can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.npi", "Practice npi can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("client.code", "Client code can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-        check("user.email", "User email can not empty!").exists().isEmail(),
-        check("user.password", "User password can not empty!")
-          .exists()
-          .not()
-          .isEmpty(),
-      ];
-    }
-  }
-};
-
+/**
+ * This function validate the records value in database.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.fieldValiate = async (req, res) => {
   if (!req.body.fieldName && !req.body.value) {
     errorMessage.message = "body content must be provided!";
@@ -112,6 +50,12 @@ exports.fieldValiate = async (req, res) => {
   }
 };
 
+/**
+ * This function let client and user to signup into the system.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.signup = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -224,6 +168,12 @@ exports.signup = async (req, res) => {
   }
 };
 
+/**
+ * This function let user to signin into the system.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.signin = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);

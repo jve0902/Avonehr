@@ -15,12 +15,11 @@
  * Reference: https://www.smashingmagazine.com/2017/11/safe-password-resets-with-json-web-tokens/
  **/
 "use strict";
-const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const { configuration, makeDb } = require("../db/db.js");
-const { body, param, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -32,42 +31,6 @@ const {
   resetPasswordTemplate,
   signUpConfirmationTemplate,
 } = require("./../helpers/email");
-
-exports.validate = (method) => {
-  switch (method) {
-    case "sendConfirmationEmail": {
-      return [
-        body("email")
-          .exists()
-          .withMessage("Email address must be provided!")
-          .isEmail()
-          .withMessage("Must be a valid email address"),
-      ];
-    }
-    case "resendConfirmationEmail": {
-      return [
-        body("email")
-          .exists()
-          .withMessage("Email address must be provided!")
-          .isEmail()
-          .withMessage("Must be a valid email address"),
-      ];
-    }
-    case "verifyConfirmationEmail": {
-      return [
-        param("token", "token can not be empty").exists(),
-        param("userId", "UserId can not be empty").exists(),
-      ];
-    }
-    case "resetPasswordNew": {
-      return [
-        param("token", "token can not be empty").exists(),
-        param("userId", "UserId can not be empty").exists(),
-        body("password").exists().withMessage("Password must be provided!"),
-      ];
-    }
-  }
-};
 
 /**
  * `secret` is passwordHash concatenated with user's created,
@@ -184,6 +147,14 @@ exports.sendSignupConfirmationEmail = async (req, res) => {
   return res.status(status.success).send(successMessage);
 };
 
+/**
+ * Resend signup confirmation email
+ * Based upon user id check for existing token from database if exists then send it will appropiate link or create new one
+ * Send email
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.resendSignupConfirmationEmail = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -225,8 +196,13 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   return res.status(status.success).send(successMessage);
 };
 
-/*** Calling this function with a registered user's email sends an email IRL ***/
-/*** I think Nodemail has a free service specifically designed for mocking   ***/
+/**
+ * Send password reset email
+ * Calling this function with a user's email sends an email URL to reset password
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.sendPasswordResetEmail = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -255,7 +231,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     return res.status(status.notfound).send(errorMessage);
   }
   const clientRows = await db.query(
-    "SELECT id, name  FROM client WHERE id = ?",
+    "SELECT id, name FROM client WHERE id = ?",
     [user.client_id]
   );
 
@@ -267,6 +243,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     errorMessage.user = user;
     return res.status(status.unauthorized).send(errorMessage);
   }
+
   if (!user.email_confirm_dt) {
     errorMessage.message =
       "Login can not be done until the email address is confirmed.  Please see the request in your email inbox.";
@@ -274,6 +251,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     errorMessage.user = user;
     return res.status(status.unauthorized).send(errorMessage);
   }
+
   if (user) {
     const token = usePasswordHashToMakeToken(user);
     const token_expires = moment()
@@ -289,6 +267,13 @@ exports.sendPasswordResetEmail = async (req, res) => {
     }
   }
 };
+
+/**
+ * Calling this function with a user will send email with URL
+ * @param {object} user
+ * @param {object} res
+ * @returns {object} response
+ */
 
 const sendRecoveryEmail = async (user, res) => {
   const accesstToken = usePasswordHashToMakeToken(user);
@@ -325,6 +310,12 @@ const sendRecoveryEmail = async (user, res) => {
   }
 };
 
+/**
+ * Calling this function with correct url will let user to reset password
+ * @param {object} user
+ * @param {object} res
+ * @returns {object} response
+ */
 exports.receiveNewPassword = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -337,7 +328,7 @@ exports.receiveNewPassword = async (req, res) => {
   const { userId, token } = req.params;
   const { password } = req.body;
 
-  //find user with reset_password_token  AND userId
+  //find user with reset_password_token AND userId
   //check token expires validity
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
   const userRows = await db.query(
