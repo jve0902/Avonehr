@@ -43,7 +43,7 @@ class AppRouter extends Component {
             />
             <RouteWithLayout
               layout={Main}
-              path="/password/reset/:patientId/:token"
+              path="/password/reset/:userId/:token"
               component={ResetPassword}
               exact
             />

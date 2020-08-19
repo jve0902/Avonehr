@@ -59,6 +59,13 @@ exports.validate = (method) => {
         param("userId", "UserId can not be empty").exists(),
       ];
     }
+    case "resetPasswordNew": {
+      return [
+        param("token", "token can not be empty").exists(),
+        param("userId", "UserId can not be empty").exists(),
+        body("password").exists().withMessage("Password must be provided!"),
+      ];
+    }
   }
 };
 
@@ -269,11 +276,13 @@ exports.sendPasswordResetEmail = async (req, res) => {
   }
   if (user) {
     const token = usePasswordHashToMakeToken(user);
-    const token_expires = Date.now() + 3600000; // 1 hour
+    const token_expires = moment()
+      .add(1, "hours")
+      .format("YYYY-MM-DD HH:mm:ss"); // 1 hour
 
-    //TODO:: update user table for password reset token and expires time
+    // update user table for password reset token and expires time
     const userUpdate = await db.query(
-      `UPDATE user SET reset_password_token='${token}', reset_password_expires=${token_expires} WHERE id =${user.id}`
+      `UPDATE user SET reset_password_token='${token}', reset_password_expires='${token_expires}' WHERE id =${user.id}`
     );
     if (userUpdate.affectedRows) {
       sendRecoveryEmail(user, res);
@@ -317,62 +326,40 @@ const sendRecoveryEmail = async (user, res) => {
 };
 
 exports.receiveNewPassword = async (req, res) => {
-  const { patientId, token } = req.params;
-  const { password } = req.body;
-  if (!password) {
-    return res.status(400).json({
-      status: "error",
-      message: "Body content can not be empty!",
-    });
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.error).send(errorMessage);
   }
 
-  let patient;
-  try {
-    patient = await Patient.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() },
-    }).exec();
-    if (!patient) {
-      return res.status(400).json({
-        status: "error",
-        message: "Password reset token is invalid or has expired!",
-      });
-    }
-    const secret = patient.password + "-" + patient.createdAt;
-    const payload = jwt.decode(token, secret);
+  const db = makeDb(configuration);
+  const { userId, token } = req.params;
+  const { password } = req.body;
 
-    if (payload.patientId == patient._id) {
-      // patient._id is Object and payload.patientId is String so === won't work
-      bcrypt.genSalt(10, function (err, salt) {
-        if (err) return;
-        bcrypt.hash(password, salt, function (err, hash) {
-          if (err) return;
-          Patient.findOneAndUpdate(
-            { _id: patientId },
-            {
-              password: hash,
-              resetPasswordToken: undefined,
-              resetPasswordExpires: undefined,
-            }
-          )
-            .then(() =>
-              res.status(202).json({
-                message: "Password changed accepted",
-              })
-            )
-            .catch((err) => res.status(500).json(err));
-        });
-      });
-    } else {
-      return res.status(400).json({
-        status: "error",
-        message: "Wrong patient!",
-      });
-    }
-  } catch (error) {
-    return res.status(400).json({
-      status: "error",
-      message: "Invalid patient",
-    });
+  //find user with reset_password_token  AND userId
+  //check token expires validity
+  const now = moment().format("YYYY-MM-DD HH:mm:ss");
+  const userRows = await db.query(
+    `SELECT id, email, reset_password_token, reset_password_expires FROM user WHERE id=${userId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
+  );
+  let user = userRows[0];
+
+  if (!user) {
+    errorMessage.message = "User not found";
+    errorMessage.user = user;
+    return res.status(status.notfound).send(errorMessage);
+  }
+
+  //if all set then accept new password
+  const hashedPassword = bcrypt.hashSync(password, 8);
+
+  const updateUserResponse = await db.query(
+    `UPDATE user SET password='${hashedPassword}', reset_password_token=NULL, reset_password_expires=NULL WHERE id =${user.id}`
+  );
+
+  if (updateUserResponse.affectedRows) {
+    successMessage.message = "Password changed succesfullly!";
+    return res.status(status.success).send(successMessage);
   }
 };

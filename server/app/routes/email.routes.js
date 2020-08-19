@@ -24,6 +24,10 @@ router.post(
   "/auth/reset_password/user/:email",
   controller.sendPasswordResetEmail
 );
-router.post("/auth/reset/:userId/:token", controller.receiveNewPassword); // forget password reset
+router.post(
+  "/auth/reset/:userId/:token",
+  controller.validate("resetPasswordNew"),
+  controller.receiveNewPassword
+); // forget password reset
 
 module.exports = router;
