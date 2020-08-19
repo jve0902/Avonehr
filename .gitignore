@@ -57,4 +57,4 @@ yarn-error.log*
 
 # Test Routes and Controller in gitignore
 /server/app/routes/test.routes.js
-/server/app/controllers/test.controller.js
+/server/app/controllers/test.controller.js // for development purpose
