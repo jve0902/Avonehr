@@ -48,7 +48,13 @@ yarn-error.log*
 
 # misc
 /server/.DS_Store
+/server/.env
 /server/.env.local
 /server/.env.development.local
 /server/.env.test.local
 /server/.env.production.local
+/server/app/client/
+
+# Test Routes and Controller in gitignore
+/server/app/routes/test.routes.js
+/server/app/controllers/test.controller.js // for development purpose

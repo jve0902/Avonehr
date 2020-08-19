@@ -1,5 +1,6 @@
 import {
   LOGIN_PENDING,
+  PARTIAL_LOGIN_COMPLETED,
   LOGIN_COMPLETED,
   LOGIN_ERROR,
   REMEMBER_ME,
@@ -27,7 +28,13 @@ const reducer = (state = initialState, action) => {
         loading: true,
         error: false,
       };
-
+    case PARTIAL_LOGIN_COMPLETED:
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        user: action.data,
+      };
     case LOGIN_COMPLETED:
       return {
         ...state,

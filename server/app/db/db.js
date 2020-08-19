@@ -1,6 +1,6 @@
 "user strict";
 const mysql = require("mysql");
-const util = require( 'util' );
+const util = require("util");
 const config = require("../../config.js");
 const dbConfig = config.dbconfig;
 
@@ -10,14 +10,14 @@ const configuration = {
   password: dbConfig.PASSWORD,
   port: dbConfig.PORT,
   database: dbConfig.DB,
-}
+};
 
-async function withTransaction( db, callback ) {
+async function withTransaction(db, callback) {
   try {
     await db.beginTransaction();
     await callback();
     await db.commit();
-  } catch ( err ) {
+  } catch (err) {
     await db.rollback();
     throw err;
   } finally {
@@ -25,24 +25,25 @@ async function withTransaction( db, callback ) {
   }
 }
 
-function makeDb( configuration ) {
-  const connection = mysql.createConnection( configuration );
+function makeDb(configuration) {
+  const connection = mysql.createConnection(configuration);
   return {
-    query( sql, args ) {
-      return util.promisify( connection.query )
-        .call( connection, sql, args );
+    query(sql, args) {
+      if (process.env.NODE_ENV === "development") {
+        console.log("makeDB sql >>>:", sql);
+      }
+      return util.promisify(connection.query).call(connection, sql, args);
     },
     close() {
-      return util.promisify( connection.end ).call( connection );
-    }
+      return util.promisify(connection.end).call(connection);
+    },
   };
 }
-
 
 const db = {
   configuration,
   makeDb,
-  withTransaction
+  withTransaction,
 };
 
 module.exports = db;

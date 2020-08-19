@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -7,7 +8,6 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
-import _ from "lodash";
 import TextFieldWithError from "./TextFieldWithError";
 import AuthService from "./../../services/auth.service";
 import { getAcronym } from "./../../utils/helpers";
@@ -111,6 +111,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       setFieldErrors(updatedErrors);
     }
   };
+
   const practiceErrors =
     props.errors && props.errors.filter((err) => err.param.includes("client"));
   const userErrors =
@@ -135,30 +136,36 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       fieldName: event.target.name,
       value: event.target.value,
       target,
-    }).then(
-      (response) => {
-        //Remove errors record with param
-        const updatedErrors = fieldErrors.filter(
-          (error) => error.param !== response.data.message.param
-        );
-        console.log("updatedErrors:", updatedErrors);
-        setFieldErrors(updatedErrors);
-      },
-      (error) => {
-        console.log("error.response.data.message", error.response.data.message);
-        console.log("fieldErrors:", fieldErrors);
+    })
+      .then(
+        (response) => {
+          //Remove errors record with param
+          const updatedErrors = fieldErrors.filter(
+            (error) => error.param !== response.data.message.param
+          );
+          console.log("updatedErrors:", updatedErrors);
+          setFieldErrors(updatedErrors);
+        },
+        (error) => {
+          console.log("error.status", error);
 
-        const uniqueFieldErrors = _.uniqWith(
-          [...fieldErrors, error.response.data.message],
-          _.isEqual
-        );
-        setFieldErrors(uniqueFieldErrors);
-      }
-    );
+          if (!error.response) {
+            // network error
+            console.error(error);
+          } else {
+            const uniqueFieldErrors = _.uniqWith(
+              [...fieldErrors, error.response.data.message],
+              _.isEqual
+            );
+            setFieldErrors(uniqueFieldErrors);
+          }
+        }
+      )
+      .catch((err) => {
+        console.log("catch err", err);
+      });
   };
 
-  console.log("fieldErrors", fieldErrors);
-  console.log("fieldErrors.length > 0", fieldErrors.length > 0);
   return (
     <form className={classes.form} noValidate>
       <Typography
@@ -214,7 +221,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice city"
         name="city"
         autoComplete="city"
-        autoFocus
         onChange={(event) => setCity(event.target.value)}
       />
       <TextField
@@ -226,7 +232,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice state"
         name="state"
         autoComplete="state"
-        autoFocus
         onChange={(event) => setState(event.target.value)}
       />
       <TextField
@@ -238,7 +243,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Practice Zipcode"
         name="zipcode"
         autoComplete="zipcode"
-        autoFocus
         onChange={(event) => setZipCode(event.target.value)}
       />
       <TextFieldWithError
@@ -320,7 +324,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Your Firstname"
         name="firstName"
         autoComplete="firstName"
-        autoFocus
         onChange={(event) => setFirstName(event.target.value)}
       />
       <TextField
@@ -332,7 +335,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         label="Your Lastname"
         name="lastName"
         autoComplete="lastName"
-        autoFocus
         onChange={(event) => setLastName(event.target.value)}
       />
       <TextFieldWithError
