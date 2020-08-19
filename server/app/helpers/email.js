@@ -49,18 +49,18 @@ const getEmailVerificationURL = (user, token) =>
 const getPasswordResetURL = (user, token) =>
   `${process.env.CLIENT_URL}/password/reset/${user.id}/${token}`;
 
-const resetPasswordTemplate = (patient, url) => {
+const resetPasswordTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN;
-  const to = patient.email;
-  const subject = "AvonHealth Password Reset";
+  const to = user.email;
+  const subject = "Clinios Password Reset";
   const html = `
-  <p>Hey ${patient.displayName || patient.email},</p>
-  <p>We heard that you lost your AvonHealth password. Sorry about that!</p>
+  <p>Hey ${user.firstname || user.email},</p>
+  <p>We heard that you lost your Clinios password. Sorry about that!</p>
   <p>But don’t worry! You can use the following link to reset your password:</p>
   <a href=${url}>${url}</a>
   <p>If you don’t use this link within 1 hour, it will expire.</p>
   <p>Do something outside today! </p>
-  <p>–-AvonHealth</p>
+  <p>–-Clinios</p>
   `;
 
   return { from, to, subject, html };

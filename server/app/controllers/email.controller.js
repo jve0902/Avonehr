@@ -63,7 +63,7 @@ exports.validate = (method) => {
 };
 
 /**
- * `secret` is passwordHash concatenated with user's createdAt,
+ * `secret` is passwordHash concatenated with user's created,
  * so if someones gets a user token they still need a timestamp to intercept.
  * @param {object} user
  * @returns {string} token
@@ -71,7 +71,7 @@ exports.validate = (method) => {
 const usePasswordHashToMakeToken = (user) => {
   const passwordHash = user.password;
   const userId = user.id;
-  const secret = passwordHash + "-" + user.createdAt;
+  const secret = passwordHash + "-" + user.created;
   const token = jwt.sign({ userId }, secret, {
     expiresIn: 3600, // 1 hour
   });
@@ -218,66 +218,102 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   return res.status(status.success).send(successMessage);
 };
 
-/*** Calling this function with a registered patient's email sends an email IRL ***/
+/*** Calling this function with a registered user's email sends an email IRL ***/
 /*** I think Nodemail has a free service specifically designed for mocking   ***/
 exports.sendPasswordResetEmail = async (req, res) => {
-  if (!req.params.email) {
-    return res.status(400).json({
-      status: "error",
-      message: "email must be provided!",
-    });
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.error).send(errorMessage);
   }
+
+  const db = makeDb(configuration);
+  //Check where user already signed up or not
   const { email } = req.params;
-  let patient;
-  try {
-    patient = await Patient.findOne({ email }).exec();
-  } catch (err) {
-    return res.status(404).json({
-      status: "error",
-      message: err,
-    });
+  const userRows = await db.query(
+    "SELECT id, firstname, lastname, email, password, sign_dt, email_confirm_dt, created FROM user WHERE email = ? LIMIT 1",
+    [email]
+  );
+  if (userRows.length < 1) {
+    errorMessage.message =
+      "We couldn't find any record with that email address.";
+    return res.status(status.notfound).send(errorMessage);
   }
-  if (patient) {
-    const token = usePasswordHashToMakeToken(patient);
-    patient.resetPasswordToken = token;
-    patient.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-    patient.save(function (err) {
-      sendRecoveryEmail(err, patient, res);
-    });
-  } else {
-    return res.status(404).json({
-      status: "error",
-      message: "No patient with that email",
-    });
+
+  const user = userRows[0];
+  if (!user) {
+    errorMessage.message = "User not found";
+    errorMessage.user = user;
+    return res.status(status.notfound).send(errorMessage);
+  }
+  const clientRows = await db.query(
+    "SELECT id, name  FROM client WHERE id = ?",
+    [user.client_id]
+  );
+
+  if (!user.sign_dt) {
+    errorMessage.message =
+      "The password for this additional user can not be reset until user registration has first been completed.";
+    delete user.password; // delete password from response
+    user.client = clientRows[0];
+    errorMessage.user = user;
+    return res.status(status.unauthorized).send(errorMessage);
+  }
+  if (!user.email_confirm_dt) {
+    errorMessage.message =
+      "Login can not be done until the email address is confirmed.  Please see the request in your email inbox.";
+    delete user.password; // delete password from response
+    errorMessage.user = user;
+    return res.status(status.unauthorized).send(errorMessage);
+  }
+  if (user) {
+    const token = usePasswordHashToMakeToken(user);
+    const token_expires = Date.now() + 3600000; // 1 hour
+
+    //TODO:: update user table for password reset token and expires time
+    const userUpdate = await db.query(
+      `UPDATE user SET reset_password_token='${token}', reset_password_expires=${token_expires} WHERE id =${user.id}`
+    );
+    if (userUpdate.affectedRows) {
+      sendRecoveryEmail(user, res);
+    }
   }
 };
 
-const sendRecoveryEmail = (err, patient, res) => {
-  const accesstToken = usePasswordHashToMakeToken(patient);
-  const url = getPasswordResetURL(patient, accesstToken);
-  const emailTemplate = resetPasswordTemplate(patient, url);
+const sendRecoveryEmail = async (user, res) => {
+  const accesstToken = usePasswordHashToMakeToken(user);
+  const url = getPasswordResetURL(user, accesstToken);
+  const emailTemplate = resetPasswordTemplate(user, url);
 
-  console.log("process.env.SENDGRID_API_KEY", process.env.SENDGRID_API_KEY);
-  sgMail.send(emailTemplate).then(
-    (info) => {
-      console.log(`** Email sent **`, info);
-      return res.status(200).json({
-        status: "success",
-        message:
-          "We have sent an email with instructions to reset your credentionals.",
-      });
-    },
-    (error) => {
-      console.error(error);
-      if (error.response) {
-        console.error("error.response.body:", error.response.body);
+  if (process.env.NODE_ENV === "development") {
+    let info = await transporter.sendMail(emailTemplate);
+    successMessage.message =
+      "We have sent an email with instructions to reset your credentionals.";
+    return res.status(status.success).send(successMessage);
+  } else {
+    console.log("process.env.SENDGRID_API_KEY", process.env.SENDGRID_API_KEY);
+    sgMail.send(emailTemplate).then(
+      (info) => {
+        console.log(`** Email sent **`, info);
+        return res.status(200).json({
+          status: "success",
+          message:
+            "We have sent an email with instructions to reset your credentionals.",
+        });
+      },
+      (error) => {
+        console.error(error);
+        if (error.response) {
+          console.error("error.response.body:", error.response.body);
+        }
+        return res.status(500).json({
+          status: "error",
+          message: "Something went wrong while sending an reset email.",
+        });
       }
-      return res.status(500).json({
-        status: "error",
-        message: "Something went wrong while sending an reset email.",
-      });
-    }
-  );
+    );
+  }
 };
 
 exports.receiveNewPassword = async (req, res) => {

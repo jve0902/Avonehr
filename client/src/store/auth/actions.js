@@ -5,6 +5,7 @@ import {
   LOGIN_ERROR,
   LOGIN_COMPLETED,
   PARTIAL_LOGIN_COMPLETED,
+  RESET_PASSWORD_SUCCESS,
 } from "./types";
 // CAll common action creator to set error
 import {
@@ -42,6 +43,12 @@ export const signupComplete = (data) => ({
   type: SIGNUP_COMPLETED,
   data,
 });
+
+export const resetPasswordSuccess = () => {
+  return {
+    type: RESET_PASSWORD_SUCCESS,
+  };
+};
 
 export const verificationEmail = (userId, token) => {
   return (dispatch) => {
