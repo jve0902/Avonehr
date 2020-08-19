@@ -101,7 +101,7 @@ exports.verifyConfirmation = async (req, res) => {
 
   const db = makeDb(configuration);
   try {
-    //TODO: Check if user is already verified
+    //Check if user is already verified
     const userRows = await db.query(
       "SELECT id, token, email_confirm_dt FROM user WHERE id = ?",
       [req.params.userId]
@@ -169,7 +169,7 @@ exports.sendSignupConfirmationEmail = async (req, res) => {
   const url = getEmailVerificationURL(user, accesstToken);
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
-  //TODO:: update token field on that user table
+  //update token field on that user table
   const userUpdate = await db.query(
     `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
   );

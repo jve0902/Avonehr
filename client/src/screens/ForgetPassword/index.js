@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import Alert from "@material-ui/lab/Alert";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
@@ -17,6 +16,7 @@ import { resetPasswordSuccess } from "./../../store/auth/actions";
 import { setError, setSuccess } from "./../../store/common/actions";
 import Success from "./Success";
 import Dimmer from "./../../components/common/Dimmer";
+import Error from "./../../components/common/Error";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
   lockIcon: {
     fontSize: "40px",
+  },
+  pageTitle: {
+    marginBottom: theme.spacing(3),
   },
   Error: {
     marginTop: theme.spacing(2),
@@ -55,8 +58,8 @@ const ForgetPassword = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = React.useState("");
-  const [registrationLink, setRegistrationLink] = useState(true);
+  const [errors, setErrors] = React.useState([]);
+  const [registrationLink, setRegistrationLink] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const success = useSelector((state) => state.common.success, shallowEqual);
 
@@ -65,13 +68,11 @@ const ForgetPassword = () => {
     setIsLoading(true);
     AuthService.passwordChangeRequest(email).then(
       (response) => {
-        console.log("AuthService.passwordChangeRequest response:", response);
         setIsLoading(false);
         dispatch(resetPasswordSuccess());
         dispatch(setSuccess(`${email} ${response.data.message}`));
       },
       (error) => {
-        console.log("AuthService.passwordChangeRequest error:", error);
         setIsLoading(false);
         const resMessage =
           (error.response &&
@@ -79,10 +80,21 @@ const ForgetPassword = () => {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        setErrors(resMessage);
+        setErrors([
+          {
+            msg: resMessage,
+          },
+        ]);
         let severity = "error";
         if (error.response.status === 403) {
           severity = "warning";
+        }
+        if (
+          error.response.data &&
+          error.response.data.user &&
+          error.response.data.user.sign_dt === null
+        ) {
+          setRegistrationLink(true);
         }
         dispatch(
           setError({
@@ -124,17 +136,14 @@ const ForgetPassword = () => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon className={classes.lockIcon} />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h2" className={classes.pageTitle}>
           Forgot password
         </Typography>
-        {errors && (
-          <Alert severity="error" className={classes.Error}>
-            {errors}{" "}
-            {registrationLink && (
-              <Link href="/signup">Go to user registration</Link>
-            )}
-          </Alert>
-        )}
+        <Error errors={errors}>
+          {registrationLink && (
+            <Link href="/signup"> Go to user registration</Link>
+          )}
+        </Error>
         {success && (
           <Success
             header="If that account in our system then we have sent an email with instructions to reset your password!"
@@ -175,7 +184,7 @@ const ForgetPassword = () => {
               </Button>
               <Grid container className={classes.meta}>
                 <Grid item xs>
-                  <Link href="/login" variant="body2">
+                  <Link href="/login_client" variant="body2">
                     Login
                   </Link>
                 </Grid>

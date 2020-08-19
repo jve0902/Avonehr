@@ -19,7 +19,7 @@ const Success = ({ header, loginText }) => {
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <p>
-          {header} <Link href="/login">{loginText}</Link>
+          {header} <Link href="/login_client">{loginText}</Link>
         </p>
       </CardContent>
     </Card>

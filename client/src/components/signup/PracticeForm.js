@@ -166,8 +166,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       });
   };
 
-  console.log("fieldErrors", fieldErrors);
-  console.log("fieldErrors.length > 0", fieldErrors.length > 0);
   return (
     <form className={classes.form} noValidate>
       <Typography

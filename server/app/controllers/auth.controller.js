@@ -3,14 +3,12 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { body, check, validationResult } = require("express-validator/check");
+const { check, validationResult } = require("express-validator");
 const Client = require("./../models/client.model");
 const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
-const user = require("../helpers/user");
-const { use } = require("../routes/email.routes");
 
 exports.validate = (method) => {
   switch (method) {
@@ -235,7 +233,6 @@ exports.signin = async (req, res) => {
   }
 
   const db = makeDb(configuration);
-
   const rows = await db.query(
     "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
     [req.body.email]
@@ -274,7 +271,7 @@ exports.signin = async (req, res) => {
     return res.status(status.unauthorized).send(errorMessage);
   }
 
-  //TODO:: update user login_dt
+  //update user login_dt
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
   const userUpdate = await db.query(
     `UPDATE user SET login_dt='${now}' WHERE id =${user.id}`

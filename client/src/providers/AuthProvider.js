@@ -20,7 +20,7 @@ class AuthProvider extends React.Component {
 
   logout() {
     this.setState({ isAuth: false });
-    localStorage.removeItem("patient");
+    localStorage.removeItem("user");
   }
 
   render() {
