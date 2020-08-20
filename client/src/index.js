@@ -5,10 +5,11 @@ import App from "./App";
 import configureStore from "./store/configureStore";
 import CustomSnackbar from "./components/common/CustomSnackbar";
 import * as serviceWorker from "./serviceWorker";
+import NetworkService from "./network-service";
 import "./index.css";
 
 const store = configureStore();
-
+NetworkService.setupInterceptors(store);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

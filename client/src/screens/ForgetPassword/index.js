@@ -13,7 +13,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import AuthService from "./../../services/auth.service";
 import EmailService from "../../services/email.service";
 import { resetPasswordSuccess } from "./../../store/auth/actions";
-import { setError, setSuccess } from "./../../store/common/actions";
+import { setSuccess } from "./../../store/common/actions";
 import Success from "./Success";
 import Dimmer from "./../../components/common/Dimmer";
 import Error from "./../../components/common/Error";
@@ -71,58 +71,39 @@ const ForgetPassword = () => {
         setIsLoading(false);
         dispatch(resetPasswordSuccess());
         dispatch(setSuccess(`${email} ${response.data.message}`));
+        setErrors([]);
       },
       (error) => {
         setIsLoading(false);
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setErrors([
-          {
-            msg: resMessage,
-          },
-        ]);
-        let severity = "error";
-        if (error.response.status === 403) {
-          severity = "warning";
-        }
-        if (
-          error.response.data &&
-          error.response.data.user &&
-          error.response.data.user.sign_dt === null
-        ) {
-          setRegistrationLink(true);
-        }
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage,
-          })
-        );
-        if (
-          error.response.data &&
-          error.response.data.user &&
-          error.response.data.user.email_confirm_dt === null
-        ) {
-          setRegistrationLink(false);
-          //Send email verification link
-          EmailService.resendEmailVerification(error.response.data.user).then(
-            (response) => {
-              console.info(
-                "resendEmailVerification response",
-                response.response
-              );
-            },
-            (error) => {
-              console.error(
-                "resendEmailVerification error.response",
-                error.response
-              );
-            }
-          );
+        if (error.response) {
+          const { data, status } = error.response;
+          if (status === 400) {
+            setErrors(data.message);
+          } else {
+            setErrors([]);
+          }
+          if (data && data.user && data.user.sign_dt === null) {
+            setRegistrationLink(true);
+          }
+
+          if (data && data.user && data.user.email_confirm_dt === null) {
+            setRegistrationLink(false);
+            //Send email verification link
+            EmailService.resendEmailVerification(error.response.data.user).then(
+              (response) => {
+                console.info(
+                  "resendEmailVerification response",
+                  response.response
+                );
+              },
+              (error) => {
+                console.error(
+                  "resendEmailVerification error.response",
+                  error.response
+                );
+              }
+            );
+          }
         }
       }
     );
@@ -179,6 +160,7 @@ const ForgetPassword = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                disabled={!email}
               >
                 Reset
               </Button>

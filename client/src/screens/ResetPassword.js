@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { setError, setSuccess } from "./../store/common/actions";
+import { setSuccess } from "./../store/common/actions";
 import AuthService from "./../services/auth.service";
 import Success from "./../screens/ForgetPassword/Success";
 import Error from "./../components/common/Error";
@@ -52,22 +52,16 @@ const ResetPassword = () => {
         dispatch(setSuccess(`${response.data.message}`));
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        let severity = "error";
-        if (error.response.status === 403) {
-          severity = "warning";
+        if (!error.response) {
+          return;
         }
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage,
-          })
-        );
+        const { data, status } = error.response;
+
+        if (status === 400) {
+          setFieldErrors(data.message);
+        } else {
+          setFieldErrors([]);
+        }
       }
     );
     setPassword("");
