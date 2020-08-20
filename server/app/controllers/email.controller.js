@@ -207,8 +207,9 @@ exports.sendPasswordResetEmail = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    errorMessage.status = "invalidFields";
     errorMessage.message = errors.array();
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.bad).send(errorMessage);
   }
 
   const db = makeDb(configuration);

@@ -119,7 +119,7 @@ exports.signup = async (req, res) => {
     );
 
     if (!clientResponse.insertId) {
-      errorMessage.error = "Client Cannot be registered";
+      errorMessage.message = "Client Cannot be registered";
       res.status(status.notfound).send(errorMessage);
     }
 
@@ -178,11 +178,12 @@ exports.signin = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    errorMessage.error = errors.array();
-    return res.status(status.error).send(errorMessage);
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
   }
 
   const db = makeDb(configuration);
+
   const rows = await db.query(
     "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
     [req.body.email]
@@ -194,7 +195,7 @@ exports.signin = async (req, res) => {
     return res.status(status.notfound).send(errorMessage);
   }
   const clientRows = await db.query(
-    "SELECT id, name  FROM client WHERE id = ?",
+    "SELECT id, name FROM client WHERE id = ?",
     [user.client_id]
   );
 
