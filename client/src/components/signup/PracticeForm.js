@@ -338,6 +338,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         onChange={(event) => setLastName(event.target.value)}
       />
       <TextFieldWithError
+        id="userEmail"
         fieldName="email"
         label="Your Email Address"
         value={email}
@@ -346,6 +347,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         errors={getFieldError("user", "email")}
       />
       <TextFieldWithError
+        id="userNPI"
         fieldName="npi"
         label="Your NPI Number"
         value={personalNPI}

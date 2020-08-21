@@ -9,6 +9,7 @@ const User = require("./../models/user.model");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
+const { restart } = require("nodemon");
 
 /**
  * This function validate the records value in database.
@@ -25,7 +26,7 @@ exports.fieldValiate = async (req, res) => {
   if (req.body.target) {
     tableName = req.body.target;
   }
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   try {
     const rows = await db.query(
       `SELECT id, ${req.body.fieldName} FROM ${tableName} WHERE ${req.body.fieldName} = ?`,
@@ -64,7 +65,7 @@ exports.signup = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   let client = req.body.client;
   client.calendar_start_time = "8:00";
   client.calendar_end_time = "18:00";
@@ -182,12 +183,13 @@ exports.signin = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
 
   const rows = await db.query(
     "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
     [req.body.email]
   );
+
   const user = rows[0];
   if (!user) {
     errorMessage.message = "User not found";

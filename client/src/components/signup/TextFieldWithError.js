@@ -11,6 +11,7 @@ const TextFieldWithError = ({
   handleOnBlur,
   errors,
   type,
+  id,
 }) => {
   return (
     <React.Fragment>
@@ -20,7 +21,7 @@ const TextFieldWithError = ({
         margin="dense"
         required
         fullWidth
-        id={fieldName}
+        id={id || fieldName}
         label={label}
         name={fieldName}
         type={type || "text"}

@@ -2,6 +2,7 @@
 const mysql = require("mysql");
 const util = require("util");
 const config = require("../../config.js");
+const { errorMessage, successMessage, status } = require("./../helpers/status");
 const dbConfig = config.dbconfig;
 
 const configuration = {
@@ -25,8 +26,23 @@ async function withTransaction(db, callback) {
   }
 }
 
-function makeDb(configuration) {
+function makeDb(configuration, res) {
   const connection = mysql.createConnection(configuration);
+  connection.connect(function (error) {
+    if (error) {
+      console.error("error connecting: " + error.stack);
+
+      if (error.code === "ECONNREFUSED") {
+        errorMessage.message =
+          "Something went wrong with your database connection!";
+        return res.status(status.error).send(errorMessage);
+      }
+      errorMessage.message = "Something went wrong with database query.";
+      return res.status(status.error).send(errorMessage);
+    }
+
+    console.log("connected as id " + connection.threadId);
+  });
   return {
     query(sql, args) {
       if (process.env.NODE_ENV === "development") {
