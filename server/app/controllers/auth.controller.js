@@ -37,7 +37,7 @@ exports.fieldValiate = async (req, res) => {
         msg: `${req.body.value} already taken.`,
         param: `${tableName}.${req.body.fieldName}`,
       };
-      return res.status(status.inValid).send(errorMessage);
+      return res.status(status.bad).send(errorMessage);
     }
     successMessage.message = {
       value: req.body.value,
