@@ -9,7 +9,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
  * @returns {object} clients array
  */
 const getAgreement = async (req, res) => {
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   try {
     const rows = await db.query(
       "SELECT id, contract, created FROM contract WHERE created=(select max(created) from contract)"

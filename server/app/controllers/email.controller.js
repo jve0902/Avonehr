@@ -62,7 +62,7 @@ exports.verifyConfirmation = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   try {
     //Check if user is already verified
     const userRows = await db.query(
@@ -116,7 +116,7 @@ exports.sendSignupConfirmationEmail = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.error).send(errorMessage);
   }
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   const rows = await db.query(
     "SELECT id, client_id, firstName, lastName, email, password, created FROM user WHERE email = ?",
     [req.body.email]
@@ -163,7 +163,7 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
 
   //Check where user already signed up or not
   const userRows = await db.query(
@@ -212,7 +212,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   //Check where user already signed up or not
   const { email } = req.params;
   const userRows = await db.query(
@@ -325,7 +325,7 @@ exports.receiveNewPassword = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 
-  const db = makeDb(configuration);
+  const db = makeDb(configuration, res);
   const { userId, token } = req.params;
   const { password } = req.body;
 
