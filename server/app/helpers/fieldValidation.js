@@ -6,7 +6,8 @@ exports.validate = (method) => {
   switch (method) {
     case "login": {
       return [
-        check("email", "Email can not empty!").exists().isEmail(),
+        check("email").exists().withMessage("Email can not empty!"),
+        check("email").isEmail().withMessage("Must be valid Email address!"),
         check("password", "Password can not empty!").exists().not().isEmpty(),
       ];
     }
