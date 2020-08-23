@@ -11,10 +11,12 @@ import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
+import AppoinmentTypes from "../screens/AppoinmentTypes";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
+import Dashboard from "../layouts/Dashboard";
 
 const history = createBrowserHistory();
 
@@ -67,6 +69,11 @@ class AppRouter extends Component {
               layout={Main}
               path="/login_client"
               component={Login}
+            />
+            <RouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/appoinment-types"
+              component={AppoinmentTypes}
             />
             <Route path="*" component={NotFound} />
           </Switch>
