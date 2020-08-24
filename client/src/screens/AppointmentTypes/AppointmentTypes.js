@@ -4,11 +4,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
+import { Appointments } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 30px",
+    padding: "40px 0px",
   },
   uploadButtons: {
     display: "flex",
@@ -27,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppointmentTypes() {
   const classes = useStyles();
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <React.Fragment>
       <CssBaseline />
@@ -40,7 +40,7 @@ export default function AppointmentTypes() {
             variant="outlined"
             color="primary"
             component="span"
-            onClick={() => setIsOpen(true)}
+            onClick={() => alert("TODO:: Need to implement this feature.")}
           >
             New
           </Button>
@@ -48,14 +48,7 @@ export default function AppointmentTypes() {
         <Typography component="p" variant="p" color="textPrimary">
           This page is used to manage appoinment types
         </Typography>
-        <ul className={classes.appointmentLists}>
-          <li className={classes.appointmentHeader}>
-            <p className={classes.name}>Appointment Type</p>
-            <p className={classes.date}>Appointment Name Portal</p>
-            <p className={classes.view}>Minutes</p>
-            <p className={classes.delete}>Allow Patients Schedule</p>
-          </li>
-        </ul>
+        <Appointments />
       </Container>
     </React.Fragment>
   );

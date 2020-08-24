@@ -1,0 +1,40 @@
+const { mdiYeast } = require("@mdi/js");
+
+export const appointments = [
+  {
+    id: 1,
+    type: "Initial appointment 1/2 hour",
+    aptNamePortal: "Initial appointment 1/2 hour",
+    minutes: 30,
+    allowPatientSchedule: "yes",
+    sortOder: 10,
+    note: "",
+    status: "active",
+    createdBy: "Mark Hyman",
+    updatedBy: "Mark Hyman",
+  },
+  {
+    id: 2,
+    type: "Initial appointment 1/2 hour",
+    aptNamePortal: "Initial appointment 1/2 hour",
+    minutes: 30,
+    allowPatientSchedule: "yes",
+    sortOder: 10,
+    note: "",
+    status: "active",
+    createdBy: "Mark Hyman",
+    updatedBy: "Mark Hyman",
+  },
+  {
+    id: 2,
+    type: "Initial appointment 1/2 hour",
+    aptNamePortal: "Initial appointment 1/2 hour",
+    minutes: 30,
+    allowPatientSchedule: "yes",
+    sortOder: 10,
+    note: "",
+    status: "active",
+    createdBy: "Mark Hyman",
+    updatedBy: "Mark Hyman",
+  },
+];
