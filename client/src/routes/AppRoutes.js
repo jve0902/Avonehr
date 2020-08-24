@@ -12,7 +12,7 @@ import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
-import AppoinmentTypes from "../screens/AppoinmentTypes";
+import AppointmentTypes from "../screens/AppointmentTypes";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
@@ -74,7 +74,7 @@ class AppRouter extends Component {
             <PrivateRouteWithLayout
               layout={Dashboard}
               path="/dashboard/appoinment-types"
-              component={AppoinmentTypes}
+              component={AppointmentTypes}
             />
             <Route path="*" component={NotFound} />
           </Switch>

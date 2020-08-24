@@ -15,15 +15,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     maxWidth: "450px",
+    marginBottom: theme.spacing(2),
     "& h1": {
       [theme.breakpoints.up("md")]: {
         marginRight: theme.spacing(4),
       },
     },
   },
+  appointmentLists: {},
 }));
 
-export default function AppoinmentTypes() {
+export default function AppointmentTypes() {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -32,7 +34,7 @@ export default function AppoinmentTypes() {
       <Container maxWidth={false} className={classes.root}>
         <div className={classes.uploadButtons}>
           <Typography component="h1" variant="h2" color="textPrimary">
-            Appoinment Types
+            Appointment Types
           </Typography>
           <Button
             variant="outlined"
@@ -43,6 +45,17 @@ export default function AppoinmentTypes() {
             New
           </Button>
         </div>
+        <Typography component="p" variant="p" color="textPrimary">
+          This page is used to manage appoinment types
+        </Typography>
+        <ul className={classes.appointmentLists}>
+          <li className={classes.appointmentHeader}>
+            <p className={classes.name}>Appointment Type</p>
+            <p className={classes.date}>Appointment Name Portal</p>
+            <p className={classes.view}>Minutes</p>
+            <p className={classes.delete}>Allow Patients Schedule</p>
+          </li>
+        </ul>
       </Container>
     </React.Fragment>
   );
