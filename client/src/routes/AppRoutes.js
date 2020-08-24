@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import RouteWithLayout from "./RouteWithLayout";
+import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
 import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
 import EmailConfirmation from "../screens/EmailConfirmation";
@@ -70,7 +71,7 @@ class AppRouter extends Component {
               path="/login_client"
               component={Login}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={Dashboard}
               path="/dashboard/appoinment-types"
               component={AppoinmentTypes}

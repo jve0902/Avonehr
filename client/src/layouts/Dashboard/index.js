@@ -1,12 +1,37 @@
 import React, { useState } from "react";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@material-ui/core";
+
 import Container from "@material-ui/core/Container";
 import Header from "./Header";
 import Footer from "./Footer";
-import Sidebar from "./../../components/Sidebar";
+import Sidebar from "./components/Sidebar";
 import { AuthConsumer } from "./../../providers/AuthProvider";
 
-const Dashboard = ({ children }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+  },
+  shiftContent: {
+    paddingLeft: 0,
+  },
+  content: {
+    height: "100%",
+  },
+}));
+
+const Dashboard = (props) => {
+  const { children } = props;
+
+  const classes = useStyles();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
+    defaultMatches: true,
+  });
   const [openSidebar, setOpenSidebar] = useState(false);
+
+  const shouldOpenSidebar = isDesktop ? false : openSidebar;
 
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
@@ -16,14 +41,24 @@ const Dashboard = ({ children }) => {
   };
   return (
     <AuthConsumer>
-      {({ isAuth }) => (
-        <div className="main-container">
-          <Header onSidebarOpen={handleSidebarOpen} />
+      {({ isAuth, logout, user }) => (
+        <div
+          className={clsx({
+            [classes.root]: true,
+            [classes.shiftContent]: isDesktop,
+          })}
+        >
+          <Header
+            onSidebarOpen={handleSidebarOpen}
+            logout={logout}
+            user={user}
+          />
           <Sidebar
             onClose={handleSidebarClose}
-            open={openSidebar}
-            variant={"temporary"}
+            open={shouldOpenSidebar}
+            variant={isDesktop ? "persistent" : "temporary"}
             isAuth={isAuth}
+            logout={logout}
           />
 
           <Container maxWidth="lg">{children}</Container>

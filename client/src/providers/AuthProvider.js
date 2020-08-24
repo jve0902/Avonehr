@@ -1,9 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AuthService from "../services/auth.service";
+import { useSelector } from "react-redux";
 
 const AuthContext = React.createContext();
 
-class AuthProvider extends React.Component {
+const AuthProvider = ({ children }) => {
+  const [isAuth, setIsAuth] = useState(false);
+  const loggedinUser = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    setIsAuth(AuthService.checkAuth());
+  }, [isAuth]);
+
+  const login = () => {
+    setIsAuth(true);
+  };
+
+  const logout = () => {
+    setIsAuth(false);
+    localStorage.removeItem("user");
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuth,
+        login,
+        logout,
+        user: loggedinUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+/* class AuthProvider extends React.Component {
   state = { isAuth: false };
 
   constructor() {
@@ -36,7 +68,7 @@ class AuthProvider extends React.Component {
       </AuthContext.Provider>
     );
   }
-}
+} */
 
 const AuthConsumer = AuthContext.Consumer;
 

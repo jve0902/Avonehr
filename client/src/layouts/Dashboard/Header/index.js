@@ -11,11 +11,8 @@ import Hidden from "@material-ui/core/Hidden";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 
-import MoreIcon from "@material-ui/icons/MoreVert";
-import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { logOut } from "./../../../store/auth/actions";
-import { AuthConsumer } from "./../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -34,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
     color: "#fff",
     textTransform: "uppercase",
-    fontWeight: 600,
     letterSpacing: "0.1em",
     fontWeight: 700,
     fontSize: "18px",
@@ -131,12 +127,20 @@ const pages = [
   {
     title: "Logout",
     href: "/",
+    logout: true,
   },
 ];
 
 const Header = ({ ...props }) => {
   const classes = useStyles();
-  const { onSidebarOpen } = props;
+  const dispatch = useDispatch();
+  const { onSidebarOpen, logout, user } = props;
+
+  const handleLogout = (event) => {
+    dispatch(logOut());
+    logout();
+    window.location.reload();
+  };
 
   return (
     <div className={classes.grow}>
@@ -153,7 +157,12 @@ const Header = ({ ...props }) => {
           <Hidden mdDown>
             <React.Fragment>
               {pages.map((page) => (
-                <RouterLink to={page.href} className={classes.link}>
+                <RouterLink
+                  to={page.href}
+                  className={classes.link}
+                  onClick={page.logout && handleLogout}
+                  key={page.title}
+                >
                   {page.title}
                 </RouterLink>
               ))}
@@ -161,7 +170,9 @@ const Header = ({ ...props }) => {
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <div className={classes.name}>John Doe</div>
+              <div className={classes.name}>
+                {user.firstname && `${user.firstname} ${user.lastname}`}
+              </div>
               <div className={classes.date}>
                 {moment().format("ddd, MMM Do")}
               </div>
