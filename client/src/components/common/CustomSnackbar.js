@@ -22,13 +22,11 @@ const useStyles = makeStyles((theme) => ({
 const CustomSnackbar = ({ isOpen, onClose, severity, message }) => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Snackbar open={isOpen} autoHideDuration={6000} onClose={onClose}>
-        <Alert onClose={onClose} severity={severity || "success"}>
-          {message || "Operation completed!"}
-        </Alert>
-      </Snackbar>
-    </div>
+    <Snackbar open={isOpen} autoHideDuration={6000} onClose={onClose}>
+      <Alert onClose={onClose} severity={severity || "success"}>
+        {message || "Operation completed!"}
+      </Alert>
+    </Snackbar>
   );
 };
 

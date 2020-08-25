@@ -171,7 +171,7 @@ const Header = ({ ...props }) => {
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <div className={classes.name}>
-                {user.firstname && `${user.firstname} ${user.lastname}`}
+                {user && `${user.firstname} ${user.lastname}`}
               </div>
               <div className={classes.date}>
                 {moment().format("ddd, MMM Do")}
