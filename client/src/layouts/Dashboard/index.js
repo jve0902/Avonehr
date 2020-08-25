@@ -12,6 +12,9 @@ import { AuthConsumer } from "./../../providers/AuthProvider";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
   },
   shiftContent: {
     paddingLeft: 0,
@@ -61,7 +64,9 @@ const Dashboard = (props) => {
             logout={logout}
           />
 
-          <Container maxWidth="lg">{children}</Container>
+          <Container maxWidth="lg" style={{ flex: 1 }}>
+            {children}
+          </Container>
           <Footer />
         </div>
       )}

@@ -16,7 +16,7 @@ import { logOut } from "./../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
