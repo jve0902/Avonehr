@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import { Appointments } from "./components";
-
+import NewAppointmentModal from "./components/modal/NewAppointment";
 import * as API from "./../../utils/API";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppointmentTypes() {
   const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -37,6 +38,10 @@ export default function AppointmentTypes() {
       setAppointments(res.data);
     });
   }, []);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <React.Fragment>
@@ -50,7 +55,7 @@ export default function AppointmentTypes() {
             variant="outlined"
             color="primary"
             component="span"
-            onClick={() => alert("TODO:: Need to implement this feature.")}
+            onClick={() => setIsOpen(true)}
           >
             New
           </Button>
@@ -59,6 +64,7 @@ export default function AppointmentTypes() {
           This page is used to manage appoinment types
         </Typography>
         <Appointments appointments={appointments} />
+        <NewAppointmentModal isOpen={isOpen} onClose={handleClose} />
       </Container>
     </React.Fragment>
   );
