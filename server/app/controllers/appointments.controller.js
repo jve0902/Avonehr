@@ -11,10 +11,9 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const getAll = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
-    const rows = await db.query(
+    const dbResponse = await db.query(
       "select at.id, at.appointment_type, at.appointment_name_portal, at.length, at.allow_patients_schedule, at.sort_order, at.note, at.active, at.client_id, at.created, concat(u.firstname, ' ', u.lastname) created_user, at.updated, concat(u2.firstname, ' ', u2.lastname) updated_user from appointment_type at left join user u on u.id=at.created_user_id left join user u2 on u2.id=at.updated_user_id where at.client_id=1 order by at.appointment_type limit 100"
     );
-    const dbResponse = rows[0];
 
     if (!dbResponse) {
       errorMessage.error = "No appointment types found.";

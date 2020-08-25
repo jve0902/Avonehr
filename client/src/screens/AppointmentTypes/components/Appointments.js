@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import { Link as RouterLink } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,8 +10,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-
-import { appointments } from "./Data";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -40,25 +39,20 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
+    fontSize: 14,
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
+    },
+    "& th": {
+      fontSize: 12,
+    },
+    "& td": {
+      fontSize: 12,
     },
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-const Appointments = () => {
+const Appointments = ({ appointments, ...props }) => {
   const classes = useStyles();
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
@@ -81,25 +75,31 @@ const Appointments = () => {
         </TableHead>
         <TableBody>
           {appointments.map((appointment) => (
-            <StyledTableRow key={appointment.name} key={appointment.key}>
+            <StyledTableRow key={appointment.id}>
               <TableCell component="th" scope="row">
-                {appointment.type}
+                {appointment.appointment_type}
               </TableCell>
-              <TableCell align="right">{appointment.aptNamePortal}</TableCell>
-              <TableCell align="right">{appointment.minutes}</TableCell>
-              <TableCell align="right">
-                {appointment.allowPatientSchedule}
+              <TableCell>{appointment.appointment_name_portal}</TableCell>
+              <TableCell>{appointment.length}</TableCell>
+              <TableCell>
+                {appointment.allow_patients_schedule ? "Yes" : "No"}
               </TableCell>
-              <TableCell align="right">{appointment.sortOder}</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right">{appointment.status}</TableCell>
-              <TableCell align="right">{moment().format("ll")}</TableCell>
-              <TableCell align="right">{appointment.createdBy}</TableCell>
-              <TableCell align="right">{moment().format("ll")}</TableCell>
-              <TableCell align="right">{appointment.updatedBy}</TableCell>
+              <TableCell>{appointment.sort_order}</TableCell>
+              <TableCell>{appointment.note}</TableCell>
+              <TableCell>{appointment.active ? "Active" : ""}</TableCell>
+              <TableCell>{moment(appointment.created).format("lll")}</TableCell>
+              <TableCell>{appointment.created_user}</TableCell>
+              <TableCell>{moment(appointment.updated).format("lll")}</TableCell>
+              <TableCell>{appointment.updated_user}</TableCell>
               <TableCell className={classes.actions}>
                 <React.Fragment>
-                  <Button color="primary">Edit</Button>
+                  <Button color="primary">
+                    <RouterLink
+                      to={`/dashboard/appoinment-types/${appointment.id}`}
+                    >
+                      Edit
+                    </RouterLink>
+                  </Button>
                   <Button color="secondary">Delete</Button>
                 </React.Fragment>
               </TableCell>
