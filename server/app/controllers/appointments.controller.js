@@ -32,6 +32,12 @@ const getAll = async (req, res) => {
   }
 };
 
+/**
+ * Create appointment types
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response array
+ */
 const create = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -66,9 +72,48 @@ const create = async (req, res) => {
   }
 };
 
+/**
+ * Update appointment types
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response array
+ */
+const update = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
+
+  const db = makeDb(configuration, res);
+  let appointment_type = req.body.data;
+  try {
+    const updateResponse = await db.query(
+      `UPDATE appointment_type SET ? WHERE id =${req.params.id}`,
+      [appointment_type]
+    );
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Appointment Type Cannot be updated!";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = updateResponse;
+    successMessage.message = "Appointment type updated successfully!";
+    return res.status(status.success).send(successMessage);
+  } catch (error) {
+    // handle the error
+    errorMessage.error = "Operation was not successful for Appointment types.";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getAll,
   create,
+  update,
 };
 
 module.exports = appointmentTypes;
