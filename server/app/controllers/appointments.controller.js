@@ -1,4 +1,6 @@
 "use strict";
+const { validationResult } = require("express-validator");
+const moment = require("moment");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
@@ -30,8 +32,43 @@ const getAll = async (req, res) => {
   }
 };
 
+const create = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.error = errors.array();
+    return res.status(status.error).send(errorMessage);
+  }
+  const db = makeDb(configuration, res);
+  let appointment_type = req.body.data;
+  appointment_type.created = new Date();
+
+  try {
+    const dbResponse = await db.query(
+      "INSERT INTO appointment_type set ?",
+      appointment_type
+    );
+
+    if (!dbResponse.insertId) {
+      errorMessage.error = "Appointment Type Cannot be created!";
+      res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    successMessage.message = "New Appointment type created successfully!";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    // handle the error
+    errorMessage.error = "Operation was not successful for Appointment types.";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getAll,
+  create,
 };
 
 module.exports = appointmentTypes;

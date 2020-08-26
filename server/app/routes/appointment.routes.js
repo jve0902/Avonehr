@@ -6,5 +6,6 @@ const router = express.Router();
 
 // Appointment Types Routes
 router.get("/appointment-types", AppointmentTypes.getAll);
+router.post("/appointment-types", AppointmentTypes.create);
 
 module.exports = router;
