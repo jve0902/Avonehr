@@ -9,7 +9,8 @@ import { Appointments } from "./components";
 import NewAppointmentModal from "./components/modal/NewAppointment";
 import EditAppointmentModal from "./components/modal/EditAppointment";
 import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
-import * as API from "./../../utils/API";
+import AppointmentService from "./../../services/appointmentType.service";
+import { AuthConsumer } from "./../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  appointmentLists: {},
 }));
 
 export default function AppointmentTypes(props) {
@@ -40,11 +40,14 @@ export default function AppointmentTypes(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
-  console.log("props:", props);
-  useEffect(() => {
-    API.fetchAppointmentTypes().then((res) => {
+  const fetchAppointmentTypes = () => {
+    AppointmentService.getAll().then((res) => {
       setAppointments(res.data);
     });
+  };
+
+  useEffect(() => {
+    fetchAppointmentTypes();
   }, []);
 
   const handleEditButtonClick = (id) => {
@@ -52,7 +55,6 @@ export default function AppointmentTypes(props) {
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-
     appointmentById && setSelectedAppointments(_.head(appointmentById));
   };
 
@@ -63,45 +65,65 @@ export default function AppointmentTypes(props) {
 
   const handleClose = () => {
     setIsOpen(false);
+    fetchAppointmentTypes();
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    fetchAppointmentTypes();
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+    fetchAppointmentTypes();
   };
 
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth={false} className={classes.root}>
-        <div className={classes.uploadButtons}>
-          <Typography component="h1" variant="h2" color="textPrimary">
-            Appointment Types
-          </Typography>
-          <Button
-            variant="outlined"
-            color="primary"
-            component="span"
-            onClick={() => setIsOpen(true)}
-          >
-            New
-          </Button>
-        </div>
-        <Typography component="p" variant="body2" color="textPrimary">
-          This page is used to manage appoinment types
-        </Typography>
-        <Appointments
-          appointments={appointments}
-          onEdit={handleEditButtonClick}
-          onDelete={handleDeleteButton}
-        />
-        <NewAppointmentModal isOpen={isOpen} onClose={handleClose} />
-        <EditAppointmentModal
-          appointment={selectedappointment}
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-        />
-        <DeleteAppointmentModal
-          id={selectedAppointmentId}
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-        />
-      </Container>
-    </React.Fragment>
+    <AuthConsumer>
+      {({ user }) => (
+        <React.Fragment>
+          <CssBaseline />
+          <Container maxWidth={false} className={classes.root}>
+            <div className={classes.uploadButtons}>
+              <Typography component="h1" variant="h2" color="textPrimary">
+                Appointment Types
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                component="span"
+                onClick={() => setIsOpen(true)}
+              >
+                New
+              </Button>
+            </div>
+            <Typography component="p" variant="body2" color="textPrimary">
+              This page is used to manage appoinment types
+            </Typography>
+            <Appointments
+              appointments={appointments}
+              onEdit={handleEditButtonClick}
+              onDelete={handleDeleteButton}
+            />
+            <NewAppointmentModal
+              isOpen={isOpen}
+              onClose={handleClose}
+              user={user}
+            />
+            <EditAppointmentModal
+              appointment={selectedappointment}
+              isOpen={isEditModalOpen}
+              onClose={() => handleEditModalClose(false)}
+              user={user}
+            />
+            <DeleteAppointmentModal
+              id={selectedAppointmentId}
+              isOpen={isDeleteModalOpen}
+              onClose={() => handleDeleteModalClose(false)}
+            />
+          </Container>
+        </React.Fragment>
+      )}
+    </AuthConsumer>
   );
 }

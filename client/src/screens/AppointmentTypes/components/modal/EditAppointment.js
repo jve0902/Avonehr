@@ -12,6 +12,10 @@ import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "./../../../../store/common/actions";
+import { removeEmpty } from "../../../../utils/helpers";
+import AppointmentService from "./../../../../services/appointmentType.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -59,8 +63,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditAppointmentModal = ({ isOpen, onClose, ...props }) => {
+const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [appointment, setAppointment] = useState([]);
   const [appointmentType, setAppointmentType] = useState("");
   const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
@@ -85,6 +90,29 @@ const EditAppointmentModal = ({ isOpen, onClose, ...props }) => {
       setNote(appointment.note);
     }
   }, [appointment]);
+
+  const handleFormSubmission = () => {
+    const formedData = {
+      data: removeEmpty({
+        appointment_type: appointmentType,
+        appointment_name_portal: appointmentNamePortal,
+        length: minutes,
+        allow_patients_schedule: allow_patients_schedule ? 1 : 0,
+        sort_order: sort_order,
+        note: note,
+        active: active ? 1 : 0,
+        created_user_id: user.id,
+        client_id: 1, //user.client_id ,
+      }),
+    };
+    AppointmentService.update(formedData, user.id, props.appointment.id).then(
+      (response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        onClose();
+        console.log("res:", response);
+      }
+    );
+  };
 
   return (
     <div>
@@ -235,7 +263,7 @@ const EditAppointmentModal = ({ isOpen, onClose, ...props }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={() => onClose()}
+            onClick={() => handleFormSubmission()}
           >
             Update
           </Button>

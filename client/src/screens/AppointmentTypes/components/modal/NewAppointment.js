@@ -12,7 +12,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "./../../../../store/common/actions";
 import { removeEmpty } from "../../../../utils/helpers";
+import AppointmentService from "./../../../../services/appointmentType.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -62,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NewAppointmentModal = ({ user, isOpen, onClose }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [appointmentType, setAppointmentType] = useState("");
   const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
   const [minutes, setMinutes] = useState("");
@@ -76,14 +80,19 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
         appointment_type: appointmentType,
         appointment_name_portal: appointmentNamePortal,
         length: minutes,
-        allow_patients_schedule: allow_patients_schedule,
+        allow_patients_schedule: allow_patients_schedule ? 1 : null,
         sort_order: sort_order,
         note: note,
-        active: active,
+        active: active ? 1 : null,
         created_user_id: user.id,
-        client_id: user.client_id,
+        client_id: 1, //user.client_id ,
       }),
     };
+    AppointmentService.create(formedData).then((response) => {
+      dispatch(setSuccess(`${response.data.message}`));
+      onClose();
+      console.log("res:", response);
+    });
   };
 
   return (
@@ -231,7 +240,7 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={() => onClose()}
+            onClick={() => handleFormSubmission()}
           >
             Save
           </Button>

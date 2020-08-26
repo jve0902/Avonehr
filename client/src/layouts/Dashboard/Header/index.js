@@ -44,6 +44,14 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
+  headerWithNav: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  headerWithSearchBar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   navs: {
     display: "block",
   },
@@ -155,45 +163,50 @@ const Header = ({ ...props }) => {
         className={classes.appBar}
       >
         <Toolbar className={classes.toolbar}>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Clinios
-          </Typography>
+          <div className={classes.headerWithNav}>
+            <Typography className={classes.title} variant="h6" noWrap>
+              Clinios
+            </Typography>
+            <Hidden mdDown>
+              <div className={classes.navs}>
+                {pages.map((page) => (
+                  <RouterLink
+                    to={page.href}
+                    className={classes.link}
+                    onClick={page.logout && handleLogout}
+                    key={page.title}
+                  >
+                    {page.title}
+                  </RouterLink>
+                ))}
+              </div>
+            </Hidden>
+          </div>
           <Hidden mdDown>
-            <div className={classes.navs}>
-              {pages.map((page) => (
-                <RouterLink
-                  to={page.href}
-                  className={classes.link}
-                  onClick={page.logout && handleLogout}
-                  key={page.title}
-                >
-                  {page.title}
-                </RouterLink>
-              ))}
-            </div>
-
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <div className={classes.name}>
-                {user && `${user.firstname} ${user.lastname}`}
+            <div className={classes.headerWithSearchBar}>
+              <div className={classes.sectionDesktop}>
+                <div className={classes.name}>
+                  {user && `${user.firstname} ${user.lastname}`}
+                </div>
+                <div className={classes.date}>
+                  {moment().format("ddd, MMM Do")}
+                </div>
               </div>
-              <div className={classes.date}>
-                {moment().format("ddd, MMM Do")}
-              </div>
-            </div>
 
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ "aria-label": "search" }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
             </div>
           </Hidden>
           <Hidden lgUp>
