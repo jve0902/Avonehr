@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   appointmentLists: {},
 }));
 
-export default function AppointmentTypes() {
+export default function AppointmentTypes(props) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState("");
@@ -40,6 +40,7 @@ export default function AppointmentTypes() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
+  console.log("props:", props);
   useEffect(() => {
     API.fetchAppointmentTypes().then((res) => {
       setAppointments(res.data);

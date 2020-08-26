@@ -64,7 +64,7 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
             <StyledTableCell>Minutes</StyledTableCell>
             <StyledTableCell>Allow Patients Schedule</StyledTableCell>
             <StyledTableCell>Sort Order</StyledTableCell>
-            <StyledTableCell>Note</StyledTableCell>
+            <StyledTableCell align="center">Note</StyledTableCell>
             <StyledTableCell>Status</StyledTableCell>
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Created By</StyledTableCell>
@@ -85,12 +85,16 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
                 {appointment.allow_patients_schedule ? "Yes" : "No"}
               </TableCell>
               <TableCell>{appointment.sort_order}</TableCell>
-              <TableCell>{appointment.note}</TableCell>
-              <TableCell>{appointment.active ? "Active" : ""}</TableCell>
+              <TableCell align="center">{appointment.note || "-"}</TableCell>
+              <TableCell>{appointment.active ? "Active" : "-"}</TableCell>
               <TableCell>{moment(appointment.created).format("lll")}</TableCell>
               <TableCell>{appointment.created_user}</TableCell>
-              <TableCell>{moment(appointment.updated).format("lll")}</TableCell>
-              <TableCell>{appointment.updated_user}</TableCell>
+              <TableCell>
+                {appointment.updated
+                  ? moment(appointment.updated).format("lll")
+                  : "-"}
+              </TableCell>
+              <TableCell>{appointment.updated_user || "-"}</TableCell>
               <TableCell className={classes.actions}>
                 <React.Fragment>
                   <Button

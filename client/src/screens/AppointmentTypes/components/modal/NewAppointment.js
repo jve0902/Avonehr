@@ -12,6 +12,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
+import { removeEmpty } from "../../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewAppointmentModal = ({ isOpen, onClose }) => {
+const NewAppointmentModal = ({ user, isOpen, onClose }) => {
   const classes = useStyles();
   const [appointmentType, setAppointmentType] = useState("");
   const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
@@ -68,6 +69,22 @@ const NewAppointmentModal = ({ isOpen, onClose }) => {
   const [sort_order, setSort_order] = useState("");
   const [active, setActive] = useState(false);
   const [note, setNote] = useState("");
+
+  const handleFormSubmission = () => {
+    const formedData = {
+      data: removeEmpty({
+        appointment_type: appointmentType,
+        appointment_name_portal: appointmentNamePortal,
+        length: minutes,
+        allow_patients_schedule: allow_patients_schedule,
+        sort_order: sort_order,
+        note: note,
+        active: active,
+        created_user_id: user.id,
+        client_id: user.client_id,
+      }),
+    };
+  };
 
   return (
     <div>
