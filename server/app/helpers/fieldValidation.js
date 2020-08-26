@@ -108,5 +108,22 @@ exports.validate = (method) => {
         body("password").exists().withMessage("Password must be provided!"),
       ];
     }
+    case "createAppointmentType": {
+      return [
+        check("data.appointment_type")
+          .exists()
+          .withMessage("Appointment Type can not empty!"),
+        check("data.appointment_name_portal")
+          .exists()
+          .withMessage("Appointment name portal can not empty!"),
+        check("data.length").exists().withMessage("Minutes an not empty!"),
+        check("data.allow_patients_schedule")
+          .exists()
+          .withMessage("Allow Patient Schedule can not empty!"),
+        check("data.sort_order")
+          .exists()
+          .withMessage("Sort order can not empty!"),
+      ];
+    }
   }
 };

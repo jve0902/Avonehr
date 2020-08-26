@@ -1,6 +1,5 @@
 "use strict";
 const { validationResult } = require("express-validator");
-const moment = require("moment");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
@@ -43,7 +42,7 @@ const create = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.error = errors.array();
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.bad).send(errorMessage);
   }
   const db = makeDb(configuration, res);
   let appointment_type = req.body.data;

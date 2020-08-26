@@ -70,7 +70,7 @@ const Sidebar = (props) => {
     },
     {
       title: "Myself",
-      href: "/dashboard/typography",
+      href: "/dashboard/me",
       icon: (
         <Icon path={mdiAccount} size={1} horizontal vertical rotate={180} />
       ),

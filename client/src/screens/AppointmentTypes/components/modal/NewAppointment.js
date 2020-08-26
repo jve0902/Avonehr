@@ -10,6 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
@@ -73,6 +74,7 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
   const [sort_order, setSort_order] = useState("");
   const [active, setActive] = useState(false);
   const [note, setNote] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const handleFormSubmission = () => {
     const formedData = {
@@ -88,11 +90,15 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
         client_id: 1, //user.client_id ,
       }),
     };
-    AppointmentService.create(formedData).then((response) => {
-      dispatch(setSuccess(`${response.data.message}`));
-      onClose();
-      console.log("res:", response);
-    });
+    AppointmentService.create(formedData).then(
+      (response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        onClose();
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
   };
 
   return (
@@ -111,6 +117,12 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
             This page is used to create a new Appointment type for schedulling
             Appointment
           </DialogContentText>
+          {errors &&
+            errors.map((error, index) => (
+              <Alert severity="error" key={index}>
+                {error.msg}
+              </Alert>
+            ))}
           <FormControl component="div" className={classes.formControl}>
             <FormLabel component="p" className={classes.formLabel}>
               Appointment Type

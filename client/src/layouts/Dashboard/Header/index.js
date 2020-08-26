@@ -13,7 +13,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useDispatch } from "react-redux";
 import { logOut } from "./../../../store/auth/actions";
-import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -118,23 +117,23 @@ const useStyles = makeStyles((theme) => ({
 const pages = [
   {
     title: "Home",
-    href: "/",
+    href: "/dashboard/appoinment-types",
   },
   {
     title: "Manage",
-    href: "/",
+    href: "/dashboard/manage",
   },
   {
     title: "Setup",
-    href: "/",
+    href: "/dashboard/setup",
   },
   {
     title: "Reports",
-    href: "/",
+    href: "/dashboard/reports",
   },
   {
     title: "Myself",
-    href: "/",
+    href: "/dashboard/myself",
   },
   {
     title: "Logout",
@@ -149,6 +148,7 @@ const Header = ({ ...props }) => {
   const { onSidebarOpen, logout, user } = props;
 
   const handleLogout = (event) => {
+    event.preventDefault();
     dispatch(logOut());
     logout();
     window.location.reload();

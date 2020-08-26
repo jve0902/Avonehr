@@ -8,7 +8,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
-import { removeEmpty } from "../../../../utils/helpers";
 import AppointmentService from "./../../../../services/appointmentType.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,6 @@ const DeleteAppointment = ({ isOpen, onClose, id }) => {
     AppointmentService.deleteById(id).then((response) => {
       dispatch(setSuccess(`${response.data.message}`));
       onClose();
-      console.log("res:", response);
     });
   };
 
