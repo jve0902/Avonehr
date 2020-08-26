@@ -13,6 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useDispatch } from "react-redux";
 import { logOut } from "./../../../store/auth/actions";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     flexWrap: "wrap",
     justifyContent: "space-between",
+  },
+  navs: {
+    display: "block",
   },
   link: {
     color: "#ffffff",
@@ -155,7 +159,7 @@ const Header = ({ ...props }) => {
             Clinios
           </Typography>
           <Hidden mdDown>
-            <React.Fragment>
+            <div className={classes.navs}>
               {pages.map((page) => (
                 <RouterLink
                   to={page.href}
@@ -166,7 +170,7 @@ const Header = ({ ...props }) => {
                   {page.title}
                 </RouterLink>
               ))}
-            </React.Fragment>
+            </div>
 
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>

@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import { Link as RouterLink } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import { colors } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -52,11 +52,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Appointments = ({ appointments, ...props }) => {
+const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
   const classes = useStyles();
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} size="tiny" aria-label="a dense table">
+      <Table className={classes.table} aria-label="a dense table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Appointment Type</StyledTableCell>
@@ -93,14 +93,21 @@ const Appointments = ({ appointments, ...props }) => {
               <TableCell>{appointment.updated_user}</TableCell>
               <TableCell className={classes.actions}>
                 <React.Fragment>
-                  <Button color="primary">
-                    <RouterLink
-                      to={`/dashboard/appoinment-types/${appointment.id}`}
-                    >
-                      Edit
-                    </RouterLink>
+                  <Button
+                    color="primary"
+                    onClick={() => onEdit(appointment.id)}
+                  >
+                    Edit
                   </Button>
-                  <Button color="secondary">Delete</Button>
+                  <Button
+                    color="secondary"
+                    onClick={() => onDelete(appointment.id)}
+                    style={{
+                      color: colors.red[600],
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </React.Fragment>
               </TableCell>
             </StyledTableRow>
