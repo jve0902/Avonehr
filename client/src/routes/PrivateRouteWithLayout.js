@@ -18,7 +18,10 @@ const PrivateRouteWithLayout = ({
             </Layout>
           ) : (
             <Redirect
-              to={{ pathname: "/login", state: { from: props.location } }}
+              to={{
+                pathname: "/login_client",
+                state: { from: props.location },
+              }}
             />
           )
         }

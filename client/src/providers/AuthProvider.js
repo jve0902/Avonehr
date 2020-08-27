@@ -11,7 +11,8 @@ class AuthProvider extends React.Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     const isAuthenticated = AuthService.checkAuth();
-    this.state = { isAuth: isAuthenticated };
+    const currentUser = AuthService.getCurrentUser();
+    this.state = { isAuth: isAuthenticated, user: currentUser };
   }
 
   login() {
@@ -30,6 +31,7 @@ class AuthProvider extends React.Component {
           isAuth: this.state.isAuth,
           login: this.login,
           logout: this.logout,
+          user: this.state.user,
         }}
       >
         {this.props.children}

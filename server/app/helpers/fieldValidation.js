@@ -6,7 +6,8 @@ exports.validate = (method) => {
   switch (method) {
     case "login": {
       return [
-        check("email", "Email can not empty!").exists().isEmail(),
+        check("email").exists().withMessage("Email can not empty!"),
+        check("email").isEmail().withMessage("Must be valid Email address!"),
         check("password", "Password can not empty!").exists().not().isEmpty(),
       ];
     }
@@ -105,6 +106,23 @@ exports.validate = (method) => {
         param("token", "token can not be empty").exists(),
         param("userId", "UserId can not be empty").exists(),
         body("password").exists().withMessage("Password must be provided!"),
+      ];
+    }
+    case "createAppointmentType": {
+      return [
+        check("data.appointment_type")
+          .exists()
+          .withMessage("Appointment Type can not empty!"),
+        check("data.appointment_name_portal")
+          .exists()
+          .withMessage("Appointment name portal can not empty!"),
+        check("data.length").exists().withMessage("Minutes an not empty!"),
+        check("data.allow_patients_schedule")
+          .exists()
+          .withMessage("Allow Patient Schedule can not empty!"),
+        check("data.sort_order")
+          .exists()
+          .withMessage("Sort order can not empty!"),
       ];
     }
   }

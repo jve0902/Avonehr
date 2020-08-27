@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import RouteWithLayout from "./RouteWithLayout";
+import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
 import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
 import EmailConfirmation from "../screens/EmailConfirmation";
@@ -11,10 +12,12 @@ import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
+import { AppointmentTypes } from "../screens/AppointmentTypes";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
+import Dashboard from "../layouts/Dashboard";
 
 const history = createBrowserHistory();
 
@@ -67,6 +70,12 @@ class AppRouter extends Component {
               layout={Main}
               path="/login_client"
               component={Login}
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/appoinment-types"
+              component={AppointmentTypes}
+              exact
             />
             <Route path="*" component={NotFound} />
           </Switch>
