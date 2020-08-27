@@ -102,7 +102,7 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
         note: note,
         active: active ? 1 : 0,
         created_user_id: user.id,
-        client_id: 1, //user.client_id ,
+        client_id: user.client_id,
       }),
     };
     AppointmentService.update(formedData, user.id, props.appointment.id).then(

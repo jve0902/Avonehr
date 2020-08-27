@@ -13,7 +13,7 @@ const getAll = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
-      "select at.id, at.appointment_type, at.appointment_name_portal, at.length, at.allow_patients_schedule, at.sort_order, at.note, at.active, at.client_id, at.created, concat(u.firstname, ' ', u.lastname) created_user, at.updated, concat(u2.firstname, ' ', u2.lastname) updated_user from appointment_type at left join user u on u.id=at.created_user_id left join user u2 on u2.id=at.updated_user_id where at.client_id=1 order by at.appointment_type limit 100"
+      "select at.id, at.appointment_type, at.appointment_name_portal, at.length, at.allow_patients_schedule, at.sort_order, at.note, at.active, at.client_id, at.created, concat(u.firstname, ' ', u.lastname) created_user, at.updated, concat(u2.firstname, ' ', u2.lastname) updated_user from appointment_type at left join user u on u.id=at.created_user_id left join user u2 on u2.id=at.updated_user_id where at.client_id=u.client_id order by at.appointment_type limit 100"
     );
 
     if (!dbResponse) {
@@ -128,6 +128,10 @@ const deleteAppointment = async (req, res) => {
   }
   const db = makeDb(configuration, res);
   try {
+    const deleteApptResponse = await db.query(
+      `DELETE FROM appointment_type_user WHERE appointment_type_id=${req.params.id}`
+    );
+    console.log("deleteApptResponse:", deleteApptResponse);
     const deleteResponse = await db.query(
       `DELETE FROM appointment_type WHERE id=${req.params.id}`
     );
