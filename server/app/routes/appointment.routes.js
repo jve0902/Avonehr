@@ -18,4 +18,10 @@ router.put(
 );
 router.delete("/appointment-types/:id", AppointmentTypes.deleteAppointment);
 
+// Appointment Types Users
+router.get(
+  "/appointment-types/users",
+  AppointmentTypes.getAppointmentTypesUsers
+);
+
 module.exports = router;
