@@ -13,6 +13,7 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { AppointmentTypes } from "../screens/AppointmentTypes";
+import { AppointmentTypesUsers } from "../screens/AppointmentTypesUser";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";
@@ -75,6 +76,12 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/dashboard/appoinment-types"
               component={AppointmentTypes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/appoinment-types/users"
+              component={AppointmentTypesUsers}
               exact
             />
             <Route path="*" component={NotFound} />
