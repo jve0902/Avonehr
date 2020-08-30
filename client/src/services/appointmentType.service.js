@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from "./auth-header";
 
 const API_URL =
   `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
@@ -24,7 +25,9 @@ class AppointmentService {
     );
   }
   deleteById(id) {
-    return axios.delete(API_URL + `/appointment-types/${id}`);
+    return axios.delete(API_URL + `/appointment-types/${id}`, {
+      headers: authHeader(),
+    });
   }
 }
 

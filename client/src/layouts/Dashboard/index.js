@@ -62,6 +62,7 @@ const Dashboard = (props) => {
             variant={isDesktop ? "persistent" : "temporary"}
             isAuth={isAuth}
             logout={logout}
+            user={user}
           />
 
           <Container maxWidth="lg" style={{ flex: 1 }}>

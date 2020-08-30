@@ -4,10 +4,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const { validationResult } = require("express-validator");
+const Client = require("./../models/client.model");
+const User = require("./../models/user.model");
+const config = require("./../../config");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const { generatePDF } = require("../helpers/user");
-const { restart } = require("nodemon");
 
 /**
  * This function validate the records value in database.
@@ -240,7 +242,7 @@ exports.signin = async (req, res) => {
   const userUpdate = await db.query(
     `UPDATE user SET login_dt='${now}' WHERE id =${user.id}`
   );
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user.id }, config.authSecret, {
     //expiresIn: 86400, // 24 hours
     expiresIn: 2 * 60, // 2minutes
   });

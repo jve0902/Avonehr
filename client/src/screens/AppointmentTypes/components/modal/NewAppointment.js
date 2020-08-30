@@ -69,9 +69,9 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
   const dispatch = useDispatch();
   const [appointmentType, setAppointmentType] = useState("");
   const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(20);
   const [allow_patients_schedule, setAllow_patients_schedule] = useState(true);
-  const [sort_order, setSort_order] = useState("");
+  const [sort_order, setSort_order] = useState(1);
   const [active, setActive] = useState(true);
   const [note, setNote] = useState("");
   const [errors, setErrors] = useState([]);

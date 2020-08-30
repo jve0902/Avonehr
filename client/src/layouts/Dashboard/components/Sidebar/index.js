@@ -32,7 +32,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Sidebar = (props) => {
-  const { open, variant, isAuth, logout, onClose, className, ...rest } = props;
+  const {
+    open,
+    variant,
+    isAuth,
+    logout,
+    onClose,
+    className,
+    user,
+    ...rest
+  } = props;
   const classes = useStyles();
 
   const pages = [
@@ -86,7 +95,7 @@ const Sidebar = (props) => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile isAuth={isAuth} logout={logout} />
+        <Profile isAuth={isAuth} logout={logout} user={user} />
         <Divider className={classes.divider} />
         <SidebarNav className={classes.nav} pages={pages} />
         <SearchBar />
