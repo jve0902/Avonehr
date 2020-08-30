@@ -34,19 +34,22 @@ function makeDb(configuration, res) {
 
       if (error.code === "ECONNREFUSED") {
         errorMessage.message =
-          "Something went wrong with your database connection!";
+          "Something went wrong with the database connection";
         return res.status(status.error).send(errorMessage);
       }
-      errorMessage.message = "Something went wrong with database query.";
+      errorMessage.message = "Something went wrong with the database query";
       return res.status(status.error).send(errorMessage);
     }
 
-    console.log("connected as id " + connection.threadId);
+    //console.log("connected as id " + connection.threadId);
   });
   return {
     query(sql, args) {
       if (process.env.NODE_ENV === "development") {
-        console.log("makeDB sql >>>:", sql);
+        console.log("sql ", sql);
+        if (args){
+          console.log("args ", args);
+        }
       }
       return util.promisify(connection.query).call(connection, sql, args);
     },

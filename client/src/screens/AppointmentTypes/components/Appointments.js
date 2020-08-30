@@ -104,11 +104,12 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
                     Edit
                   </Button>
                   <Button
-                    color="secondary"
+                    /*color="secondary"*/
+                    color="primary"
                     onClick={() => onDelete(appointment.id)}
-                    style={{
+                    /*style={{
                       color: colors.red[600],
-                    }}
+                    }}*/
                   >
                     Delete
                   </Button>

@@ -98,7 +98,7 @@ export default function AppointmentTypes(props) {
               </Button>
             </div>
             <Typography component="p" variant="body2" color="textPrimary">
-              This page is used to manage appoinment types
+              This page is used to manage appointment types that are offered to patients
             </Typography>
             <Appointments
               appointments={appointments}
