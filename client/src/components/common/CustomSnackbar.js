@@ -10,7 +10,7 @@ function Alert(props) {
 
 const CustomSnackbar = ({ isOpen, onClose, severity, message }) => {
   return (
-    <Snackbar open={isOpen} autoHideDuration={6000} onClose={onClose}>
+    <Snackbar open={isOpen} autoHideDuration={3000} onClose={onClose}>
       <Alert onClose={onClose} severity={severity || "success"}>
         {message || "Operation completed!"}
       </Alert>
