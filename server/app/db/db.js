@@ -47,7 +47,7 @@ function makeDb(configuration, res) {
     query(sql, args) {
       if (process.env.NODE_ENV === "development") {
         console.log("sql ", sql);
-        if (args){
+        if (args) {
           console.log("args ", args);
         }
       }

@@ -156,6 +156,19 @@ exports.signup = async (req, res) => {
       successMessage.data = clientResponse.insertId;
       responseData.contractLink = pdf;
       successMessage.data = responseData;
+
+      //run database procedure to set up basic data for the new Client
+      //clientSetup(responseData.user.client_id, responseData.user.id);
+      try {
+        const clientSetupRows = await db.query("CALL clientSetup(?, ?)", [
+          responseData.user.client_id,
+          responseData.user.id,
+        ]);
+        console.log("clientSetupRows", clientSetupRows);
+      } catch (error) {
+        console.log("error", error);
+      }
+
       res.status(status.created).send(successMessage);
     }
   } catch (err) {
