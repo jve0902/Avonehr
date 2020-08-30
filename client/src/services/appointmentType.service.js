@@ -5,15 +5,22 @@ const API_URL =
 
 class AppointmentService {
   getAll() {
-    return axios.get(API_URL + `/appointment-types`).then((res) => res.data);
+    return axios
+      .get(API_URL + `/appointment-types`, { headers: authHeader() })
+      .then((res) => res.data);
   }
   create(data) {
-    return axios.post(API_URL + `/appointment-types`, data);
+    return axios.post(API_URL + `/appointment-types`, data, {
+      headers: authHeader(),
+    });
   }
   update(data, userId, appointmentId) {
     return axios.put(
       API_URL + `/appointment-types/${userId}/${appointmentId}`,
-      data
+      data,
+      {
+        headers: authHeader(),
+      }
     );
   }
   deleteById(id) {

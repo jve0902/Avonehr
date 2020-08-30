@@ -12,6 +12,7 @@ import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import AppointmentService from "./../../services/appointmentType.service";
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import { data } from "./../../screens/AppointmentTypesUser/data";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,11 +86,16 @@ export default function AppointmentTypesUser(props) {
             <Grid container spacing={3}>
               <Grid item xs={3} className={classes.gridLabels}>
                 <p>-</p>
-                <p>Initial appointment 1 hour</p>
-                <p>Initial appointment 1/2 hour</p>
-                <p>Initial appointment 2 hour</p>
+                {data.appointment_types.map((ap) => {
+                  return <p key={ap.id}>{ap.appointment_type}</p>;
+                })}
               </Grid>
-              <Grid item xs={3}>
+              <Grid>
+                {data.user.map((user) => {
+                  return <p>{user.name}</p>;
+                })}
+              </Grid>
+              {/*  <Grid item xs={3}>
                 <p>John Doe</p>
                 <div className={classes.forms}>
                   <div className={classes.labels}>
@@ -164,6 +170,7 @@ export default function AppointmentTypesUser(props) {
                 <div></div>
                 <div></div>
               </Grid>
+            */}{" "}
             </Grid>
           </Container>
         </React.Fragment>
