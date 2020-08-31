@@ -12,24 +12,22 @@ function renderEventContent(eventInfo) {
   );
 }
 
-export default class EventCalendar extends React.Component {
-  render() {
-    return (
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        weekends={true}
-        events={[
-          { title: "event 1", date: "2020-08-18" },
-          { title: "event 2", date: "2020-08-09" },
-        ]}
-        eventContent={renderEventContent}
-        dateClick={this.handleDateClick}
-      />
-    );
-  }
-  handleDateClick = (arg) => {
+const EventCalendar = ({ events }) => {
+  const handleDateClick = (arg) => {
     // bind with an arrow function
     alert(arg.dateStr);
   };
-}
+
+  return (
+    <FullCalendar
+      plugins={[dayGridPlugin, interactionPlugin]}
+      initialView="dayGridMonth"
+      weekends={true}
+      events={events}
+      eventContent={renderEventContent}
+      dateClick={handleDateClick}
+    />
+  );
+};
+
+export default EventCalendar;
