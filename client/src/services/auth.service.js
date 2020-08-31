@@ -24,7 +24,6 @@ class AuthService {
       password: user.password,
     });
     if (loginResponse.data) {
-      console.log(user);
       if (loginResponse.data.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(loginResponse.data.data));
       }

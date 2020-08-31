@@ -234,8 +234,8 @@ exports.signin = async (req, res) => {
     { id: user.id, client_id: user.client_id },
     config.authSecret,
     {
-      //expiresIn: 86400, // 24 hours
-      expiresIn: 5 * 60, // 2minutes
+      expiresIn: 86400, // 24 hours
+      //expiresIn: 5 * 60, // 2minutes
     }
   );
   user.accessToken = token;

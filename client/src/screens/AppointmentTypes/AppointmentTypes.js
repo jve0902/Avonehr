@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
+import Grid from "@material-ui/core/Grid";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import { Appointments } from "./components";
 import NewAppointmentModal from "./components/modal/NewAppointment";
@@ -11,6 +14,7 @@ import EditAppointmentModal from "./components/modal/EditAppointment";
 import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
 import AppointmentService from "./../../services/appointmentType.service";
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import Video from "./../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(4),
       },
     },
+  },
+  card: {
+    minHeight: 300,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 
@@ -97,15 +107,29 @@ export default function AppointmentTypes(props) {
                 New
               </Button>
             </div>
-            <Typography component="p" variant="body2" color="textPrimary">
-              This page is used to manage appointment types that are offered to
-              patients
-            </Typography>
-            <Appointments
-              appointments={appointments}
-              onEdit={handleEditButtonClick}
-              onDelete={handleDeleteButton}
-            />
+            <Grid container justify="center" spacing={8}>
+              <Grid item md={8} xs={12}>
+                <Typography component="p" variant="body2" color="textPrimary">
+                  This page is used to manage appointment types that are offered
+                  to patients
+                </Typography>
+                <Appointments
+                  appointments={appointments}
+                  onEdit={handleEditButtonClick}
+                  onDelete={handleDeleteButton}
+                />
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography variant="h4" gutterBottom>
+                      <Video />
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+
             <NewAppointmentModal
               isOpen={isOpen}
               onClose={handleClose}
