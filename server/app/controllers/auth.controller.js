@@ -4,8 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const { validationResult } = require("express-validator");
-const Client = require("./../models/client.model");
-const User = require("./../models/user.model");
 const config = require("./../../config");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
@@ -67,6 +65,7 @@ exports.signup = async (req, res) => {
 
   const db = makeDb(configuration, res);
   let client = req.body.client;
+  client.created = new Date();
   client.calendar_start_time = "8:00";
   client.calendar_end_time = "18:00";
   client.functional_range = true;
@@ -74,13 +73,6 @@ exports.signup = async (req, res) => {
 
   let user = req.body.user;
   user.password = bcrypt.hashSync(user.password, 8);
-  const new_client = new Client(client);
-
-  //handles null error
-  if (!new_client) {
-    errorMessage.error = "Operation was not successful";
-    res.status(status.error).send(errorMessage);
-  }
 
   const existingClientRows = await db.query(
     `SELECT 1 FROM client WHERE name='${client.name}' OR phone='${client.phone}'  OR fax='${client.fax}'
@@ -114,10 +106,7 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const clientResponse = await db.query(
-      "INSERT INTO client set ?",
-      new_client
-    );
+    const clientResponse = await db.query("INSERT INTO client set ?", client);
 
     if (!clientResponse.insertId) {
       errorMessage.message = "Client Cannot be registered";
@@ -134,8 +123,7 @@ exports.signup = async (req, res) => {
         : req.connection.remoteAddress;
       //TODO: for localhost ::1 might be taken. Need further test
       user.sign_ip_address = userIP;
-      const new_user = new User(user);
-      const userResponse = await db.query("INSERT INTO user set ?", new_user);
+      const userResponse = await db.query("INSERT INTO user set ?", user);
       const clientRows = await db.query(
         `SELECT id, name, email FROM client WHERE id = ${clientResponse.insertId}`
       );

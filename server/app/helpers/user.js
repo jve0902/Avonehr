@@ -12,20 +12,9 @@ const PDFDocument = require("pdfkit");
  */
 const generatePDF = async (content, user) => {
   try {
-    const dest = "/Users/ruhulamin/Documents/client";
-    fs.access(dest, function (error) {
-      if (error) {
-        console.log("Directory does not exist.");
-        return fs.mkdir(dest, (error) => cb(error, dest));
-      } else {
-        console.log("Directory exists.");
-      }
-    });
-
-    console.log("dest", dest);
-
     const pdfPath = path.join(
-      dest,
+      "app", //To set directory permissions to write to /app see README.md
+      "client",
       `c${user.client_id}_u${user.id}_contract` + ".pdf"
     );
     const pdfDoc = new PDFDocument({ size: "A4", margin: 50 });
