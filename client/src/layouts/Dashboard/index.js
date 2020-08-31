@@ -44,33 +44,37 @@ const Dashboard = (props) => {
   };
   return (
     <AuthConsumer>
-      {({ isAuth, logout, user }) => (
-        <div
-          className={clsx({
-            [classes.root]: true,
-            [classes.shiftContent]: isDesktop,
-          })}
-        >
-          <Header
-            onSidebarOpen={handleSidebarOpen}
-            logout={logout}
-            user={user}
-          />
-          <Sidebar
-            onClose={handleSidebarClose}
-            open={shouldOpenSidebar}
-            variant={isDesktop ? "persistent" : "temporary"}
-            isAuth={isAuth}
-            logout={logout}
-            user={user}
-          />
+      {({ isAuth, logout, user }) => {
+        console.log("user>>>", user);
+        console.log("isAuth>>>", isAuth);
+        return (
+          <div
+            className={clsx({
+              [classes.root]: true,
+              [classes.shiftContent]: isDesktop,
+            })}
+          >
+            <Header
+              onSidebarOpen={handleSidebarOpen}
+              logout={logout}
+              user={user}
+            />
+            <Sidebar
+              onClose={handleSidebarClose}
+              open={shouldOpenSidebar}
+              variant={isDesktop ? "persistent" : "temporary"}
+              isAuth={isAuth}
+              logout={logout}
+              user={user}
+            />
 
-          <Container maxWidth="lg" style={{ flex: 1 }}>
-            {children}
-          </Container>
-          <Footer />
-        </div>
-      )}
+            <Container maxWidth="lg" style={{ flex: 1 }}>
+              {children}
+            </Container>
+            <Footer />
+          </div>
+        );
+      }}
     </AuthConsumer>
   );
 };

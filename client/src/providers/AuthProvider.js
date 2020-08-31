@@ -12,7 +12,10 @@ class AuthProvider extends React.Component {
     this.logout = this.logout.bind(this);
     const isAuthenticated = AuthService.checkAuth();
     const currentUser = AuthService.getCurrentUser();
-    this.state = { isAuth: isAuthenticated, user: currentUser };
+    this.state = {
+      isAuth: isAuthenticated,
+      user: JSON.parse(localStorage.getItem("user")),
+    };
   }
 
   login() {

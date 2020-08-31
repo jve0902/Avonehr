@@ -60,9 +60,9 @@ const Profile = (props) => {
         to="/settings"
       />
       <Typography className={classes.name} variant="h4">
-        {`${user.firstname} ${user.lastname}`}
+        {user && `${user.firstname} ${user.lastname}`}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">{user && user.bio}</Typography>
       <React.Fragment>
         <Divider className={classes.divider} />
         <Hidden lgUp>
@@ -83,6 +83,7 @@ const Profile = (props) => {
 
 Profile.propTypes = {
   className: PropTypes.string,
+  user: PropTypes.object.isRequired,
 };
 
 export default Profile;
