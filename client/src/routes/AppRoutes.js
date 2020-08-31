@@ -7,7 +7,7 @@ import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
 import EmailConfirmation from "../screens/EmailConfirmation";
 import Home from "../screens/Home";
-import DoctorHome from "../screens/doctors/Home";
+import { DoctorHome } from "../screens/doctors/Home";
 import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
