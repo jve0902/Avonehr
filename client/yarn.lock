@@ -986,6 +986,13 @@
     "@fullcalendar/common" "~5.3.0"
     tslib "^2.0.0"
 
+"@fullcalendar/interaction@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-5.3.0.tgz#f63621b56463a6c3ee462f115d197a6bb6fbeb04"
+  dependencies:
+    "@fullcalendar/common" "~5.3.0"
+    tslib "^2.0.0"
+
 "@fullcalendar/react@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-5.3.0.tgz#0d6958b2b0cd5453cb19dd726248d097be36bfa2"
