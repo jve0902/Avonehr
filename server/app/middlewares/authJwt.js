@@ -1,7 +1,7 @@
 //https://bezkoder.com/node-js-mongodb-auth-jwt/
 
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
+const config = require("./../../config");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -10,7 +10,7 @@ verifyToken = (req, res, next) => {
     return res.status(403).send({ message: "No token provided!" });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.authSecret, (err, decoded) => {
     if (err) {
       let verifyErrMsg = "Unauthorized!";
       if (err.name === "TokenExpiredError") {
@@ -18,7 +18,8 @@ verifyToken = (req, res, next) => {
       }
       return res.status(401).send({ message: verifyErrMsg });
     }
-    req.patientId = decoded.id;
+    req.user_id = decoded.id;
+    req.client_id = decoded.client_id;
     next();
   });
 };

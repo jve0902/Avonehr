@@ -56,7 +56,9 @@ const SignUp = () => {
         dispatch(setSuccess(`${response.data.message}`));
       },
       (error) => {
-        setErrors(error.response.data);
+        if (error.response) {
+          setErrors(error.response.data);
+        }
       }
     );
   };

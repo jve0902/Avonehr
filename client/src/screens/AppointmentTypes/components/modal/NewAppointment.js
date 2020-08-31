@@ -69,9 +69,9 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
   const dispatch = useDispatch();
   const [appointmentType, setAppointmentType] = useState("");
   const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(20);
   const [allow_patients_schedule, setAllow_patients_schedule] = useState(true);
-  const [sort_order, setSort_order] = useState("");
+  const [sort_order, setSort_order] = useState(1);
   const [active, setActive] = useState(true);
   const [note, setNote] = useState("");
   const [errors, setErrors] = useState([]);
@@ -86,19 +86,29 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
         sort_order: sort_order,
         note: note,
         active: active ? 1 : null,
-        created_user_id: user.id,
-        client_id: user.client_id,
       }),
     };
     AppointmentService.create(formedData).then(
       (response) => {
         dispatch(setSuccess(`${response.data.message}`));
         onClose();
+        resetStates();
       },
       (error) => {
         setErrors(error.response.data.error);
       }
     );
+  };
+
+  const resetStates = () => {
+    setAppointmentType("");
+    setAppointmentNamePortal("");
+    setMinutes(20);
+    setAllow_patients_schedule(true);
+    setSort_order(1);
+    setActive(true);
+    setNote("");
+    setErrors([]);
   };
 
   return (

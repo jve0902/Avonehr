@@ -5,7 +5,7 @@ const API_URL =
   "http://localhost:5000/api/v1/auth/";
 
 class AuthService {
-  login(user) {
+  /* login(user) {
     return axios
       .post(API_URL + "login", {
         email: user.email,
@@ -17,6 +17,18 @@ class AuthService {
         }
         return response.data;
       });
+  } */
+  async login(user) {
+    const loginResponse = await axios.post(API_URL + "login", {
+      email: user.email,
+      password: user.password,
+    });
+    if (loginResponse.data) {
+      if (loginResponse.data.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(loginResponse.data.data));
+      }
+      return loginResponse.data;
+    }
   }
 
   logout() {
