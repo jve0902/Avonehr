@@ -6,7 +6,7 @@
 - Redux
 - Material-ui
 - Node + Express
-- PostgreSQL
+- MySQL
 
 ## Client
 
@@ -40,3 +40,9 @@ To run:
 
 1. `yarn dev` or `npm run dev`
 2. API end point would be `http://localhost:5001`
+
+File system:
+
+    sudo mkdir /app/
+    sudo mkdir /app/client
+    sudo chmod 777 /app/client

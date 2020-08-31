@@ -13,7 +13,7 @@ const PDFDocument = require("pdfkit");
 const generatePDF = async (content, user) => {
   try {
     const pdfPath = path.join(
-      "app",
+      "/app",  //To set directory permissions to write to /app see README.md
       "client",
       `c${user.client_id}_u${user.id}_contract` + ".pdf"
     );
