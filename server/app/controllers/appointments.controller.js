@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
       from appointment_type at
       left join user u on u.id=at.created_user_id
       left join user u2 on u2.id=at.updated_user_id
-      where at.client_id=1  /* TODO should be id of client logged in*/
+      where at.client_id=${req.client_id}  /* TODO should be id of client logged in*/
       order by at.sort_order, at.appointment_type
       limit 100
       `
@@ -49,7 +49,10 @@ const create = async (req, res) => {
   }
   const db = makeDb(configuration, res);
   let appointment_type = req.body.data;
-  appointment_type.created = new Date();
+
+  (appointment_type.created_user_id = req.id),
+    (appointment_type.client_id = req.client_id),
+    (appointment_type.created = new Date());
 
   try {
     const dbResponse = await db.query(

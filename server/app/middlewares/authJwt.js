@@ -18,7 +18,8 @@ verifyToken = (req, res, next) => {
       }
       return res.status(401).send({ message: verifyErrMsg });
     }
-    req.userId = decoded.id;
+    req.user_id = decoded.id;
+    req.client_id = decoded.client_id;
     next();
   });
 };

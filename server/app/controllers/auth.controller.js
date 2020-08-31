@@ -230,10 +230,14 @@ exports.signin = async (req, res) => {
   const userUpdate = await db.query(
     `UPDATE user SET login_dt='${now}' WHERE id =${user.id}`
   );
-  const token = jwt.sign({ id: user.id }, config.authSecret, {
-    //expiresIn: 86400, // 24 hours
-    expiresIn: 2 * 60, // 2minutes
-  });
+  const token = jwt.sign(
+    { id: user.id, client_id: user.client_id },
+    config.authSecret,
+    {
+      //expiresIn: 86400, // 24 hours
+      expiresIn: 5 * 60, // 2minutes
+    }
+  );
   user.accessToken = token;
   delete user.password; // delete password from response
   successMessage.data = user;

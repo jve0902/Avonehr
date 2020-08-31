@@ -86,19 +86,29 @@ const NewAppointmentModal = ({ user, isOpen, onClose }) => {
         sort_order: sort_order,
         note: note,
         active: active ? 1 : null,
-        created_user_id: user.id,
-        client_id: user.client_id,
       }),
     };
     AppointmentService.create(formedData).then(
       (response) => {
         dispatch(setSuccess(`${response.data.message}`));
         onClose();
+        resetStates();
       },
       (error) => {
         setErrors(error.response.data.error);
       }
     );
+  };
+
+  const resetStates = () => {
+    setAppointmentType("");
+    setAppointmentNamePortal("");
+    setMinutes(20);
+    setAllow_patients_schedule(true);
+    setSort_order(1);
+    setActive(true);
+    setNote("");
+    setErrors([]);
   };
 
   return (
