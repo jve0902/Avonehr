@@ -1,10 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import moment from "moment";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import Divider from "@material-ui/core/Divider";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Calendar } from "./components";
@@ -23,9 +18,16 @@ export default function Home() {
     { title: "event 2", date: "2020-08-02" },
   ]);
 
+  const getMapFromArray = (data) =>
+    data.reduce((acc, item) => {
+      acc = { ...item, start: item.start_dt, end: item.end_dt };
+      return acc;
+    }, []);
+
   const fetchAppointments = () => {
     Appointments.getAll().then((res) => {
-      setEvents([...events, res.data[0]]);
+      const eventsFromAPI = res.data && getMapFromArray(res.data);
+      setEvents([...events, eventsFromAPI]);
     });
   };
 
@@ -33,13 +35,12 @@ export default function Home() {
     fetchAppointments();
   }, []);
 
-  console.log("events:", events);
   return (
     <div className={classes.root}>
-      <Grid container justify="center" spacing={8}>
-        <Typography component="h1" variant="h2" color="textPrimary">
-          Home
-        </Typography>
+      <Typography component="h1" variant="h2" color="textPrimary">
+        Home
+      </Typography>
+      <Grid container spacing={8}>
         <Grid item md={8} xs={12}>
           <Calendar events={events} />
         </Grid>
