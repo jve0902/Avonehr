@@ -12,9 +12,9 @@ import { Appointments } from "./components";
 import NewAppointmentModal from "./components/modal/NewAppointment";
 import EditAppointmentModal from "./components/modal/EditAppointment";
 import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
-import AppointmentService from "./../../services/appointmentType.service";
-import { AuthConsumer } from "./../../providers/AuthProvider";
-import Video from "./../../components/videos/Video";
+import AppointmentService from "../../../services/appointmentType.service";
+import { AuthConsumer } from "../../../providers/AuthProvider";
+import Video from "../../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {

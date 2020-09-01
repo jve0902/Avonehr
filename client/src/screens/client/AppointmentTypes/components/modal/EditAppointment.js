@@ -13,9 +13,9 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { setSuccess } from "./../../../../store/common/actions";
-import { removeEmpty } from "../../../../utils/helpers";
-import AppointmentService from "./../../../../services/appointmentType.service";
+import { setSuccess } from "../../../../../store/common/actions";
+import { removeEmpty } from "../../../../../utils/helpers";
+import AppointmentService from "../../../../../services/appointmentType.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {

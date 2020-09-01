@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
-import { AuthConsumer } from "./../../providers/AuthProvider";
+import { AuthConsumer } from "../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   root: {

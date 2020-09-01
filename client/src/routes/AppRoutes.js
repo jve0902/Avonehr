@@ -7,14 +7,14 @@ import Contact from "../screens/Contact";
 import ForgetPassword from "../screens/ForgetPassword";
 import EmailConfirmation from "../screens/EmailConfirmation";
 import Home from "../screens/Home";
-import { DoctorHome } from "../screens/doctors/Home";
 import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
-import { AppointmentTypes } from "../screens/AppointmentTypes";
-import { AppointmentTypesUsers } from "../screens/AppointmentTypesUser";
+import { DoctorHome } from "../screens/client/Home";
+import { AppointmentTypes } from "../screens/client/AppointmentTypes";
+import { AppointmentTypesUsers } from "../screens/client/AppointmentTypesUser";
 import Agreement from "../screens/Agreement";
 
 import { Main } from "../layouts";

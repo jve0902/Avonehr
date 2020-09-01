@@ -6,9 +6,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSuccess } from "./../../../../store/common/actions";
+import { setSuccess } from "../../../../../store/common/actions";
 import { useDispatch } from "react-redux";
-import AppointmentService from "./../../../../services/appointmentType.service";
+import AppointmentService from "../../../../../services/appointmentType.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
