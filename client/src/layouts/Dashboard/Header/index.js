@@ -12,6 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import { useDispatch } from "react-redux";
+import DropdownItems from "./DropdownItems";
 import { logOut } from "./../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -117,15 +118,107 @@ const useStyles = makeStyles((theme) => ({
 const pages = [
   {
     title: "Home",
-    href: "/dashboard/appoinment-types",
+    href: "/dashboard",
   },
   {
     title: "Manage",
     href: "/dashboard/manage",
+    subMenus: [
+      {
+        title: "Accounting Search",
+        href: "/dashboard/manage/search",
+      },
+      {
+        title: "Email Patients",
+        href: "/dashboard/manage/email-patients",
+      },
+      {
+        title: "Fax",
+        href: "/dashboard/manage/Fax",
+      },
+      {
+        title: "Merge Patient",
+        href: "/dashboard/manage/merge-patient",
+      },
+      {
+        title: "Delete Patient",
+        href: "/dashboard/manage/delete-patient",
+      },
+      {
+        title: "Patient Search",
+        href: "/dashboard/manage/patient-search",
+      },
+      {
+        title: "Support Center",
+        href: "/dashboard/manage/support-center",
+      },
+    ],
   },
   {
     title: "Setup",
     href: "/dashboard/setup",
+    subMenus: [
+      {
+        title: "Accounting Types",
+        href: "/dashboard/setup/accounting-types",
+      },
+      {
+        title: "Appointment Types",
+        href: "/dashboard/setup/appointment-types",
+      },
+      {
+        title: "Appointment Types User Assignment",
+        href: "/dashboard/setup/appointment-types/user-assignment",
+      },
+      {
+        title: "Backup",
+        href: "/dashboard/setup/backup",
+      },
+      {
+        title: "Configuration",
+        href: "/dashboard/setup/configuration",
+      },
+      {
+        title: "CPT codes",
+        href: "/dashboard/setup/ctp-codes",
+      },
+      {
+        title: "Drugs",
+        href: "/dashboard/setup/drugs",
+      },
+      {
+        title: "Forms",
+        href: "/dashboard/setup/forms",
+      },
+      {
+        title: "Handouts",
+        href: "/dashboard/setup/handouts",
+      },
+      {
+        title: "ICD codes",
+        href: "/dashboard/setup/icd-codes",
+      },
+      {
+        title: "Integrations",
+        href: "/dashboard/setup/integrations",
+      },
+      {
+        title: "Lab Ranges",
+        href: "/dashboard/setup/lab-ranges",
+      },
+      {
+        title: "Patient Portal Header",
+        href: "/dashboard/setup/patient-portal-header",
+      },
+      {
+        title: "Schedule",
+        href: "/dashboard/setup/schedule",
+      },
+      {
+        title: "Users",
+        href: "/dashboard/setup/users",
+      },
+    ],
   },
   {
     title: "Reports",
@@ -169,16 +262,24 @@ const Header = ({ ...props }) => {
             </Typography>
             <Hidden mdDown>
               <div className={classes.navs}>
-                {pages.map((page) => (
-                  <RouterLink
-                    to={page.href}
-                    className={classes.link}
-                    onClick={page.logout && handleLogout}
-                    key={page.title}
-                  >
-                    {page.title}
-                  </RouterLink>
-                ))}
+                {pages.map((page) =>
+                  page["subMenus"] ? (
+                    <DropdownItems
+                      parentItem={page.title}
+                      menuItems={page["subMenus"]}
+                      key={page.title}
+                    />
+                  ) : (
+                    <RouterLink
+                      to={page.href}
+                      className={classes.link}
+                      onClick={page.logout && handleLogout}
+                      key={page.title}
+                    >
+                      {page.title}
+                    </RouterLink>
+                  )
+                )}
               </div>
             </Hidden>
           </div>
