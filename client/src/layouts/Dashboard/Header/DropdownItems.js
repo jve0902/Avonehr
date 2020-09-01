@@ -65,7 +65,7 @@ export default function DropdownItems({ menuId, parentItem, menuItems }) {
           <ClickAwayListener onClickAway={handleClose}>
             <List component="nav" className={classes.nav}>
               {menuItems.map((item, i) => (
-                <ListItem button divider key={i}>
+                <ListItem button divider key={i} onClick={handleClose}>
                   <RouterLink
                     to={item.href}
                     className={classes.link}

@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   headerWithNav: {
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   headerWithSearchBar: {
     display: "flex",
@@ -134,7 +135,7 @@ const pages = [
       },
       {
         title: "Fax",
-        href: "/dashboard/manage/Fax",
+        href: "/dashboard/manage/fax",
       },
       {
         title: "Merge Patient",
@@ -150,7 +151,7 @@ const pages = [
       },
       {
         title: "Support Center",
-        href: "/dashboard/manage/support-center",
+        href: "/dashboard/manage/support",
       },
     ],
   },

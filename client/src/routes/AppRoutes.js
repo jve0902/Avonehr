@@ -15,8 +15,16 @@ import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/client/Home";
 import { AppointmentTypes } from "../screens/client/AppointmentTypes";
 import { AppointmentTypesUsers } from "../screens/client/AppointmentTypesUser";
+import {
+  AccountingSearch,
+  EmailPatients,
+  Fax,
+  MergePatient,
+  DeletePatient,
+  PatientSearch,
+  Support,
+} from "../screens/client/manage";
 import Agreement from "../screens/Agreement";
-
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
 import Dashboard from "../layouts/Dashboard";
@@ -83,6 +91,48 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/dashboard/appoinment-types"
               component={AppointmentTypes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/search"
+              component={AccountingSearch}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/email-patients"
+              component={EmailPatients}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/fax"
+              component={Fax}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/merge-patient"
+              component={MergePatient}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/delete-patient"
+              component={DeletePatient}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/patient-search"
+              component={PatientSearch}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/dashboard/manage/support"
+              component={Support}
               exact
             />
             <PrivateRouteWithLayout
