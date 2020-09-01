@@ -6,7 +6,8 @@ const config = require("./config.js");
 const clientsRoute = require("./app/routes/client.routes");
 const authRoute = require("./app/routes/auth.routes");
 const emailRoute = require("./app/routes/email.routes");
-const appointmentTypesRoute = require("./app/routes/appointment.routes");
+const appointmentsRoute = require("./app/routes/appointments.routes");
+const appointmentTypesRoute = require("./app/routes/appointment-types.routes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
   res.send(help);
 });
 
+app.use("/api/v1", appointmentsRoute);
 app.use("/api/v1", appointmentTypesRoute);
 app.use("/api/v1", clientsRoute);
 app.use("/api/v1", authRoute);

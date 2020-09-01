@@ -3,7 +3,7 @@
 const express = require("express");
 const { authJwt } = require("../../app/middlewares");
 
-const AppointmentTypes = require("../controllers/appointments.controller.js");
+const AppointmentTypes = require("../controllers/appointments-types.controller.js");
 const fieldValidation = require("./../helpers/fieldValidation");
 
 const router = express.Router();
