@@ -169,7 +169,7 @@ const pages = [
       },
       {
         title: "Appointment Types User Assignment",
-        href: "/setup/appointment-types/user-assignment",
+        href: "/setup/appoinment-user-types",
       },
       {
         title: "Backup",

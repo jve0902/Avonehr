@@ -13,8 +13,6 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
-import { AppointmentTypes } from "../screens/Client/AppointmentTypes";
-import { AppointmentTypesUsers } from "../screens/Client/AppointmentTypesUser";
 import {
   AccountingSearch,
   EmailPatients,
@@ -24,6 +22,11 @@ import {
   PatientSearch,
   Support,
 } from "../screens/Client/Manage";
+import {
+  AccountingTypes,
+  AppointmentTypes,
+  AppointmentTypesUser,
+} from "../screens/Client/Setup";
 import Agreement from "../screens/Agreement";
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
@@ -89,12 +92,6 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/appoinment-types"
-              component={AppointmentTypes}
-              exact
-            />
-            <PrivateRouteWithLayout
-              layout={Dashboard}
               path="/manage/search"
               component={AccountingSearch}
               exact
@@ -135,10 +132,23 @@ class AppRouter extends Component {
               component={Support}
               exact
             />
+            {/* Setup/... */}
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/appoinment-types/users"
-              component={AppointmentTypesUsers}
+              path="/setup/accounting-types"
+              component={AccountingTypes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/appointment-types"
+              component={AppointmentTypes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/appoinment-user-types"
+              component={AppointmentTypesUser}
               exact
             />
             <Route path="*" component={NotFound} />
