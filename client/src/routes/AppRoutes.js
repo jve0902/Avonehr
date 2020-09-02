@@ -12,9 +12,9 @@ import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
-import { DoctorHome } from "../screens/client/Home";
-import { AppointmentTypes } from "../screens/client/AppointmentTypes";
-import { AppointmentTypesUsers } from "../screens/client/AppointmentTypesUser";
+import { DoctorHome } from "../screens/Client/Home";
+import { AppointmentTypes } from "../screens/Client/AppointmentTypes";
+import { AppointmentTypesUsers } from "../screens/Client/AppointmentTypesUser";
 import {
   AccountingSearch,
   EmailPatients,
@@ -23,7 +23,7 @@ import {
   DeletePatient,
   PatientSearch,
   Support,
-} from "../screens/client/manage";
+} from "../screens/Client/Manage";
 import Agreement from "../screens/Agreement";
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
@@ -89,55 +89,55 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/appoinment-types"
+              path="/appoinment-types"
               component={AppointmentTypes}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/search"
+              path="/manage/search"
               component={AccountingSearch}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/email-patients"
+              path="/manage/email-patients"
               component={EmailPatients}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/fax"
+              path="/manage/fax"
               component={Fax}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/merge-patient"
+              path="/manage/merge-patient"
               component={MergePatient}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/delete-patient"
+              path="/manage/delete-patient"
               component={DeletePatient}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/patient-search"
+              path="/manage/patient-search"
               component={PatientSearch}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/manage/support"
+              path="/manage/support"
               component={Support}
               exact
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/dashboard/appoinment-types/users"
+              path="/appoinment-types/users"
               component={AppointmentTypesUsers}
               exact
             />

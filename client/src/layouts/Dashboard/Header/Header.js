@@ -127,107 +127,107 @@ const pages = [
     subMenus: [
       {
         title: "Accounting Search",
-        href: "/dashboard/manage/search",
+        href: "/manage/search",
       },
       {
         title: "Email Patients",
-        href: "/dashboard/manage/email-patients",
+        href: "/manage/email-patients",
       },
       {
         title: "Fax",
-        href: "/dashboard/manage/fax",
+        href: "/manage/fax",
       },
       {
         title: "Merge Patient",
-        href: "/dashboard/manage/merge-patient",
+        href: "/manage/merge-patient",
       },
       {
         title: "Delete Patient",
-        href: "/dashboard/manage/delete-patient",
+        href: "/manage/delete-patient",
       },
       {
         title: "Patient Search",
-        href: "/dashboard/manage/patient-search",
+        href: "/manage/patient-search",
       },
       {
         title: "Support Center",
-        href: "/dashboard/manage/support",
+        href: "/manage/support",
       },
     ],
   },
   {
     title: "Setup",
-    href: "/dashboard/setup",
+    href: "/setup",
     subMenus: [
       {
         title: "Accounting Types",
-        href: "/dashboard/setup/accounting-types",
+        href: "/setup/accounting-types",
       },
       {
         title: "Appointment Types",
-        href: "/dashboard/setup/appointment-types",
+        href: "/setup/appointment-types",
       },
       {
         title: "Appointment Types User Assignment",
-        href: "/dashboard/setup/appointment-types/user-assignment",
+        href: "/setup/appointment-types/user-assignment",
       },
       {
         title: "Backup",
-        href: "/dashboard/setup/backup",
+        href: "/setup/backup",
       },
       {
         title: "Configuration",
-        href: "/dashboard/setup/configuration",
+        href: "/setup/configuration",
       },
       {
         title: "CPT codes",
-        href: "/dashboard/setup/ctp-codes",
+        href: "/setup/ctp-codes",
       },
       {
         title: "Drugs",
-        href: "/dashboard/setup/drugs",
+        href: "/setup/drugs",
       },
       {
         title: "Forms",
-        href: "/dashboard/setup/forms",
+        href: "/setup/forms",
       },
       {
         title: "Handouts",
-        href: "/dashboard/setup/handouts",
+        href: "/setup/handouts",
       },
       {
         title: "ICD codes",
-        href: "/dashboard/setup/icd-codes",
+        href: "/setup/icd-codes",
       },
       {
         title: "Integrations",
-        href: "/dashboard/setup/integrations",
+        href: "/setup/integrations",
       },
       {
         title: "Lab Ranges",
-        href: "/dashboard/setup/lab-ranges",
+        href: "/setup/lab-ranges",
       },
       {
         title: "Patient Portal Header",
-        href: "/dashboard/setup/patient-portal-header",
+        href: "/setup/patient-portal-header",
       },
       {
         title: "Schedule",
-        href: "/dashboard/setup/schedule",
+        href: "/setup/schedule",
       },
       {
         title: "Users",
-        href: "/dashboard/setup/users",
+        href: "/setup/users",
       },
     ],
   },
   {
     title: "Reports",
-    href: "/dashboard/reports",
+    href: "/reports",
   },
   {
     title: "Myself",
-    href: "/dashboard/myself",
+    href: "/myself",
   },
   {
     title: "Logout",

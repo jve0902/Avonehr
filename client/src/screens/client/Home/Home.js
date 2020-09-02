@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "40px 0px",
   },
 }));
+
 export default function Home() {
   const classes = useStyles();
   const [events, setEvents] = useState([
