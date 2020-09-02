@@ -59,6 +59,5 @@ yarn-error.log*
 /server/app/client/*
 
 # exception to the rule
-!/server/app/client/.gitkeep 
 /server/app/routes/test.routes.js
 /server/app/controllers/test.controller.js // for development purpose
