@@ -19,20 +19,27 @@ export default function Home() {
     { title: "event 2", date: "2020-08-02" },
   ]);
 
-  const getMapFromArray = (data) =>
-    data.reduce((acc, item) => {
-      acc = { ...item, start: item.start_dt, end: item.end_dt };
-      return acc;
+  const getMapFromArray = (data) => {
+    const formedData = data.reduce((acc, item) => {
+      return [
+        ...acc,
+        {
+          ...item,
+          start: item.start_dt,
+          end: item.end_dt,
+        },
+      ];
     }, []);
 
-  const fetchAppointments = () => {
-    Appointments.getAll().then((res) => {
-      const eventsFromAPI = res.data && getMapFromArray(res.data);
-      setEvents([...events, eventsFromAPI]);
-    });
+    return formedData;
   };
 
   useEffect(() => {
+    async function fetchAppointments() {
+      const { data } = await Appointments.getAll();
+      const eventsFromAPI = getMapFromArray(data);
+      setEvents(eventsFromAPI);
+    }
     fetchAppointments();
   }, []);
 
