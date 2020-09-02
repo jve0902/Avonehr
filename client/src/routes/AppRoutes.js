@@ -13,6 +13,7 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
+import { Reports, Myself } from "../screens/Client";
 import {
   AccountingSearch,
   EmailPatients,
@@ -26,6 +27,18 @@ import {
   AccountingTypes,
   AppointmentTypes,
   AppointmentTypesUser,
+  Backup,
+  Configuration,
+  CTPcodes,
+  Drugs,
+  Forms,
+  Handouts,
+  ICDcodes,
+  Integrations,
+  LabRanges,
+  PortalHeader,
+  Schedule,
+  Users,
 } from "../screens/Client/Setup";
 import Agreement from "../screens/Agreement";
 import { Main } from "../layouts";
@@ -149,6 +162,90 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/setup/appoinment-user-types"
               component={AppointmentTypesUser}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/backup"
+              component={Backup}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/configuration"
+              component={Configuration}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/ctp-codes"
+              component={CTPcodes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/drugs"
+              component={Drugs}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/forms"
+              component={Forms}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/handouts"
+              component={Handouts}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/icd-codes"
+              component={ICDcodes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/integrations"
+              component={Integrations}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/lab-ranges"
+              component={LabRanges}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/patient-portal-header"
+              component={PortalHeader}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/schedule"
+              component={Schedule}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/users"
+              component={Users}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/reports"
+              component={Reports}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/myself"
+              component={Myself}
               exact
             />
             <Route path="*" component={NotFound} />
