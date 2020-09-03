@@ -54,7 +54,7 @@ const Sidebar = (props) => {
     },
     {
       title: "Manage",
-      href: "/dashboard/manage",
+      href: "/manage/search",
       icon: (
         <Icon
           path={mdiAccountSupervisor}
@@ -67,19 +67,19 @@ const Sidebar = (props) => {
     },
     {
       title: "Setup",
-      href: "/dashboard/setup",
+      href: "/setup/accounting-types",
       icon: <SettingsIcon />,
     },
     {
       title: "Reports",
-      href: "/dashboard/reports",
+      href: "/reports",
       icon: (
         <Icon path={mdiChartBox} size={1} horizontal vertical rotate={180} />
       ),
     },
     {
       title: "Myself",
-      href: "/dashboard/me",
+      href: "/myself",
       icon: (
         <Icon path={mdiAccount} size={1} horizontal vertical rotate={180} />
       ),

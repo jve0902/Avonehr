@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   shiftContent: {
-    paddingLeft: 0,
+    paddingLeft: 240,
   },
   content: {
     height: "100%",
@@ -34,7 +34,7 @@ const Dashboard = (props) => {
   });
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const shouldOpenSidebar = isDesktop ? false : openSidebar;
+  const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
