@@ -1,7 +1,9 @@
 import React from "react";
 import moment from "moment";
+import clsx from "clsx";
 import { NavLink as RouterLink } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -13,20 +15,24 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useDispatch } from "react-redux";
 import DropdownItems from "./DropdownItems";
-import { logOut } from "./../../../store/auth/actions";
+
+import { logOut } from "./../../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 0,
+  root: {
+    boxShadow: "none",
   },
-  appBar: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    "& button": {
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-    },
+  flexGrow: {
+    flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  toolbar: {
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  headerWithNav: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     display: "none",
@@ -39,19 +45,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
-  },
-  toolbar: {
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  headerWithNav: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  headerWithSearchBar: {
-    display: "flex",
-    justifyContent: "space-between",
   },
   navs: {
     display: "block",
@@ -74,6 +67,20 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
+    },
+  },
+  grow: {
+    flexGrow: 0,
+  },
+  headerWithSearchBar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      alignItems: "center",
     },
   },
   name: {
@@ -101,18 +108,8 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-      alignItems: "center",
-    },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
+  signOutButton: {
+    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -236,10 +233,11 @@ const pages = [
   },
 ];
 
-const Header = ({ ...props }) => {
+const Topbar = (props) => {
+  const { className, onSidebarOpen, logout, user, ...rest } = props;
+
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onSidebarOpen, logout, user } = props;
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -249,77 +247,75 @@ const Header = ({ ...props }) => {
   };
 
   return (
-    <div className={classes.grow}>
-      <AppBar
-        position="static"
-        color="primary"
-        elevation={0}
-        className={classes.appBar}
-      >
-        <Toolbar className={classes.toolbar}>
-          <div className={classes.headerWithNav}>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Clinios
-            </Typography>
-            <Hidden mdDown>
-              <div className={classes.navs}>
-                {pages.map((page) =>
-                  page["subMenus"] ? (
-                    <DropdownItems
-                      parentItem={page.title}
-                      menuItems={page["subMenus"]}
-                      key={page.title}
-                    />
-                  ) : (
-                    <RouterLink
-                      to={page.href}
-                      className={classes.link}
-                      onClick={page.logout && handleLogout}
-                      key={page.title}
-                    >
-                      {page.title}
-                    </RouterLink>
-                  )
-                )}
-              </div>
-            </Hidden>
-          </div>
+    <AppBar {...rest} className={clsx(classes.root, className)}>
+      <Toolbar className={classes.toolbar}>
+        <div className={classes.headerWithNav}>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Clinios
+          </Typography>
           <Hidden mdDown>
-            <div className={classes.grow} />
-            <div className={classes.headerWithSearchBar}>
-              <div className={classes.sectionDesktop}>
-                <div className={classes.name}>
-                  {user && `${user.firstname} ${user.lastname}`}
-                </div>
-                <div className={classes.date}>
-                  {moment().format("ddd, MMM Do")}
-                </div>
-              </div>
-
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </div>
+            <div className={classes.navs}>
+              {pages.map((page) =>
+                page["subMenus"] ? (
+                  <DropdownItems
+                    parentItem={page.title}
+                    menuItems={page["subMenus"]}
+                    key={page.title}
+                  />
+                ) : (
+                  <RouterLink
+                    to={page.href}
+                    className={classes.link}
+                    onClick={page.logout && handleLogout}
+                    key={page.title}
+                  >
+                    {page.title}
+                  </RouterLink>
+                )
+              )}
             </div>
           </Hidden>
-          <Hidden lgUp>
-            <IconButton color="inherit" onClick={onSidebarOpen}>
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
-        </Toolbar>
-      </AppBar>
-    </div>
+        </div>
+        <Hidden mdDown>
+          <div className={classes.grow} />
+          <div className={classes.headerWithSearchBar}>
+            <div className={classes.sectionDesktop}>
+              <div className={classes.name}>
+                {user && `${user.firstname} ${user.lastname}`}
+              </div>
+              <div className={classes.date}>
+                {moment().format("ddd, MMM Do")}
+              </div>
+            </div>
+
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </div>
+          </div>
+        </Hidden>
+        <Hidden lgUp>
+          <IconButton color="inherit" onClick={onSidebarOpen}>
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
+      </Toolbar>
+    </AppBar>
   );
 };
 
-export default Header;
+Topbar.propTypes = {
+  className: PropTypes.string,
+  onSidebarOpen: PropTypes.func,
+};
+
+export default Topbar;

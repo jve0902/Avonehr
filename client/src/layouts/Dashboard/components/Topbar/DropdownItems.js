@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 10px",
   },
   subMenus: {
-    zIndex: 2,
+    zIndex: 9999,
   },
   link: {
     color: theme.palette.secondary.main,
