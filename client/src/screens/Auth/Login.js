@@ -129,7 +129,7 @@ const Login = () => {
     <AuthConsumer>
       {({ isAuth, login }) => {
         if (isAuth) {
-          history.push(`/dashboard/appoinment-types`);
+          history.push(`/dashboard`);
         }
         if (isRedirect) {
           history.push("/signup");

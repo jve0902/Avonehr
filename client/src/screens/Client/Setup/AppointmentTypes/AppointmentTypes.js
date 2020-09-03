@@ -107,8 +107,8 @@ export default function AppointmentTypes(props) {
                 New
               </Button>
             </div>
-            <Grid container justify="center" spacing={8}>
-              <Grid item md={8} xs={12}>
+            <Grid container justify="center" spacing={2}>
+              <Grid item md={12} xs={12}>
                 <Typography component="p" variant="body2" color="textPrimary">
                   This page is used to manage appointment types that are offered
                   to patients
@@ -119,7 +119,7 @@ export default function AppointmentTypes(props) {
                   onDelete={handleDeleteButton}
                 />
               </Grid>
-              <Grid item md={4} xs={12}>
+              <Grid item md={12} xs={12}>
                 <Card className={classes.card}>
                   <CardContent>
                     <Typography variant="h4" gutterBottom>
