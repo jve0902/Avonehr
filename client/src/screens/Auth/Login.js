@@ -68,8 +68,8 @@ const Login = () => {
     }
 
     AuthService.login({
-      email: email,
-      password: password,
+      email: email.trim(),
+      password: password.trim(),
     }).then(
       (res) => {
         setErrors([]);
