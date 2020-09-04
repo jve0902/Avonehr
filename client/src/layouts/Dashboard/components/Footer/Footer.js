@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     borderTop: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(8),
-    paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(2),
+      paddingBottom: theme.spacing(1),
     },
   },
   footerText: {

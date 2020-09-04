@@ -27,7 +27,7 @@ const generatePDF = async (content, user) => {
     });
     pdfDoc.text(`Name: ${user.firstname} ${user.lastname}`);
     pdfDoc.text(`IP Address: ${user.sign_ip_address}`);
-    pdfDoc.text(`Company: ${user.company || "Company hardcoded"}`);
+    pdfDoc.text(`Company: ${user.company || " "}`);
     pdfDoc.text(`UserID: ${user.id}`);
 
     pdfDoc.end();

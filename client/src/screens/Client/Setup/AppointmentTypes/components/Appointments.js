@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     textAlign: "center",
     display: "flex",
+    border: "none",
     "& button": {
       fontSize: "12px",
     },
@@ -103,12 +104,8 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
                     Edit
                   </Button>
                   <Button
-                    /*color="secondary"*/
                     color="primary"
                     onClick={() => onDelete(appointment.id)}
-                    /*style={{
-                      color: colors.red[600],
-                    }}*/
                   >
                     Delete
                   </Button>
