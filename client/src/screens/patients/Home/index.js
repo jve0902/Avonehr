@@ -9,7 +9,7 @@ export default function Home() {
   const classes = useStyles();
   return (
     <Grid className={classes.main} container spacing={1}>
-      <Grid item xs={3}>
+      <Grid item md={3} sm={6} xs={12}>
         {[...Array(5)].map((e, index) => {
           return (
             <Card
@@ -21,7 +21,7 @@ export default function Home() {
           )
         })}
       </Grid>
-      <Grid item xs={3}>
+      <Grid item md={3} sm={6} xs={12}>
         {[...Array(5)].map((e, index) => {
           return (
             <Card
@@ -35,7 +35,7 @@ export default function Home() {
           )
         })}
       </Grid>
-      <Grid item xs={3}>
+      <Grid item md={3} sm={6} xs={12}>
         {[...Array(5)].map((e, index) => {
           return (
             <Card
@@ -47,7 +47,7 @@ export default function Home() {
           )
         })}
       </Grid>
-      <Grid item xs={3}>
+      <Grid item md={3} sm={6} xs={12}>
         {[...Array(5)].map((e, index) => {
           return (
             <Card
