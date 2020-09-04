@@ -8,6 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import NetworkService from "./network-service";
 import "./index.css";
 
+// Test line which should removed
 const store = configureStore();
 NetworkService.setupInterceptors(store);
 ReactDOM.render(
