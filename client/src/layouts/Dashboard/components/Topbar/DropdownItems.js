@@ -23,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     textDecoration: "none",
     padding: "5px 0",
+    "&:last-child": {
+      border: "none",
+    },
   },
+
   nav: {
     width: "100%",
     minWidth: "190px",
@@ -32,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "3px",
     fontSize: "13px",
     marginTop: "10px",
+    "& .MuiListItem-divider": {
+      "&:last-child": {
+        borderBottom: "none",
+      },
+    },
   },
 }));
 
