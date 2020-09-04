@@ -27,7 +27,7 @@ const Handouts = () => {
           </Typography>
         </Grid>
         <Grid item md={6} xs={12}>
-          <Video />
+          <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
         </Grid>
       </Grid>
     </div>

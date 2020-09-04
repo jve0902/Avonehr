@@ -37,7 +37,7 @@ export default function Drugs() {
           </Typography>
         </Grid>
         <Grid item md={7} xs={12}>
-          <Video />
+          <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
         </Grid>
       </Grid>
     </div>

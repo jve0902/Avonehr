@@ -123,7 +123,7 @@ export default function AppointmentTypes(props) {
                 <Card className={classes.card}>
                   <CardContent>
                     <Typography variant="h4" gutterBottom>
-                      <Video />
+                      <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
                     </Typography>
                   </CardContent>
                 </Card>
