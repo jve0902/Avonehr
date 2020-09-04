@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import Button from "@material-ui/core/Button";
 import { ClickAwayListener, Paper, Popper } from "@material-ui/core";
 import { NavLink as RouterLink } from "react-router-dom";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
+import ArrowDropUpOutlinedIcon from "@material-ui/icons/ArrowDropUpOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
@@ -42,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  itemWithSubmenus: {
+    color: theme.palette.white,
+    color: "#ffffff",
+    padding: "16px 15px",
+    textDecoration: "none",
+  },
 }));
 
 // menuItems is an array of object like: {content: "", onClick: function}
@@ -58,11 +66,18 @@ export default function DropdownItems({ menuId, parentItem, menuItems }) {
   };
 
   return (
-    <div className={classes.root}>
-      <div onClick={handleClick} onMouseOver={handleClick}>
+    <React.Fragment>
+      <Button
+        onClick={handleClick}
+        className={classes.itemWithSubmenus} /* onMouseOver={handleClick} */
+      >
         {parentItem}
-      </div>
-      <ArrowDropDownOutlinedIcon />
+        {Boolean(anchorEl) ? (
+          <ArrowDropUpOutlinedIcon />
+        ) : (
+          <ArrowDropDownOutlinedIcon />
+        )}
+      </Button>
       <Popper
         className={classes.subMenus}
         open={Boolean(anchorEl)}
@@ -88,7 +103,7 @@ export default function DropdownItems({ menuId, parentItem, menuItems }) {
           </ClickAwayListener>
         </Paper>
       </Popper>
-    </div>
+    </React.Fragment>
   );
 }
 

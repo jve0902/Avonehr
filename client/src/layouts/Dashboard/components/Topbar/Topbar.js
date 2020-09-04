@@ -6,6 +6,7 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
@@ -255,22 +256,24 @@ const Topbar = (props) => {
           </Typography>
           <Hidden mdDown>
             <div className={classes.navs}>
-              {pages.map((page) =>
+              {pages.map((page, index) =>
                 page["subMenus"] ? (
                   <DropdownItems
                     parentItem={page.title}
                     menuItems={page["subMenus"]}
-                    key={page.title}
+                    key={index}
                   />
                 ) : (
-                  <RouterLink
-                    to={page.href}
-                    className={classes.link}
-                    onClick={page.logout && handleLogout}
-                    key={page.title}
-                  >
-                    {page.title}
-                  </RouterLink>
+                  <Button>
+                    <RouterLink
+                      to={page.href}
+                      className={classes.link}
+                      onClick={page.logout && handleLogout}
+                      key={page.title}
+                    >
+                      {page.title}
+                    </RouterLink>
+                  </Button>
                 )
               )}
             </div>
