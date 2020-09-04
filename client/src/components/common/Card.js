@@ -2,20 +2,33 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, ListItem, ListItemText, Button } from '@material-ui/core';
+import { Card, Typography, Grid, ListItem, ListItemText, Button, TextField } from '@material-ui/core';
 import Colors from '../../theme/colors';
 
 const PatientCard = (props) => {
     const classes = useStyles();
-    const { items, title, showActions, primaryButtonText, secondaryButtonText} = props;
+    const { items, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch} = props;
 
     return (
         <>
             <Card className={classes.root} variant="outlined">
                 <Grid container justify="space-between" alignItems="center" className={classes.titleContainer}>
                     <Typography className={classes.title}>
-                        {title}
+                        {title} &nbsp; &nbsp;
                     </Typography>
+                    {
+                        !!icon && icon
+                    }
+                    {
+                        !!showSearch && (
+                            <TextField
+                                margin='dense'
+                                variant='outlined'
+                                placeholder="Search ..."
+                                className={classes.searchInput}
+                            />
+                        )
+                    }
                     {
                         showActions && (
                             <Grid>
@@ -27,7 +40,8 @@ const PatientCard = (props) => {
                 </Grid>
                 <Grid className={classes.cardContent}>
                     {
-                        !!items && items.length && items.map((item, index) => {
+                        !!items && items.length ?
+                        items.map((item, index) => {
                             return (
                                 <ListItem key={index} button>
                                     {/* <ListItemIcon className={classes.sideIcon}>
@@ -40,6 +54,8 @@ const PatientCard = (props) => {
                                 </ListItem>
                             )
                         })
+                        :
+                        "Data goes here.."
                     }
                 </Grid>
             </Card>
@@ -49,7 +65,7 @@ const PatientCard = (props) => {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        minHeight: 100,
+        minHeight: 150,
         background: Colors.white,
         border: '1px solid rgba(38, 38, 38, 0.12)',
         borderRadius: 4,
@@ -58,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     titleContainer: {
         padding: '0 0 0 1em',
         borderBottom: `1px solid ${Colors.border}`,
+        minHeight: 47,
     },
     title: {
         fontWeight: '600',
@@ -87,23 +104,30 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1rem',
         lineHeight: '1.3rem',
         color: Colors.black
+    },
+    searchInput: {
+        margin: "4px 0"
     }
 }))
 
 PatientCard.defaultProps = {
     title: 'Title',
     showActions: false,
+    showSearch: false,
     items: [],
     primaryButtonText: 'History',
-    secondaryButtonText: 'Edit'
+    secondaryButtonText: 'Edit',
+    icon: null,
 };
 
 PatientCard.propTypes = {
     title: PropTypes.string,
     showActions: PropTypes.bool.isRequired,
+    showSearch: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
     primaryButtonText: PropTypes.string,
     secondaryButtonText: PropTypes.string,
+    icon: PropTypes.node
   };
 
 function mapStateToProps(state) {
