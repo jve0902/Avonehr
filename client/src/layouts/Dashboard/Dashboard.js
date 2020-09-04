@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   shiftContent: {
-    paddingLeft: 240,
+    paddingLeft: 0,
   },
   content: {
     height: "100%",
@@ -35,7 +35,7 @@ const Dashboard = (props) => {
   });
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const shouldOpenSidebar = isDesktop ? true : openSidebar;
+  const shouldOpenSidebar = isDesktop ? false : openSidebar;
 
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
