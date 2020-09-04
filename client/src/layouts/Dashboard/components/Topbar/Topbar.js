@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+    "& a": {
+      color: theme.palette.white,
+      textDecoration: "none",
+    },
   },
   navs: {
     display: "block",
@@ -252,7 +256,9 @@ const Topbar = (props) => {
       <Toolbar className={classes.toolbar}>
         <div className={classes.headerWithNav}>
           <Typography className={classes.title} variant="h6" noWrap>
-            Clinios
+            <RouterLink to="/dashboard" className={classes.titleAsLogo}>
+              Clinios
+            </RouterLink>
           </Typography>
           <Hidden mdDown>
             <div className={classes.navs}>
