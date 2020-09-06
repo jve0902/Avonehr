@@ -60,10 +60,10 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Appointment Type</StyledTableCell>
-            <StyledTableCell>Appointment Name Portal</StyledTableCell>
+            <StyledTableCell>Portal Name</StyledTableCell>
             <StyledTableCell>Minutes</StyledTableCell>
-            <StyledTableCell>Allow Patients Schedule</StyledTableCell>
-            <StyledTableCell>Sort Order</StyledTableCell>
+            <StyledTableCell>Patient Schedule</StyledTableCell>
+            <StyledTableCell>Order</StyledTableCell>
             <StyledTableCell align="center">Note</StyledTableCell>
             <StyledTableCell>Status</StyledTableCell>
             <StyledTableCell>Created</StyledTableCell>
