@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 56,
     height: "100%",
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 64,
+      paddingTop: 50,
     },
   },
   shiftContent: {
@@ -71,7 +71,7 @@ const Dashboard = (props) => {
             user={user}
           />
 
-          <Container maxWidth="lg" style={{ flex: 1 }}>
+          <Container maxWidth="xl" style={{ flex: 1 }}>
             {children}
           </Container>
           <Footer />
