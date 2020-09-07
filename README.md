@@ -27,7 +27,7 @@ Setup:
 
 1. `cd server`
 2. `yarn or npm install`
-3. Make sure your Postgres database is running on your machine
+3. Make sure your database is running on your machine
 4. `yarn dev` for development `yarn start` for production
 5. copy `.env.sample` into `.env` and fill in credentials
 
