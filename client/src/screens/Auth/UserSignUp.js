@@ -112,7 +112,7 @@ const UserSignUp = () => {
                         Check here to indicate that you have read and agree to
                         the terms of the{" "}
                         <Link href="/agreement">
-                          Clinios Customer Aggrements
+                          Clinios Customer Agreement
                         </Link>
                       </span>
                     </div>
