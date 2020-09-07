@@ -72,7 +72,7 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
             <StyledTableCell>Created By</StyledTableCell>
             <StyledTableCell>Updated</StyledTableCell>
             <StyledTableCell>Updated By</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
+            <StyledTableCell /*align="center"*/>Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

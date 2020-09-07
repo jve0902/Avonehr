@@ -152,8 +152,8 @@ const NewOrEditAppointment = ({
         <DialogContent className={classes.content}>
           <DialogContentText id="alert-dialog-description">
             {isNewAppointment
-              ? " This page is used to create a new Appointment type for schedulling Appointment"
-              : "This page is used to update a Appointment type for schedulling Appointment"}
+              ? "This page is used to create a new appointment type"
+              : "This page is used to update an appointment type"}
           </DialogContentText>
           {errors &&
             errors.map((error, index) => (
@@ -229,7 +229,7 @@ const NewOrEditAppointment = ({
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
               <p className={classes.formHelperText}>
-                Make this an option in the patient portal
+                Allow patient to select this in the patient portal
               </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
@@ -291,8 +291,8 @@ const NewOrEditAppointment = ({
             variant="outlined"
             onClick={() => onClose()}
             style={{
-              borderColor: colors.red[600],
-              color: colors.red[600],
+              borderColor: colors.orange[600],
+              color: colors.orange[600],
             }}
           >
             Cancel
