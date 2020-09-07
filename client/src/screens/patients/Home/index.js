@@ -14,8 +14,9 @@ export default function Home() {
             <Card
               key={index}
               title={item.title}
-              items={item.data}
+              data={item.data}
               showActions={item.showActions}
+              showSearch={item.showSearch}
               icon={item.icon}
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}
@@ -26,7 +27,7 @@ export default function Home() {
       <Grid item md={3} sm={6} xs={12}>
         <Card
           title="Encounters"
-          items={[]}
+          data={[]}
           showActions={true}
           primaryButtonText={"New"}
           secondaryButtonText={"Expand"}
@@ -39,8 +40,9 @@ export default function Home() {
             <Card
               key={index}
               title={item.title}
-              items={item.data}
+              data={item.data}
               showActions={item.showActions}
+              showSearch={item.showSearch}
               icon={item.icon}
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}
@@ -54,8 +56,9 @@ export default function Home() {
             <Card
               key={index}
               title={item.title}
-              items={item.data}
+              data={item.data}
               showActions={item.showActions}
+              showSearch={item.showSearch}
               icon={item.icon}
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}

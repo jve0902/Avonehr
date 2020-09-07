@@ -8,10 +8,9 @@ import DesktopIcon from '@material-ui/icons/Dvr';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { items, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch } = props;
   
   const menuIcons = { DesktopIcon, CardIcon };
-
 
   return (
     <>
@@ -22,9 +21,7 @@ const PatientCard = (props) => {
           </Typography>
           {
             !!icon && (
-              <ListItemIcon>
-                {React.createElement(menuIcons[icon])}
-              </ListItemIcon>
+              React.createElement(menuIcons[icon])
             )
           }
           {
@@ -48,19 +45,10 @@ const PatientCard = (props) => {
         </Grid>
         <Grid className={classes.cardContent}>
           {
-            !!items && items.length ?
-              items.map((item, index) => {
-                return (
-                  <ListItem key={index} button>
-                    <ListItemText
-                      classes={{ primary: classes.text }}
-                      primary={item.name}
-                    />
-                  </ListItem>
-                )
-              })
-              :
-              "Data goes here.."
+            !!data ?
+            data
+            :
+            "Data goes here.."
           }
         </Grid>
       </Card>
@@ -111,7 +99,8 @@ const useStyles = makeStyles((theme) => ({
     color: Colors.black
   },
   searchInput: {
-    margin: "4px 0"
+    margin: "4px 0",
+    maxWidth: '100px'
   }
 }))
 
@@ -119,7 +108,7 @@ PatientCard.defaultProps = {
   title: 'Title',
   showActions: false,
   showSearch: false,
-  items: [],
+  data: [],
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
@@ -129,7 +118,7 @@ PatientCard.propTypes = {
   title: PropTypes.string,
   showActions: PropTypes.bool.isRequired,
   showSearch: PropTypes.bool.isRequired,
-  items: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
   icon: PropTypes.node
