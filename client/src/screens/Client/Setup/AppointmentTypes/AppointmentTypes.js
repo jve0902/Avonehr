@@ -9,8 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import { Appointments } from "./components";
-import NewAppointmentModal from "./components/modal/NewAppointment";
-import EditAppointmentModal from "./components/modal/EditAppointment";
+import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
 import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
 import AppointmentService from "./../../../../services/appointmentType.service";
 import { AuthConsumer } from "./../../../../providers/AuthProvider";
@@ -43,12 +42,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppointmentTypes(props) {
   const classes = useStyles();
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState("");
-  const [selectedappointment, setSelectedAppointments] = useState("");
+  const [selectedappointment, setSelectedAppointment] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [isNewAppointment, setIsNewAppointment] = useState(true);
 
   const fetchAppointmentTypes = () => {
     AppointmentService.getAll().then((res) => {
@@ -62,10 +61,11 @@ export default function AppointmentTypes(props) {
 
   const handleEditButtonClick = (id) => {
     setIsEditModalOpen(true);
+    setIsNewAppointment(false);
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-    appointmentById && setSelectedAppointments(_.head(appointmentById));
+    appointmentById && setSelectedAppointment(_.head(appointmentById));
   };
 
   const handleDeleteButton = (id) => {
@@ -73,19 +73,21 @@ export default function AppointmentTypes(props) {
     setSelectedAppointmentId(id);
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
-    fetchAppointmentTypes();
-  };
-
   const handleEditModalClose = () => {
     setIsEditModalOpen(false);
+    setIsNewAppointment(false);
     fetchAppointmentTypes();
   };
 
   const handleDeleteModalClose = () => {
     setIsDeleteModalOpen(false);
     fetchAppointmentTypes();
+  };
+
+  const handleOnNewClick = () => {
+    setIsEditModalOpen(true);
+    setIsNewAppointment(true);
+    setSelectedAppointment("");
   };
 
   return (
@@ -102,7 +104,7 @@ export default function AppointmentTypes(props) {
                 variant="outlined"
                 color="primary"
                 component="span"
-                onClick={() => setIsOpen(true)}
+                onClick={() => handleOnNewClick()}
               >
                 New
               </Button>
@@ -129,17 +131,12 @@ export default function AppointmentTypes(props) {
                 </Card>
               </Grid>
             </Grid>
-
-            <NewAppointmentModal
-              isOpen={isOpen}
-              onClose={handleClose}
-              user={user}
-            />
-            <EditAppointmentModal
+            <NewOrEditAppointment
               appointment={selectedappointment}
               isOpen={isEditModalOpen}
               onClose={() => handleEditModalClose(false)}
               user={user}
+              isNewAppointment={isNewAppointment}
             />
             <DeleteAppointmentModal
               id={selectedAppointmentId}
