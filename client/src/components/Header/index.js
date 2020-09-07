@@ -9,7 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import InputIcon from "@material-ui/icons/Input";
 import { useDispatch } from "react-redux";
 
-import Logo from "./../../assets/img/Logo.jpg";
+import Logo from "./../../assets/img/Logo.png";
 import { AuthConsumer } from "./../../providers/AuthProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import { logOut } from "../../store/auth/actions";
