@@ -31,8 +31,8 @@ const PatientCard = (props) => {
           {
             showActions && (
               <Grid>
-                <Button>{primaryButtonText}</Button>
-                <Button>{secondaryButtonText}</Button>
+                {!!primaryButtonText && (<Button>{primaryButtonText}</Button>)}
+                {!!secondaryButtonText && (<Button>{secondaryButtonText}</Button>)}
               </Grid>
             )
           }
