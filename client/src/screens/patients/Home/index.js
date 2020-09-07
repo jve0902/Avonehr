@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import DvrIcon from '@material-ui/icons/Dvr';
-import { FirstColumnPatientCards } from "../../../static/patient"
+import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient"
 
 export default function Home() {
   const classes = useStyles();
@@ -19,43 +19,48 @@ export default function Home() {
               items={item.data}
               showActions={item.showActions}
               icon={item.icon}
+              primaryButtonText={item.primaryButtonText}
+              secondaryButtonText={item.secondaryButtonText}
             />
           )
         })}
       </Grid>
       <Grid item md={3} sm={6} xs={12}>
-        {[...Array(5)].map((e, index) => {
+        <Card
+          title="Encounters"
+          items={[]}
+          showActions={true}
+          primaryButtonText={"New"}
+          secondaryButtonText={"Expand"}
+          showSearch={false}
+        />
+      </Grid>
+      <Grid item md={3} sm={6} xs={12}>
+        {ThirdColumnPatientCards.map((item, index) => {
           return (
             <Card
-              title="Patient"
-              items={[]}
-              showActions={true}
-              primaryButtonText={"New"}
-              secondaryButtonText={"Expand"}
-              showSearch={true}
+              key={index}
+              title={item.title}
+              items={item.data}
+              showActions={item.showActions}
+              icon={item.icon}
+              primaryButtonText={item.primaryButtonText}
+              secondaryButtonText={item.secondaryButtonText}
             />
           )
         })}
       </Grid>
       <Grid item md={3} sm={6} xs={12}>
-        {[...Array(5)].map((e, index) => {
+        {FourthColumnPatientCards.map((item, index) => {
           return (
             <Card
-              title="Patient"
-              items={[]}
-              showActions={true}
-              icon={<CreditCardIcon />}
-            />
-          )
-        })}
-      </Grid>
-      <Grid item md={3} sm={6} xs={12}>
-        {[...Array(5)].map((e, index) => {
-          return (
-            <Card
-              title="Patient"
-              items={[]}
-              showActions={true}
+              key={index}
+              title={item.title}
+              items={item.data}
+              showActions={item.showActions}
+              icon={item.icon}
+              primaryButtonText={item.primaryButtonText}
+              secondaryButtonText={item.secondaryButtonText}
             />
           )
         })}
