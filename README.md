@@ -4,7 +4,7 @@
 
 - React.js
 - Redux
-- Material-ui
+- Material-UI
 - Node + Express
 - MySQL
 
@@ -41,7 +41,12 @@ To run:
 1. `yarn dev` or `npm run dev`
 2. API end point would be `http://localhost:5001`
 
-File system:
+## Database
+
+    If you want to query the database install MySQL Workbench
+    https://www.mysql.com/products/workbench/
+
+## To create signup PDF files on a Mac:
 
     sudo mkdir /app/
     sudo mkdir /app/client
