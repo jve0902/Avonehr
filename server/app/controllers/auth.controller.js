@@ -140,7 +140,7 @@ exports.signup = async (req, res) => {
         "SELECT id, contract, created FROM contract WHERE created=(select max(created) from contract)"
       );
       const contractContent = contractRows[0];
-      const pdf = await generatePDF(contractContent.contract, userRows[0]);
+      const pdf = await generatePDF(contractContent.contract, userRows[0], clientRows[0]);
       //end Create contract PDF
 
       successMessage.data = clientResponse.insertId;
