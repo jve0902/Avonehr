@@ -2,8 +2,6 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
-import CreditCardIcon from '@material-ui/icons/CreditCard';
-import DvrIcon from '@material-ui/icons/Dvr';
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient"
 
 export default function Home() {

@@ -6,7 +6,7 @@ export const FirstColumnPatientCards = [
         data: [],
         primaryButtonText: 'History',
         secondaryButtonText: 'Edit',
-        icon: 'Desktop',
+        icon: 'DesktopIcon',
     },
     {
         title: 'Admin Notes',
@@ -33,7 +33,7 @@ export const FirstColumnPatientCards = [
         data: [],
         primaryButtonText: 'New',
         secondaryButtonText: 'Expand',
-        icon: null,
+        icon: 'CardIcon',
     },
     {
         title: 'Allergies',
@@ -93,7 +93,6 @@ export const FourthColumnPatientCards = [
         data: [],
         primaryButtonText: 'New',
         secondaryButtonText: 'Expand',
-        icon: 'Desktop',
     },
     {
         title: 'Medications',

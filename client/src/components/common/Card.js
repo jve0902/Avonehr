@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, ListItem, ListItemText, Button, TextField } from '@material-ui/core';
+import { Card, Typography, Grid, ListItem, ListItemIcon, ListItemText, Button, TextField } from '@material-ui/core';
 import Colors from '../../theme/colors';
+import CardIcon from '@material-ui/icons/CreditCard';
+import DesktopIcon from '@material-ui/icons/Dvr';
 
 const PatientCard = (props) => {
   const classes = useStyles();
   const { items, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch } = props;
+  
+  const menuIcons = { DesktopIcon, CardIcon };
+
 
   return (
     <>
@@ -16,7 +21,11 @@ const PatientCard = (props) => {
             {title} &nbsp; &nbsp;
           </Typography>
           {
-            !!icon && icon
+            !!icon && (
+              <ListItemIcon>
+                {React.createElement(menuIcons[icon])}
+              </ListItemIcon>
+            )
           }
           {
             !!showSearch && (
@@ -43,9 +52,6 @@ const PatientCard = (props) => {
               items.map((item, index) => {
                 return (
                   <ListItem key={index} button>
-                    {/* <ListItemIcon className={classes.sideIcon}>
-                                            <img alt={`${item.icon}_icon`} src={require(`../../assets/icons/${item.icon}.png`)} />
-                                        </ListItemIcon> */}
                     <ListItemText
                       classes={{ primary: classes.text }}
                       primary={item.name}
