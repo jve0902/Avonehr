@@ -6,13 +6,13 @@ import Sidebar from "./../../components/Sidebar";
 import { AuthConsumer } from "./../../providers/AuthProvider";
 
 const Plain = ({ children }) => {
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 
   const handleSidebarOpen = () => {
-    setOpenSidebar(true);
+    setIsOpenSidebar(true);
   };
   const handleSidebarClose = () => {
-    setOpenSidebar(false);
+    setIsOpenSidebar(false);
   };
   return (
     <AuthConsumer>
@@ -21,7 +21,7 @@ const Plain = ({ children }) => {
           <Header onSidebarOpen={handleSidebarOpen} />
           <Sidebar
             onClose={handleSidebarClose}
-            open={openSidebar}
+            open={isOpenSidebar}
             variant={"temporary"}
             isAuth={isAuth}
           />
