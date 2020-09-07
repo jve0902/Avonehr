@@ -13,6 +13,7 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
+import PatientHome from "../screens/patients/Home";
 import { Reports, Myself } from "../screens/Client";
 import {
   AccountingSearch,
@@ -44,6 +45,7 @@ import Agreement from "../screens/Agreement";
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
 import Dashboard from "../layouts/Dashboard";
+import Plain from "../layouts/Plain";
 
 const history = createBrowserHistory();
 
@@ -101,6 +103,12 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/dashboard"
               component={DoctorHome}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Plain}
+              path="/patients"
+              component={PatientHome}
               exact
             />
             <PrivateRouteWithLayout
