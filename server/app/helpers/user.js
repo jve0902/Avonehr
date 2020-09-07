@@ -10,7 +10,7 @@ const PDFDocument = require("pdfkit");
  * @param {object} user
  * @returns {string} pdfUrl
  */
-const generatePDF = async (content, user) => {
+const generatePDF = async (content, user, client) => {
   try {
     const pdfPath = path.join(
       "/app",
@@ -27,7 +27,7 @@ const generatePDF = async (content, user) => {
     });
     pdfDoc.text(`Name: ${user.firstname} ${user.lastname}`);
     pdfDoc.text(`IP Address: ${user.sign_ip_address}`);
-    pdfDoc.text(`Company: ${user.company || " "}`);
+    pdfDoc.text(`Practice: ${client.name}`);
     pdfDoc.text(`UserID: ${user.id}`);
 
     pdfDoc.end();
