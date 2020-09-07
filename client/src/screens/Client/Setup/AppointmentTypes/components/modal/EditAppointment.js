@@ -145,6 +145,7 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 autoComplete="appointment_type"
                 onChange={(event) => setAppointmentType(event.target.value)}
                 value={appointmentType}
+                autoFocus
               />
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
