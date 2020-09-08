@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { IconButton, Button } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,7 +19,6 @@ const DialogForm = ({
   cancelForm,
   hideActions,
   backAction,
-  skipAction,
   continueNext,
   applyButtonText,
   cancelButtonText
@@ -47,13 +47,6 @@ const DialogForm = ({
               backAction && (
                 <IconButton onClick={applyForm} aria-label="back">
                   <ArrowBackIcon />
-                </IconButton>
-              )
-            }
-            {
-              skipAction && (
-                <IconButton onClick={applyForm} aria-label="skip" className={classes.skipText}>
-                  Skip
                 </IconButton>
               )
             }
@@ -87,14 +80,6 @@ const DialogForm = ({
     </div>
   );
 };
-
-export default DialogForm;
-
-DialogForm.defaultProps = {
-  applyButtonText: 'Continue',
-  cancelButtonText: 'Cancel'
-};
-
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -134,3 +119,30 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+DialogForm.defaultProps = {
+  title: 'Title',
+  open: true,
+  message: null,
+  applyForm: () => {},
+  cancelForm: () => {},
+  hideActions: true,
+  backAction: null,
+  continueNext: null,
+  applyButtonText: 'Continue',
+  cancelButtonText: 'Cancel'
+};
+
+DialogForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  open: PropTypes.bool.isRequired,
+  message: PropTypes.node.isRequired,
+  applyForm: PropTypes.func,
+  cancelForm: PropTypes.func,
+  hideActions: PropTypes.bool.isRequired,
+  backAction: PropTypes.func,
+  continueNext: PropTypes.func,
+  applyButtonText: PropTypes.string,
+  cancelButtonText: PropTypes.string
+};
+
+export default DialogForm;
