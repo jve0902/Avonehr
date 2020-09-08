@@ -43,10 +43,12 @@ To run:
 
 ## Database
 
-    If you want to query the database install MySQL Workbench
-    https://www.mysql.com/products/workbench/
+If you want to query the database install MySQL Workbench
+https://www.mysql.com/products/workbench/
 
-## To create signup PDF files on a Mac:
+## File system
+
+To create PDF files on a Mac
 
     sudo mkdir /app/
     sudo mkdir /app/client
