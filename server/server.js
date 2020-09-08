@@ -6,6 +6,7 @@ const config = require("./config.js");
 const clientsRoute = require("./app/routes/client.routes");
 const authRoute = require("./app/routes/auth.routes");
 const emailRoute = require("./app/routes/email.routes");
+const accountingSearchRoute = require("./app/routes/accounting-search.routes");
 const appointmentsRoute = require("./app/routes/appointments.routes");
 const appointmentTypesRoute = require("./app/routes/appointment-types.routes");
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
   res.send(help);
 });
 
+app.use("/api/v1", accountingSearchRoute);
 app.use("/api/v1", appointmentsRoute);
 app.use("/api/v1", appointmentTypesRoute);
 app.use("/api/v1", clientsRoute);
