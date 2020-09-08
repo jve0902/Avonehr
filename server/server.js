@@ -39,5 +39,5 @@ app.use("/api/v1", authRoute);
 app.use("/api/v1", emailRoute);
 
 app.listen(config.port).on("listening", () => {
-  console.log(`🚀 are live on ${config.port}`);
+  console.log(`API is live on ${config.port}`);
 });

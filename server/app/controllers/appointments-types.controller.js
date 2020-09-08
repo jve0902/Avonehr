@@ -50,7 +50,7 @@ const create = async (req, res) => {
   const db = makeDb(configuration, res);
   let appointment_type = req.body.data;
 
-  (appointment_type.created_user_id = req.id),
+  (appointment_type.created_user_id = req.user_id),
     (appointment_type.client_id = req.client_id),
     (appointment_type.created = new Date());
 
