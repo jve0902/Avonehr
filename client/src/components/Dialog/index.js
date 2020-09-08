@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import DownloadIcon from '@material-ui/icons/GetApp';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const DialogForm = ({
@@ -31,8 +31,8 @@ const DialogForm = ({
           <DialogActions className={continueNext ? classes.buttonSkip : classes.buttonClose}>
             {
               continueNext && (
-                <IconButton onClick={continueNext} aria-label="delete">
-                  <DownloadIcon />
+                <IconButton onClick={continueNext} aria-label="next">
+                  <ArrowForwardIcon />
                 </IconButton>
               )
             }
