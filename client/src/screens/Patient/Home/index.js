@@ -85,6 +85,32 @@ export default function Home() {
         })}
       </Grid>
     </Grid>
+
+    <Grid container spacing={1}>
+      <Grid item md={6} xs={12}>
+        <Card
+          title="Documents"
+          data={[]}
+          showActions={true}
+          primaryButtonText={"New"}
+          secondaryButtonText={"Expand"}
+          showSearch={false}
+          primaryButtonHandler={toggleDialog}
+          secondaryButtonHandler={toggleDialog}
+        />
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <Card
+          title="All Tests"
+          data={[]}
+          showActions={true}
+          primaryButtonText={"Expand"}
+          secondaryButtonText={null}
+          showSearch={false}
+          primaryButtonHandler={toggleDialog}
+        />
+      </Grid>
+    </Grid>
     </>
   )
 }
