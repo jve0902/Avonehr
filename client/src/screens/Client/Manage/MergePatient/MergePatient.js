@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,10 +12,20 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(1),
   },
+  mergeItems: {
+    maxWidth: '500px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  submit: {
+    maxWidth: '100px',
+  },
 }));
 
 export default function MergePatient() {
   const classes = useStyles();
+  const [patientIdKeep, setPatientIdKeep] = useState('');
+  const [patientIdDelete, setPatientIdDelete] = useState('');
   return (
     <div className={classes.root}>
       <Typography
@@ -24,6 +36,40 @@ export default function MergePatient() {
       >
         Merge Patient
       </Typography>
+      <div className={classes.mergeItems}>
+        <TextField
+          value={patientIdKeep}
+          variant="outlined"
+          margin="normal"
+          id="patientId"
+          label="Patient Id to keep"
+          name="patientId"
+          autoComplete="patientId"
+          autoFocus
+          onChange={(event) => setPatientIdKeep(event.target.value)}
+        />
+        <TextField
+          value={patientIdDelete}
+          variant="outlined"
+          margin="normal"
+          id="patientIdDelete"
+          label="Patient Id to Delete"
+          name="patientIdDelete"
+          autoComplete="patientIdDelete"
+          autoFocus
+          onChange={(event) => setPatientIdDelete(event.target.value)}
+        />
+
+        <Button
+          disabled={!patientIdKeep || !patientIdDelete}
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          // onClick={(event) => onFormSubmit(event, login)}
+        >
+          Merge
+        </Button>
+      </div>
     </div>
   );
 }
