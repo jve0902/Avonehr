@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
+import Accounting from '../../../../services/accountingSerarch.service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,13 +59,24 @@ export default function AccountingSearch() {
   const classes = useStyles();
   const [amountFrom, setAmountFrom] = React.useState('');
   const [amountTo, setAmountTo] = React.useState('');
-
   const [dateFrom, setDateFrom] = React.useState(new Date());
   const [dateTo, setDateTo] = React.useState(new Date());
-
   const [type, setType] = React.useState('');
+  const [allAccount, setAllAccounts] = React.useState([]);
 
-  // const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const fetchAllAccount = () => {
+    const payload = {
+      amount1: amountFrom,
+      amount2: amountTo,
+    };
+    Accounting.getAccounting(payload).then((res) => {
+      setAllAccounts(res.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchAllAccount();
+  }, []);
 
   const handleChange = (event) => {
     setType(event.target.value);
