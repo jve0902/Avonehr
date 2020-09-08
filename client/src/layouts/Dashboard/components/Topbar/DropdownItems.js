@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   itemWithSubmenus: {
     color: theme.palette.white,
-    color: "#ffffff",
     padding: "16px 15px",
     textDecoration: "none",
   },

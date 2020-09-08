@@ -184,11 +184,19 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         ))}
       <TextFieldWithError
         fieldName="name"
-        label="Practice name"
+        label="Practice Name"
         value={name}
         handleOnChange={(event) => setName(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "name")}
+      />
+      <TextFieldWithError
+        fieldName="code"
+        label="Practice Code"
+        value={clientCode}
+        handleOnChange={(event) => setClientCode(event.target.value)}
+        handleOnBlur={(event) => handleAjaxValidation(event)}
+        errors={getFieldError("client", "code")}
       />
       <TextField
         variant="outlined"
@@ -218,7 +226,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         margin="dense"
         fullWidth
         id="city"
-        label="Practice city"
+        label="Practice City"
         name="city"
         autoComplete="city"
         onChange={(event) => setCity(event.target.value)}
@@ -229,7 +237,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         margin="dense"
         fullWidth
         id="state"
-        label="Practice state"
+        label="Practice State"
         name="state"
         autoComplete="state"
         onChange={(event) => setState(event.target.value)}
@@ -247,7 +255,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
       />
       <TextFieldWithError
         fieldName="phone"
-        label="Practice phone"
+        label="Practice Phone"
         value={phone}
         handleOnChange={(event) => setPhone(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
@@ -292,14 +300,6 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setNpi(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "npi")}
-      />
-      <TextFieldWithError
-        fieldName="code"
-        label="Client Code"
-        value={clientCode}
-        handleOnChange={(event) => setClientCode(event.target.value)}
-        handleOnBlur={(event) => handleAjaxValidation(event)}
-        errors={getFieldError("client", "code")}
       />
       <Typography
         component="h3"
@@ -378,7 +378,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
           <div>
             <span>
               Check here to indicate that you have read and agree to the terms
-              of the <Link href="/agreement">Clinios Customer Aggrements</Link>
+              of the <Link href="/agreement">Clinios Customer Agreement</Link>
             </span>
           </div>
         }

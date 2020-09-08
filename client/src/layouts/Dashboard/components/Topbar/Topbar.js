@@ -270,12 +270,11 @@ const Topbar = (props) => {
                     key={index}
                   />
                 ) : (
-                  <Button>
+                  <Button key={page.title}>
                     <RouterLink
                       to={page.href}
                       className={classes.link}
                       onClick={page.logout && handleLogout}
-                      key={page.title}
                     >
                       {page.title}
                     </RouterLink>

@@ -8,7 +8,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -60,17 +62,17 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Appointment Type</StyledTableCell>
-            <StyledTableCell>Appointment Name Portal</StyledTableCell>
+            <StyledTableCell>Portal Name</StyledTableCell>
             <StyledTableCell>Minutes</StyledTableCell>
-            <StyledTableCell>Allow Patients Schedule</StyledTableCell>
-            <StyledTableCell>Sort Order</StyledTableCell>
+            <StyledTableCell>Patient Schedule</StyledTableCell>
+            <StyledTableCell>Order</StyledTableCell>
             <StyledTableCell align="center">Note</StyledTableCell>
             <StyledTableCell>Status</StyledTableCell>
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Created By</StyledTableCell>
             <StyledTableCell>Updated</StyledTableCell>
             <StyledTableCell>Updated By</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
+            <StyledTableCell /*align="center"*/>Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -96,20 +98,20 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
               </TableCell>
               <TableCell>{appointment.updated_user || "-"}</TableCell>
               <TableCell className={classes.actions}>
-                <React.Fragment>
-                  <Button
-                    color="primary"
-                    onClick={() => onEdit(appointment.id)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    color="primary"
-                    onClick={() => onDelete(appointment.id)}
-                  >
-                    Delete
-                  </Button>
-                </React.Fragment>
+                <IconButton
+                  aria-label="edit"
+                  className={classes.margin}
+                  onClick={() => onEdit(appointment.id)}
+                >
+                  <EditIcon fontSize="medium" />
+                </IconButton>
+                <IconButton
+                  aria-label="delete"
+                  className={classes.margin}
+                  onClick={() => onDelete(appointment.id)}
+                >
+                  <DeleteIcon fontSize="medium" />
+                </IconButton>
               </TableCell>
             </StyledTableRow>
           ))}

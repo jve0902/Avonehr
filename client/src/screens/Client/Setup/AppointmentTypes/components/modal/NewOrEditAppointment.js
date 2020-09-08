@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
+import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -63,56 +64,79 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
+const NewOrEditAppointment = ({
+  isOpen,
+  onClose,
+  user,
+  isNewAppointment,
+  ...props
+}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [appointment, setAppointment] = useState([]);
-  const [appointmentType, setAppointmentType] = useState("");
-  const [appointmentNamePortal, setAppointmentNamePortal] = useState("");
-  const [minutes, setMinutes] = useState("");
-  const [allow_patients_schedule, setAllow_patients_schedule] = useState(false);
-  const [sort_order, setSort_order] = useState("");
-  const [active, setActive] = useState(false);
-  const [note, setNote] = useState("");
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    setAppointment(props.appointment);
+    const appt = {
+      ...props.appointment,
+      length: 20,
+      sort_order: 1,
+      allow_patients_schedule: true,
+      active: true,
+    };
+
+    setAppointment(appt);
   }, [props.appointment]);
-
-  useEffect(() => {
-    if (appointment && Object.keys(appointment).length !== 0) {
-      setAppointmentType(appointment.appointment_type);
-      setAppointmentNamePortal(appointment.appointment_name_portal);
-      setMinutes(appointment.length);
-      setAllow_patients_schedule(appointment.allow_patients_schedule);
-      setSort_order(appointment.sort_order);
-      setActive(appointment.active);
-      setNote(appointment.note);
-    }
-  }, [appointment]);
 
   const handleFormSubmission = () => {
     const formedData = {
       data: removeEmpty({
-        appointment_type: appointmentType,
-        appointment_name_portal: appointmentNamePortal,
-        length: minutes,
-        allow_patients_schedule: allow_patients_schedule ? 1 : 0,
-        sort_order: sort_order,
-        note: note,
-        active: active ? 1 : 0,
+        appointment_type: appointment.appointment_type,
+        appointment_name_portal: appointment.appointment_name_portal,
+        length: appointment.length,
+        allow_patients_schedule: appointment.allow_patients_schedule ? 1 : 0,
+        sort_order: appointment.sort_order,
+        note: appointment.note,
+        active: appointment.active ? 1 : 0,
         created_user_id: user.id,
         client_id: user.client_id,
       }),
     };
-    AppointmentService.update(formedData, user.id, props.appointment.id).then(
+    if (isNewAppointment) {
+      createNewAppointment(formedData);
+      console.log("new");
+    } else {
+      delete formedData.data.created_user_id;
+      console.log("Update");
+
+      AppointmentService.update(formedData, user.id, props.appointment.id).then(
+        (response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+          onClose();
+        }
+      );
+    }
+  };
+
+  const createNewAppointment = (data) => {
+    AppointmentService.create(data).then(
       (response) => {
         dispatch(setSuccess(`${response.data.message}`));
         onClose();
-        console.log("res:", response);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
       }
     );
   };
+
+  const handleOnChange = (event) => {
+    setAppointment({
+      ...appointment,
+      [event.target.name]: event.target.value.trim(),
+    });
+  };
+  console.log("appointment", appointment);
 
   return (
     <div>
@@ -123,19 +147,27 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" className={classes.title}>
-          Edit Appointment Type
+          {isNewAppointment ? "New Appointment Type" : "Edit Appointment Type"}
         </DialogTitle>
         <DialogContent className={classes.content}>
           <DialogContentText id="alert-dialog-description">
-            This page is used to update a Appointment type for schedulling
-            Appointment
+            {isNewAppointment
+              ? "This page is used to create a new appointment type"
+              : "This page is used to update an appointment type"}
           </DialogContentText>
+          {errors &&
+            errors.map((error, index) => (
+              <Alert severity="error" key={index}>
+                {error.msg}
+              </Alert>
+            ))}
           <div className={classes.root}>
             <FormControl component="div" className={classes.formControl}>
               <FormLabel component="p" className={classes.formLabel}>
                 Appointment Type
               </FormLabel>
               <TextField
+                autoFocus
                 className={classes.formField}
                 variant="outlined"
                 margin="dense"
@@ -143,8 +175,8 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 name="appointment_type"
                 id="appointment_type"
                 autoComplete="appointment_type"
-                onChange={(event) => setAppointmentType(event.target.value)}
-                value={appointmentType}
+                onChange={(event) => handleOnChange(event)}
+                value={appointment.appointment_type}
               />
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
@@ -159,10 +191,8 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 name="appointment_name_portal"
                 id="appointment_name_portal"
                 autoComplete="appointment_name_portal"
-                onChange={(event) =>
-                  setAppointmentNamePortal(event.target.value)
-                }
-                value={appointmentNamePortal}
+                onChange={(event) => handleOnChange(event)}
+                value={appointment.appointment_name_portal}
               />
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
@@ -173,11 +203,11 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 className={classes.formField}
                 variant="outlined"
                 margin="dense"
-                name="minutes"
-                id="minutes"
-                autoComplete="minutes"
-                onChange={(event) => setMinutes(event.target.value)}
-                value={minutes}
+                name="length"
+                id="length"
+                autoComplete="length"
+                onChange={(event) => handleOnChange(event)}
+                value={appointment.length}
               />
               <p className={classes.formHelperText}>
                 Number of minutes for the appointment
@@ -188,15 +218,18 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 Allow Patient Schedule
               </FormLabel>
               <Switch
-                checked={allow_patients_schedule}
-                onChange={() =>
-                  setAllow_patients_schedule(!allow_patients_schedule)
+                checked={appointment.allow_patients_schedule}
+                onChange={(event) =>
+                  setAppointment({
+                    ...appointment,
+                    [event.target.name]: !appointment.allow_patients_schedule,
+                  })
                 }
                 name="allow_patients_schedule"
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
               <p className={classes.formHelperText}>
-                Make this an option in the patient portal
+                Allow patient to select this in the patient portal
               </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
@@ -210,8 +243,8 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 name="sort_order"
                 id="sort_order"
                 autoComplete="sort_order"
-                onChange={(event) => setSort_order(event.target.value)}
-                value={sort_order}
+                onChange={(event) => handleOnChange(event)}
+                value={appointment.sort_order}
               />
               <p className={classes.formHelperText}></p>
             </FormControl>
@@ -220,8 +253,13 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                 Status
               </FormLabel>
               <Switch
-                checked={active}
-                onChange={() => setActive(!active)}
+                checked={appointment.active}
+                onChange={(event) =>
+                  setAppointment({
+                    ...appointment,
+                    [event.target.name]: !appointment.active,
+                  })
+                }
                 name="active"
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
@@ -241,8 +279,8 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
                   inputComponent: TextareaAutosize,
                   rows: 8,
                 }}
-                value={note}
-                onChange={(event) => setNote(event.target.value)}
+                value={appointment.note}
+                onChange={(event) => handleOnChange(event)}
               />
             </FormControl>
           </div>
@@ -253,8 +291,8 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
             variant="outlined"
             onClick={() => onClose()}
             style={{
-              borderColor: colors.red[600],
-              color: colors.red[600],
+              borderColor: colors.orange[600],
+              color: colors.orange[600],
             }}
           >
             Cancel
@@ -265,7 +303,7 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
             size="small"
             onClick={() => handleFormSubmission()}
           >
-            Update
+            {isNewAppointment ? "Save" : "Update"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -273,4 +311,4 @@ const EditAppointmentModal = ({ isOpen, onClose, user, ...props }) => {
   );
 };
 
-export default EditAppointmentModal;
+export default NewOrEditAppointment;
