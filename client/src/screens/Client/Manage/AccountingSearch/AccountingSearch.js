@@ -64,7 +64,7 @@ export default function AccountingSearch() {
   const [type, setType] = React.useState('');
   const [allAccount, setAllAccounts] = React.useState([]);
 
-  const fetchAllAccount = () => {
+  const serachAccounts = () => {
     const payload = {
       amount1: amountFrom,
       amount2: amountTo,
@@ -73,10 +73,6 @@ export default function AccountingSearch() {
       setAllAccounts(res.data);
     });
   };
-
-  useEffect(() => {
-    fetchAllAccount();
-  }, []);
 
   const handleChange = (event) => {
     setType(event.target.value);
@@ -177,7 +173,7 @@ export default function AccountingSearch() {
           variant="contained"
           color="primary"
           className={classes.submit}
-          // onClick={(event) => onFormSubmit(event, login)}
+          onClick={(event) => serachAccounts()}
         >
           Search
         </Button>
