@@ -50,6 +50,12 @@ const getPatient = async (req, res) => {
  * @returns {object}
  */
 const search = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
   const { text } = req.body.data;
 
   const db = makeDb(configuration, res);
@@ -85,8 +91,6 @@ const search = async (req, res) => {
  * @returns {object}
  */
 const history = async (req, res) => {
-  const { text } = req.body.data;
-
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
@@ -231,12 +235,87 @@ const adminNoteupdate = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const getForms = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select pf.form_id, pf.created, cf.title, pf.form
+            from patient_form pf
+            left join client_form cf on cf.id=pf.form_id
+            where pf.patient_id=1
+            order by pf.created
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Search not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const getFormById = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select pf.form_id, pf.created, cf.title, pf.form
+        from patient_form pf
+        left join client_form cf on cf.id=pf.form_id
+        where pf.patient_id=1 
+        and pf.form_id=${id}
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
   history,
   AdminNotehistory,
   adminNoteupdate,
+  getForms,
+  getFormById,
 };
 
 module.exports = appointmentTypes;

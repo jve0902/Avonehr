@@ -4,6 +4,11 @@ const { body, check, param } = require("express-validator");
 
 exports.validate = (method) => {
   switch (method) {
+    case "search": {
+      return [
+        check("data.text").exists().withMessage("text can not be empty!"),
+      ];
+    }
     case "adminNoteupdate": {
       return [
         check("data.admin_note")
@@ -14,6 +19,9 @@ exports.validate = (method) => {
           .withMessage("old_admin_note can not empty!"),
         param("id").isInt().withMessage("Must be an integer!"),
       ];
+    }
+    case "singleForm": {
+      return [param("id").isInt().withMessage("Must be an integer!")];
     }
   }
 };

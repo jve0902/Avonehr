@@ -8,7 +8,11 @@ const router = express.Router();
 
 // clients Routes
 router.get("/patient", [authJwt.verifyToken], Patient.getPatient);
-router.get("/patient/search", [authJwt.verifyToken], Patient.search);
+router.get(
+  "/patient/search",
+  [authJwt.verifyToken, validation.validate("search")],
+  Patient.search
+);
 router.get("/patient/history", [authJwt.verifyToken], Patient.history);
 router.get(
   "/patient/admin-note/history",
@@ -19,6 +23,12 @@ router.put(
   "/patient/admin-note/:id",
   [authJwt.verifyToken, validation.validate("adminNoteupdate")],
   Patient.adminNoteupdate
+);
+router.get("/patient/forms", [authJwt.verifyToken], Patient.getForms);
+router.get(
+  "/patient/forms/:id",
+  [authJwt.verifyToken, validation.validate("singleForm")],
+  Patient.getFormById
 );
 
 module.exports = router;
