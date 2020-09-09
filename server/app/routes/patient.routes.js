@@ -46,11 +46,11 @@ router.post(
   [authJwt.verifyToken, validation.validate("CreatePatientHandouts")],
   Patient.CreatePatientHandouts
 );
-
 router.delete(
   "/patient/patient-handout/:patient_id/:handout_id",
   [authJwt.verifyToken, validation.validate("DeletePatientHandouts")],
   Patient.DeletePatientHandouts
 );
+router.get("/patient/billing", [authJwt.verifyToken], Patient.getBilling);
 
 module.exports = router;
