@@ -384,6 +384,117 @@ const handoutDelete = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const CreatePatientHandouts = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { patient_id, handout_id } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into patient_handout (patient_id, handout_id, client_id, created, created_user_id) values (${patient_id}, ${handout_id}, ${req.client_id}, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const patientHandouts = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select h.id, h.filename, ph.created, concat(u.firstname, ' ', u.lastname) name
+        from handout h
+        left join patient_handout ph on h.id=ph.handout_id
+        left join user u on u.id=ph.created_user_id
+        where h.client_id=1
+        order by h.filename
+        limit 100
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const DeletePatientHandouts = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { patient_id, handout_id } = req.params;
+  const db = makeDb(configuration, res);
+
+  try {
+    const dbResponse = await db.query(
+      `delete
+        from patient_handout
+        where patient_id=${patient_id}
+        and handout_id=${handout_id}
+      `
+    );
+
+    if (!dbResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Deletion not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -394,6 +505,9 @@ const appointmentTypes = {
   getFormById,
   handouts,
   handoutDelete,
+  CreatePatientHandouts,
+  patientHandouts,
+  DeletePatientHandouts,
 };
 
 module.exports = appointmentTypes;

@@ -26,5 +26,25 @@ exports.validate = (method) => {
     case "handoutDelete": {
       return [param("id").isInt().withMessage("Must be an integer!")];
     }
+    case "CreatePatientHandouts": {
+      return [
+        check("data.patient_id")
+          .exists()
+          .withMessage("patient_id can not empty!"),
+        check("data.handout_id")
+          .exists()
+          .withMessage("handout_id can not empty!"),
+      ];
+    }
+    case "DeletePatientHandouts": {
+      return [
+        param("patient_id")
+          .isInt()
+          .withMessage("patient_id must be an integer!"),
+        param("handout_id")
+          .isInt()
+          .withMessage("handout_id must be an integer!"),
+      ];
+    }
   }
 };

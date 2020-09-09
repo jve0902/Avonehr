@@ -36,5 +36,21 @@ router.delete(
   [authJwt.verifyToken, validation.validate("handoutDelete")],
   Patient.handoutDelete
 );
+router.get(
+  "/patient/patient-handout",
+  [authJwt.verifyToken],
+  Patient.patientHandouts
+);
+router.post(
+  "/patient/patient-handout",
+  [authJwt.verifyToken, validation.validate("CreatePatientHandouts")],
+  Patient.CreatePatientHandouts
+);
+
+router.delete(
+  "/patient/patient-handout/:patient_id/:handout_id",
+  [authJwt.verifyToken, validation.validate("DeletePatientHandouts")],
+  Patient.DeletePatientHandouts
+);
 
 module.exports = router;
