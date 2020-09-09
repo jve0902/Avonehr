@@ -118,7 +118,6 @@ export default function Fax() {
           {file && (
             <Button
               disabled={!file}
-              // variant="contained"
               color="secondary"
               className={classes.next}
               onClick={() => setFile(null)}
