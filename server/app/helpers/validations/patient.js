@@ -46,5 +46,13 @@ exports.validate = (method) => {
           .withMessage("handout_id must be an integer!"),
       ];
     }
+    case "deleteAllergy": {
+      return [
+        param("patient_id")
+          .isInt()
+          .withMessage("patient_id must be an integer!"),
+        param("drug_id").isInt().withMessage("drug_id must be an integer!"),
+      ];
+    }
   }
 };

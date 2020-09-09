@@ -52,5 +52,16 @@ router.delete(
   Patient.DeletePatientHandouts
 );
 router.get("/patient/billing", [authJwt.verifyToken], Patient.getBilling);
+router.get("/patient/allergies", [authJwt.verifyToken], Patient.getAllergies);
+router.delete(
+  "/patient/allergies/:patient_id/:drug_id",
+  [authJwt.verifyToken, validation.validate("deleteAllergy")],
+  Patient.deleteAllergy
+);
+router.get(
+  "/patient/allergies/search",
+  [authJwt.verifyToken, validation.validate("search")],
+  Patient.searchAllergies
+);
 
 module.exports = router;

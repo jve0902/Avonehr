@@ -501,11 +501,6 @@ const DeletePatientHandouts = async (req, res) => {
  * @returns {object}
  */
 const getBilling = async (req, res) => {
-  let limit = 100;
-  if (req.query.limit) {
-    limit = req.query.limit;
-  }
-  console.log("limit", limit);
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
@@ -537,6 +532,120 @@ const getBilling = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const getAllergies = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select pa.created, pa.drug_id, d.name
+        from patient_allergy pa
+        left join drug d on d.id=pa.drug_id
+        where pa.client_id=1
+        and pa.patient_id=1
+        order by d.name
+        limit 100
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const deleteAllergy = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { patient_id, drug_id } = req.params;
+  const db = makeDb(configuration, res);
+
+  try {
+    const dbResponse = await db.query(
+      `delete from patient_allergy where patient_id=${patient_id} and drug_id=${drug_id}
+      `
+    );
+
+    if (!dbResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Deletion not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const searchAllergies = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { text } = req.body.data;
+
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select d.id, d.name
+        from drug d
+        where d.name like '${text}%'
+        order by d.name
+        limit 50
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Search not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -551,6 +660,9 @@ const appointmentTypes = {
   patientHandouts,
   DeletePatientHandouts,
   getBilling,
+  getAllergies,
+  deleteAllergy,
+  searchAllergies,
 };
 
 module.exports = appointmentTypes;
