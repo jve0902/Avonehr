@@ -308,6 +308,41 @@ const getFormById = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const handouts = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select ph.created, ph.handout_id, h.filename
+        from patient_handout ph
+        left join handout h on h.id=ph.handout_id
+        where ph.client_id=1
+        and ph.patient_id=1
+        order by h.filename
+        limit 100
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -316,6 +351,7 @@ const appointmentTypes = {
   adminNoteupdate,
   getForms,
   getFormById,
+  handouts,
 };
 
 module.exports = appointmentTypes;

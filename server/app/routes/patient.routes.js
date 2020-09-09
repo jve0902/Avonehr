@@ -30,5 +30,6 @@ router.get(
   [authJwt.verifyToken, validation.validate("singleForm")],
   Patient.getFormById
 );
+router.get("/patient/handouts", [authJwt.verifyToken], Patient.handouts);
 
 module.exports = router;
