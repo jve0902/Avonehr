@@ -44,7 +44,7 @@ export default function PatientSearch() {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={firstName}
                   variant="outlined"
@@ -58,7 +58,7 @@ export default function PatientSearch() {
                   onChange={(event) => setFirstName(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={lastName}
                   variant="outlined"
@@ -72,7 +72,7 @@ export default function PatientSearch() {
                   onChange={(event) => setLastName(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={phone}
                   variant="outlined"
@@ -86,7 +86,7 @@ export default function PatientSearch() {
                   onChange={(event) => setPhone(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={email}
                   variant="outlined"
@@ -100,7 +100,7 @@ export default function PatientSearch() {
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={patientId}
                   variant="outlined"
@@ -114,7 +114,7 @@ export default function PatientSearch() {
                   onChange={(event) => setPatientId(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={status}
                   variant="outlined"
@@ -134,12 +134,10 @@ export default function PatientSearch() {
       </div>
 
       <Button
-        // disabled={!email || !password}
         fullWidth
         variant="contained"
         color="primary"
         className={classes.submit}
-        // onClick={(event) => onFormSubmit(event, login)}
       >
         Search
       </Button>
