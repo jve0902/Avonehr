@@ -1,5 +1,5 @@
 "use strict";
-
+const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
@@ -54,6 +54,7 @@ const search = async (req, res) => {
 
   const db = makeDb(configuration, res);
   try {
+    //TODO:: Incomplete query
     const dbResponse = await db.query(
       `select 'Encounter', id, dt, notes, client_id
         from encounter
@@ -156,8 +157,6 @@ const history = async (req, res) => {
  * @returns {object}
  */
 const AdminNotehistory = async (req, res) => {
-  const { text } = req.body.data;
-
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
@@ -187,11 +186,57 @@ const AdminNotehistory = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const adminNoteupdate = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { admin_note, old_admin_note } = req.body.data;
+  const { id } = req.params;
+
+  const db = makeDb(configuration, res);
+  try {
+    //TODO:: Update this query
+    const patientHistory = await db.query(
+      `insert into patient_history (id, admin_note, created, created_user_id) values (${id}, '${old_admin_note}', now(), ${req.user_id})`
+    );
+    const updateResponse = await db.query(
+      `update patient
+            set admin_note='${admin_note}'
+            where id=${id}
+      `
+    );
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Update not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = updateResponse;
+    successMessage.message = "Update successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Update not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
   history,
   AdminNotehistory,
+  adminNoteupdate,
 };
 
 module.exports = appointmentTypes;

@@ -3,6 +3,7 @@
 const express = require("express");
 const { authJwt } = require("../../app/middlewares");
 const Patient = require("../controllers/patient.controller.js");
+const validation = require("./../helpers/validations/patient.js");
 const router = express.Router();
 
 // clients Routes
@@ -13,6 +14,11 @@ router.get(
   "/patient/admin-note/history",
   [authJwt.verifyToken],
   Patient.AdminNotehistory
+);
+router.put(
+  "/patient/admin-note/:id",
+  [authJwt.verifyToken, validation.validate("adminNoteupdate")],
+  Patient.adminNoteupdate
 );
 
 module.exports = router;
