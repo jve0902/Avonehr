@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
 import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
+import BasicInfo from "../BasicInfo"
 
 export default function Home() {
   const classes = useStyles();
@@ -18,7 +19,7 @@ export default function Home() {
     <Dialog
       open={showDialog}
       title={"Dialog"}
-      message={"Dialog data goes here..."}
+      message={<BasicInfo />}
       applyForm={() => toggleDialog()}
       cancelForm={() => toggleDialog()}
       hideActions={true}
