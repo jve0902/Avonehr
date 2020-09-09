@@ -31,5 +31,10 @@ router.get(
   Patient.getFormById
 );
 router.get("/patient/handouts", [authJwt.verifyToken], Patient.handouts);
+router.delete(
+  "/patient/handouts/:id",
+  [authJwt.verifyToken, validation.validate("handoutDelete")],
+  Patient.handoutDelete
+);
 
 module.exports = router;

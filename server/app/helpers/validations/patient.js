@@ -23,5 +23,8 @@ exports.validate = (method) => {
     case "singleForm": {
       return [param("id").isInt().withMessage("Must be an integer!")];
     }
+    case "handoutDelete": {
+      return [param("id").isInt().withMessage("Must be an integer!")];
+    }
   }
 };
