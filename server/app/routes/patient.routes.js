@@ -9,5 +9,10 @@ const router = express.Router();
 router.get("/patient", [authJwt.verifyToken], Patient.getPatient);
 router.get("/patient/search", [authJwt.verifyToken], Patient.search);
 router.get("/patient/history", [authJwt.verifyToken], Patient.history);
+router.get(
+  "/patient/admin-note/history",
+  [authJwt.verifyToken],
+  Patient.AdminNotehistory
+);
 
 module.exports = router;
