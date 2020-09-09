@@ -8,5 +8,6 @@ const router = express.Router();
 // clients Routes
 router.get("/patient", [authJwt.verifyToken], Patient.getPatient);
 router.get("/patient/search", [authJwt.verifyToken], Patient.search);
+router.get("/patient/history", [authJwt.verifyToken], Patient.history);
 
 module.exports = router;

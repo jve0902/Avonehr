@@ -77,9 +77,83 @@ const search = async (req, res) => {
     await db.close();
   }
 };
+
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const history = async (req, res) => {
+  const { text } = req.body.data;
+
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select 
+            ph.created
+            ,concat(u.firstname, ' ', u.lastname) created_user
+            ,concat(u2.firstname, ' ', u2.lastname) provider
+            ,ph.firstname
+            ,ph.middlename
+            ,ph.lastname
+            ,ph.preferred_name
+            ,ph.address
+            ,ph.address2
+            ,ph.city
+            ,ph.state
+            ,ph.postal
+            ,ph.country
+            ,ph.phone_cell
+            ,ph.phone_home
+            ,ph.phone_work
+            ,ph.phone_other
+            ,ph.phone_note
+            ,ph.email
+            ,ph.dob
+            ,ph.ssn
+            ,ph.gender
+            ,ph.emergency_firstname
+            ,ph.emergency_middlename
+            ,ph.emergency_lastname
+            ,ph.emergency_relationship
+            ,ph.emergency_email
+            ,ph.emergency_phone
+            ,ph.insurance_name
+            ,ph.insurance_group
+            ,ph.insurance_member
+            ,ph.insurance_phone
+            ,ph.insurance_desc
+            ,ph.admin_note
+            ,ph.medical_note
+            from patient_history ph
+            left join user u on u.id=ph.created_user_id
+            left join user u2 on u2.id=ph.user_id
+            where ph.id=1
+            order by ph.created desc
+            limit 50
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
+  history,
 };
 
 module.exports = appointmentTypes;
