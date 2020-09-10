@@ -9,6 +9,7 @@ const emailRoute = require("./app/routes/email.routes");
 const accountingSearchRoute = require("./app/routes/accounting-search.routes");
 const appointmentsRoute = require("./app/routes/appointments.routes");
 const appointmentTypesRoute = require("./app/routes/appointment-types.routes");
+const patientRoute = require("./app/routes/patient.routes");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", accountingSearchRoute);
 app.use("/api/v1", appointmentsRoute);
 app.use("/api/v1", appointmentTypesRoute);
+app.use("/api/v1", patientRoute);
 app.use("/api/v1", clientsRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", emailRoute);
