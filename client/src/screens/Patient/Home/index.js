@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
-import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient"
+import Dialog from "../../../components/Dialog";
+import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
 
 export default function Home() {
   const classes = useStyles();
+  const [showDialog, setShowDialog] = useState(false);
+
+  const toggleDialog = () => {
+    setShowDialog(prevState => !prevState)
+  }
+
   return (
+    <>
+    <Dialog
+      open={showDialog}
+      title={"Dialog"}
+      message={"Dialog data goes here..."}
+      applyForm={() => toggleDialog()}
+      cancelForm={() => toggleDialog()}
+      hideActions={true}
+    />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>
         {FirstColumnPatientCards.map((item, index) => {
@@ -20,6 +36,8 @@ export default function Home() {
               icon={item.icon}
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}
+              primaryButtonHandler={toggleDialog}
+              secondaryButtonHandler={toggleDialog}
             />
           )
         })}
@@ -67,7 +85,33 @@ export default function Home() {
         })}
       </Grid>
     </Grid>
-    
+
+    <Grid container spacing={1}>
+      <Grid item md={6} xs={12}>
+        <Card
+          title="Documents"
+          data={[]}
+          showActions={true}
+          primaryButtonText={"New"}
+          secondaryButtonText={"Expand"}
+          showSearch={false}
+          primaryButtonHandler={toggleDialog}
+          secondaryButtonHandler={toggleDialog}
+        />
+      </Grid>
+      <Grid item md={6} xs={12}>
+        <Card
+          title="All Tests"
+          data={[]}
+          showActions={true}
+          primaryButtonText={"Expand"}
+          secondaryButtonText={null}
+          showSearch={false}
+          primaryButtonHandler={toggleDialog}
+        />
+      </Grid>
+    </Grid>
+    </>
   )
 }
 
