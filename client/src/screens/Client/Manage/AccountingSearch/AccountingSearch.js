@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import PropTypes from 'prop-types';
-import Accounting from '../../../../services/accountingSerarch.service';
+import React, { useEffect } from "react";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import PropTypes from "prop-types";
+import Accounting from "../../../../services/accountingSearch.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: '40px 0px',
+    padding: "40px 0px",
   },
   formControl: {
     margin: theme.spacing(1),
@@ -24,28 +24,28 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '30%', // Fix IE 11 issue.
+    display: "flex",
+    flexDirection: "column",
+    width: "30%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   formElments: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '500px',
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "500px",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: '180px',
+    maxWidth: "180px",
   },
   dateInput: {
-    padding: '10px',
+    padding: "10px",
   },
   customSelect: {
-    width: '185px',
+    width: "185px",
   },
   type: {
-    marginTop: '10px',
+    marginTop: "10px",
   },
 }));
 const CustomInput = ({ value, onClick }) => {
@@ -57,23 +57,26 @@ const CustomInput = ({ value, onClick }) => {
 };
 export default function AccountingSearch() {
   const classes = useStyles();
-  const [amountFrom, setAmountFrom] = React.useState('');
-  const [amountTo, setAmountTo] = React.useState('');
+  const [amountFrom, setAmountFrom] = React.useState("");
+  const [amountTo, setAmountTo] = React.useState("");
   const [dateFrom, setDateFrom] = React.useState(new Date());
   const [dateTo, setDateTo] = React.useState(new Date());
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState("");
   const [allAccount, setAllAccounts] = React.useState([]);
 
   const serachAccounts = () => {
     const payload = {
-      amount1: amountFrom,
-      amount2: amountTo,
+      data: {
+        amount1: amountFrom,
+        amount2: amountTo,
+      },
     };
-    Accounting.getAccounting(payload).then((res) => {
+    Accounting.search(payload).then((res) => {
       setAllAccounts(res.data);
     });
   };
 
+  console.log("allAccount", allAccount);
   const handleChange = (event) => {
     setType(event.target.value);
   };

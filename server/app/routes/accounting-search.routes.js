@@ -7,6 +7,6 @@ const router = express.Router();
 
 // clients Routes
 router.get("/client/accounting", [authJwt.verifyToken], Client.getAll);
-router.get("/client/accounting/search", [authJwt.verifyToken], Client.search);
+router.post("/client/accounting/search", [authJwt.verifyToken], Client.search);
 
 module.exports = router;
