@@ -10,8 +10,14 @@ export default function Home() {
   const classes = useStyles();
   const [showPatientDialog, setShowPatientDialog] = useState(false);
 
-  const toggleDialog = () => {
+  const togglePatientInfoDialog = () => {
     setShowPatientDialog(prevState => !prevState)
+  }
+
+  const mapSecondaryButtonHandlers = (value) => {
+    if(value === 'Patient') {
+      return togglePatientInfoDialog;
+    }
   }
 
   return (
@@ -20,8 +26,8 @@ export default function Home() {
       open={showPatientDialog}
       title={"Patient Info"}
       message={<BasicInfo />}
-      applyForm={() => toggleDialog()}
-      cancelForm={() => toggleDialog()}
+      applyForm={() => togglePatientInfoDialog()}
+      cancelForm={() => togglePatientInfoDialog()}
       hideActions={true}
       size={"lg"}
     />
@@ -38,8 +44,8 @@ export default function Home() {
               icon={item.icon}
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}
-              primaryButtonHandler={toggleDialog}
-              secondaryButtonHandler={toggleDialog}
+              primaryButtonHandler={togglePatientInfoDialog}
+              secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
             />
           )
         })}
@@ -97,8 +103,8 @@ export default function Home() {
           primaryButtonText={"New"}
           secondaryButtonText={"Expand"}
           showSearch={false}
-          primaryButtonHandler={toggleDialog}
-          secondaryButtonHandler={toggleDialog}
+          primaryButtonHandler={togglePatientInfoDialog}
+          secondaryButtonHandler={togglePatientInfoDialog}
         />
       </Grid>
       <Grid item md={6} xs={12}>
@@ -109,7 +115,7 @@ export default function Home() {
           primaryButtonText={"Expand"}
           secondaryButtonText={null}
           showSearch={false}
-          primaryButtonHandler={toggleDialog}
+          primaryButtonHandler={togglePatientInfoDialog}
         />
       </Grid>
     </Grid>
