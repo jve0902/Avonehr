@@ -4,7 +4,8 @@ import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
 import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
-import BasicInfo from "../BasicInfo"
+import BasicInfo from "../BasicInfo";
+import Form from "../Form";
 
 export default function Home() {
   const classes = useStyles();
@@ -82,7 +83,7 @@ export default function Home() {
     <Dialog
       open={showFormsExpandDialog}
       title={"Forms Expand"}
-      message={<h3>Forms Expand</h3>}
+      message={<Form onClose={toggleFormsExpandDialog} />}
       applyForm={() => toggleFormsExpandDialog()}
       cancelForm={() => toggleFormsExpandDialog()}
       hideActions={true}
