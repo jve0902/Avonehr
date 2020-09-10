@@ -8,7 +8,7 @@ const router = express.Router();
 
 // clients Routes
 router.get("/patient", [authJwt.verifyToken], Patient.getPatient);
-router.get(
+router.post(
   "/patient/search",
   [authJwt.verifyToken, validation.validate("search")],
   Patient.search
@@ -58,7 +58,7 @@ router.delete(
   [authJwt.verifyToken, validation.validate("deleteAllergy")],
   Patient.deleteAllergy
 );
-router.get(
+router.post(
   "/patient/allergies/search",
   [authJwt.verifyToken, validation.validate("search")],
   Patient.searchAllergies
