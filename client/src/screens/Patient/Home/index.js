@@ -45,7 +45,9 @@ export default function Home() {
   const mapSecondaryButtonHandlers = (value) => {
     if(value === 'Patient') {
       return togglePatientInfoDialog;
-    }
+    } else if(value === 'Admin Notes') {
+      return toggleAdminHistoryDialog;
+    } 
   }
 
   return (
