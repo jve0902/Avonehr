@@ -10,6 +10,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
 import Accounting from '../../../../services/accountingSerarch.service';
+import Card from '@material-ui/core/Card';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    width: '30%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   formElments: {
@@ -36,16 +37,22 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: '180px',
-  },
-  dateInput: {
-    padding: '10px',
+    marginTop: '20px',
+    // maxWidth: '180px',
   },
   customSelect: {
-    width: '185px',
+    width: '200px',
   },
   type: {
-    marginTop: '10px',
+    marginTop: '20px',
+    marginBottom: '5px',
+  },
+  paper: {
+    padding: '25px',
+    maxWidth: '500px',
+  },
+  textField: {
+    width: '200px',
   },
 }));
 const CustomInput = ({ value, onClick }) => {
@@ -85,99 +92,127 @@ export default function AccountingSearch() {
   };
   return (
     <div className={classes.root}>
-      <Typography
-        component="h1"
-        variant="h2"
-        color="textPrimary"
-        className={classes.title}
-      >
-        Accounting Search
-      </Typography>
-      <Typography component="p" variant="body2" color="textPrimary">
-        This page is used to search accounting records
-      </Typography>
-      <form className={classes.form} noValidate>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              value={amountFrom}
-              variant="outlined"
-              margin="normal"
-              id="email"
-              label="Amount From"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(event) => setAmountFrom(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              value={amountTo}
-              variant="outlined"
-              margin="normal"
-              id="email"
-              label="Amount To"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(event) => setAmountTo(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography component="p" variant="body2" color="textPrimary">
-              Date From
-            </Typography>
-            <DatePicker
-              selected={dateFrom}
-              onChange={handleDateChangeFrom}
-              customInput={<CustomInput />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography component="p" variant="body2" color="textPrimary">
-              Date To
-            </Typography>
-            <DatePicker
-              selected={dateTo}
-              onChange={handleDateChangeTo}
-              customInput={<CustomInput />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+      <Grid container direction="column">
+        <Paper className={classes.paper}>
+          <Grid
+            container
+            alignItems="center"
+            justify="center"
+            direction="column"
+          >
             <Typography
-              className={classes.type}
-              component="p"
-              variant="body2"
+              component="h1"
+              variant="h2"
               color="textPrimary"
+              className={classes.title}
             >
-              Type
+              Accounting Search
             </Typography>
-            <Select
-              className={classes.customSelect}
-              displayEmpty
-              value={type}
-              onChange={handleChange}
-            >
-              <MenuItem value="" disabled>
-                Insurance Form Fee
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
+            <Typography component="p" variant="body2" color="textPrimary">
+              This page is used to search accounting records
+            </Typography>
+            <form className={classes.form} noValidate>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    value={amountFrom}
+                    variant="outlined"
+                    margin="normal"
+                    id="amountFrom"
+                    label="Amount From"
+                    name="amountFrom"
+                    autoComplete="amountFrom"
+                    autoFocus
+                    onChange={(event) => setAmountFrom(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    value={amountTo}
+                    variant="outlined"
+                    margin="normal"
+                    id="amountTo"
+                    label="Amount To"
+                    name="amountTo"
+                    autoComplete="amountTo"
+                    // autoFocus
+                    onChange={(event) => setAmountTo(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    id="date"
+                    label="Date From"
+                    variant="outlined"
+                    type="date"
+                    defaultValue="2017-05-24"
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  {/* <Typography component="p" variant="body2" color="textPrimary">
+                    Date To
+                  </Typography>
+                  <DatePicker
+                    selected={dateTo}
+                    onChange={handleDateChangeTo}
+                    customInput={<CustomInput />}
+                  /> */}
+                  <TextField
+                    variant="outlined"
+                    id="date"
+                    label="Date To"
+                    type="date"
+                    defaultValue="2017-05-24"
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    className={classes.type}
+                    component="p"
+                    variant="subtitle2"
+                    color="textPrimary"
+                  >
+                    Type
+                  </Typography>
+                  <Select
+                    variant="outlined"
+                    className={classes.customSelect}
+                    displayEmpty
+                    value={type}
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="" disabled>
+                      Insurance Form Fee
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </Grid>
+              </Grid>
+              <Button
+                disabled={
+                  !dateFrom || !dateTo || !type || !amountFrom || !amountTo
+                }
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={(event) => serachAccounts()}
+              >
+                Search
+              </Button>
+            </form>
           </Grid>
-        </Grid>
-        <Button
-          disabled={!dateFrom || !dateTo || !type || !amountFrom || !amountTo}
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={(event) => serachAccounts()}
-        >
-          Search
-        </Button>
-      </form>
+        </Paper>
+      </Grid>
     </div>
   );
 }
