@@ -54,5 +54,13 @@ exports.validate = (method) => {
         param("drug_id").isInt().withMessage("drug_id must be an integer!"),
       ];
     }
+    case "createPatientAllergy": {
+      return [
+        check("data.patient_id")
+          .exists()
+          .withMessage("patient_id can not empty!"),
+        check("data.drug_id").exists().withMessage("drug_id can not empty!"),
+      ];
+    }
   }
 };

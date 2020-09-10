@@ -63,5 +63,10 @@ router.get(
   [authJwt.verifyToken, validation.validate("search")],
   Patient.searchAllergies
 );
+router.post(
+  "/patient/allergies",
+  [authJwt.verifyToken, validation.validate("createPatientAllergy")],
+  Patient.createPatientAllergy
+);
 
 module.exports = router;

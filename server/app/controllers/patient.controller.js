@@ -60,12 +60,37 @@ const search = async (req, res) => {
 
   const db = makeDb(configuration, res);
   try {
-    //TODO:: Incomplete query
     const dbResponse = await db.query(
       `select 'Encounter', id, dt, notes, client_id
         from encounter
         where patient_id=1
         and notes like '%${text}%'
+        union
+        select 'Message', id, created, message, client_id
+        from message
+        where (patient_id_to=1 or patient_id_from=1)
+        and message like '%${text}%'
+        union
+        select 'Admin Note', id, created, admin_note, client_id
+        from patient
+        where id=1
+        and admin_note like '%${text}%'
+        union
+        select 'Medical Note', id, created, medical_note, client_id
+        from patient
+        where id=1
+        and medical_note like '%${text}%'
+        union
+        select 'Lab Note', id, created, note, client_id
+        from lab
+        where patient_id=1
+        and note like '%${text}%'
+        union
+        select 'Lab Assignment Note', id, created, note_assign, client_id
+        from lab
+        where patient_id=1
+        and note_assign like '%${text}%'
+        order by 1,2,3
       `
     );
 
@@ -207,7 +232,6 @@ const adminNoteupdate = async (req, res) => {
 
   const db = makeDb(configuration, res);
   try {
-    //TODO:: Update this query
     const patientHistory = await db.query(
       `insert into patient_history (id, admin_note, created, created_user_id) values (${id}, '${old_admin_note}', now(), ${req.user_id})`
     );
@@ -646,6 +670,41 @@ const searchAllergies = async (req, res) => {
   }
 };
 
+/**
+ * @param {object} req
+ * @param {object} res
+ * @returns {object}
+ */
+const createPatientAllergy = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { patient_id, drug_id } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into patient_allergy (patient_id, drug_id, client_id, created, created_user_id) values (${patient_id}, ${drug_id}, ${req.client_id}, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -663,6 +722,7 @@ const appointmentTypes = {
   getAllergies,
   deleteAllergy,
   searchAllergies,
+  createPatientAllergy,
 };
 
 module.exports = appointmentTypes;
