@@ -1,22 +1,20 @@
-import React, { useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import PropTypes from 'prop-types';
-import Accounting from '../../../../services/accountingSerarch.service';
-import Card from '@material-ui/core/Card';
-import Paper from '@material-ui/core/Paper';
+//Todo: Have to add validation
+import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Accounting from "../../../../services/accountingSearch.service";
+import Paper from "@material-ui/core/Paper";
+import AccountingSearchResults from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: '40px 0px',
+    padding: "40px 0px",
   },
   formControl: {
     margin: theme.spacing(1),
@@ -26,63 +24,65 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     marginTop: theme.spacing(1),
   },
   formElments: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '500px',
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "500px",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    marginTop: '20px',
-    // maxWidth: '180px',
+    marginTop: "20px",
   },
   customSelect: {
-    width: '200px',
+    width: "200px",
   },
   type: {
-    marginTop: '20px',
-    marginBottom: '5px',
+    marginTop: "20px",
   },
   paper: {
-    padding: '25px',
-    maxWidth: '500px',
+    padding: "25px",
+    maxWidth: "500px",
   },
   textField: {
-    width: '200px',
+    width: "200px",
+  },
+  serachResults: {
+    marginTop: "55px",
   },
 }));
-const CustomInput = ({ value, onClick }) => {
-  const classes = useStyles();
 
-  return (
-    <input value={value} className={classes.dateInput} onClick={onClick} />
-  );
-};
 export default function AccountingSearch() {
   const classes = useStyles();
-  const [amountFrom, setAmountFrom] = React.useState('');
-  const [amountTo, setAmountTo] = React.useState('');
-  const [dateFrom, setDateFrom] = React.useState(new Date());
-  const [dateTo, setDateTo] = React.useState(new Date());
-  const [type, setType] = React.useState('');
-  const [allAccount, setAllAccounts] = React.useState([]);
+  const [amountFrom, setAmountFrom] = useState("");
+  const [amountTo, setAmountTo] = useState("");
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateTo, setDateTo] = useState(new Date());
+  const [types, setTypes] = useState([]);
+  const [selectType, setSelectedType] = useState("");
+  const [searchResult, setSearchResults] = useState([]);
 
   const serachAccounts = () => {
     const payload = {
-      amount1: amountFrom,
-      amount2: amountTo,
+      data: {
+        amount1: amountFrom,
+        amount2: amountTo,
+      },
     };
-    Accounting.getAccounting(payload).then((res) => {
-      setAllAccounts(res.data);
+    Accounting.search(payload).then((res) => {
+      setSearchResults(res.data.data);
     });
   };
 
+  useEffect(() => {
+    Accounting.searchType().then((res) => setTypes(res.data.data));
+  }, []);
+
   const handleChange = (event) => {
-    setType(event.target.value);
+    setSelectedType(event.target.value);
   };
   const handleDateChangeFrom = (date) => {
     setDateFrom(date);
@@ -153,14 +153,6 @@ export default function AccountingSearch() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  {/* <Typography component="p" variant="body2" color="textPrimary">
-                    Date To
-                  </Typography>
-                  <DatePicker
-                    selected={dateTo}
-                    onChange={handleDateChangeTo}
-                    customInput={<CustomInput />}
-                  /> */}
                   <TextField
                     variant="outlined"
                     id="date"
@@ -186,22 +178,22 @@ export default function AccountingSearch() {
                     variant="outlined"
                     className={classes.customSelect}
                     displayEmpty
-                    value={type}
+                    value={selectType}
                     onChange={handleChange}
                   >
                     <MenuItem value="" disabled>
                       Insurance Form Fee
                     </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {types.map((type) => (
+                      <MenuItem key={type.id} value={type.id}>
+                        {type.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </Grid>
               </Grid>
               <Button
-                disabled={
-                  !dateFrom || !dateTo || !type || !amountFrom || !amountTo
-                }
+                disabled={!amountFrom || !amountTo}
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -213,8 +205,18 @@ export default function AccountingSearch() {
           </Grid>
         </Paper>
       </Grid>
+      <div className={classes.serachResults}>
+        <Typography
+          component="h1"
+          variant="h2"
+          color="textPrimary"
+          className={classes.title}
+        >
+          Records
+        </Typography>
+
+        <AccountingSearchResults result={searchResult} />
+      </div>
     </div>
   );
 }
-
-AccountingSearch.propTypes = {};
