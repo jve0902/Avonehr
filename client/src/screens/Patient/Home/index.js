@@ -8,21 +8,22 @@ import BasicInfo from "../BasicInfo"
 
 export default function Home() {
   const classes = useStyles();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showPatientDialog, setShowPatientDialog] = useState(false);
 
   const toggleDialog = () => {
-    setShowDialog(prevState => !prevState)
+    setShowPatientDialog(prevState => !prevState)
   }
 
   return (
     <>
     <Dialog
-      open={showDialog}
-      title={"Dialog"}
+      open={showPatientDialog}
+      title={"Patient Info"}
       message={<BasicInfo />}
       applyForm={() => toggleDialog()}
       cancelForm={() => toggleDialog()}
       hideActions={true}
+      size={"lg"}
     />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>
