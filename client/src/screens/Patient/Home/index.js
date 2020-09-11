@@ -54,6 +54,10 @@ export default function Home() {
     setShowAllergyDialog(prevState => !prevState)
   }
 
+  const toggleAllergyExpandDialog = () => {
+    setShowAllergyExpandDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
     if(value === 'Patient') {
       return togglePatientHistoryDialog;
@@ -73,6 +77,8 @@ export default function Home() {
       return togglePatientInfoDialog;
     } else if(value === 'Admin Notes') {
       return toggleAdminHistoryDialog;
+    } else if(value === 'Allergies') {
+      return toggleAllergyExpandDialog;
     } 
   }
 
@@ -146,6 +152,15 @@ export default function Home() {
       message={<Allergies onClose={toggleAllergyDialog} />}
       applyForm={() => toggleAllergyDialog()}
       cancelForm={() => toggleAllergyDialog()}
+      hideActions={true}
+      size={"md"}
+    />
+    <Dialog
+      open={showAllergyExpandDialog}
+      title={" "}
+      message={<Allergies onClose={toggleAllergyExpandDialog} />}
+      applyForm={() => toggleAllergyExpandDialog()}
+      cancelForm={() => toggleAllergyExpandDialog()}
       hideActions={true}
       size={"md"}
     />
