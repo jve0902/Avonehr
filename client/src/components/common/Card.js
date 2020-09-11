@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, ListItem, ListItemIcon, ListItemText, Button, TextField } from '@material-ui/core';
+import { Card, Typography, Grid, Button, TextField } from '@material-ui/core';
 import Colors from '../../theme/colors';
 import CardIcon from '@material-ui/icons/CreditCard';
-import DesktopIcon from '@material-ui/icons/Dvr';
+import DesktopIcon from '@material-ui/icons/DesktopMac';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler } = props;
   
   const menuIcons = { DesktopIcon, CardIcon };
 
@@ -37,8 +37,8 @@ const PatientCard = (props) => {
           {
             showActions && (
               <Grid>
-                {!!primaryButtonText && (<Button>{primaryButtonText}</Button>)}
-                {!!secondaryButtonText && (<Button>{secondaryButtonText}</Button>)}
+                {!!primaryButtonText && (<Button onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
+                {!!secondaryButtonText && (<Button onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
               </Grid>
             )
           }
@@ -112,6 +112,8 @@ PatientCard.defaultProps = {
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
+  primaryButtonHandler: () => {},
+  secondaryButtonHandler: () => {},
 };
 
 PatientCard.propTypes = {
@@ -121,7 +123,9 @@ PatientCard.propTypes = {
   data: PropTypes.array.isRequired,
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
-  icon: PropTypes.node
+  icon: PropTypes.node,
+  primaryButtonHandler: PropTypes.func,
+  secondaryButtonHandler: PropTypes.func,
 };
 
 

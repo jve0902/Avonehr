@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
       from appointment_type at
       left join user u on u.id=at.created_user_id
       left join user u2 on u2.id=at.updated_user_id
-      where at.client_id=${req.client_id}  /* TODO should be id of client logged in*/
+      where at.client_id=${req.client_id}
       order by at.sort_order, at.appointment_type
       limit 100
       `
