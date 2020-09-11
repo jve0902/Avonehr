@@ -87,7 +87,7 @@ export default function Home() {
       applyForm={() => toggleFormsExpandDialog()}
       cancelForm={() => toggleFormsExpandDialog()}
       hideActions={true}
-      size={"md"}
+      size={"lg"}
     />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>

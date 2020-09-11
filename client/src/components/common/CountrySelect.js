@@ -12,6 +12,7 @@ function CountryRegionMUISelectors(props) {
         select
         onChange={(e) => props.handleChange("country", e.target.value)}
         fullWidth
+        variant={!!props.outlined ? "outlined" : "standard"}
       >
         {CountryRegionData.map((option, index) => (
           <MenuItem key={option[0]} value={option}>
