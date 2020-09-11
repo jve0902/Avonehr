@@ -8,7 +8,7 @@ const authRoute = require("./app/routes/auth.routes");
 const emailRoute = require("./app/routes/email.routes");
 const accountingSearchRoute = require("./app/routes/accounting-search.routes");
 const appointmentsRoute = require("./app/routes/appointments.routes");
-const appointmentTypesRoute = require("./app/routes/appointment-types.routes");
+const appointmentTypesRoute = require("./app/routes/appointment-type.routes");
 const patientRoute = require("./app/routes/patient.routes");
 
 const app = express();

@@ -30,7 +30,7 @@ const getAll = async (req, res) => {
 
 const search = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { amount1, amount2 } = req.body.data;
+  const { amount1, amount2, dateFrom, dateTo, typeID } = req.body.data;
   let $sql;
 
   try {
@@ -41,17 +41,25 @@ const search = async (req, res) => {
       left join user u on u.id=t.patient_id
       left join cpt c on c.id=t.cpt_id
       left join encounter e on e.id=t.encounter_id
-      where t.client_id=${req.client_id}    
-    `;
+      where t.client_id=${req.client_id} \n`;
     if (amount1) {
-      $sql=$sql+`  and t.amount >= ${amount1}`
+      $sql=$sql+`and t.amount >= ${amount1} \n`
     }
     if (amount2) {
-      $sql=$sql+`  and t.amount <= ${amount2}`
+      $sql=$sql+`and t.amount <= ${amount2} \n`
     }
-    $sql=$sql+`order by t.dt desc
-      limit 100
-    `
+    if (dateFrom) {
+      $sql=$sql+`and t.dt >= '${dateFrom}' \n`
+    }
+    if (dateTo) {
+      $sql=$sql+`and t.dt <= '${dateTo}' \n`
+    }
+    if (typeID) {
+      $sql=$sql+`and t.type_id = ${typeID} \n`
+    }
+    $sql=$sql+`order by t.dt desc \n`
+    $sql=$sql+`limit 100 \n`
+
     const dbResponse = await db.query($sql);
     if (!dbResponse) {
       errorMessage.error = "None found";
