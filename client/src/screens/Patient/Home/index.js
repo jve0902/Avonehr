@@ -82,7 +82,7 @@ export default function Home() {
     />
     <Dialog
       open={showFormsExpandDialog}
-      title={"Forms Expand"}
+      title={" "}
       message={<Form onClose={toggleFormsExpandDialog} />}
       applyForm={() => toggleFormsExpandDialog()}
       cancelForm={() => toggleFormsExpandDialog()}

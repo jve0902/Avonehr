@@ -69,51 +69,53 @@ const Form = (props) => {
         <Typography variant="h3" color="textSecondary" gutterBottom>Register with Ultrawellnes Center</Typography>
         <Button variant="outlined" onClick={() => onClose()}>Close</Button>
       </Grid>
-      <Typography variant="h4" color="textPrimary" gutterBottom>Basic Information</Typography>
       <form>
-        <Grid container spacing={1} className={classes.inputRow}>
-          {
-            BasicInfo.map((item, index) => {
-              return (
-                <Grid key={index} item md={4}>
-                  {
-                    item.baseType === "input"
-                      ?
-                      <TextField
-                        variant="outlined"
-                        label={item.label}
-                        name={item.name}
-                        id={item.id}
-                        type={item.type}
-                        fullWidth
-                        onChange={(e) => handleInputChnage(e)}
-                      />
-                      :
-                      <TextField
-                        // className={classes.select}
-                        variant="outlined"
-                        select
-                        placeholder={item.label}
-                        label={item.label}
-                        id={item.id}
-                        name={item.name}
-                        value={formFields[item.name]}
-                        fullWidth
-                        onChange={(e) => handleInputChnage(e)}
-                      >
-                        {
-                          item.options.map((option, index) => {
-                            return (
-                              <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
-                            )
-                          })
-                        }
-                      </TextField>
-                  }
-                </Grid>
-              )
-            })
-          }
+        <Grid className={classes.inputRow}>
+          <Typography variant="h4" color="textPrimary" gutterBottom>Basic Information</Typography>
+          <Grid container spacing={1}>
+            {
+              BasicInfo.map((item, index) => {
+                return (
+                  <Grid key={index} item md={4}>
+                    {
+                      item.baseType === "input"
+                        ?
+                        <TextField
+                          variant="outlined"
+                          label={item.label}
+                          name={item.name}
+                          id={item.id}
+                          type={item.type}
+                          fullWidth
+                          onChange={(e) => handleInputChnage(e)}
+                        />
+                        :
+                        <TextField
+                          // className={classes.select}
+                          variant="outlined"
+                          select
+                          placeholder={item.label}
+                          label={item.label}
+                          id={item.id}
+                          name={item.name}
+                          value={formFields[item.name]}
+                          fullWidth
+                          onChange={(e) => handleInputChnage(e)}
+                        >
+                          {
+                            item.options.map((option, index) => {
+                              return (
+                                <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
+                              )
+                            })
+                          }
+                        </TextField>
+                    }
+                  </Grid>
+                )
+              })
+            }
+          </Grid>
         </Grid>
 
         <hr />
@@ -307,7 +309,7 @@ const Form = (props) => {
             }
           </Grid>
         </Grid>
-        
+
         <hr />
 
         <Grid className={classes.inputRow}>
