@@ -1,5 +1,4 @@
 "use strict";
-
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
@@ -9,7 +8,7 @@ const getAll = async (req, res) => {
     const dbResponse = await db.query(
       `select id, name
        from tran_type tt
-       where (client_id is null or client_id=1)
+       where (client_id is null or client_id=${req.client_id})
        order by 1
       `
     );
@@ -44,10 +43,11 @@ const search = async (req, res) => {
       left join encounter e on e.id=t.encounter_id
       where t.client_id=${req.client_id}    
     `;
-    if (amount1 && amount2) {
-      $sql=$sql+`  and t.amount >= ${amount1}
-      and t.amount <= ${amount2}
-      `
+    if (amount1) {
+      $sql=$sql+`  and t.amount >= ${amount1}`
+    }
+    if (amount2) {
+      $sql=$sql+`  and t.amount <= ${amount2}`
     }
     $sql=$sql+`order by t.dt desc
       limit 100
