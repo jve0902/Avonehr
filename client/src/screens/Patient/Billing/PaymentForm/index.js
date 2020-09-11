@@ -1,26 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextField, Button, Grid, Typography, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormFields } from "../../../../static/expandForm";
 
 const Form = (props) => {
     const classes = useStyles();
     const { onClose } = props;
-
-    const BasicInfo = FormFields.basicInfo;
-
-    const [formFields, setFormFields] = useState({
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        gender: '',
-        address1: '',
-        address2: '',
-        country: '',
-        state: '',
-        city: '',
-        zipPostal: '',
-    })
 
     const processPaymentHandler = (e) => {
         onClose();
