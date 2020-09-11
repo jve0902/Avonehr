@@ -31,10 +31,10 @@ const Form = (props) => {
             <Typography variant="h3" color="textSecondary" gutterBottom>Process Payment</Typography>
             <form>
                 <Grid className={classes.inputRow}>
-                    <Typography variant="h4" color="textPrimary" gutterBottom>Use existing payment method</Typography>
-                    <Typography variant="h5" color="textPrimary" gutterBottom>Visa 0043</Typography>
-                    <Typography variant="h5" color="textPrimary" gutterBottom>MasterCard 0222</Typography>
-                    <Typography variant="h5" color="textPrimary" gutterBottom>Checking 0111</Typography>
+                    <Typography className={classes.formInput} variant="h4" color="textPrimary" gutterBottom>Use existing payment method</Typography>
+                    <Typography className={classes.formInput} variant="h5" color="textPrimary" gutterBottom>Visa 0043</Typography>
+                    <Typography className={classes.formInput} variant="h5" color="textPrimary" gutterBottom>MasterCard 0222</Typography>
+                    <Typography className={classes.formInput} variant="h5" color="textPrimary" gutterBottom>Checking 0111</Typography>
 
                     <Typography variant="h5" color="textPrimary" gutterBottom>New Payment Method</Typography>
 
@@ -71,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
     },
     amountContainer: {
         marginLeft: "0px !important"
+    },
+    formInput: {
+        marginBottom: theme.spacing(1)
     }
 })
 )
