@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // marginTop: "20px",
     padding: "0 25px",
   },
   paper: {

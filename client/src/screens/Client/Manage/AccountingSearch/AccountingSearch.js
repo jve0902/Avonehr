@@ -144,7 +144,6 @@ export default function AccountingSearch() {
                   onChange={(event) => setAmountTo(event.target.value)}
                 />
               </Grid>
-              {console.log(dateFrom)}
               <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
@@ -167,7 +166,6 @@ export default function AccountingSearch() {
                   onChange={handleDateChangeTo}
                 />
               </Grid>
-              {console.log(moment().subtract(7, "days").format("MM-DD-YYYY"))}
               <Grid item xs={12} sm={6}>
                 <Select
                   variant="outlined"
