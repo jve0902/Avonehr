@@ -60,8 +60,7 @@ export default function BasicInfo() {
               <Typography variant="h5" color="textPrimary" gutterBottom>Basic Information</Typography>
               <Grid container spacing={1} className={classes.inputRow}>
                 {
-                  FirstRow.map((item, index) => {
-                    return (
+                  FirstRow.map((item, index) => (
                       <Grid key={index} item md={2}>
                         {
                           item.baseType === "input"
@@ -97,13 +96,12 @@ export default function BasicInfo() {
                         }
                       </Grid>
                     )
-                  })
+                  )
                 }
               </Grid>
               <Grid container spacing={1} className={classes.inputRow} alignItems="flex-end">
                 {
-                  SecondRow.map((item, index) => {
-                    return (
+                  SecondRow.map((item, index) => (
                       <Grid key={index} item md={2}>
                         {
                           item.baseType === "input"
@@ -139,7 +137,7 @@ export default function BasicInfo() {
                         }
                       </Grid>
                     )
-                  })
+                  )
                 }
                 <Grid item md={2}>
                   <Typography>&nbsp;&nbsp;Age: {`22 Years`}</Typography>
@@ -147,8 +145,7 @@ export default function BasicInfo() {
               </Grid>
               <Grid container spacing={1} className={classes.inputRow}>
                 {
-                  ThirdRow.map((item, index) => {
-                    return (
+                  ThirdRow.map((item, index) => (
                       <Grid key={index} item md={2}>
                         {
                           item.baseType === "input"
@@ -184,7 +181,7 @@ export default function BasicInfo() {
                         }
                       </Grid>
                     )
-                  })
+                  )
                 }
               </Grid>
               <Grid container spacing={1} alignItems="flex-end">
@@ -283,8 +280,7 @@ export default function BasicInfo() {
               <Typography variant="h5" color="textPrimary">Pharmacy</Typography>
               <Grid container spacing={1}>
                 {
-                  Pharmacies.map((pharmacy, index) => {
-                    return (
+                  Pharmacies.map((pharmacy, index) => (
                       <Grid key={index} item md={4}>
                         <TextField
                             label={pharmacy.name}
@@ -295,7 +291,7 @@ export default function BasicInfo() {
                         <Typography>{pharmacy.phone}</Typography>
                       </Grid>
                     )
-                  })
+                  )
                 }
                 </Grid>
             </Grid>
@@ -310,8 +306,7 @@ export default function BasicInfo() {
               <Typography variant="h5" color="textPrimary">Insurance</Typography>
               <Grid container spacing={1} className={classes.inputRow}>
                 {
-                  InsuranceForm.map((item, index) => {
-                    return (
+                  InsuranceForm.map((item, index) => (
                       <Grid key={index} item md={2}>
                         <TextField
                           label={item.label}
@@ -323,7 +318,7 @@ export default function BasicInfo() {
                         />
                       </Grid>
                     )
-                  })
+                  )
                 }
               </Grid>
             </Grid>

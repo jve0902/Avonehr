@@ -8,7 +8,7 @@ import DesktopIcon from '@material-ui/icons/DesktopMac';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler } = props;
   
   const menuIcons = { DesktopIcon, CardIcon };
 
@@ -21,7 +21,10 @@ const PatientCard = (props) => {
           </Typography>
           {
             !!icon && (
-              React.createElement(menuIcons[icon])
+              React.createElement(menuIcons[icon], {
+                onClick: iconHandler,
+                className: classes.icon
+              })
             )
           }
           {
@@ -101,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
   searchInput: {
     margin: "4px 0",
     maxWidth: '100px'
+  },
+  icon: {
+    cursor: 'pointer'
   }
 }))
 
@@ -114,6 +120,7 @@ PatientCard.defaultProps = {
   icon: null,
   primaryButtonHandler: () => {},
   secondaryButtonHandler: () => {},
+  iconHandler: () => {},
 };
 
 PatientCard.propTypes = {
@@ -126,6 +133,7 @@ PatientCard.propTypes = {
   icon: PropTypes.node,
   primaryButtonHandler: PropTypes.func,
   secondaryButtonHandler: PropTypes.func,
+  iconHandler: PropTypes.func,
 };
 
 

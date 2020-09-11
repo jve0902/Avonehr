@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas'
-import { TextField, Button, Grid, Typography, MenuItem, Checkbox, FormControlLabel } from '@material-ui/core';
+import { TextField, Button, Grid, Typography, MenuItem, Checkbox, FormControlLabel, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormFields } from "../../../static/expandForm";
 import CountrySelect from "../../../components/common/CountrySelect"
@@ -31,6 +31,7 @@ const Form = (props) => {
     state: '',
     city: '',
     zipPostal: '',
+    contactPreference: ''
   })
 
   const handleInputChnage = (e) => {
@@ -74,8 +75,7 @@ const Form = (props) => {
           <Typography variant="h4" color="textPrimary" gutterBottom>Basic Information</Typography>
           <Grid container spacing={1}>
             {
-              BasicInfo.map((item, index) => {
-                return (
+              BasicInfo.map((item, index) => (
                   <Grid key={index} item md={4}>
                     {
                       item.baseType === "input"
@@ -113,19 +113,18 @@ const Form = (props) => {
                     }
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>Address Information</Typography>
           <Grid container spacing={1}>
             {
-              AddressDetails.map((item, index) => {
-                return (
+              AddressDetails.map((item, index) => (
                   <Grid key={index} item md={4}>
                     <TextField
                       variant="outlined"
@@ -138,7 +137,7 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
             <Grid item lg={4}>
               <CountrySelect
@@ -168,14 +167,13 @@ const Form = (props) => {
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>Contact Information</Typography>
           <Grid container spacing={1} alignItems="flex-end">
             {
-              ContactInfo.map((item, index) => {
-                return (
+              ContactInfo.map((item, index) => (
                   <Grid key={index} item md={4}>
                     {
                       item.baseType === "input"
@@ -213,19 +211,18 @@ const Form = (props) => {
                     }
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>Emergency Information</Typography>
           <Grid container spacing={1}>
             {
-              EmergencyInfo.map((item, index) => {
-                return (
+              EmergencyInfo.map((item, index) => (
                   <Grid key={index} item md={4}>
                     <TextField
                       variant="outlined"
@@ -238,7 +235,7 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
@@ -247,8 +244,7 @@ const Form = (props) => {
           <Typography variant="h4" color="textPrimary" gutterBottom>Insurance Information</Typography>
           <Grid container spacing={1}>
             {
-              InsuranceInfo.map((item, index) => {
-                return (
+              InsuranceInfo.map((item, index) => (
                   <Grid key={index} item md={4}>
                     <TextField
                       variant="outlined"
@@ -261,19 +257,18 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>Medical Information</Typography>
           <Grid container spacing={1}>
             {
-              MedicalInfo.slice(0, 2).map((item, index) => {
-                return (
+              MedicalInfo.slice(0, 2).map((item, index) => (
                   <Grid key={index} item md={6}>
                     <TextField
                       variant="outlined"
@@ -286,11 +281,10 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
             {
-              MedicalInfo.slice(2, 3).map((item, index) => {
-                return (
+              MedicalInfo.slice(2, 3).map((item, index) => (
                   <Grid key={index} item md={12}>
                     <TextField
                       variant="outlined"
@@ -305,19 +299,18 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>Set Username and Password for Patient Portal</Typography>
           <Grid container spacing={1}>
             {
-              UserNamePasswordInfo.map((item, index) => {
-                return (
+              UserNamePasswordInfo.map((item, index) => (
                   <Grid key={index} item md={4}>
                     <TextField
                       variant="outlined"
@@ -330,12 +323,12 @@ const Form = (props) => {
                     />
                   </Grid>
                 )
-              })
+              )
             }
           </Grid>
         </Grid>
 
-        <hr />
+        <Divider />
 
         <FormControlLabel
           value="end"

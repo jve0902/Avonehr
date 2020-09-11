@@ -17,6 +17,9 @@ export default function Home() {
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
+  const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
   }
@@ -33,6 +36,14 @@ export default function Home() {
     setShowFormsExpandDialog(prevState => !prevState)
   }
 
+  const toggleNewTransactionDialog = () => {
+    setShowNewTransactionDialog(prevState => !prevState)
+  }
+
+  const togglePaymentDialog = () => {
+    setShowPaymentDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
     if(value === 'Patient') {
       return togglePatientHistoryDialog;
@@ -40,6 +51,8 @@ export default function Home() {
       return toggleAdminHistoryDialog;
     } else if(value === 'Forms') {
       return toggleFormsExpandDialog;
+    } else if(value === 'Billing') {
+      return toggleNewTransactionDialog;
     }
   }
 
@@ -48,6 +61,14 @@ export default function Home() {
       return togglePatientInfoDialog;
     } else if(value === 'Admin Notes') {
       return toggleAdminHistoryDialog;
+    } 
+  }
+
+  const mapIconHandlers = (value) => {
+    if(value === 'Patient') {
+      return togglePatientInfoDialog;
+    } else if(value === 'Billing') {
+      return togglePaymentDialog;
     } 
   }
 
@@ -89,6 +110,24 @@ export default function Home() {
       hideActions={true}
       size={"lg"}
     />
+    <Dialog
+      open={showNewTransactionDialog}
+      title={"Admin Notes History"}
+      message={<h3>showNewTransactionDialog</h3>}
+      applyForm={() => toggleNewTransactionDialog()}
+      cancelForm={() => toggleNewTransactionDialog()}
+      hideActions={true}
+      size={"md"}
+    />
+    <Dialog
+      open={showPaymentDialog}
+      title={"Admin Notes History"}
+      message={<h3>showPaymentDialog</h3>}
+      applyForm={() => togglePaymentDialog()}
+      cancelForm={() => togglePaymentDialog()}
+      hideActions={true}
+      size={"md"}
+    />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>
         {FirstColumnPatientCards.map((item, index) => {
@@ -104,6 +143,7 @@ export default function Home() {
               secondaryButtonText={item.secondaryButtonText}
               primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
               secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+              iconHandler={mapIconHandlers(item.title)}
             />
           )
         })}
