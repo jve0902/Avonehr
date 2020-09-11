@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, Typography, MenuItem, FormControlLabel } from '@material-ui/core';
+import { TextField, Button, Grid, Typography, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormFields } from "../../../../static/expandForm";
 
@@ -23,7 +23,7 @@ const Form = (props) => {
     })
 
     const processPaymentHandler = (e) => {
-        
+        onClose();
     }
 
     return (

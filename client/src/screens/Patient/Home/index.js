@@ -8,6 +8,7 @@ import BasicInfo from "../BasicInfo";
 import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
 import PaymentForm from "../Billing/PaymentForm";
+import Allergies from "../Allergies";
 
 export default function Home() {
   const classes = useStyles();
@@ -21,6 +22,9 @@ export default function Home() {
 
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(false);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+
+  const [showAllergyDialog, setShowAllergyDialog] = useState(false);
+  const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
@@ -46,6 +50,10 @@ export default function Home() {
     setShowPaymentDialog(prevState => !prevState)
   }
 
+  const toggleAllergyDialog = () => {
+    setShowAllergyDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
     if(value === 'Patient') {
       return togglePatientHistoryDialog;
@@ -55,6 +63,8 @@ export default function Home() {
       return toggleFormsExpandDialog;
     } else if(value === 'Billing') {
       return toggleNewTransactionDialog;
+    } else if(value === 'Allergies') {
+      return toggleAllergyDialog;
     }
   }
 
@@ -129,6 +139,15 @@ export default function Home() {
       cancelForm={() => togglePaymentDialog()}
       hideActions={true}
       size={"sm"}
+    />
+    <Dialog
+      open={showAllergyDialog}
+      title={" "}
+      message={<Allergies onClose={toggleAllergyDialog} />}
+      applyForm={() => toggleAllergyDialog()}
+      cancelForm={() => toggleAllergyDialog()}
+      hideActions={true}
+      size={"md"}
     />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>

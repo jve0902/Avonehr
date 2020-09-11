@@ -79,7 +79,7 @@ const Form = (props) => {
                         ))
                     }
                     <Grid item lg={2}>
-                        <Typography gutterBottom variant="body1" color="textPrimary" gutterBottom>Notes</Typography>
+                        <Typography gutterBottom variant="body1" color="textPrimary">Notes</Typography>
                     </Grid>
                     <Grid item md={12}>
                         <TextField
