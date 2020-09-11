@@ -6,6 +6,8 @@ import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
 import BasicInfo from "../BasicInfo";
 import Form from "../Form";
+import NewTransactionForm from "../Billing/NewTransaction";
+import PaymentForm from "../Billing/PaymentForm";
 
 export default function Home() {
   const classes = useStyles();
@@ -112,8 +114,8 @@ export default function Home() {
     />
     <Dialog
       open={showNewTransactionDialog}
-      title={"Admin Notes History"}
-      message={<h3>showNewTransactionDialog</h3>}
+      title={" "}
+      message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
       applyForm={() => toggleNewTransactionDialog()}
       cancelForm={() => toggleNewTransactionDialog()}
       hideActions={true}
@@ -121,12 +123,12 @@ export default function Home() {
     />
     <Dialog
       open={showPaymentDialog}
-      title={"Admin Notes History"}
-      message={<h3>showPaymentDialog</h3>}
+      title={" "}
+      message={<PaymentForm onClose={togglePaymentDialog} />}
       applyForm={() => togglePaymentDialog()}
       cancelForm={() => togglePaymentDialog()}
       hideActions={true}
-      size={"md"}
+      size={"sm"}
     />
     <Grid className={classes.main} container spacing={1}>
       <Grid item md={3} sm={6} xs={12}>
