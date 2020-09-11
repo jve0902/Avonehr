@@ -55,7 +55,7 @@ export default function Home() {
     <>
     <Dialog
       open={showPatientInfoDialog}
-      title={"Patient Info"}
+      title={" "}
       message={<BasicInfo />}
       applyForm={() => togglePatientInfoDialog()}
       cancelForm={() => togglePatientInfoDialog()}

@@ -15,8 +15,8 @@ const getRegions = country => {
 function RegionMUISelectors(props) {
   return (
       <TextField
-        id="region"
-        label="Region"
+        id="state"
+        label={props.label}
         value={props.region}
         select
         onChange={(e) => props.handleChange("region", e.target.value)}

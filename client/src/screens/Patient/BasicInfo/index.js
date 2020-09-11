@@ -100,7 +100,7 @@ export default function BasicInfo() {
                   })
                 }
               </Grid>
-              <Grid container spacing={1} className={classes.inputRow}>
+              <Grid container spacing={1} className={classes.inputRow} alignItems="flex-end">
                 {
                   SecondRow.map((item, index) => {
                     return (
@@ -141,6 +141,9 @@ export default function BasicInfo() {
                     )
                   })
                 }
+                <Grid item md={2}>
+                  <Typography>&nbsp;&nbsp;Age: {`22 Years`}</Typography>
+                </Grid>
               </Grid>
               <Grid container spacing={1} className={classes.inputRow}>
                 {
@@ -186,7 +189,7 @@ export default function BasicInfo() {
               </Grid>
               <Grid container spacing={1} alignItems="flex-end">
                 <Grid item md={2}>
-                  <Typography>Last Login: {`Jnauary 1, 2020`}</Typography>
+                  <Typography>Last Login: {`Jan 1, 2020`}</Typography>
                 </Grid>
                 <Grid item md={2}>
                   <TextField
@@ -253,18 +256,18 @@ export default function BasicInfo() {
                     error={null}
                     name={"country-select"}
                     helperText={""}
-                    placeholder={"Country"}
+                    label={"Country"}
                     handleChange={(identifier, value) => handleCountryRegion(identifier, value)}
                     country={country}
                   />
                 </Grid>
                 <Grid item lg={3}>
                   <RegionSelect
-                    id={"country-select"}
+                    id={"state-select"}
                     error={null}
-                    name={"country-select"}
+                    name={"state-select"}
                     helperText={""}
-                    placeholder={"Region"}
+                    label={"State"}
                     handleChange={(identifier, value) => handleCountryRegion(identifier, value)}
                     country={country}
                     region={region}
@@ -332,7 +335,7 @@ export default function BasicInfo() {
         <Grid item xs={12}>
           <Paper className={classes.root} variant="outlined">
             <Grid className={classes.sectionCard}>
-              <Typography variant="h5" color="textPrimary">Payment Methods <span><Button size="small" variant="outlined">New</Button></span></Typography>
+              <Typography variant="h5" color="textPrimary">Payment Methods &nbsp;&nbsp;<span><Button size="small" variant="outlined">New</Button></span></Typography>
               <Table size="small" className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>

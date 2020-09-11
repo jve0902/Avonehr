@@ -87,7 +87,8 @@ const useStyles = makeStyles((theme) =>
       textAlign: 'center',
       borderBottom: '1px solid #ddd',
       fontWeight: 600,
-      fontSize: "1.5em"
+      fontSize: "1.5em",
+      minHeight: 53,
     },
     content: {
       padding: '1rem 2rem',
