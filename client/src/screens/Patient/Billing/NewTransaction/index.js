@@ -49,7 +49,6 @@ const Form = (props) => {
                                             ?
                                             <TextField
                                                 variant={"standard"}
-                                                // label={item.type === "date" ? "" : item.label}
                                                 name={item.name}
                                                 id={item.id}
                                                 type={item.type}
@@ -60,7 +59,6 @@ const Form = (props) => {
                                             <TextField
                                                 select
                                                 placeholder={item.label}
-                                                // label={item.label}
                                                 id={item.id}
                                                 name={item.name}
                                                 value={formFields[item.name]}
@@ -86,7 +84,6 @@ const Form = (props) => {
                     <Grid item md={12}>
                         <TextField
                             variant="outlined"
-                            // label={"Notes"}
                             name={"notes"}
                             id={"notes"}
                             type={"text"}
