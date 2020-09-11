@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 const useStyles = makeStyles((theme) => ({
   root: {
     // marginTop: "20px",
+    padding: "0 25px",
   },
   paper: {
     padding: "5px",
@@ -67,53 +68,47 @@ export default function AccountingSearchResults(props) {
   return (
     <div className={classes.root}>
       <TableContainer component={Paper} className={classes.tableContainer}>
-        {props.result.length !== 0 ? (
-          <Table className={classes.table} aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Type</StyledTableCell>
-                <StyledTableCell>Patient Name</StyledTableCell>
-                <StyledTableCell>Amount</StyledTableCell>
-                <StyledTableCell>Client Id</StyledTableCell>
-                <StyledTableCell>CPT Id</StyledTableCell>
-                <StyledTableCell>CPT Name</StyledTableCell>
-                <StyledTableCell>Note</StyledTableCell>
-                <StyledTableCell>Created</StyledTableCell>
-                <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell>Patient Id</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.result.map((result, index) => (
-                <StyledTableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {result.name}
-                  </TableCell>
-                  <TableCell
-                    //Todo: Link to patient page
-                    className={classes.patientLink}
-                  >
-                    {result.patient_name}
-                  </TableCell>
-                  <TableCell>{result.amount}</TableCell>
-                  <TableCell>{result.client_id}</TableCell>
-                  <TableCell>{result.cpt_id ? result.cpt_id : "N/A"}</TableCell>
-                  <TableCell>
-                    {result.cpt_name ? result.cpt_name : "N/A"}
-                  </TableCell>
-                  <TableCell align="center">{result.note || "-"}</TableCell>
-                  <TableCell>{moment(result.created).format("lll")}</TableCell>
-                  <TableCell>{result.encounter_title}</TableCell>
-                  <TableCell>{result.patient_id}</TableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ) : (
-          <div className={classes.placeholderText}>
-            Search For Accounting Records
-          </div>
-        )}
+        <Table className={classes.table} aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Date</StyledTableCell>
+              <StyledTableCell>Type</StyledTableCell>
+              <StyledTableCell>Amount</StyledTableCell>
+              <StyledTableCell>Encounter</StyledTableCell>
+              <StyledTableCell>CPT Id</StyledTableCell>
+              <StyledTableCell>CPT Name</StyledTableCell>
+              <StyledTableCell>Note</StyledTableCell>
+              <StyledTableCell>Patient</StyledTableCell>
+              <StyledTableCell>Created</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.result.map((result, index) => (
+              <StyledTableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {moment(result.dt).format("lll")}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {result.name}
+                </TableCell>
+                <TableCell>{result.amount}</TableCell>
+                <TableCell>{result.encounter_title}</TableCell>
+                <TableCell>{result.cpt_id ? result.cpt_id : "N/A"}</TableCell>
+                <TableCell>
+                  {result.cpt_name ? result.cpt_name : "N/A"}
+                </TableCell>
+                <TableCell>{result.note || "-"}</TableCell>
+                <TableCell
+                  //Todo: Link to patient page
+                  className={classes.patientLink}
+                >
+                  {result.patient_name}
+                </TableCell>
+                <TableCell>{moment(result.created).format("lll")}</TableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
       </TableContainer>
     </div>
   );

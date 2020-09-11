@@ -8,8 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Accounting from "../../../../services/accountingSearch.service";
-import Paper from "@material-ui/core/Paper";
 import AccountingSearchResults from "./components";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: "25px",
-    maxWidth: "500px",
+    maxWidth: "456px",
   },
   textField: {
     width: "200px",
@@ -57,15 +57,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AccountingSearch() {
   const classes = useStyles();
-  const [amountFrom, setAmountFrom] = useState("");
-  const [amountTo, setAmountTo] = useState("");
-  const [dateFrom, setDateFrom] = useState(new Date());
-  const [dateTo, setDateTo] = useState(new Date());
+  const [amountFrom, setAmountFrom] = useState("-100");
+  const [amountTo, setAmountTo] = useState("100");
+  const [dateFrom, setDateFrom] = useState(
+    moment().subtract(7, "days").format("YYYY-MM-DD")
+  );
+  const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [types, setTypes] = useState([]);
   const [selectType, setSelectedType] = useState("");
   const [searchResult, setSearchResults] = useState([]);
 
-  const serachAccounts = () => {
+  const serachAccounts = (e) => {
+    e.preventDefault();
     const payload = {
       data: {
         amount1: amountFrom,
@@ -92,130 +95,117 @@ export default function AccountingSearch() {
   };
   return (
     <div className={classes.root}>
-      <Grid container direction="column">
-        <Paper className={classes.paper}>
-          <Grid
-            container
-            alignItems="center"
-            justify="center"
-            direction="column"
+      <div className={classes.paper}>
+        <Grid container direction="column">
+          <Typography
+            component="h1"
+            variant="h2"
+            color="textPrimary"
+            className={classes.title}
           >
-            <Typography
-              component="h1"
-              variant="h2"
-              color="textPrimary"
-              className={classes.title}
-            >
-              Accounting Search
-            </Typography>
-            <Typography component="p" variant="body2" color="textPrimary">
-              This page is used to search accounting records
-            </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    value={amountFrom}
-                    variant="outlined"
-                    margin="normal"
-                    id="amountFrom"
-                    label="Amount From"
-                    name="amountFrom"
-                    autoComplete="amountFrom"
-                    autoFocus
-                    onChange={(event) => setAmountFrom(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    value={amountTo}
-                    variant="outlined"
-                    margin="normal"
-                    id="amountTo"
-                    label="Amount To"
-                    name="amountTo"
-                    autoComplete="amountTo"
-                    // autoFocus
-                    onChange={(event) => setAmountTo(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="date"
-                    label="Date From"
-                    variant="outlined"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    id="date"
-                    label="Date To"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    className={classes.type}
-                    component="p"
-                    variant="subtitle2"
-                    color="textPrimary"
-                  >
-                    Type
-                  </Typography>
-                  <Select
-                    variant="outlined"
-                    className={classes.customSelect}
-                    displayEmpty
-                    value={selectType}
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="" disabled>
-                      Insurance Form Fee
-                    </MenuItem>
-                    {types.map((type) => (
-                      <MenuItem key={type.id} value={type.id}>
-                        {type.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
+            Accounting Search
+          </Typography>
+          <Typography component="p" variant="body2" color="textPrimary">
+            This page is used to search accounting records
+          </Typography>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => serachAccounts(e)}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={6} sm={6}>
+                <TextField
+                  variant="outlined"
+                  className={classes.textField}
+                  value={amountFrom}
+                  margin="normal"
+                  id="amountFrom"
+                  label="Amount From"
+                  name="amountFrom"
+                  autoComplete="amountFrom"
+                  autoFocus
+                  onChange={(event) => setAmountFrom(event.target.value)}
+                />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  className={classes.textField}
+                  value={amountTo}
+                  margin="normal"
+                  id="amountTo"
+                  label="Amount To"
+                  name="amountTo"
+                  autoComplete="amountTo"
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  onChange={(event) => setAmountTo(event.target.value)}
+                />
+              </Grid>
+              {console.log(dateFrom)}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date From"
+                  value={dateFrom}
+                  className={classes.textField}
+                  onChange={handleDateChangeFrom}
+                  type="date"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date To"
+                  type="date"
+                  value={dateTo}
+                  className={classes.textField}
+                  onChange={handleDateChangeTo}
+                />
+              </Grid>
+              {console.log(moment().subtract(7, "days").format("MM-DD-YYYY"))}
+              <Grid item xs={12} sm={6}>
+                <Select
+                  variant="outlined"
+                  className={classes.customSelect}
+                  displayEmpty
+                  value={selectType}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="" disabled>
+                    Types
+                  </MenuItem>
+                  {types.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={12}>
               <Button
-                disabled={!amountFrom || !amountTo}
+                fullWidth
+                type="submit"
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={(event) => serachAccounts()}
+                onSubmit={() => serachAccounts()}
               >
                 Search
               </Button>
-            </form>
-          </Grid>
-        </Paper>
-      </Grid>
+            </Grid>
+          </form>
+        </Grid>
+      </div>
       <div className={classes.serachResults}>
-        <Typography
-          component="h1"
-          variant="h2"
-          color="textPrimary"
-          className={classes.title}
-        >
-          Records
-        </Typography>
-
-        <AccountingSearchResults result={searchResult} />
+        {searchResult.length > 0 && (
+          <AccountingSearchResults result={searchResult} />
+        )}
       </div>
     </div>
   );
