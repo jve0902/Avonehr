@@ -129,7 +129,7 @@ const pages = [
     subMenus: [
       {
         title: "Accounting Search",
-        href: "/manage/search",
+        href: "/manage/accounting-search",
       },
       {
         title: "Email Patients",
