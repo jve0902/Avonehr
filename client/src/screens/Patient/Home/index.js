@@ -6,6 +6,9 @@ import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
 import BasicInfo from "../BasicInfo";
 import Form from "../Form";
+import NewTransactionForm from "../Billing/NewTransaction";
+import PaymentForm from "../Billing/PaymentForm";
+import Allergies from "../Allergies";
 
 export default function Home() {
   const classes = useStyles();
@@ -19,6 +22,9 @@ export default function Home() {
 
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(false);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+
+  const [showAllergyDialog, setShowAllergyDialog] = useState(false);
+  const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
@@ -44,6 +50,14 @@ export default function Home() {
     setShowPaymentDialog(prevState => !prevState)
   }
 
+  const toggleAllergyDialog = () => {
+    setShowAllergyDialog(prevState => !prevState)
+  }
+
+  const toggleAllergyExpandDialog = () => {
+    setShowAllergyExpandDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
     if(value === 'Patient') {
       return togglePatientHistoryDialog;
@@ -53,6 +67,8 @@ export default function Home() {
       return toggleFormsExpandDialog;
     } else if(value === 'Billing') {
       return toggleNewTransactionDialog;
+    } else if(value === 'Allergies') {
+      return toggleAllergyDialog;
     }
   }
 
@@ -61,6 +77,8 @@ export default function Home() {
       return togglePatientInfoDialog;
     } else if(value === 'Admin Notes') {
       return toggleAdminHistoryDialog;
+    } else if(value === 'Allergies') {
+      return toggleAllergyExpandDialog;
     } 
   }
 
@@ -112,8 +130,8 @@ export default function Home() {
     />
     <Dialog
       open={showNewTransactionDialog}
-      title={"Admin Notes History"}
-      message={<h3>showNewTransactionDialog</h3>}
+      title={" "}
+      message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
       applyForm={() => toggleNewTransactionDialog()}
       cancelForm={() => toggleNewTransactionDialog()}
       hideActions={true}
@@ -121,10 +139,28 @@ export default function Home() {
     />
     <Dialog
       open={showPaymentDialog}
-      title={"Admin Notes History"}
-      message={<h3>showPaymentDialog</h3>}
+      title={" "}
+      message={<PaymentForm onClose={togglePaymentDialog} />}
       applyForm={() => togglePaymentDialog()}
       cancelForm={() => togglePaymentDialog()}
+      hideActions={true}
+      size={"sm"}
+    />
+    <Dialog
+      open={showAllergyDialog}
+      title={" "}
+      message={<Allergies onClose={toggleAllergyDialog} />}
+      applyForm={() => toggleAllergyDialog()}
+      cancelForm={() => toggleAllergyDialog()}
+      hideActions={true}
+      size={"md"}
+    />
+    <Dialog
+      open={showAllergyExpandDialog}
+      title={" "}
+      message={<Allergies onClose={toggleAllergyExpandDialog} />}
+      applyForm={() => toggleAllergyExpandDialog()}
+      cancelForm={() => toggleAllergyExpandDialog()}
       hideActions={true}
       size={"md"}
     />

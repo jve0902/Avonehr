@@ -46,12 +46,13 @@ const Form = (props) => {
     if (identifier === "country") {
       setFormFields({
         ...formFields,
-        ["country"]: value
+        [identifier]: value
       })
     } else if (identifier === "region") {
+      let identifier = "state";
       setFormFields({
         ...formFields,
-        ["state"]: value
+        [identifier]: value
       })
     }
   }
@@ -148,7 +149,7 @@ const Form = (props) => {
                 label={"Country"}
                 outlined={true}
                 handleChange={(identifier, value) => handleCountryRegion(identifier, value)}
-                country={formFields["country"]}
+                country={formFields.country}
               />
             </Grid>
             <Grid item lg={4}>
@@ -161,7 +162,7 @@ const Form = (props) => {
                 outlined={true}
                 handleChange={(identifier, value) => handleCountryRegion(identifier, value)}
                 country={formFields["country"]}
-                region={formFields["state"]}
+                region={formFields.state}
               />
             </Grid>
           </Grid>
