@@ -1,7 +1,7 @@
 "use strict";
 const express = require("express");
-const { authJwt } = require("../../app/middlewares");
-const AppointmentTypes = require("../controllers/appointment-types.controller.js/index.js");
+const { authJwt } = require("../middlewares");
+const AppointmentTypes = require("../controllers/appointment-type-user.controller.js");
 const router = express.Router();
 
 router.get(
