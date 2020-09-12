@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Card from "../../../components/common/Card";
@@ -9,9 +9,12 @@ import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
 import PaymentForm from "../Billing/PaymentForm";
 import Allergies from "../Allergies";
+import MedicalNotes from "../MedicalNotes";
+import NewMessageForm from "../Messages/NewMessage";
 
 export default function Home() {
   const classes = useStyles();
+  const inputFile = useRef(null)
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
   const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(false);
 
@@ -25,6 +28,11 @@ export default function Home() {
 
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
+
+  const [showMedicalNotesDialog, setShowMedicalNotesDialog] = useState(false);
+
+  const [showMessageDialog, setShowMessageDialog] = useState(false);
+  const [showMessageExpandDialog, setShowMessageExpandDialog] = useState(false);
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
@@ -58,207 +66,276 @@ export default function Home() {
     setShowAllergyExpandDialog(prevState => !prevState)
   }
 
+  const toggleMedicalNotesDialog = () => {
+    setShowMedicalNotesDialog(prevState => !prevState)
+  }
+
+  const toggleMessageDialog = () => {
+    setShowMessageDialog(prevState => !prevState)
+  }
+
+  const toggleMessageExpandDialog = () => {
+    setShowMessageExpandDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
-    if(value === 'Patient') {
+    if (value === 'Patient') {
       return togglePatientHistoryDialog;
-    } else if(value === 'Admin Notes') {
+    } else if (value === 'Admin Notes') {
       return toggleAdminHistoryDialog;
-    } else if(value === 'Forms') {
+    } else if (value === 'Forms') {
       return toggleFormsExpandDialog;
-    } else if(value === 'Billing') {
+    } else if (value === 'Billing') {
       return toggleNewTransactionDialog;
-    } else if(value === 'Allergies') {
+    } else if (value === 'Allergies') {
       return toggleAllergyDialog;
+    } else if (value === 'Medical Notes') {
+      return toggleMedicalNotesDialog;
+    } else if (value === 'Messages') {
+      return toggleMessageDialog;
     }
   }
 
   const mapSecondaryButtonHandlers = (value) => {
-    if(value === 'Patient') {
+    if (value === 'Patient') {
       return togglePatientInfoDialog;
-    } else if(value === 'Admin Notes') {
+    } else if (value === 'Admin Notes') {
       return toggleAdminHistoryDialog;
-    } else if(value === 'Allergies') {
+    } else if (value === 'Allergies') {
       return toggleAllergyExpandDialog;
-    } 
+    } else if (value === 'Messages') {
+      return toggleMessageExpandDialog;
+    }
   }
 
   const mapIconHandlers = (value) => {
-    if(value === 'Patient') {
+    if (value === 'Patient') {
       return togglePatientInfoDialog;
-    } else if(value === 'Billing') {
+    } else if (value === 'Billing') {
       return togglePaymentDialog;
-    } 
+    }
+  }
+
+  const onFilePickerClick = () => {
+    // `current` points to the mounted file input element
+    inputFile.current.click();
+  };
+
+  const handleDocumentsFile = (e) => {
+    const { files } = e.target;
+    console.log("files", files)
   }
 
   return (
     <>
-    <Dialog
-      open={showPatientInfoDialog}
-      title={" "}
-      message={<BasicInfo />}
-      applyForm={() => togglePatientInfoDialog()}
-      cancelForm={() => togglePatientInfoDialog()}
-      hideActions={true}
-      size={"lg"}
-    />
-    <Dialog
-      open={showPatientHistoryDialog}
-      title={"Patient History"}
-      message={<h3>History</h3>}
-      applyForm={() => togglePatientHistoryDialog()}
-      cancelForm={() => togglePatientHistoryDialog()}
-      hideActions={true}
-      size={"md"}
-    />
-    <Dialog
-      open={showAdminHistoryDialog}
-      title={"Admin Notes History"}
-      message={<h3>Admin Notes History</h3>}
-      applyForm={() => toggleAdminHistoryDialog()}
-      cancelForm={() => toggleAdminHistoryDialog()}
-      hideActions={true}
-      size={"md"}
-    />
-    <Dialog
-      open={showFormsExpandDialog}
-      title={" "}
-      message={<Form onClose={toggleFormsExpandDialog} />}
-      applyForm={() => toggleFormsExpandDialog()}
-      cancelForm={() => toggleFormsExpandDialog()}
-      hideActions={true}
-      size={"lg"}
-    />
-    <Dialog
-      open={showNewTransactionDialog}
-      title={" "}
-      message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
-      applyForm={() => toggleNewTransactionDialog()}
-      cancelForm={() => toggleNewTransactionDialog()}
-      hideActions={true}
-      size={"md"}
-    />
-    <Dialog
-      open={showPaymentDialog}
-      title={" "}
-      message={<PaymentForm onClose={togglePaymentDialog} />}
-      applyForm={() => togglePaymentDialog()}
-      cancelForm={() => togglePaymentDialog()}
-      hideActions={true}
-      size={"sm"}
-    />
-    <Dialog
-      open={showAllergyDialog}
-      title={" "}
-      message={<Allergies onClose={toggleAllergyDialog} />}
-      applyForm={() => toggleAllergyDialog()}
-      cancelForm={() => toggleAllergyDialog()}
-      hideActions={true}
-      size={"md"}
-    />
-    <Dialog
-      open={showAllergyExpandDialog}
-      title={" "}
-      message={<Allergies onClose={toggleAllergyExpandDialog} />}
-      applyForm={() => toggleAllergyExpandDialog()}
-      cancelForm={() => toggleAllergyExpandDialog()}
-      hideActions={true}
-      size={"md"}
-    />
-    <Grid className={classes.main} container spacing={1}>
-      <Grid item md={3} sm={6} xs={12}>
-        {FirstColumnPatientCards.map((item, index) => {
-          return (
-            <Card
-              key={index}
-              title={item.title}
-              data={item.data}
-              showActions={item.showActions}
-              showSearch={item.showSearch}
-              icon={item.icon}
-              primaryButtonText={item.primaryButtonText}
-              secondaryButtonText={item.secondaryButtonText}
-              primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
-              secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
-              iconHandler={mapIconHandlers(item.title)}
-            />
-          )
-        })}
+      <input
+        type='file'
+        id='file'
+        accept=".pdf, .json"
+        multiple
+        ref={inputFile}
+        className={classes.noDisplay}
+        onChange={e => handleDocumentsFile(e)}
+      />
+      <Dialog
+        open={showPatientInfoDialog}
+        title={" "}
+        message={<BasicInfo />}
+        applyForm={() => togglePatientInfoDialog()}
+        cancelForm={() => togglePatientInfoDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
+      <Dialog
+        open={showPatientHistoryDialog}
+        title={"Patient History"}
+        message={<h3>History</h3>}
+        applyForm={() => togglePatientHistoryDialog()}
+        cancelForm={() => togglePatientHistoryDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showAdminHistoryDialog}
+        title={"Admin Notes History"}
+        message={<h3>Admin Notes History</h3>}
+        applyForm={() => toggleAdminHistoryDialog()}
+        cancelForm={() => toggleAdminHistoryDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showFormsExpandDialog}
+        title={" "}
+        message={<Form onClose={toggleFormsExpandDialog} />}
+        applyForm={() => toggleFormsExpandDialog()}
+        cancelForm={() => toggleFormsExpandDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
+      <Dialog
+        open={showNewTransactionDialog}
+        title={" "}
+        message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
+        applyForm={() => toggleNewTransactionDialog()}
+        cancelForm={() => toggleNewTransactionDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showPaymentDialog}
+        title={" "}
+        message={<PaymentForm onClose={togglePaymentDialog} />}
+        applyForm={() => togglePaymentDialog()}
+        cancelForm={() => togglePaymentDialog()}
+        hideActions={true}
+        size={"sm"}
+      />
+      <Dialog
+        open={showAllergyDialog}
+        title={" "}
+        message={<Allergies onClose={toggleAllergyDialog} />}
+        applyForm={() => toggleAllergyDialog()}
+        cancelForm={() => toggleAllergyDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showAllergyExpandDialog}
+        title={" "}
+        message={<Allergies onClose={toggleAllergyExpandDialog} />}
+        applyForm={() => toggleAllergyExpandDialog()}
+        cancelForm={() => toggleAllergyExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showMedicalNotesDialog}
+        title={" "}
+        message={<MedicalNotes onClose={toggleMedicalNotesDialog} />}
+        applyForm={() => toggleMedicalNotesDialog()}
+        cancelForm={() => toggleMedicalNotesDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showMessageDialog}
+        title={"New Message"}
+        message={<NewMessageForm onClose={toggleMessageDialog} />}
+        applyForm={() => toggleMessageDialog()}
+        cancelForm={() => toggleMessageDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showMessageExpandDialog}
+        title={"Admin Notes History"}
+        message={<h3>showMessageExpandDialog</h3>}
+        applyForm={() => toggleMessageExpandDialog()}
+        cancelForm={() => toggleMessageExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Grid className={classes.main} container spacing={1}>
+        <Grid item md={3} sm={6} xs={12}>
+          {FirstColumnPatientCards.map((item, index) => {
+            return (
+              <Card
+                key={index}
+                title={item.title}
+                data={item.data}
+                showActions={item.showActions}
+                showSearch={item.showSearch}
+                icon={item.icon}
+                primaryButtonText={item.primaryButtonText}
+                secondaryButtonText={item.secondaryButtonText}
+                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
+                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+                iconHandler={mapIconHandlers(item.title)}
+              />
+            )
+          })}
+        </Grid>
+        <Grid item md={3} sm={6} xs={12}>
+          <Card
+            title="Encounters"
+            data={[]}
+            showActions={true}
+            primaryButtonText={"New"}
+            secondaryButtonText={"Expand"}
+            showSearch={false}
+          />
+        </Grid>
+        <Grid item md={3} sm={6} xs={12}>
+          {ThirdColumnPatientCards.map((item, index) => {
+            return (
+              <Card
+                key={index}
+                title={item.title}
+                data={item.data}
+                showActions={item.showActions}
+                showSearch={item.showSearch}
+                icon={item.icon}
+                primaryButtonText={item.primaryButtonText}
+                secondaryButtonText={item.secondaryButtonText}
+                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
+                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+              />
+            )
+          })}
+        </Grid>
+        <Grid item md={3} sm={6} xs={12}>
+          {FourthColumnPatientCards.map((item, index) => {
+            return (
+              <Card
+                key={index}
+                title={item.title}
+                data={item.data}
+                showActions={item.showActions}
+                showSearch={item.showSearch}
+                icon={item.icon}
+                primaryButtonText={item.primaryButtonText}
+                secondaryButtonText={item.secondaryButtonText}
+              />
+            )
+          })}
+        </Grid>
       </Grid>
-      <Grid item md={3} sm={6} xs={12}>
-        <Card
-          title="Encounters"
-          data={[]}
-          showActions={true}
-          primaryButtonText={"New"}
-          secondaryButtonText={"Expand"}
-          showSearch={false}
-        />
-      </Grid>
-      <Grid item md={3} sm={6} xs={12}>
-        {ThirdColumnPatientCards.map((item, index) => {
-          return (
-            <Card
-              key={index}
-              title={item.title}
-              data={item.data}
-              showActions={item.showActions}
-              showSearch={item.showSearch}
-              icon={item.icon}
-              primaryButtonText={item.primaryButtonText}
-              secondaryButtonText={item.secondaryButtonText}
-            />
-          )
-        })}
-      </Grid>
-      <Grid item md={3} sm={6} xs={12}>
-        {FourthColumnPatientCards.map((item, index) => {
-          return (
-            <Card
-              key={index}
-              title={item.title}
-              data={item.data}
-              showActions={item.showActions}
-              showSearch={item.showSearch}
-              icon={item.icon}
-              primaryButtonText={item.primaryButtonText}
-              secondaryButtonText={item.secondaryButtonText}
-            />
-          )
-        })}
-      </Grid>
-    </Grid>
 
-    <Grid container spacing={1}>
-      <Grid item md={6} xs={12}>
-        <Card
-          title="Documents"
-          data={[]}
-          showActions={true}
-          primaryButtonText={"New"}
-          secondaryButtonText={"Expand"}
-          showSearch={false}
-          primaryButtonHandler={togglePatientInfoDialog}
-          secondaryButtonHandler={togglePatientInfoDialog}
-        />
+      <Grid container spacing={1}>
+        <Grid item md={6} xs={12}>
+          <Card
+            title="Documents"
+            data={[]}
+            showActions={true}
+            primaryButtonText={"New"}
+            secondaryButtonText={"Expand"}
+            showSearch={false}
+            primaryButtonHandler={onFilePickerClick}
+            secondaryButtonHandler={togglePatientInfoDialog}
+          />
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <Card
+            title="All Tests"
+            data={[]}
+            showActions={true}
+            primaryButtonText={"Expand"}
+            secondaryButtonText={null}
+            showSearch={false}
+            primaryButtonHandler={togglePatientInfoDialog}
+          />
+        </Grid>
       </Grid>
-      <Grid item md={6} xs={12}>
-        <Card
-          title="All Tests"
-          data={[]}
-          showActions={true}
-          primaryButtonText={"Expand"}
-          secondaryButtonText={null}
-          showSearch={false}
-          primaryButtonHandler={togglePatientInfoDialog}
-        />
-      </Grid>
-    </Grid>
     </>
   )
 }
 
 const useStyles = makeStyles((theme) => ({
   main: {
-      margin: theme.spacing(1, 0, 1, 0),
+    margin: theme.spacing(1, 0, 1, 0),
   },
+  noDisplay: {
+    display: 'none',
+  }
 }))
