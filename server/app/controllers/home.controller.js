@@ -1,21 +1,19 @@
 "use strict";
-
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getAll = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `
-      select user_id, patient_id, start_dt, end_dt, status, client_id
-        from user_calendar
-        where client_id=${req.client_id} or  user_id = ${req.user_id}
+      select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
+      , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
+      from user_calendar uc
+      left join patient p on p.id=uc.patient_id
+      left join user u on u.id=uc.user_id
+      where uc.client_id=${req.client_id}
+      and uc.user_id=${req.user_id}
       `
     );
 

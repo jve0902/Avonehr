@@ -1,9 +1,9 @@
 "use strict";
 const express = require("express");
 const { authJwt } = require("../../app/middlewares");
-const Client = require("../controllers/client.controller.js");
+const PatientSearch = require("../controllers/patient-search.controller.js");
 const router = express.Router();
 
-router.get("/client/agreement", [authJwt.verifyToken], Client.getAgreement);
+router.post("/client/patient/search", [authJwt.verifyToken], PatientSearch.search);
 
 module.exports = router;

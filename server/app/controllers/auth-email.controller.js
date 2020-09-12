@@ -23,14 +23,14 @@ const { validationResult } = require("express-validator");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const { errorMessage, successMessage, status } = require("./../helpers/status");
+const { errorMessage, successMessage, status } = require("../helpers/status");
 const {
   transporter,
   getPasswordResetURL,
   getEmailVerificationURL,
   resetPasswordTemplate,
   signUpConfirmationTemplate,
-} = require("./../helpers/email");
+} = require("../helpers/email");
 
 /**
  * `secret` is passwordHash concatenated with user's created,

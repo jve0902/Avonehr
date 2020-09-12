@@ -2,11 +2,6 @@
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getAgreement = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
