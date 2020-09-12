@@ -57,5 +57,5 @@ export const TransactionFormFields = [
         }
       ],
     },
-  ]
+]
   

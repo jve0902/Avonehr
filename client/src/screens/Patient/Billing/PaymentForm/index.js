@@ -29,9 +29,7 @@ const Form = (props) => {
                             control={
                                 <TextField
                                     label=""
-                                    name={'address'}
-                                    // fullWidth
-                                    // onChange={(e) => handleInputChnage(e)}
+                                    name="address"
                                 />
                             }
                             label="Amount"

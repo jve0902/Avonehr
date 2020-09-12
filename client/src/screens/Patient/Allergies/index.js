@@ -22,7 +22,7 @@ const Allergies = (props) => {
                 <TextField
                     label=""
                     placeholder="Search..."
-                    name={'search'}
+                    name="search"
                     fullWidth
                     variant="outlined"
                     value={searchText}
