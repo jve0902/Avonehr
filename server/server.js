@@ -35,6 +35,7 @@ app.use("/api/v1", require("./app/routes/drug.routes"));
 app.use("/api/v1", require("./app/routes/home.routes"));
 app.use("/api/v1", require("./app/routes/patient-search.routes"));
 app.use("/api/v1", require("./app/routes/patient.routes"));
+app.use("/api/v1", require("./app/routes/patient-email.routes"));
 app.use("/api/v1", require("./app/routes/support.routes"));
 
 app.listen(config.port).on("listening", () => {
