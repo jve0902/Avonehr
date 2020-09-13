@@ -22,7 +22,7 @@ export default function CTPcodes() {
         color="textPrimary"
         className={classes.title}
       >
-        CTP codes
+        CTP Codes
       </Typography>
       <Typography component="p" variant="body2" color="textPrimary">
         This page is used to manage CTP codes

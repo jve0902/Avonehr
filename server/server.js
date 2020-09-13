@@ -30,6 +30,7 @@ app.use("/api/v1", require("./app/routes/appointment-type.routes"));
 app.use("/api/v1", require("./app/routes/auth-email.routes"));
 app.use("/api/v1", require("./app/routes/auth.routes"));
 app.use("/api/v1", require("./app/routes/client-agreement.routes"));
+app.use("/api/v1", require("./app/routes/config.routes"));
 app.use("/api/v1", require("./app/routes/drug.routes"));
 app.use("/api/v1", require("./app/routes/home.routes"));
 app.use("/api/v1", require("./app/routes/patient-search.routes"));
