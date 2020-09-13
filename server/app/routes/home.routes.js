@@ -1,24 +1,27 @@
 "use strict";
 const express = require("express");
 const { authJwt } = require("../middlewares");
-const Appointments = require("../controllers/home.controller.js");
+const homeController = require("../controllers/home.controller.js");
 const fieldValidation = require("../helpers/fieldValidation");
 const router = express.Router();
 
-router.get("/appointments", [authJwt.verifyToken], Appointments.getAll);
+router.get("/appointments", [authJwt.verifyToken], homeController.getAll);
 router.post(
   "/appointments",
   [authJwt.verifyToken],
-  Appointments.createAppointment
+  homeController.createAppointment
 );
 router.put(
   "/appointments/cancel/:id",
   [authJwt.verifyToken],
-  Appointments.cancelAppointment
+  homeController.cancelAppointment
 );
 router.put(
   "/appointments/update/:id",
   [authJwt.verifyToken],
-  Appointments.updateAppointment
+  homeController.updateAppointment
 );
+
+router.get("/providers", [authJwt.verifyToken], homeController.getProviders);
+
 module.exports = router;

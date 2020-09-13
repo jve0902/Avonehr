@@ -5,9 +5,6 @@ const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const {
   transporter,
-  getPasswordResetURL,
-  getEmailVerificationURL,
-  resetPasswordTemplate,
   newAppointmentTemplate,
   cancelAppointmentTemplate,
   updateAppointmentTemplate,
@@ -220,11 +217,70 @@ const updateAppointment = async (req, res) => {
   }
 };
 
+const getProviders = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select u.id, concat(u.firstname, ' ', u.lastname) name, d.count, d.dt
+        from user u
+        left join (
+            select d.user_id, sum(d.count) count, min(d.dt) dt from (
+            select l.user_id user_id, count(l.id) count, min(l.created) dt
+            from lab l
+            where l.client_id=${req.client_id}
+            and l.status='R' /*R=Requested*/
+            group by l.user_id
+            union
+            select m.user_id_to user_id, count(m.id) count, min(m.created) dt
+            from message m
+            where client_id=${req.client_id}
+            and m.status='O' /*O=Open*/
+            group by m.user_id_to
+            union
+            select m.user_id_from user_id, count(m.id) count, min(m.unread_notify_dt) dt
+            from message m
+            where m.client_id=${req.client_id}
+            and m.read_dt is null
+            and m.unread_notify_dt<=current_date()
+            group by m.user_id_from
+            union
+            select uc.user_id user_id, count(uc.client_id) count, min(uc.created) dt
+            from user_calendar uc
+            where uc.client_id=${req.client_id}
+            and uc.status='R' /*R=Requested*/
+            group by uc.user_id
+            ) d
+            where d.user_id is not null
+            group by d.user_id
+        ) d on d.user_id=u.id
+        where u.client_id=${req.client_id}
+        and u.status='A'
+        order by name
+        limit 100
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getAll,
   createAppointment,
   cancelAppointment,
   updateAppointment,
+  getProviders,
 };
 
 module.exports = appointmentTypes;
