@@ -21,7 +21,7 @@ const ICDcodes = () => {
         color="textPrimary"
         className={classes.title}
       >
-        ICD codes
+        ICD Codes
       </Typography>
       <Grid container spacing={8}>
         <Grid item md={6} xs={12}></Grid>
