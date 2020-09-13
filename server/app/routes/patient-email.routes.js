@@ -9,5 +9,9 @@ router.get(
   [authJwt.verifyToken],
   patientEmailController.getHistory
 );
-
+router.delete(
+  "/history/:date",
+  [authJwt.verifyToken],
+  patientEmailController.deleteHistory
+);
 module.exports = router;
