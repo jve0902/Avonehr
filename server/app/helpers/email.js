@@ -62,12 +62,30 @@ const resetPasswordTemplate = (user, url) => {
   return { from, to, subject, html };
 };
 
+/**
+ * @param {object} patient
+ * @param {date object} appointmentDate
+ * @param {string} providerName
+ * @returns {object} from, to, subject, html
+ */
+const newAppointmentTemplate = (patient, appointmentDate, providerName) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = patient.email;
+  const subject = "New Appointment | Clinios";
+  const html = `
+    <p>Hi ${patient.firstname},</p>
+    <p>A new appointment was created for you on ${appointmentDate} with ${providerName}.</p>
+  `;
+  return { from, to, subject, html };
+};
+
 const email = {
   transporter, // for development only
   getEmailVerificationURL,
   getPasswordResetURL,
   resetPasswordTemplate,
   signUpConfirmationTemplate,
+  newAppointmentTemplate,
 };
 
 module.exports = email;

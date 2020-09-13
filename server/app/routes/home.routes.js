@@ -6,5 +6,10 @@ const fieldValidation = require("../helpers/fieldValidation");
 const router = express.Router();
 
 router.get("/appointments", [authJwt.verifyToken], Appointments.getAll);
+router.post(
+  "/appointments",
+  [authJwt.verifyToken],
+  Appointments.createAppointment
+);
 
 module.exports = router;
