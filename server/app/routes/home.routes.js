@@ -11,5 +11,9 @@ router.post(
   [authJwt.verifyToken],
   Appointments.createAppointment
 );
-
+router.put(
+  "/appointments/cancel/:id",
+  [authJwt.verifyToken],
+  Appointments.cancelAppointment
+);
 module.exports = router;
