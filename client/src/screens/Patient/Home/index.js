@@ -11,6 +11,7 @@ import PaymentForm from "../Billing/PaymentForm";
 import Allergies from "../Allergies";
 import MedicalNotes from "../MedicalNotes";
 import NewMessageForm from "../Messages/NewMessage";
+import DiagnosesForm from "../Diagnoses";
 import MedicationsForm from "../Medications";
 import RequisitionsForm from "../Requisitions";
 
@@ -35,6 +36,9 @@ export default function Home() {
 
   const [showMessageDialog, setShowMessageDialog] = useState(false);
   const [showMessageExpandDialog, setShowMessageExpandDialog] = useState(false);
+
+  const [showDiagnosesDialog, setShowDiagnosesDialog] = useState(false);
+  const [showDiagnosesExpandDialog, setShowDiagnosesExpandDialog] = useState(false);
 
   const [showMedicationDialog, setShowMedicationDialog] = useState(false);
   const [showMedicationExpandDialog, setShowMedicationExpandDialog] = useState(false);
@@ -94,6 +98,14 @@ export default function Home() {
     setShowMedicationExpandDialog(prevState => !prevState)
   }
 
+  const toggleDiagnosesDialog = () => {
+    setShowDiagnosesDialog(prevState => !prevState)
+  }
+
+  const toggleDiagnosesExpandDialog = () => {
+    setShowDiagnosesExpandDialog(prevState => !prevState)
+  }
+
   const toggleRequisitionDialog = () => {
     setShowRequisitionDialog(prevState => !prevState)
   }
@@ -119,6 +131,8 @@ export default function Home() {
       return toggleMessageDialog;
     } else if (value === 'Medications') {
       return toggleMedicationDialog;
+    } else if (value === 'Diagnoses') {
+      return toggleDiagnosesDialog;
     } else if (value === 'Requisitions') {
       return toggleRequisitionDialog;
     }
@@ -133,6 +147,8 @@ export default function Home() {
       return toggleAllergyExpandDialog;
     } else if (value === 'Messages') {
       return toggleMessageExpandDialog;
+    } else if (value === 'Diagnoses') {
+      return toggleDiagnosesExpandDialog;
     } else if (value === 'Medications') {
       return toggleMedicationExpandDialog;
     } else if (value === 'Requisitions') {
@@ -265,6 +281,24 @@ export default function Home() {
         message={<h3>showMessageExpandDialog</h3>}
         applyForm={() => toggleMessageExpandDialog()}
         cancelForm={() => toggleMessageExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showDiagnosesDialog}
+        title={" "}
+        message={<DiagnosesForm onClose={toggleDiagnosesDialog} />}
+        applyForm={() => toggleDiagnosesDialog()}
+        cancelForm={() => toggleDiagnosesDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showDiagnosesExpandDialog}
+        title={" "}
+        message={<DiagnosesForm onClose={toggleDiagnosesExpandDialog} />}
+        applyForm={() => toggleDiagnosesExpandDialog()}
+        cancelForm={() => toggleDiagnosesExpandDialog()}
         hideActions={true}
         size={"md"}
       />
