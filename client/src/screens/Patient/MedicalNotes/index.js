@@ -1,29 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  TextField,
   Button,
   Grid,
   Typography,
-  MenuItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const MedicalNotes = (props) => {
   const classes = useStyles();
   const { onClose } = props;
-
-  const [formFields, setFormFields] = useState({
-    subject: "",
-    message: "",
-  });
-
-  const handleInputChnage = (e) => {
-    const { value, name } = e.target;
-    setFormFields({
-      ...formFields,
-      [name]: value,
-    });
-  };
 
   return (
     <>

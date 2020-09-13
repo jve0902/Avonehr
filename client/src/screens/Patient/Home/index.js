@@ -21,7 +21,6 @@ export default function Home() {
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
   const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(false);
 
-  const [showAdminInfoDialog, setShowAdminInfoDialog] = useState(false);
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
