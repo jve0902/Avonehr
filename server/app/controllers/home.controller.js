@@ -217,6 +217,66 @@ const updateAppointment = async (req, res) => {
   }
 };
 
+const getAppointmentRequest = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
+        from user_calendar uc
+        join patient p on p.id=uc.patient_id
+        where uc.client_id=${req.client_id}
+        and uc.user_id=1
+        and uc.status='R' /*R=Requested*/
+        order by uc.created
+        limit 2
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const getUnreadMessages = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const dbResponse = await db.query(
+      `select m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
+        from message m
+        left join patient p on p.id=m.patient_id_to
+        where m.client_id=${req.client_id}
+        and m.user_id_from=1
+        and m.read_dt is null
+        and m.unread_notify_dt<=current_date()
+        order by m.unread_notify_dt
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const getProviders = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -275,12 +335,76 @@ const getProviders = async (req, res) => {
   }
 };
 
+const getProviderDetails = async (req, res) => {
+  const db = makeDb(configuration, res);
+  try {
+    const patientLabs = await db.query(
+      `select count(l.id), min(l.created)
+            from lab l
+            where l.client_id=${req.client_id}
+            and l.user_id=1
+            and l.status='R' /*R=Requested*/
+            /*and (l.pend_dt is null or l.pend_dt<=current_date)*/
+      `
+    );
+    const messageFromPatients = await db.query(
+      `select count(m.id), min(m.created)
+            from message m
+            where m.client_id=${req.client_id}
+            and m.user_id_to=1
+            and m.status='O' /*O=Open*/
+            /*and (m.pend_dt is null or m.pend_dt<=current_date)*/
+      `
+    );
+    const messageToPatientsNotRead = await db.query(
+      `select count(m.id), min(m.unread_notify_dt)
+        from message m
+        where m.client_id=${req.client_id}
+        and m.user_id_from=1
+        and m.read_dt is null
+        and m.unread_notify_dt<=current_date()
+      `
+    );
+
+    const patientAppointmentRequest = await db.query(
+      `select count(m.id), min(m.unread_notify_dt)
+        from message m
+        where m.client_id=${req.client_id}
+        and m.user_id_from=1
+        and m.read_dt is null
+        and m.unread_notify_dt<=current_date()
+      `
+    );
+
+    if (!patientLabs) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = {
+      patientLabs: patientLabs,
+      messageFromPatients: messageFromPatients,
+      messageToPatientsNotRead: messageToPatientsNotRead,
+      patientAppointmentRequest: patientAppointmentRequest,
+    };
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getAll,
   createAppointment,
   cancelAppointment,
   updateAppointment,
   getProviders,
+  getProviderDetails,
+  getAppointmentRequest,
+  getUnreadMessages,
 };
 
 module.exports = appointmentTypes;

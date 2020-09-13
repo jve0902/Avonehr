@@ -22,6 +22,21 @@ router.put(
   homeController.updateAppointment
 );
 
+router.get(
+  "/appointments/request",
+  [authJwt.verifyToken],
+  homeController.getAppointmentRequest
+);
+router.get(
+  "/appointments/unread-messages",
+  [authJwt.verifyToken],
+  homeController.getUnreadMessages
+);
 router.get("/providers", [authJwt.verifyToken], homeController.getProviders);
+router.get(
+  "/providers/:id",
+  [authJwt.verifyToken],
+  homeController.getProviderDetails
+);
 
 module.exports = router;
