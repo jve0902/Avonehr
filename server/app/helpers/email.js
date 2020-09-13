@@ -74,7 +74,7 @@ const newAppointmentTemplate = (patient, appointmentDate, providerName) => {
   const subject = "New Appointment | Clinios";
   const html = `
     <p>Hi ${patient.firstname},</p>
-    <p>A new appointment was created for you on ${appointmentDate} with ${providerName}.</p>
+    <p>A new appointment was created for you on <b>${appointmentDate}</b> with ${providerName}.</p>
   `;
   return { from, to, subject, html };
 };
@@ -88,10 +88,32 @@ const newAppointmentTemplate = (patient, appointmentDate, providerName) => {
 const cancelAppointmentTemplate = (patient, appointmentDate, providerName) => {
   const from = process.env.EMAIL_LOGIN;
   const to = patient.email;
-  const subject = "New Appointment | Clinios";
+  const subject = "Cancel Appointment | Clinios";
   const html = `
     <p>Hi ${patient.firstname},</p>
-    <p>Your appointment on ${appointmentDate} with ${providerName}  was cancelled.</p>
+    <p>Your appointment on <b>${appointmentDate}</b> with ${providerName}  was cancelled.</p>
+  `;
+  return { from, to, subject, html };
+};
+
+/**
+ * @param {object} patient
+ * @param {date object} appointmentDate
+ * @param {string} providerName
+ * @returns {object} from, to, subject, html
+ */
+const updateAppointmentTemplate = (
+  patient,
+  old_appointment_date,
+  providerName,
+  new_appointment_date
+) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = patient.email;
+  const subject = "Update Appointment | Clinios";
+  const html = `
+    <p>Hi ${patient.firstname},</p>
+    <p>Your appointment on <b>${old_appointment_date}</b> with ${providerName}  was changed to <b>${new_appointment_date}</b>.</p>
   `;
   return { from, to, subject, html };
 };
@@ -104,6 +126,7 @@ const email = {
   signUpConfirmationTemplate,
   newAppointmentTemplate,
   cancelAppointmentTemplate,
+  updateAppointmentTemplate,
 };
 
 module.exports = email;

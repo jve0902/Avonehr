@@ -16,4 +16,9 @@ router.put(
   [authJwt.verifyToken],
   Appointments.cancelAppointment
 );
+router.put(
+  "/appointments/update/:id",
+  [authJwt.verifyToken],
+  Appointments.updateAppointment
+);
 module.exports = router;

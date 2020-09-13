@@ -10,6 +10,7 @@ const {
   resetPasswordTemplate,
   newAppointmentTemplate,
   cancelAppointmentTemplate,
+  updateAppointmentTemplate,
 } = require("../helpers/email");
 
 const getAll = async (req, res) => {
@@ -156,10 +157,74 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
+const updateAppointment = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errorMessage.message = errors.array();
+    return res.status(status.bad).send(errorMessage);
+  }
+  const { id } = req.params;
+  const {
+    patient,
+    oldAppointmentDate,
+    providerName,
+    newAppointmentDate,
+  } = req.body.data;
+
+  const db = makeDb(configuration, res);
+  try {
+    const updateResponse = await db.query(
+      `update user_calendar
+        set status='D', decline_dt=now()
+        where id=${id}`
+    );
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Update not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    const emailTemplate = updateAppointmentTemplate(
+      patient,
+      moment(oldAppointmentDate).format("YYYY-MM-DD HH:mm:ss"),
+      providerName,
+      moment(newAppointmentDate).format("YYYY-MM-DD HH:mm:ss")
+    );
+    if (process.env.NODE_ENV === "development") {
+      let info = await transporter.sendMail(emailTemplate);
+      console.info("Email for update appointment has bees sent!", info);
+    } else {
+      console.log("process.env.SENDGRID_API_KEY", process.env.SENDGRID_API_KEY);
+      sgMail.send(emailTemplate).then(
+        (info) => {
+          console.log(
+            `** Email for update appointment has bees sent! **`,
+            info
+          );
+        },
+        (error) => {
+          console.error(error);
+          if (error.response) {
+            console.error("error.response.body:", error.response.body);
+          }
+        }
+      );
+    }
+    successMessage.data = updateResponse;
+    successMessage.message = "Update successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Update not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getAll,
   createAppointment,
   cancelAppointment,
+  updateAppointment,
 };
 
 module.exports = appointmentTypes;
