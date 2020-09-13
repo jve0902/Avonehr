@@ -44,13 +44,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
   },
   paper: {
-    padding: "25px",
     maxWidth: "456px",
   },
   textField: {
     width: "200px",
   },
-  serachResults: {
+  searchResults: {
     marginTop: "55px",
   },
 }));
@@ -67,7 +66,7 @@ export default function AccountingSearch() {
   const [selectType, setSelectedType] = useState("");
   const [searchResult, setSearchResults] = useState([]);
 
-  const serachAccounts = (e) => {
+  const searchAccounts = (e) => {
     e.preventDefault();
     const payload = {
       data: {
@@ -111,7 +110,7 @@ export default function AccountingSearch() {
           <form
             className={classes.form}
             noValidate
-            onSubmit={(e) => serachAccounts(e)}
+            onSubmit={(e) => searchAccounts(e)}
           >
             <Grid container spacing={2}>
               <Grid item xs={6} sm={6}>
@@ -192,7 +191,7 @@ export default function AccountingSearch() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onSubmit={() => serachAccounts()}
+                onSubmit={() => searchAccounts()}
               >
                 Search
               </Button>
@@ -200,7 +199,7 @@ export default function AccountingSearch() {
           </form>
         </Grid>
       </div>
-      <div className={classes.serachResults}>
+      <div className={classes.searchResults}>
         {searchResult.length > 0 && (
           <AccountingSearchResults result={searchResult} />
         )}

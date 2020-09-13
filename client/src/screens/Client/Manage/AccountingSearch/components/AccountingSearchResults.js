@@ -9,10 +9,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import PropTypes from "prop-types";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "0 25px",
+    padding: "0",
   },
   paper: {
     padding: "5px",
@@ -32,7 +33,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "30px",
     opacity: "20%",
   },
+  overFlowControl: {
+    maxWidth: "230px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
 }));
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 13,
+  },
+}))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -63,6 +79,17 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AccountingSearchResults(props) {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = (str) => {
+    str && str.length > 40 && setOpen(true);
+
+    return str;
+  };
 
   return (
     <div className={classes.root}>
@@ -74,7 +101,7 @@ export default function AccountingSearchResults(props) {
               <StyledTableCell>Type</StyledTableCell>
               <StyledTableCell>Amount</StyledTableCell>
               <StyledTableCell>Encounter</StyledTableCell>
-              <StyledTableCell>CPT Id</StyledTableCell>
+              <StyledTableCell>CPT ID</StyledTableCell>
               <StyledTableCell>CPT Name</StyledTableCell>
               <StyledTableCell>Note</StyledTableCell>
               <StyledTableCell>Patient</StyledTableCell>
@@ -91,12 +118,58 @@ export default function AccountingSearchResults(props) {
                   {result.name}
                 </TableCell>
                 <TableCell>{result.amount}</TableCell>
-                <TableCell>{result.encounter_title}</TableCell>
+                {console.log(result.encounter_title.length)}
+                <LightTooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={handleTooltipClose}
+                  open={open}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  arrow
+                  title={result.encounter_title}
+                >
+                  <TableCell className={classes.overFlowControl}>
+                    {handleTooltipOpen(result.encounter_title)}
+                  </TableCell>
+                </LightTooltip>
                 <TableCell>{result.cpt_id ? result.cpt_id : "N/A"}</TableCell>
-                <TableCell>
-                  {result.cpt_name ? result.cpt_name : "N/A"}
-                </TableCell>
-                <TableCell>{result.note || "-"}</TableCell>
+                <LightTooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={handleTooltipClose}
+                  open={open}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  arrow
+                  title={result.cpt_name}
+                >
+                  <TableCell className={classes.overFlowControl}>
+                    {handleTooltipOpen(result.cpt_name)
+                      ? result.cpt_name
+                      : "N/A"}
+                  </TableCell>
+                </LightTooltip>
+                <LightTooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={handleTooltipClose}
+                  open={open}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  arrow
+                  title={result.note}
+                >
+                  <TableCell className={classes.overFlowControl}>
+                    {handleTooltipOpen(result.note) || "-"}
+                  </TableCell>
+                </LightTooltip>
                 <TableCell
                   //Todo: Link to patient page
                   className={classes.patientLink}
