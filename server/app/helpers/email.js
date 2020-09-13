@@ -55,12 +55,8 @@ const resetPasswordTemplate = (user, url) => {
   const subject = "Clinios Password Reset";
   const html = `
   <p>Hey ${user.firstname || user.email},</p>
-  <p>We heard that you lost your Clinios password. Sorry about that!</p>
-  <p>But don’t worry! You can use the following link to reset your password:</p>
+  <p>You can use the following link to reset your password.  It will expire in one hour.</p>
   <a href=${url}>${url}</a>
-  <p>If you don’t use this link within 1 hour, it will expire.</p>
-  <p>Do something outside today! </p>
-  <p>–-Clinios</p>
   `;
 
   return { from, to, subject, html };
