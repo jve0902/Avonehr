@@ -11,6 +11,8 @@ import PaymentForm from "../Billing/PaymentForm";
 import Allergies from "../Allergies";
 import MedicalNotes from "../MedicalNotes";
 import NewMessageForm from "../Messages/NewMessage";
+import MedicationsForm from "../Medications";
+import RequisitionsForm from "../Requisitions";
 
 export default function Home() {
   const classes = useStyles();
@@ -33,6 +35,12 @@ export default function Home() {
 
   const [showMessageDialog, setShowMessageDialog] = useState(false);
   const [showMessageExpandDialog, setShowMessageExpandDialog] = useState(false);
+
+  const [showMedicationDialog, setShowMedicationDialog] = useState(false);
+  const [showMedicationExpandDialog, setShowMedicationExpandDialog] = useState(false);
+
+  const [showRequisitionDialog, setShowRequisitionDialog] = useState(false);
+  const [showRequisitionExpandDialog, setShowRequisitionExpandDialog] = useState(false);
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
@@ -78,6 +86,22 @@ export default function Home() {
     setShowMessageExpandDialog(prevState => !prevState)
   }
 
+  const toggleMedicationDialog = () => {
+    setShowMedicationDialog(prevState => !prevState)
+  }
+
+  const toggleMedicationExpandDialog = () => {
+    setShowMedicationExpandDialog(prevState => !prevState)
+  }
+
+  const toggleRequisitionDialog = () => {
+    setShowRequisitionDialog(prevState => !prevState)
+  }
+
+  const toggleRequisitionExpandDialog = () => {
+    setShowRequisitionExpandDialog(prevState => !prevState)
+  }
+
   const mapPrimaryButtonHandlers = (value) => {
     if (value === 'Patient') {
       return togglePatientHistoryDialog;
@@ -93,6 +117,10 @@ export default function Home() {
       return toggleMedicalNotesDialog;
     } else if (value === 'Messages') {
       return toggleMessageDialog;
+    } else if (value === 'Medications') {
+      return toggleMedicationDialog;
+    } else if (value === 'Requisitions') {
+      return toggleRequisitionDialog;
     }
   }
 
@@ -105,6 +133,10 @@ export default function Home() {
       return toggleAllergyExpandDialog;
     } else if (value === 'Messages') {
       return toggleMessageExpandDialog;
+    } else if (value === 'Medications') {
+      return toggleMedicationExpandDialog;
+    } else if (value === 'Requisitions') {
+      return toggleRequisitionExpandDialog;
     }
   }
 
@@ -236,6 +268,42 @@ export default function Home() {
         hideActions={true}
         size={"md"}
       />
+      <Dialog
+        open={showMedicationDialog}
+        title={" "}
+        message={<MedicationsForm onClose={toggleMedicationDialog} />}
+        applyForm={() => toggleMedicationDialog()}
+        cancelForm={() => toggleMedicationDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showMedicationExpandDialog}
+        title={" "}
+        message={<MedicationsForm onClose={toggleMedicationExpandDialog} />}
+        applyForm={() => toggleMedicationExpandDialog()}
+        cancelForm={() => toggleMedicationExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showRequisitionDialog}
+        title={" "}
+        message={<RequisitionsForm onClose={toggleRequisitionDialog} />}
+        applyForm={() => toggleRequisitionDialog()}
+        cancelForm={() => toggleRequisitionDialog()}
+        hideActions={true}
+        size={"xl"}
+      />
+      <Dialog
+        open={showRequisitionExpandDialog}
+        title={" "}
+        message={<RequisitionsForm onClose={toggleRequisitionExpandDialog} />}
+        applyForm={() => toggleRequisitionExpandDialog()}
+        cancelForm={() => toggleRequisitionExpandDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
       <Grid className={classes.main} container spacing={1}>
         <Grid item md={3} sm={6} xs={12}>
           {FirstColumnPatientCards.map((item, index) => {
@@ -296,6 +364,8 @@ export default function Home() {
                 icon={item.icon}
                 primaryButtonText={item.primaryButtonText}
                 secondaryButtonText={item.secondaryButtonText}
+                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
+                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
               />
             )
           })}
