@@ -611,6 +611,159 @@ const createPatientAllergy = async (req, res) => {
   }
 };
 
+const getDocuments = async (req, res) => {
+  const db = makeDb(configuration, res);
+
+  const { patient_id } = req.params;
+  const { tab } = req.query;
+
+  try {
+    let $sql;
+
+    $sql = `select l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.upload_error, l.note
+      , group_concat(c.name, ': ', c.id, ' ', lc.value, ' ', lc.range_low, ' ', lc.range_high separator ' | ') tests
+      from lab l
+      left join lab_cpt lc on lc.lab_id=l.id
+      left join cpt c on c.id=lc.cpt_id
+      where l.patient_id=${patient_id} \n`;
+    if (tab === "Labs") {
+      $sql = $sql + "and l.type='L' and l.deleted=false \n";
+    } else if (tab === "Imaging") {
+      $sql = $sql + "and l.type='I' and l.deleted=false \n";
+    } else if (tab === "Misc") {
+      $sql = $sql + "and l.type='M' and l.deleted=false \n";
+    } else if (tab === "Uncategorized") {
+      $sql = $sql + "and l.type=null and l.deleted=false \n";
+    } else if (tab === "Trash") {
+      $sql = $sql + "and l.deleted=true \n";
+    }
+    $sql =
+      $sql +
+      `group by l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
+        order by l.created desc
+        limit 200`;
+
+    const dbResponse = await db.query($sql);
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const deleteDocuments = async (req, res) => {
+  const { id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const updateResponse = await db.query(
+      `update lab set deleted=true where id=${id}
+      `
+    );
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Delete not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = updateResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const checkDocument = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+  try {
+    const dbResponse = await db.query(
+      `select 1
+        from lab
+        where patient_id=${patient_id}
+        and filename=filename
+        limit 1`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const createDocuments = async (req, res) => {
+  const { patient_id, filename } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into lab (client_id, user_id, patient_id, filename, status, source, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, '${filename}', 'R', 'U', now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const getEncounters = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name from encounter e left join encounter_type et on et.id=e.type_id
+        left join user u on u.id=e.user_id
+        where e.patient_id=${patient_id}
+        order by e.dt desc
+        limit 50`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -629,6 +782,11 @@ const appointmentTypes = {
   deleteAllergy,
   searchAllergies,
   createPatientAllergy,
+  getDocuments,
+  deleteDocuments,
+  checkDocument,
+  createDocuments,
+  getEncounters,
 };
 
 module.exports = appointmentTypes;
