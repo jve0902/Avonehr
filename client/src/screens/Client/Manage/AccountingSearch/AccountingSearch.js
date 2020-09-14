@@ -7,9 +7,15 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import moment from "moment";
+import FormControl from "@material-ui/core/FormControl";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
 import Accounting from "../../../../services/accountingSearch.service";
 import AccountingSearchResults from "./components";
-import moment from "moment";
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +58,36 @@ const useStyles = makeStyles((theme) => ({
   searchResults: {
     marginTop: "55px",
   },
+  amount: {
+    marginTop: "18px",
+  },
 }));
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+    />
+  );
+}
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default function AccountingSearch() {
   const classes = useStyles();
@@ -72,6 +107,9 @@ export default function AccountingSearch() {
       data: {
         amount1: amountFrom,
         amount2: amountTo,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        typeID: selectType,
       },
     };
     Accounting.search(payload).then((res) => {
@@ -115,33 +153,60 @@ export default function AccountingSearch() {
             <Grid container spacing={2}>
               <Grid item xs={6} sm={6}>
                 <TextField
-                  variant="outlined"
-                  className={classes.textField}
-                  value={amountFrom}
-                  margin="normal"
-                  id="amountFrom"
-                  label="Amount From"
-                  name="amountFrom"
-                  autoComplete="amountFrom"
                   autoFocus
+                  variant="outlined"
+                  label="Amount From"
+                  value={amountFrom}
+                  id="outlined-adornment-amount"
+                  className={`${classes.textField} ${classes.amount}`}
                   onChange={(event) => setAmountFrom(event.target.value)}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  inputProps={{
+                    maxLength: 16,
+                  }}
+                  error={amountFrom.length >= 13}
+                  helperText={
+                    amountTo === ""
+                      ? "Empty field!"
+                      : amountFrom &&
+                        amountFrom.length >= 13 &&
+                        "Enter between 12 digit"
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
-                  className={classes.textField}
-                  value={amountTo}
-                  margin="normal"
-                  id="amountTo"
                   label="Amount To"
-                  name="amountTo"
-                  autoComplete="amountTo"
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
+                  variant="outlined"
+                  value={amountTo}
+                  id="outlined-adornment-amount"
+                  error={amountTo.length >= 13}
                   onChange={(event) => setAmountTo(event.target.value)}
+                  className={`${classes.textField} ${classes.amount}`}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  inputProps={{
+                    maxLength: 16,
+                  }}
+                  error={amountTo.length >= 13}
+                  helperText={
+                    amountTo === ""
+                      ? "Empty field!"
+                      : amountTo &&
+                        amountTo.length >= 13 &&
+                        "Enter between 12 digit"
+                  }
                 />
+                {console.log(amountTo.length)}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField

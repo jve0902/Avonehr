@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import PropTypes from "prop-types";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,16 +79,16 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AccountingSearchResults(props) {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
+  const classes = useStyles();
+  const history = useHistory();
 
   const handleTooltipClose = () => {
     setOpen(false);
   };
-
   const handleTooltipOpen = (str) => {
     str && str.length > 40 && setOpen(true);
-
     return str;
   };
 
@@ -118,7 +119,6 @@ export default function AccountingSearchResults(props) {
                   {result.name}
                 </TableCell>
                 <TableCell>{result.amount}</TableCell>
-                {console.log(result.encounter_title.length)}
                 <LightTooltip
                   PopperProps={{
                     disablePortal: true,
@@ -172,6 +172,7 @@ export default function AccountingSearchResults(props) {
                 </LightTooltip>
                 <TableCell
                   //Todo: Link to patient page
+                  onClick={() => history.push(`patient/${result.patient_id}`)}
                   className={classes.patientLink}
                 >
                   {result.patient_name}
