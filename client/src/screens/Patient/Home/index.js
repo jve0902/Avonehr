@@ -1,9 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
+
+//common components
 import Card from "../../../components/common/Card";
 import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
+
+//components
 import BasicInfo from "../BasicInfo";
 import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
@@ -15,9 +19,14 @@ import DiagnosesForm from "../Diagnoses";
 import MedicationsForm from "../Medications";
 import RequisitionsForm from "../Requisitions";
 
+//service
+import PatientService from "../../../services/patient.service";
+
 export default function Home() {
   const classes = useStyles();
   const inputFile = useRef(null)
+
+  //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
   const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(false);
 
@@ -44,6 +53,29 @@ export default function Home() {
 
   const [showRequisitionDialog, setShowRequisitionDialog] = useState(false);
   const [showRequisitionExpandDialog, setShowRequisitionExpandDialog] = useState(false);
+
+  //data states
+  const [allergies, setAllergies] = useState([]);
+  const [billings, setBillings] = useState([]);
+
+  useEffect(() => {
+    fetchAllergies();
+    fetchBillings();
+  }, []);
+
+  const fetchAllergies = () => {
+    PatientService.getAllergies()
+    .then((res) => {
+      setAllergies(res.data);
+    })
+  };
+
+  const fetchBillings = () => {
+    PatientService.getBillings()
+    .then((res) => {
+      setBillings(res.data);
+    })
+  };
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
