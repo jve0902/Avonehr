@@ -67,5 +67,10 @@ router.post(
   [authJwt.verifyToken, validation.validate("createPatientAllergy")],
   Patient.createPatientAllergy
 );
+router.get(
+  "/patient/documents/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getDocuments
+);
 
 module.exports = router;

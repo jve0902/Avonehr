@@ -611,6 +611,55 @@ const createPatientAllergy = async (req, res) => {
   }
 };
 
+const getDocuments = async (req, res) => {
+  const db = makeDb(configuration, res);
+
+  const { patient_id } = req.params;
+  const { tab } = req.query;
+
+  try {
+    let $sql;
+
+    $sql = `select l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.upload_error, l.note
+      , group_concat(c.name, ': ', c.id, ' ', lc.value, ' ', lc.range_low, ' ', lc.range_high separator ' | ') tests
+      from lab l
+      left join lab_cpt lc on lc.lab_id=l.id
+      left join cpt c on c.id=lc.cpt_id
+      where l.patient_id=${patient_id} \n`;
+    if (tab === "Labs") {
+      $sql = $sql + "and l.type='L' and l.deleted=false \n";
+    } else if (tab === "Imaging") {
+      $sql = $sql + "and l.type='I' and l.deleted=false \n";
+    } else if (tab === "Misc") {
+      $sql = $sql + "and l.type='M' and l.deleted=false \n";
+    } else if (tab === "Uncategorized") {
+      $sql = $sql + "and l.type=null and l.deleted=false \n";
+    } else if (tab === "Trash") {
+      $sql = $sql + "and l.deleted=true \n";
+    }
+    $sql =
+      $sql +
+      `group by l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
+        order by l.created desc
+        limit 200`;
+
+    const dbResponse = await db.query($sql);
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -629,6 +678,7 @@ const appointmentTypes = {
   deleteAllergy,
   searchAllergies,
   createPatientAllergy,
+  getDocuments,
 };
 
 module.exports = appointmentTypes;
