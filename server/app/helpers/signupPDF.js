@@ -3,14 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
-/**
- * Generate Contract PDF
- * @param {string} fileName
- * @param {string} content
- * @param {object} user
- * @returns {string} pdfUrl
- */
-const generatePDF = async (content, user, client) => {
+const signupPDF = async (content, user, client) => {
   try {
     const pdfPath = path.join(
       "/app",
@@ -20,7 +13,6 @@ const generatePDF = async (content, user, client) => {
     const pdfDoc = new PDFDocument({ size: "A4", margin: 50 });
     pdfDoc.text(content);
 
-    // Footer
     pdfDoc.text(`Signed: ${user.sign_dt}`, 50, pdfDoc.page.height - 160, {
       width: 410,
       align: "left",
@@ -42,7 +34,7 @@ const generatePDF = async (content, user, client) => {
 };
 
 const user = {
-  generatePDF,
+  signupPDF,
 };
 
 module.exports = user;

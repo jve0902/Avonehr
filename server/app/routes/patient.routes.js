@@ -67,5 +67,29 @@ router.post(
   [authJwt.verifyToken, validation.validate("createPatientAllergy")],
   Patient.createPatientAllergy
 );
-
+router.get(
+  "/patient/documents/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getDocuments
+);
+router.delete(
+  "/patient/documents/:id",
+  [authJwt.verifyToken],
+  Patient.deleteDocuments
+);
+router.get(
+  "/patient/documents/:patient_id/check",
+  [authJwt.verifyToken],
+  Patient.checkDocument
+);
+router.post(
+  "/patient/documents",
+  [authJwt.verifyToken],
+  Patient.createDocuments
+);
+router.get(
+  "/patient/encounters/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getEncounters
+);
 module.exports = router;

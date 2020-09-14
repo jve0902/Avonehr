@@ -7,7 +7,7 @@ const { validationResult } = require("express-validator");
 const config = require("./../../config");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
-const { generatePDF } = require("../helpers/user");
+const { signupPDF } = require("../helpers/signupPDF");
 
 /**
  * This function validate the records value in database.
@@ -140,7 +140,7 @@ exports.signup = async (req, res) => {
         "SELECT id, contract, created FROM contract WHERE created=(select max(created) from contract)"
       );
       const contractContent = contractRows[0];
-      const pdf = await generatePDF(contractContent.contract, userRows[0], clientRows[0]);
+      const pdf = await signupPDF(contractContent.contract, userRows[0], clientRows[0]);
       //end Create contract PDF
 
       successMessage.data = clientResponse.insertId;
