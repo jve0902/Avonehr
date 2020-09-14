@@ -793,6 +793,39 @@ const getMedicalNotesHistory = async (req, res) => {
   }
 };
 
+const medicalNotesHistoryUpdate = async (req, res) => {
+  const { medical_note, old_medical_note } = req.body.data;
+  const { id } = req.params;
+
+  const db = makeDb(configuration, res);
+  try {
+    const patientHistory = await db.query(
+      `insert into patient_history (id, medical_note, created, created_user_id) values (${id}, '${old_medical_note}', now(), ${req.user_id})`
+    );
+    const updateResponse = await db.query(
+      `update patient
+            set medical_note='${medical_note}'
+            where id=${id}
+      `
+    );
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Update not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = updateResponse;
+    successMessage.message = "Update successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Update not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -817,6 +850,7 @@ const appointmentTypes = {
   createDocuments,
   getEncounters,
   getMedicalNotesHistory,
+  medicalNotesHistoryUpdate,
 };
 
 module.exports = appointmentTypes;

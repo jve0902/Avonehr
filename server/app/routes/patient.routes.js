@@ -97,4 +97,9 @@ router.get(
   [authJwt.verifyToken],
   Patient.getMedicalNotesHistory
 );
+router.put(
+  "/patient/medical-notes/history/:id",
+  [authJwt.verifyToken],
+  Patient.medicalNotesHistoryUpdate
+);
 module.exports = router;
