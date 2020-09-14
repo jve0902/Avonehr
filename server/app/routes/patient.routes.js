@@ -92,4 +92,9 @@ router.get(
   [authJwt.verifyToken],
   Patient.getEncounters
 );
+router.get(
+  "/patient/medical-notes/history",
+  [authJwt.verifyToken],
+  Patient.getMedicalNotesHistory
+);
 module.exports = router;
