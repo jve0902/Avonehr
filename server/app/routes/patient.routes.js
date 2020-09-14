@@ -118,5 +118,15 @@ router.get(
   [authJwt.verifyToken],
   Patient.getDiagnoses
 );
+router.put(
+  "/patient/diagnoses/:encounter_id/:icd_id",
+  [authJwt.verifyToken],
+  Patient.updateDiagnose
+);
+router.delete(
+  "/patient/diagnoses/:encounter_id/:icd_id",
+  [authJwt.verifyToken],
+  Patient.deleteDiagnose
+);
 
 module.exports = router;

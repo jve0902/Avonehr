@@ -959,6 +959,63 @@ const getDiagnoses = async (req, res) => {
   }
 };
 
+const updateDiagnose = async (req, res) => {
+  const { encounter_id, icd_id } = req.params;
+  const { dianoseStatus } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const updateResponse = await db.query(`
+      update patient_icd
+        set status='${dianoseStatus}'
+        where encounter_id=${encounter_id}
+        and icd_id='${icd_id}'
+    `);
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Update not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = deleteResponse;
+    successMessage.message = "Update successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Update not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const deleteDiagnose = async (req, res) => {
+  const { encounter_id, icd_id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const deleteResponse = await db.query(`
+       delete 
+        from patient_icd
+        where encounter_id=${encounter_id}
+        and icd_id='${icd_id}'
+    `);
+
+    if (!deleteResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = deleteResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -988,6 +1045,8 @@ const appointmentTypes = {
   deleteMessage,
   getAllTests,
   getDiagnoses,
+  deleteDiagnose,
+  updateDiagnose,
 };
 
 module.exports = appointmentTypes;
