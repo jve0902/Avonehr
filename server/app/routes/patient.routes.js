@@ -103,4 +103,10 @@ router.put(
   Patient.medicalNotesHistoryUpdate
 );
 router.get("/patient/messages", [authJwt.verifyToken], Patient.getMessages);
+router.delete(
+  "/patient/messages/:id",
+  [authJwt.verifyToken],
+  Patient.deleteMessage //TODO:: Incomplete request
+);
+
 module.exports = router;
