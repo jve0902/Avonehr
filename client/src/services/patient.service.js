@@ -15,6 +15,21 @@ class Patient {
       .get(API_URL + `/patient/billing/?limit=3`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getDocuments() {
+    return axios
+      .get(API_URL + `/patient/documents/1/?tab="Labs"`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getPatientHistory() {
+    return axios
+      .get(API_URL + `/patient/history`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  searchPatient(body) {
+    return axios
+      .post(API_URL + `patient/search`, body, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   // create(data) {
   //   return axios.post(API_URL + `/appointments`, data, {
   //     headers: authHeader(),
