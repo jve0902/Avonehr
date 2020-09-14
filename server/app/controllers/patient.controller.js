@@ -238,10 +238,10 @@ const getForms = async (req, res) => {
   try {
     const dbResponse = await db.query(
       `select pf.form_id, pf.created, cf.title, pf.form
-            from patient_form pf
-            left join client_form cf on cf.id=pf.form_id
-            where pf.patient_id=1
-            order by pf.created
+        from patient_form pf
+        left join client_form cf on cf.id=pf.form_id
+        where pf.patient_id=1
+        order by pf.created
       `
     );
 
