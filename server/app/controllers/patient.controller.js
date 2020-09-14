@@ -1,13 +1,9 @@
 "use strict";
+
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getPatient = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -44,13 +40,7 @@ const getPatient = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const search = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -110,11 +100,6 @@ const search = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const history = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -180,11 +165,6 @@ const history = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const AdminNotehistory = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -215,13 +195,7 @@ const AdminNotehistory = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const adminNoteupdate = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -259,11 +233,6 @@ const adminNoteupdate = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getForms = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -292,13 +261,7 @@ const getForms = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getFormById = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -332,11 +295,6 @@ const getFormById = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const handouts = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -367,14 +325,7 @@ const handouts = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
-
 const handoutDelete = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -408,13 +359,7 @@ const handoutDelete = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const CreatePatientHandouts = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -443,11 +388,6 @@ const CreatePatientHandouts = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const patientHandouts = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -478,13 +418,7 @@ const patientHandouts = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const DeletePatientHandouts = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -519,11 +453,6 @@ const DeletePatientHandouts = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getBilling = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -556,11 +485,6 @@ const getBilling = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const getAllergies = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
@@ -591,13 +515,7 @@ const getAllergies = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const deleteAllergy = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -629,13 +547,7 @@ const deleteAllergy = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const searchAllergies = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();
@@ -670,13 +582,7 @@ const searchAllergies = async (req, res) => {
   }
 };
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
 const createPatientAllergy = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     errorMessage.message = errors.array();

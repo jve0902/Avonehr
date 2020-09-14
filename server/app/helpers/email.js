@@ -55,14 +55,66 @@ const resetPasswordTemplate = (user, url) => {
   const subject = "Clinios Password Reset";
   const html = `
   <p>Hey ${user.firstname || user.email},</p>
-  <p>We heard that you lost your Clinios password. Sorry about that!</p>
-  <p>But don’t worry! You can use the following link to reset your password:</p>
+  <p>You can use the following link to reset your password.  It will expire in one hour.</p>
   <a href=${url}>${url}</a>
-  <p>If you don’t use this link within 1 hour, it will expire.</p>
-  <p>Do something outside today! </p>
-  <p>–-Clinios</p>
   `;
 
+  return { from, to, subject, html };
+};
+
+/**
+ * @param {object} patient
+ * @param {date object} appointmentDate
+ * @param {string} providerName
+ * @returns {object} from, to, subject, html
+ */
+const newAppointmentTemplate = (patient, appointmentDate, providerName) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = patient.email;
+  const subject = "New Appointment | Clinios";
+  const html = `
+    <p>Hi ${patient.firstname},</p>
+    <p>A new appointment was created for you on <b>${appointmentDate}</b> with ${providerName}.</p>
+  `;
+  return { from, to, subject, html };
+};
+
+/**
+ * @param {object} patient
+ * @param {date object} appointmentDate
+ * @param {string} providerName
+ * @returns {object} from, to, subject, html
+ */
+const cancelAppointmentTemplate = (patient, appointmentDate, providerName) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = patient.email;
+  const subject = "Cancel Appointment | Clinios";
+  const html = `
+    <p>Hi ${patient.firstname},</p>
+    <p>Your appointment on <b>${appointmentDate}</b> with ${providerName}  was cancelled.</p>
+  `;
+  return { from, to, subject, html };
+};
+
+/**
+ * @param {object} patient
+ * @param {date object} appointmentDate
+ * @param {string} providerName
+ * @returns {object} from, to, subject, html
+ */
+const updateAppointmentTemplate = (
+  patient,
+  old_appointment_date,
+  providerName,
+  new_appointment_date
+) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = patient.email;
+  const subject = "Update Appointment | Clinios";
+  const html = `
+    <p>Hi ${patient.firstname},</p>
+    <p>Your appointment on <b>${old_appointment_date}</b> with ${providerName}  was changed to <b>${new_appointment_date}</b>.</p>
+  `;
   return { from, to, subject, html };
 };
 
@@ -72,6 +124,9 @@ const email = {
   getPasswordResetURL,
   resetPasswordTemplate,
   signUpConfirmationTemplate,
+  newAppointmentTemplate,
+  cancelAppointmentTemplate,
+  updateAppointmentTemplate,
 };
 
 module.exports = email;

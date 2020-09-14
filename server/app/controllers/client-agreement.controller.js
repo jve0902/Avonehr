@@ -1,23 +1,19 @@
 "use strict";
-
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
 
-/**
- * @param {object} req
- * @param {object} res
- * @returns {object}
- */
-const getAll = async (req, res) => {
+const getAgreement = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
-    const dbResponse = await db.query(
-      `
-      select user_id, patient_id, start_dt, end_dt, status, client_id
-        from user_calendar
-        where client_id=${req.client_id} or  user_id = ${req.user_id}
-      `
+    const rows = await db.query(
+      `select contract 
+       from contract
+       where created = (
+         select max(created)
+         from contract
+         ) \n`
     );
+    const dbResponse = rows[0];
 
     if (!dbResponse) {
       errorMessage.error = "None found";
@@ -26,7 +22,6 @@ const getAll = async (req, res) => {
     successMessage.data = dbResponse;
     return res.status(status.created).send(successMessage);
   } catch (err) {
-    console.log("err", err);
     errorMessage.error = "Select not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
@@ -34,8 +29,8 @@ const getAll = async (req, res) => {
   }
 };
 
-const appointmentTypes = {
-  getAll,
+const clients = {
+  getAgreement,
 };
 
-module.exports = appointmentTypes;
+module.exports = clients;

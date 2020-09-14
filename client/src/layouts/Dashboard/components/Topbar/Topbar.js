@@ -182,7 +182,7 @@ const pages = [
         href: "/setup/configuration",
       },
       {
-        title: "CPT codes",
+        title: "CPT Codes",
         href: "/setup/ctp-codes",
       },
       {
@@ -198,7 +198,7 @@ const pages = [
         href: "/setup/handouts",
       },
       {
-        title: "ICD codes",
+        title: "ICD Codes",
         href: "/setup/icd-codes",
       },
       {
