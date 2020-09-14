@@ -8,7 +8,7 @@ import DesktopIcon from '@material-ui/icons/DesktopMac';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler } = props;
   
   const menuIcons = { DesktopIcon, CardIcon };
 
@@ -34,6 +34,12 @@ const PatientCard = (props) => {
                 variant='outlined'
                 placeholder="Search ..."
                 className={classes.searchInput}
+                onChange={(e) => {
+                  const searchedValue = e.target.value;
+                  if(!!searchedValue && searchedValue.length) {
+                    searchHandler(searchedValue)
+                  }
+                }}
               />
             )
           }
@@ -121,6 +127,7 @@ PatientCard.defaultProps = {
   primaryButtonHandler: () => {},
   secondaryButtonHandler: () => {},
   iconHandler: () => {},
+  searchHandler: () => {},
 };
 
 PatientCard.propTypes = {
@@ -134,6 +141,7 @@ PatientCard.propTypes = {
   primaryButtonHandler: PropTypes.func,
   secondaryButtonHandler: PropTypes.func,
   iconHandler: PropTypes.func,
+  searchHandler: PropTypes.func,
 };
 
 
