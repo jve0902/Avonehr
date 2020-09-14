@@ -55,13 +55,25 @@ export default function Home() {
   const [showRequisitionExpandDialog, setShowRequisitionExpandDialog] = useState(false);
 
   //data states
+  const [patientHistory, setPatientHistory] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
   const [billings, setBillings] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
+    fetchPatientHistory();
     fetchAllergies();
     fetchBillings();
+    fetchDocuments();
   }, []);
+
+  const fetchPatientHistory = () => {
+    PatientService.getPatientHistory()
+    .then((res) => {
+      setPatientHistory(res.data);
+    })
+  };
 
   const fetchAllergies = () => {
     PatientService.getAllergies()
@@ -74,6 +86,25 @@ export default function Home() {
     PatientService.getBillings()
     .then((res) => {
       setBillings(res.data);
+    })
+  };
+
+  const fetchDocuments = () => {
+    PatientService.getDocuments()
+    .then((res) => {
+      setDocuments(res.data);
+    })
+  };
+
+  const searchPatientHandler = (searchText) => {
+    const reqBody = {
+      "data": {
+          "text": searchText
+      } 
+    }
+    PatientService.searchPatient(reqBody)
+    .then((res) => {
+      setPatients(res.data);
     })
   };
 
@@ -385,6 +416,7 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
+                searchHandler={value => searchPatientHandler(value)}
               />
             )
           })}
