@@ -106,12 +106,17 @@ router.get("/patient/messages", [authJwt.verifyToken], Patient.getMessages);
 router.delete(
   "/patient/messages/:id",
   [authJwt.verifyToken],
-  Patient.deleteMessage //TODO:: Incomplete request
+  Patient.deleteMessage
 );
 router.get(
   "/patient/all-tests/:patient_id",
   [authJwt.verifyToken],
   Patient.getAllTests
+);
+router.get(
+  "/patient/diagnoses/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getDiagnoses
 );
 
 module.exports = router;

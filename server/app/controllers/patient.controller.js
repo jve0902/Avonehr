@@ -867,14 +867,19 @@ const deleteMessage = async (req, res) => {
   const { id } = req.params;
   const db = makeDb(configuration, res);
   try {
-    const deleteResponse = await db.query(`delete from message where id=${id}`);
+    const deleteMsgHistoryResponse = await db.query(`
+      delete from message_history where message_id=${id}
+    `);
+    const deleteMsgResponse = await db.query(`
+       delete from message where id=${id}
+    `);
 
-    if (!deleteResponse.affectedRows) {
+    if (!deleteMsgResponse.affectedRows) {
       errorMessage.error = "Deletion not successful";
       return res.status(status.notfound).send(errorMessage);
     }
 
-    successMessage.data = deleteResponse;
+    successMessage.data = deleteMsgResponse;
     successMessage.message = "Delete successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
@@ -923,6 +928,37 @@ const getAllTests = async (req, res) => {
   }
 };
 
+const getDiagnoses = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+  const { active } = req.query;
+
+  try {
+    const dbResponse = await db.query(
+      `select pi.created, pi.icd_id, i.name
+        from patient_icd pi
+        left join icd i on i.id=pi.icd_id
+        where pi.patient_id=${patient_id}
+        and pi.active=${active}
+        order by i.name
+        limit 50`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -951,6 +987,7 @@ const appointmentTypes = {
   getMessages,
   deleteMessage,
   getAllTests,
+  getDiagnoses,
 };
 
 module.exports = appointmentTypes;
