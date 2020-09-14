@@ -102,4 +102,5 @@ router.put(
   [authJwt.verifyToken],
   Patient.medicalNotesHistoryUpdate
 );
+router.get("/patient/messages", [authJwt.verifyToken], Patient.getMessages);
 module.exports = router;

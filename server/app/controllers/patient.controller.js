@@ -826,6 +826,39 @@ const medicalNotesHistoryUpdate = async (req, res) => {
   }
 };
 
+const getMessages = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select m.id, m.created
+        , concat(u.firstname, ' ', u.lastname) user_to_from
+        , concat(u2.firstname, ' ', u2.lastname) user_to_name
+        , m.read_dt, m.subject , m.message
+        from message m
+        left join user u on u.id=m.user_id_from
+        left join user u2 on u2.id=m.user_id_to
+        where (patient_id_from=1 or patient_id_to=1)
+        order by m.created desc
+        limit 50`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -851,6 +884,7 @@ const appointmentTypes = {
   getEncounters,
   getMedicalNotesHistory,
   medicalNotesHistoryUpdate,
+  getMessages,
 };
 
 module.exports = appointmentTypes;
