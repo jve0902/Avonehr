@@ -828,7 +828,6 @@ const medicalNotesHistoryUpdate = async (req, res) => {
 
 const getMessages = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { patient_id } = req.params;
 
   try {
     const dbResponse = await db.query(
@@ -887,6 +886,43 @@ const deleteMessage = async (req, res) => {
   }
 };
 
+const getAllTests = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select lc.cpt_id, c.name, date(lc2.lab_dt) lab_dt, lc2.value, lc2.range_high, lc2.range_low, lc2.unit, lc.count from (
+        select lc.cpt_id, max(lc2.lab_id) lab_id, count from (
+        select cpt_id, max(lab_dt) lab_dt, count(*) count
+        from lab_cpt
+        where patient_id=${patient_id}
+        group by cpt_id
+        ) lc
+        left join lab_cpt lc2 on lc2.cpt_id=lc.cpt_id and lc2.lab_dt=lc.lab_dt
+        group by lc.cpt_id
+        ) lc
+        left join lab_cpt lc2 on lc2.lab_id=lc.lab_id and lc2.cpt_id=lc.cpt_id
+        left join cpt c on c.id=lc2.cpt_id
+        order by c.name
+        limit 500`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -914,6 +950,7 @@ const appointmentTypes = {
   medicalNotesHistoryUpdate,
   getMessages,
   deleteMessage,
+  getAllTests,
 };
 
 module.exports = appointmentTypes;

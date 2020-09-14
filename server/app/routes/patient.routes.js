@@ -108,5 +108,10 @@ router.delete(
   [authJwt.verifyToken],
   Patient.deleteMessage //TODO:: Incomplete request
 );
+router.get(
+  "/patient/all-tests/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getAllTests
+);
 
 module.exports = router;
