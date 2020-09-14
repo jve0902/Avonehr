@@ -736,6 +736,34 @@ const createDocuments = async (req, res) => {
   }
 };
 
+const getEncounters = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name from encounter e left join encounter_type et on et.id=e.type_id
+        left join user u on u.id=e.user_id
+        where e.patient_id=${patient_id}
+        order by e.dt desc
+        limit 50`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -758,6 +786,7 @@ const appointmentTypes = {
   deleteDocuments,
   checkDocument,
   createDocuments,
+  getEncounters,
 };
 
 module.exports = appointmentTypes;

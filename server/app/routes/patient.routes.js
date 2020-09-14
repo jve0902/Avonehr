@@ -87,5 +87,9 @@ router.post(
   [authJwt.verifyToken],
   Patient.createDocuments
 );
-
+router.get(
+  "/patient/encounters/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getEncounters
+);
 module.exports = router;
