@@ -22,11 +22,6 @@ const Requisitions = (props) => {
   const handleLabortoriesSelection = (e) => {
     setLabsSelection(e.target.checked);
   }
-  
-  console.log("##########", {
-    billSelection,
-    labsSelection
-  })
 
   return (
     <>
