@@ -72,5 +72,10 @@ router.get(
   [authJwt.verifyToken],
   Patient.getDocuments
 );
+router.delete(
+  "/patient/documents/:id",
+  [authJwt.verifyToken],
+  Patient.deleteDocuments
+);
 
 module.exports = router;

@@ -660,6 +660,32 @@ const getDocuments = async (req, res) => {
   }
 };
 
+const deleteDocuments = async (req, res) => {
+  const { id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const updateResponse = await db.query(
+      `update lab set deleted=true where id=${id}
+      `
+    );
+
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Delete not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = updateResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -679,6 +705,7 @@ const appointmentTypes = {
   searchAllergies,
   createPatientAllergy,
   getDocuments,
+  deleteDocuments,
 };
 
 module.exports = appointmentTypes;
