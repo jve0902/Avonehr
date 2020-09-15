@@ -156,7 +156,7 @@ export default function AccountingSearch() {
                   variant="outlined"
                   label="Amount From"
                   value={amountFrom}
-                  id="outlined-adornment-amount"
+                  id="amountFrom"
                   className={`${classes.textField} ${classes.amount}`}
                   onChange={(event) => setAmountFrom(event.target.value)}
                   InputProps={{
@@ -180,7 +180,7 @@ export default function AccountingSearch() {
                   label="Amount To"
                   variant="outlined"
                   value={amountTo}
-                  id="outlined-adornment-amount"
+                  id="amountTo"
                   onChange={(event) => setAmountTo(event.target.value)}
                   className={`${classes.textField} ${classes.amount}`}
                   InputProps={{
