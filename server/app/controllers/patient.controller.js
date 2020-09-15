@@ -961,22 +961,30 @@ const getDiagnoses = async (req, res) => {
 
 const updateDiagnose = async (req, res) => {
   const { encounter_id, icd_id } = req.params;
-  const { dianoseStatus } = req.body.data;
+  const { active, is_primary } = req.body.data;
   const db = makeDb(configuration, res);
   try {
-    const updateResponse = await db.query(`
-      update patient_icd
-        set status='${dianoseStatus}'
-        where encounter_id=${encounter_id}
-        and icd_id='${icd_id}'
-    `);
+    let $sql;
 
+    $sql = `update patient_icd \n`;
+    if (typeof active !== "undefined") {
+      $sql = $sql + `set active=${active} \n`;
+    }
+    if (typeof is_primary !== "undefined") {
+      $sql = $sql + `set is_primary=${is_primary} \n`;
+    }
+    $sql =
+      $sql +
+      `where encounter_id=${encounter_id}
+        and icd_id='${icd_id}'`;
+
+    const updateResponse = await db.query($sql);
     if (!updateResponse.affectedRows) {
       errorMessage.error = "Update not successful";
       return res.status(status.notfound).send(errorMessage);
     }
 
-    successMessage.data = deleteResponse;
+    successMessage.data = updateResponse;
     successMessage.message = "Update successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
