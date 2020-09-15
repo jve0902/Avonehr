@@ -62,5 +62,14 @@ exports.validate = (method) => {
         check("data.drug_id").exists().withMessage("drug_id can not empty!"),
       ];
     }
+    case "createEmailHistory": {
+      return [
+        check("data.subject").exists().withMessage("subject can not empty!"),
+        check("data.message").exists().withMessage("message can not empty!"),
+        check("data.emailStatus")
+          .exists()
+          .withMessage("email status can not empty!"),
+      ];
+    }
   }
 };
