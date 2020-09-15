@@ -39,6 +39,7 @@ app.use("/api/v1", require("./app/routes/email-patient.routes"));
 app.use("/api/v1", require("./app/routes/support.routes"));
 app.use("/api/v1", require("./app/routes/forms.routes"));
 app.use("/api/v1", require("./app/routes/process-lab.routes"));
+app.use("/api/v1", require("./app/routes/setup.routes"));
 
 app.listen(config.port).on("listening", () => {
   console.log(`API is live on ${config.port}`);
