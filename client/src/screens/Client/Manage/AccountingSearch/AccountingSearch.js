@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
     marginTop: "20px",
+    maxWidth: "440px",
   },
   customSelect: {
     width: "200px",
@@ -130,7 +131,7 @@ export default function AccountingSearch() {
   return (
     <div className={classes.root}>
       <div className={classes.paper}>
-        <Grid container direction="column">
+        <Grid container direction="column" justify="center">
           <Typography
             component="h1"
             variant="h2"
@@ -254,6 +255,7 @@ export default function AccountingSearch() {
             <Grid item xs={12} sm={12}>
               <Button
                 fullWidth
+                size="small"
                 disabled={
                   !amountFrom ||
                   !amountTo ||
