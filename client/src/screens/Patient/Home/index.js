@@ -23,6 +23,7 @@ import RequisitionsForm from "../Requisitions";
 import PatientCardContent from "../BasicInfo/content";
 import AdminNotesCardContent from "../AdminNotes/content";
 import AllergiesCardContent from "../Allergies/content";
+import DocumentsCardContent from "../Documents/content";
 
 //service
 import PatientService from "../../../services/patient.service";
@@ -514,7 +515,7 @@ export default function Home() {
         <Grid item md={6} xs={12}>
           <Card
             title="Documents"
-            data={[]}
+            data={!!documents && <DocumentsCardContent data={documents} />}
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
