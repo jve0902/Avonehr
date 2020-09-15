@@ -148,5 +148,10 @@ router.get(
   [authJwt.verifyToken],
   Patient.createRequisitions
 );
+router.delete(
+  "/patient/requisitions/:encounter_id/:cpt_id",
+  [authJwt.verifyToken],
+  Patient.deleteRequisitions
+);
 
 module.exports = router;

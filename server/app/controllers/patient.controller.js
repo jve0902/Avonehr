@@ -1028,9 +1028,8 @@ const createDiagnoses = async (req, res) => {
   const { patient_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
-    //TODO:: Might need to update this SQL
     const insertResponse = await db.query(
-      `insert into patient_icd (client_id, user_id, patient_id, encounter_id, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, 0, now(), ${req.user_id})`
+      `insert into patient_icd (client_id, user_id, patient_id, active, encounter_id, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, true, 0, now(), ${req.user_id})`
     );
 
     if (!insertResponse.affectedRows) {
@@ -1140,6 +1139,34 @@ const createRequisitions = async (req, res) => {
   }
 };
 
+const deleteRequisitions = async (req, res) => {
+  const { encounter_id, cpt_id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const deleteResponse = await db.query(`
+       delete from
+        patient_cpt
+        where encounter_id=${encounter_id}
+        and cpt_id=${cpt_id}
+    `);
+
+    if (!deleteResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = deleteResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1175,6 +1202,7 @@ const appointmentTypes = {
   getMedications,
   deleteMedications,
   createRequisitions,
+  deleteRequisitions,
 };
 
 module.exports = appointmentTypes;
