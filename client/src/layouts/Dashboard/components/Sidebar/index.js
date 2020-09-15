@@ -54,7 +54,7 @@ const Sidebar = (props) => {
     },
     {
       title: "Manage",
-      href: "/manage/search",
+      href: "/manage/accounting-search",
       icon: (
         <Icon
           path={mdiAccountSupervisor}

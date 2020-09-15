@@ -5,7 +5,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -21,12 +20,13 @@ const DialogForm = ({
   backAction,
   continueNext,
   applyButtonText,
-  cancelButtonText
+  cancelButtonText,
+  size,
 }) => {
   const classes = useStyles();
   return (
     <div>
-      <Dialog open={open} onClose={cancelForm} fullWidth={true} maxWidth={'md'} disableBackdropClick>
+      <Dialog open={open} onClose={cancelForm} fullWidth={true} maxWidth={size} disableBackdropClick>
         <>
           <DialogActions className={continueNext ? classes.buttonSkip : classes.buttonClose}>
             {
@@ -54,7 +54,7 @@ const DialogForm = ({
         </>
         <DialogTitle className={classes.title} id='form-dialog-title'>{title}</DialogTitle>
         <DialogContent className={classes.content}>
-          <DialogContentText>{message}</DialogContentText>
+          {message}
         </DialogContent>
         {hideActions ? null : (
           <>
@@ -87,7 +87,8 @@ const useStyles = makeStyles((theme) =>
       textAlign: 'center',
       borderBottom: '1px solid #ddd',
       fontWeight: 600,
-      fontSize: "1.5em"
+      fontSize: "1.5em",
+      minHeight: 53,
     },
     content: {
       padding: '1rem 2rem',
@@ -129,7 +130,8 @@ DialogForm.defaultProps = {
   backAction: null,
   continueNext: null,
   applyButtonText: 'Continue',
-  cancelButtonText: 'Cancel'
+  cancelButtonText: 'Cancel',
+  size: 'lg',
 };
 
 DialogForm.propTypes = {
@@ -142,7 +144,8 @@ DialogForm.propTypes = {
   backAction: PropTypes.func,
   continueNext: PropTypes.func,
   applyButtonText: PropTypes.string,
-  cancelButtonText: PropTypes.string
+  cancelButtonText: PropTypes.string,
+  size: PropTypes.string
 };
 
 export default DialogForm;

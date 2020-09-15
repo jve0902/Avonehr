@@ -46,9 +46,11 @@ function makeDb(configuration, res) {
   return {
     query(sql, args) {
       if (process.env.NODE_ENV === "development") {
-        console.log("sql ", sql);
+        //console.log("sql ", sql);
+        console.log(sql);
         if (args) {
-          console.log("args ", args);
+          //console.log("args ", args);
+          console.log(args);
         }
       }
       return util.promisify(connection.query).call(connection, sql, args);
