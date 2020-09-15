@@ -1080,6 +1080,35 @@ const getMedications = async (req, res) => {
   }
 };
 
+const deleteMedications = async (req, res) => {
+  const { encounter_id, drug_id, drug_strength_id } = req.params;
+  const db = makeDb(configuration, res);
+  try {
+    const deleteResponse = await db.query(`
+       delete 
+        from patient_drug 
+        where encounter_id=${encounter_id}
+        and drug_id= ${drug_id}
+        and drug_strength_id=${drug_strength_id}
+    `);
+
+    if (!deleteResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = deleteResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1113,6 +1142,7 @@ const appointmentTypes = {
   updateDiagnose,
   createDiagnoses,
   getMedications,
+  deleteMedications,
 };
 
 module.exports = appointmentTypes;

@@ -138,4 +138,9 @@ router.get(
   [authJwt.verifyToken],
   Patient.getMedications
 );
+router.delete(
+  "/patient/medications/:encounter_id/:drug_id/:drug_strength_id",
+  [authJwt.verifyToken],
+  Patient.deleteMedications
+);
 module.exports = router;
