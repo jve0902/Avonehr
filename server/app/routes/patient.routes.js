@@ -133,5 +133,9 @@ router.post(
   [authJwt.verifyToken],
   Patient.createDiagnoses
 );
-
+router.get(
+  "/patient/medications/:patient_id",
+  [authJwt.verifyToken],
+  Patient.getMedications
+);
 module.exports = router;

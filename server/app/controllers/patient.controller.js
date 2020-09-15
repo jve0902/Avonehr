@@ -1049,6 +1049,37 @@ const createDiagnoses = async (req, res) => {
   }
 };
 
+const getMedications = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select pd.start_dt, d.name, ds.strength, ds.unit, df.descr, pd.expires
+        from patient_drug pd
+        left join drug d on d.id=pd.drug_id
+        left join drug_strength ds on ds.id=pd.drug_strength_id
+        left join drug_frequency df on df.id=pd.drug_frequency_id
+        where pd.patient_id=${patient_id}
+        order by d.name
+        limit 50`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1081,6 +1112,7 @@ const appointmentTypes = {
   deleteDiagnose,
   updateDiagnose,
   createDiagnoses,
+  getMedications,
 };
 
 module.exports = appointmentTypes;
