@@ -1109,6 +1109,37 @@ const deleteMedications = async (req, res) => {
   }
 };
 
+const createRequisitions = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { encounter_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select pc.created, c.name, c.id, lc.name
+        from patient_cpt pc
+        left join cpt c on c.id=pc.cpt_id
+        left join lab_company lc on lc.id=c.lab_company_id
+        where pc.encounter_id=${encounter_id}
+        and pc.completed_dt is null
+        order by c.name
+        limit 100`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1143,6 +1174,7 @@ const appointmentTypes = {
   createDiagnoses,
   getMedications,
   deleteMedications,
+  createRequisitions,
 };
 
 module.exports = appointmentTypes;
