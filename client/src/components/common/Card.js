@@ -57,7 +57,7 @@ const PatientCard = (props) => {
             !!data ?
             data
             :
-            "Data goes here.."
+            "Fetching Data..."
           }
         </Grid>
       </Card>
@@ -120,7 +120,7 @@ PatientCard.defaultProps = {
   title: 'Title',
   showActions: false,
   showSearch: false,
-  data: [],
+  data: <div />,
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
@@ -134,7 +134,7 @@ PatientCard.propTypes = {
   title: PropTypes.string,
   showActions: PropTypes.bool.isRequired,
   showSearch: PropTypes.bool.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.node.isRequired,
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
   icon: PropTypes.node,
