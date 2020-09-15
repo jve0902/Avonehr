@@ -14,7 +14,7 @@ export default function Content(props) {
       data.map((item, index) => (
         <Grid key={index} className={classes.inputRow}>
           <Grid component="span">
-            {item.admin_note}&nbsp;
+            {item.admin_note}
           </Grid>
         </Grid>
       ))
