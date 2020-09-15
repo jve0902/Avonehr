@@ -7,7 +7,7 @@ import Card from "../../../components/common/Card";
 import Dialog from "../../../components/Dialog";
 import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
 
-//components
+// dialog components
 import BasicInfo from "../BasicInfo";
 import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
@@ -18,6 +18,11 @@ import NewMessageForm from "../Messages/NewMessage";
 import DiagnosesForm from "../Diagnoses";
 import MedicationsForm from "../Medications";
 import RequisitionsForm from "../Requisitions";
+
+//card content components
+import PatientCardContent from "../BasicInfo/content";
+import AdminNotesCardContent from "../AdminNotes/content";
+import AllergiesCardContent from "../Allergies/content";
 
 //service
 import PatientService from "../../../services/patient.service";
@@ -55,6 +60,7 @@ export default function Home() {
   const [showRequisitionExpandDialog, setShowRequisitionExpandDialog] = useState(false);
 
   //data states
+  const [patientData, setPatientData] = useState(null);
   const [patientHistory, setPatientHistory] = useState([]);
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
@@ -62,11 +68,19 @@ export default function Home() {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
+    fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
     fetchBillings();
     fetchDocuments();
   }, []);
+
+  const fetchPatientData = () => {
+    PatientService.getPatientData()
+    .then((res) => {
+      setPatientData(res.data);
+    })
+  };
 
   const fetchPatientHistory = () => {
     PatientService.getPatientHistory()
@@ -198,6 +212,33 @@ export default function Home() {
     } else if (value === 'Requisitions') {
       return toggleRequisitionDialog;
     }
+  }
+
+  const mapCardContentDataHandlers = (value) => {
+    if (value === 'Patient') {
+      return !!patientData && <PatientCardContent data={patientData} />;
+    } else if (value === 'Admin Notes') {
+      return !!patientData && <AdminNotesCardContent data={patientHistory} />;
+    }
+    // else if (value === 'Forms') {
+    //   return toggleFormsExpandDialog;
+    // } else if (value === 'Billing') {
+    //   return toggleNewTransactionDialog;
+    // } 
+    else if (value === 'Allergies') {
+      return !!patientData && <AllergiesCardContent data={allergies} />;
+    } 
+    // else if (value === 'Medical Notes') {
+    //   return toggleMedicalNotesDialog;
+    // } else if (value === 'Messages') {
+    //   return toggleMessageDialog;
+    // } else if (value === 'Medications') {
+    //   return toggleMedicationDialog;
+    // } else if (value === 'Diagnoses') {
+    //   return toggleDiagnosesDialog;
+    // } else if (value === 'Requisitions') {
+    //   return toggleRequisitionDialog;
+    // }
   }
 
   const mapSecondaryButtonHandlers = (value) => {
@@ -407,7 +448,7 @@ export default function Home() {
               <Card
                 key={index}
                 title={item.title}
-                data={item.data}
+                data={mapCardContentDataHandlers(item.title)}
                 showActions={item.showActions}
                 showSearch={item.showSearch}
                 icon={item.icon}
