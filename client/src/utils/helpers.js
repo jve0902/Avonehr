@@ -41,6 +41,8 @@ function getFullDate(x) {
       return 30;
     case 11:
       return 31;
+    default:
+      return 30;
   }
 }
 
@@ -62,4 +64,13 @@ export const calculateAge = (date) => {
   }
 
   return year + " yrs, " + month + " mo, " + day + " days";
+}
+
+export const formatPhoneNumber = (phoneNumber) => {
+  var cleaned = ('' + phoneNumber).replace(/\D/g, '')
+  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  if (match) {
+    return match[1] + ' ' + match[2] + ' ' + match[3]
+  }
+  return null
 }
