@@ -455,6 +455,10 @@ const DeletePatientHandouts = async (req, res) => {
 
 const getBilling = async (req, res) => {
   const db = makeDb(configuration, res);
+  let { limit } = req.query;
+  if (typeof limit === "undefined") {
+    limit = 100;
+  }
   try {
     const dbResponse = await db.query(
       `select t.dt, t.amount, tt.name tran_type, e.title encounter_title, c.name cpt_procedure, t.note, t.payment_type, pm.account_number
