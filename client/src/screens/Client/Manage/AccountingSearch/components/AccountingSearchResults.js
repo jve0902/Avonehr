@@ -118,7 +118,7 @@ export default function AccountingSearchResults(props) {
                 <TableCell component="th" scope="row">
                   {result.name}
                 </TableCell>
-                <TableCell>{result.amount}</TableCell>
+                <TableCell>{`$ ${result.amount}`}</TableCell>
                 <LightTooltip
                   PopperProps={{
                     disablePortal: true,

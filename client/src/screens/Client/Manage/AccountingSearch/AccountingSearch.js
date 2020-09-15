@@ -6,16 +6,15 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import moment from "moment";
-import FormControl from "@material-ui/core/FormControl";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
+// import InputAdornment from "@material-ui/core/InputAdornment";
+
 import Accounting from "../../../../services/accountingSearch.service";
 import AccountingSearchResults from "./components";
 import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     width: "200px",
   },
-  searchResults: {
-    marginTop: "55px",
-  },
   amount: {
     marginTop: "18px",
   },
@@ -80,6 +76,7 @@ function NumberFormatCustom(props) {
       }}
       thousandSeparator
       isNumericString
+      prefix="$"
     />
   );
 }
@@ -124,11 +121,11 @@ export default function AccountingSearch() {
   const handleChange = (event) => {
     setSelectedType(event.target.value);
   };
-  const handleDateChangeFrom = (date) => {
-    setDateFrom(date);
+  const handleDateChangeFrom = (event) => {
+    setDateFrom(event.target.value);
   };
-  const handleDateChangeTo = (date) => {
-    setDateTo(date);
+  const handleDateChangeTo = (event) => {
+    setDateTo(event.target.value);
   };
   return (
     <div className={classes.root}>
@@ -154,6 +151,7 @@ export default function AccountingSearch() {
               <Grid item xs={6} sm={6}>
                 <TextField
                   autoFocus
+                  required
                   variant="outlined"
                   label="Amount From"
                   value={amountFrom}
@@ -162,54 +160,46 @@ export default function AccountingSearch() {
                   onChange={(event) => setAmountFrom(event.target.value)}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
                   }}
                   inputProps={{
                     maxLength: 16,
                   }}
                   error={amountFrom.length >= 13}
                   helperText={
-                    amountTo === ""
-                      ? "Empty field!"
-                      : amountFrom &&
-                        amountFrom.length >= 13 &&
-                        "Enter between 12 digit"
+                    amountFrom &&
+                    amountFrom.length >= 13 &&
+                    "Enter between 12 digit"
                   }
+                  size="small"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  required
                   label="Amount To"
                   variant="outlined"
                   value={amountTo}
                   id="outlined-adornment-amount"
-                  error={amountTo.length >= 13}
                   onChange={(event) => setAmountTo(event.target.value)}
                   className={`${classes.textField} ${classes.amount}`}
                   InputProps={{
                     inputComponent: NumberFormatCustom,
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
                   }}
                   inputProps={{
                     maxLength: 16,
                   }}
                   error={amountTo.length >= 13}
                   helperText={
-                    amountTo === ""
-                      ? "Empty field!"
-                      : amountTo &&
-                        amountTo.length >= 13 &&
-                        "Enter between 12 digit"
+                    amountTo &&
+                    amountTo.length >= 13 &&
+                    "Enter between 12 digit"
                   }
+                  size="small"
                 />
-                {console.log(amountTo.length)}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  required
                   variant="outlined"
                   id="date"
                   label="Date From"
@@ -217,10 +207,12 @@ export default function AccountingSearch() {
                   className={classes.textField}
                   onChange={handleDateChangeFrom}
                   type="date"
+                  size="small"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  required
                   variant="outlined"
                   id="date"
                   label="Date To"
@@ -228,30 +220,47 @@ export default function AccountingSearch() {
                   value={dateTo}
                   className={classes.textField}
                   onChange={handleDateChangeTo}
+                  size="small"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Select
+                <FormControl
                   variant="outlined"
+                  required
                   className={classes.customSelect}
-                  displayEmpty
-                  value={selectType}
-                  onChange={handleChange}
+                  size="small"
                 >
-                  <MenuItem value="" disabled>
-                    Types
-                  </MenuItem>
-                  {types.map((type) => (
-                    <MenuItem key={type.id} value={type.id}>
-                      {type.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  <InputLabel htmlFor="age-native-simple">Type</InputLabel>
+                  <Select
+                    native
+                    value={selectType}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "type",
+                      id: "age-native-simple",
+                    }}
+                    label="Age"
+                  >
+                    <option aria-label="None" value="" />
+                    {types.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Grid item xs={12} sm={12}>
               <Button
                 fullWidth
+                disabled={
+                  !amountFrom ||
+                  !amountTo ||
+                  !dateFrom ||
+                  !dateTo ||
+                  !selectType
+                }
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -264,11 +273,9 @@ export default function AccountingSearch() {
           </form>
         </Grid>
       </div>
-      <div className={classes.searchResults}>
-        {searchResult.length > 0 && (
-          <AccountingSearchResults result={searchResult} />
-        )}
-      </div>
+      {searchResult.length > 0 && (
+        <AccountingSearchResults result={searchResult} />
+      )}
     </div>
   );
 }
