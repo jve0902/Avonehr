@@ -20,14 +20,19 @@ class Patient {
       .get(API_URL + `/patient/documents/1/?tab="Labs"`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getPatientData() {
+    return axios
+      .get(API_URL + `/patient`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getPatientHistory() {
     return axios
       .get(API_URL + `/patient/history`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  searchPatient(body) {
+  searchPatient(data) {
     return axios
-      .post(API_URL + `patient/search`, body, { headers: authHeader() })
+      .post(API_URL + `/patient/search`, data, { headers: authHeader() })
       .then((res) => res.data);
   }
   // create(data) {
