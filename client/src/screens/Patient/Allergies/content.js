@@ -12,7 +12,7 @@ export default function Content(props) {
     <>
     {
       data.map(item => (
-        <Grid key={item.id} className={classes.inputRow}>
+        <Grid key={item.drug_id} className={classes.inputRow}>
           <Grid component="span">
             {item.name}
           </Grid>

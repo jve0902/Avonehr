@@ -10,6 +10,11 @@ class Patient {
       .get(API_URL + `/patient/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getForms() {
+    return axios
+      .get(API_URL + `/patient/forms`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getBillings() {
     return axios
       .get(API_URL + `/patient/billing/?limit=3`, { headers: authHeader() })
@@ -35,6 +40,42 @@ class Patient {
       .post(API_URL + `/patient/search`, data, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getEncounters() {
+    return axios
+      .get(API_URL + `/patient/encounters/1`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getMedicalNotes() {
+    return axios
+      .get(API_URL + `/patient/medical-notes/history`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getMessages() {
+    return axios
+      .get(API_URL + `/patient/messages`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getDiagnoses() {
+    return axios
+      .get(API_URL + `/patient/diagnoses/1/?active=true`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getMedications() {
+    return axios
+      .get(API_URL + `/patient/medications/1`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getRequisitions() {
+    return axios
+      .get(API_URL + `/patient/requisitions/1`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getTests() {
+    return axios
+      .get(API_URL + `/patient/all-tests/1`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  
   // create(data) {
   //   return axios.post(API_URL + `/appointments`, data, {
   //     headers: authHeader(),

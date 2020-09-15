@@ -22,8 +22,17 @@ import RequisitionsForm from "../Requisitions";
 //card content components
 import PatientCardContent from "../BasicInfo/content";
 import AdminNotesCardContent from "../AdminNotes/content";
+import FormCardContent from "../Form/content";
+import BillingCardContent from "../Billing/content";
 import AllergiesCardContent from "../Allergies/content";
 import DocumentsCardContent from "../Documents/content";
+import EncountersCardContent from "../Encounters/content";
+import MedicalNotesCardContent from "../MedicalNotes/content";
+import MessagesCardContent from "../Messages/content";
+import DiagnosesCardContent from "../Diagnoses/content";
+import MedicationsCardContent from "../Medications/content";
+import RequisitionsCardContent from "../Requisitions/content";
+import TestsCardContent from "../Tests/content";
 
 //service
 import PatientService from "../../../services/patient.service";
@@ -66,14 +75,30 @@ export default function Home() {
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
   const [billings, setBillings] = useState([]);
+  const [forms, setForms] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [encounters, setEncounters] = useState([]);
+  const [medicalNotes, setMedicalNotes] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [diagnoses, setDiagnoses] = useState([]);
+  const [medications, setMedications] = useState([]);
+  const [requisitions, setRequisitions] = useState([]);
+  const [tests, setTests] = useState([]);
 
   useEffect(() => {
     fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
+    fetchForms();
     fetchBillings();
     fetchDocuments();
+    fetchEncounters();
+    fetchMedicalNotes();
+    fetchMessages();
+    fetchDiagnoses();
+    fetchMedications();
+    fetchRequisitions();
+    fetchTests();
   }, []);
 
   const fetchPatientData = () => {
@@ -97,6 +122,13 @@ export default function Home() {
     })
   };
 
+  const fetchForms = () => {
+    PatientService.getForms()
+    .then((res) => {
+      setForms(res.data);
+    })
+  };
+
   const fetchBillings = () => {
     PatientService.getBillings()
     .then((res) => {
@@ -108,6 +140,55 @@ export default function Home() {
     PatientService.getDocuments()
     .then((res) => {
       setDocuments(res.data);
+    })
+  };
+
+  const fetchEncounters = () => {
+    PatientService.getEncounters()
+    .then((res) => {
+      setEncounters(res.data);
+    })
+  };
+
+  const fetchMedicalNotes = () => {
+    PatientService.getMedicalNotes()
+    .then((res) => {
+      setMedicalNotes(res.data);
+    })
+  };
+
+  const fetchMessages = () => {
+    PatientService.getMessages()
+    .then((res) => {
+      setMessages(res.data);
+    })
+  };
+
+  const fetchDiagnoses = () => {
+    PatientService.getDiagnoses()
+    .then((res) => {
+      setDiagnoses(res.data);
+    })
+  };
+
+  const fetchMedications = () => {
+    PatientService.getMedications()
+    .then((res) => {
+      setMedications(res.data);
+    })
+  };
+
+  const fetchRequisitions = () => {
+    PatientService.getRequisitions()
+    .then((res) => {
+      setRequisitions(res.data);
+    })
+  };
+
+  const fetchTests = () => {
+    PatientService.getTests()
+    .then((res) => {
+      setTests(res.data);
     })
   };
 
@@ -215,33 +296,6 @@ export default function Home() {
     }
   }
 
-  const mapCardContentDataHandlers = (value) => {
-    if (value === 'Patient') {
-      return !!patientData && <PatientCardContent data={patientData} />;
-    } else if (value === 'Admin Notes') {
-      return !!patientData && <AdminNotesCardContent data={patientHistory} />;
-    }
-    // else if (value === 'Forms') {
-    //   return toggleFormsExpandDialog;
-    // } else if (value === 'Billing') {
-    //   return toggleNewTransactionDialog;
-    // } 
-    else if (value === 'Allergies') {
-      return !!patientData && <AllergiesCardContent data={allergies} />;
-    } 
-    // else if (value === 'Medical Notes') {
-    //   return toggleMedicalNotesDialog;
-    // } else if (value === 'Messages') {
-    //   return toggleMessageDialog;
-    // } else if (value === 'Medications') {
-    //   return toggleMedicationDialog;
-    // } else if (value === 'Diagnoses') {
-    //   return toggleDiagnosesDialog;
-    // } else if (value === 'Requisitions') {
-    //   return toggleRequisitionDialog;
-    // }
-  }
-
   const mapSecondaryButtonHandlers = (value) => {
     if (value === 'Patient') {
       return togglePatientInfoDialog;
@@ -257,6 +311,30 @@ export default function Home() {
       return toggleMedicationExpandDialog;
     } else if (value === 'Requisitions') {
       return toggleRequisitionExpandDialog;
+    }
+  }
+
+  const mapCardContentDataHandlers = (value) => {
+    if (value === 'Patient') {
+      return !!patientData && <PatientCardContent data={patientData} />;
+    } else if (value === 'Admin Notes') {
+      return !!patientHistory && <AdminNotesCardContent data={patientHistory} />;
+    } else if (value === 'Forms') {
+      return !!forms && <FormCardContent data={forms} />;
+    } else if (value === 'Billing') {
+      return !!billings && <BillingCardContent data={billings} />;
+    } else if (value === 'Allergies') {
+      return !!allergies && <AllergiesCardContent data={allergies} />;
+    } else if (value === 'Medical Notes') {
+      return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
+    } else if (value === 'Messages') {
+      return !!messages && <MessagesCardContent data={messages} />;
+    } else if (value === 'Medications') {
+      return !!medications && <MedicationsCardContent data={medications} />;
+    } else if (value === 'Diagnoses') {
+      return !!diagnoses && <DiagnosesCardContent data={diagnoses} />;
+    } else if (value === 'Requisitions') {
+      return !!requisitions && <RequisitionsCardContent data={requisitions} />;
     }
   }
 
@@ -466,7 +544,7 @@ export default function Home() {
         <Grid item md={3} sm={6} xs={12}>
           <Card
             title="Encounters"
-            data={[]}
+            data={!!encounters && <EncountersCardContent data={encounters} />}
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
@@ -479,7 +557,7 @@ export default function Home() {
               <Card
                 key={index}
                 title={item.title}
-                data={item.data}
+                data={mapCardContentDataHandlers(item.title)}
                 showActions={item.showActions}
                 showSearch={item.showSearch}
                 icon={item.icon}
@@ -497,7 +575,7 @@ export default function Home() {
               <Card
                 key={index}
                 title={item.title}
-                data={item.data}
+                data={mapCardContentDataHandlers(item.title)}
                 showActions={item.showActions}
                 showSearch={item.showSearch}
                 icon={item.icon}
@@ -527,7 +605,7 @@ export default function Home() {
         <Grid item md={6} xs={12}>
           <Card
             title="All Tests"
-            data={[]}
+            data={!!tests && <TestsCardContent data={tests} />}
             showActions={true}
             primaryButtonText={"Expand"}
             secondaryButtonText={null}
