@@ -13,3 +13,53 @@ export const removeEmpty = (obj) => {
   });
   return obj;
 };
+
+
+function getFullDate(x) {
+  switch (x) {
+    case 0:
+      return 31;
+    case 1:
+      return 28;
+    case 2:
+      return 31;
+    case 3:
+      return 30;
+    case 4:
+      return 31;
+    case 5:
+      return 30;
+    case 6:
+      return 31;
+    case 7:
+      return 31;
+    case 8:
+      return 30;
+    case 9:
+      return 31;
+    case 10:
+      return 30;
+    case 11:
+      return 31;
+  }
+}
+
+export const calculateAge = (date) => {
+  var now = new Date();
+  var dob = new Date(date);
+  var year = now.getYear() - dob.getYear();
+  var month = now.getMonth() - dob.getMonth();
+  if (month < 0) {
+    month = now.getMonth() + 12 - dob.getMonth();
+    year = year - 1;
+  }
+  var day = now.getDate() - dob.getDate();
+  if (day < 0) {
+    var monthNumber = dob.getMonth();
+    var fullDate = getFullDate(monthNumber);
+    day = now.getDate() + fullDate - dob.getDate();
+    month = month - 1;
+  }
+
+  return year + " yrs, " + month + " mo, " + day + " days";
+}
