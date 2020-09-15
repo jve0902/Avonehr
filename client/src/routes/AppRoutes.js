@@ -113,7 +113,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/manage/search"
+              path="/manage/accounting-search"
               component={AccountingSearch}
               exact
             />
