@@ -1024,6 +1024,31 @@ const deleteDiagnose = async (req, res) => {
   }
 };
 
+const createDiagnoses = async (req, res) => {
+  const { patient_id } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    //TODO:: Might need to update this SQL
+    const insertResponse = await db.query(
+      `insert into patient_icd (client_id, user_id, patient_id, encounter_id, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, 0, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1055,6 +1080,7 @@ const appointmentTypes = {
   getDiagnoses,
   deleteDiagnose,
   updateDiagnose,
+  createDiagnoses,
 };
 
 module.exports = appointmentTypes;

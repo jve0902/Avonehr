@@ -128,5 +128,10 @@ router.delete(
   [authJwt.verifyToken],
   Patient.deleteDiagnose
 );
+router.post(
+  "/patient/diagnoses/",
+  [authJwt.verifyToken],
+  Patient.createDiagnoses
+);
 
 module.exports = router;
