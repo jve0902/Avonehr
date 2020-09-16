@@ -15,8 +15,8 @@ export default function Content(props) {
     <>
       {
         data.map((item, index) => (
-          <>
-            <Grid key={item.title} container>
+          <Grid key={index}>
+            <Grid key={index} container>
               <Grid item className={classes.block}>
                 {moment(item.dt).format("MMM DD YYYY")}
               </Grid>
@@ -46,7 +46,7 @@ export default function Content(props) {
                 <Divider />
               )
             }
-          </>
+          </Grid>
         ))
       }
     </>
