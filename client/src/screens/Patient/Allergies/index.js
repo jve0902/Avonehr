@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PatientService from "../../../services/patient.service"
 
 const Allergies = (props) => {
   const classes = useStyles();
   const { onClose } = props;
   const [searchText, setSearchText] = useState('')
+  const [allergies, setAllergies] = useState([])
 
-  const handleInputChnage = (e) => {
+  useEffect(() => {
+    fetchAllergies();
+  }, [searchText])
+
+  const handleInputChange = (e) => {
     const { value } = e.target;
     setSearchText(value);
   }
+
+  const fetchAllergies = () => {
+    const reqBody = {
+      "data": {
+          "text": searchText
+      } 
+    }
+    PatientService.searchAllergies(reqBody)
+    .then((res) => {
+      setAllergies(res.data);
+    })
+  };
 
   return (
     <>
@@ -26,10 +44,17 @@ const Allergies = (props) => {
           fullWidth
           variant="outlined"
           value={searchText}
-          onChange={(e) => handleInputChnage(e)}
+          onChange={(e) => handleInputChange(e)}
           size="small"
         />
       </Grid>
+      {
+        allergies.map(allergy => (
+          <div key={allergy.id}>
+            <Typography gutterBottom>{allergy.name}</Typography>
+          </div>
+        ))
+      }
     </>
   );
 }
