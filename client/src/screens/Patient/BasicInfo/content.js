@@ -13,8 +13,7 @@ export default function Content(props) {
       <Grid className={classes.inputRow}>
         <Grid component="span">
           <label>Name: </label>
-          {data.firstname}&nbsp;
-          {data.lastname}
+          {data.firstname} {data.lastname}
         </Grid>
       </Grid>
 
