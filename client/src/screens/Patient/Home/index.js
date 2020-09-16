@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import _ from "lodash";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
@@ -203,6 +204,10 @@ export default function Home() {
       setPatients(res.data);
     })
   };
+  
+  const debouncedSearchPatients = _.debounce(query => {
+    searchPatientHandler(query);
+  }, 1000);
 
   const togglePatientInfoDialog = () => {
     setShowPatientInfoDialog(prevState => !prevState)
@@ -536,7 +541,9 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
-                searchHandler={value => searchPatientHandler(value)}
+                searchHandler={value => {
+                  debouncedSearchPatients(value)
+                }}
               />
             )
           })}
