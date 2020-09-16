@@ -8,7 +8,7 @@ import DesktopIcon from '@material-ui/icons/DesktopMac';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler } = props;
   
   const menuIcons = { DesktopIcon, CardIcon };
 
@@ -34,6 +34,12 @@ const PatientCard = (props) => {
                 variant='outlined'
                 placeholder="Search ..."
                 className={classes.searchInput}
+                onChange={(e) => {
+                  const searchedValue = e.target.value;
+                  if(!!searchedValue && searchedValue.length) {
+                    searchHandler(searchedValue)
+                  }
+                }}
               />
             )
           }
@@ -51,7 +57,7 @@ const PatientCard = (props) => {
             !!data ?
             data
             :
-            "Data goes here.."
+            "Fetching Data..."
           }
         </Grid>
       </Card>
@@ -114,26 +120,28 @@ PatientCard.defaultProps = {
   title: 'Title',
   showActions: false,
   showSearch: false,
-  data: [],
+  data: <div />,
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
   primaryButtonHandler: () => {},
   secondaryButtonHandler: () => {},
   iconHandler: () => {},
+  searchHandler: () => {},
 };
 
 PatientCard.propTypes = {
   title: PropTypes.string,
   showActions: PropTypes.bool.isRequired,
   showSearch: PropTypes.bool.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.node.isRequired,
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
   icon: PropTypes.node,
   primaryButtonHandler: PropTypes.func,
   secondaryButtonHandler: PropTypes.func,
   iconHandler: PropTypes.func,
+  searchHandler: PropTypes.func,
 };
 
 
