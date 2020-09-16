@@ -4,13 +4,15 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 
 const getResult = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { text } = req.body.data;
+  console.log("req.body", req.body);
+
+  const { query } = req.query;
   let $sql;
   try {
     $sql = `select id, firstname, middlename, lastname
     from patient
     where client_id=${req.client_id}
-    and (firstname like '${text}%' or lastname like '${text}%')
+    and (firstname like '${query}%' or lastname like '${query}%')
     order by firstname, middlename, lastname
     limit 10`;
 
