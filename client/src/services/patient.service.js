@@ -10,6 +10,11 @@ class Patient {
       .get(API_URL + `/patient/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  searchAllergies(data) {
+    return axios
+      .post(API_URL + `/patient/allergies/search`, data, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getForms() {
     return axios
       .get(API_URL + `/patient/forms`, { headers: authHeader() })
@@ -75,26 +80,6 @@ class Patient {
       .get(API_URL + `/patient/all-tests/1`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  
-  // create(data) {
-  //   return axios.post(API_URL + `/appointments`, data, {
-  //     headers: authHeader(),
-  //   });
-  // }
-  // update(data, userId, appointmentId) {
-  //   return axios.put(
-  //     API_URL + `/appointments/${userId}/${appointmentId}`,
-  //     data,
-  //     {
-  //       headers: authHeader(),
-  //     }
-  //   );
-  // }
-  // deleteById(id) {
-  //   return axios.delete(API_URL + `/appointments/${id}`, {
-  //     headers: authHeader(),
-  //   });
-  // }
 }
 
 export default new Patient();
