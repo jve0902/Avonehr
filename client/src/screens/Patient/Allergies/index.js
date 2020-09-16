@@ -1,33 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Grid, Typography } from '@material-ui/core';
+import _ from "lodash";
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import PatientService from "../../../services/patient.service"
+import PatientService from "../../../services/patient.service";
+
 
 const Allergies = (props) => {
   const classes = useStyles();
   const { onClose } = props;
-  const [searchText, setSearchText] = useState('')
   const [allergies, setAllergies] = useState([])
 
   useEffect(() => {
-    fetchAllergies();
-  }, [searchText])
+    fetchAllergies('');
+  }, [])
 
   const handleInputChange = (e) => {
     const { value } = e.target;
-    setSearchText(value);
+    debouncedSearchAllergies(value);
   }
 
-  const fetchAllergies = () => {
+  const debouncedSearchAllergies = _.debounce(query => {
+    fetchAllergies(query);
+  }, 1000);
+
+  const fetchAllergies = (searchText) => {
     const reqBody = {
       "data": {
-          "text": searchText
-      } 
+        "text": searchText
+      }
     }
     PatientService.searchAllergies(reqBody)
-    .then((res) => {
-      setAllergies(res.data);
-    })
+      .then((res) => {
+        setAllergies(res.data);
+      })
   };
 
   return (
@@ -43,18 +56,20 @@ const Allergies = (props) => {
           name="search"
           fullWidth
           variant="outlined"
-          value={searchText}
           onChange={(e) => handleInputChange(e)}
           size="small"
         />
+
+        <List component="ul">
+          {
+            allergies.map(allergy => (
+              <ListItem key={allergy.id} button>
+                <ListItemText primary={allergy.name} />
+              </ListItem>
+            ))
+          }
+        </List>
       </Grid>
-      {
-        allergies.map(allergy => (
-          <div key={allergy.id}>
-            <Typography gutterBottom>{allergy.name}</Typography>
-          </div>
-        ))
-      }
     </>
   );
 }
