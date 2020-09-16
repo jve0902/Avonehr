@@ -10,15 +10,15 @@ export default function Content(props) {
 
   return (
     <>
-    {
-      data.map((item, index) => (
-        <Grid key={index} className={classes.inputRow}>
-          <Grid component="span">
-            {item.admin_note}
+      {
+        data.map((item, index) => (
+          <Grid key={index} className={classes.inputRow}>
+            <Grid component="span">
+              {item.admin_note}
+            </Grid>
           </Grid>
-        </Grid>
-      ))
-    } 
+        ))
+      }
     </>
   );
 }

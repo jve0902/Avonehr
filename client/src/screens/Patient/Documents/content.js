@@ -51,7 +51,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Content = ( props ) => {
+const Content = (props) => {
   const { data } = props;
   const classes = useStyles();
 
@@ -73,7 +73,7 @@ const Content = ( props ) => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {data.map((row) => (
+          {data.map((row) => (
             <StyledTableRow key={row.filename}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
@@ -86,7 +86,7 @@ const Content = ( props ) => {
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.upload_error}</TableCell>
               <TableCell>{row.note}</TableCell>
-              
+
               <TableCell className={classes.actions}>
                 <Button variant="text">Delete</Button>
               </TableCell>
