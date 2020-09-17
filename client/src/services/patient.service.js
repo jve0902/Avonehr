@@ -80,6 +80,17 @@ class Patient {
       .get(API_URL + `/patient/all-tests/1`, { headers: authHeader() })
       .then((res) => res.data);
   }
+
+  //update methods
+  updateAdminNotes(data, noteId) {
+    return axios.put(
+      API_URL + `/patient/admin-note/${noteId}`,
+      data,
+      {
+        headers: authHeader(),
+      }
+    );
+  }
 }
 
 export default new Patient();
