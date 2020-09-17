@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const [selectedProvider, setSelectedProvider] = useState("");
   const [events, setEvents] = useState([
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
@@ -71,6 +72,7 @@ export default function Home() {
         ...acc,
         {
           ...item,
+          title: item.firstname,
           start: item.start_dt,
           end: item.end_dt,
         },
@@ -90,12 +92,15 @@ export default function Home() {
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
       setProviders(data);
-      console.log("providers", providers);
     }
 
     fetchProviders();
     fetchAppointments();
   }, []);
+
+  const handleProviderClick = (provider) => {
+    setSelectedProvider(provider);
+  };
 
   return (
     <div className={classes.root}>
@@ -126,7 +131,10 @@ export default function Home() {
                 </li>
                 {providers &&
                   providers.map((provider) => (
-                    <li key={provider.id}>
+                    <li
+                      key={provider.id}
+                      onClick={() => handleProviderClick(provider)}
+                    >
                       <div>{provider.name}</div>
                       <div className={classes.count}>{provider.count}</div>
                       <div>{`${moment(provider.dt).format("ll")} (${moment(
