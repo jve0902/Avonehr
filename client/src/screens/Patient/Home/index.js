@@ -10,6 +10,7 @@ import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCa
 
 // dialog components
 import BasicInfo from "../BasicInfo";
+import AdminNotes from "../AdminNotes";
 import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
 import PaymentForm from "../Billing/PaymentForm";
@@ -393,7 +394,7 @@ export default function Home() {
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
-        message={<h3>Admin Notes History</h3>}
+        message={<AdminNotes onClose={toggleAdminHistoryDialog} />}
         applyForm={() => toggleAdminHistoryDialog()}
         cancelForm={() => toggleAdminHistoryDialog()}
         hideActions={true}
