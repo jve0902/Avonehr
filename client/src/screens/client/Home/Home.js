@@ -24,6 +24,33 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
     fontSize: "1em",
   },
+  providers: {
+    display: "block",
+    listStyle: "none",
+    width: "100%",
+    "& li": {
+      fontSize: "13px",
+      display: "flex",
+      justifyContent: "space-between",
+      listStyle: "none",
+      padding: "3px 0px",
+      cursor: "pointer",
+      "&:hover": {
+        background: "#fafafa",
+      },
+      "& div": {
+        flex: 2,
+      },
+    },
+  },
+  providersLabel: {
+    fontWeight: 600,
+    marginBottom: theme.spacing(1),
+  },
+  count: {
+    width: "30px",
+    flex: "1 !important",
+  },
 }));
 
 export default function Home() {
@@ -78,10 +105,33 @@ export default function Home() {
             </Grid>
 
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over
-                6,000 species, ranging across all continents except Antarctica
-              </Typography>
+              <ul className={classes.providers}>
+                <li className={classes.providersLabel}>
+                  <div>Name</div>
+                  <div className={classes.count}>Count</div>
+                  <div>Since</div>
+                </li>
+                <li>
+                  <div>Mark Heyman, MD</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Mark Heyman, MD</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Mark Heyman, MD</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Mark Heyman, MD</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+              </ul>
             </CardContent>
           </Card>
         </Grid>
