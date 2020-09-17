@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
 import { TextField, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PatientService from "../../../services/patient.service"
+import { setError, setSuccess } from '../../../store/common/actions';
+import { useDispatch } from "react-redux";
 
 const Diagnoses = (props) => {
   const classes = useStyles();
-  const [searchText, setSearchText] = useState('')
+  const dispatch = useDispatch();
+  const { onClose } = props;
+  const [searchText, setSearchText] = useState('');
 
   const handleInputChnage = (e) => {
     const { value } = e.target;
     setSearchText(value);
+  }
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    const reqBody = {
+      "data": {
+        "patient_id": 1
+      }
+    }
+    PatientService.createDiagnosis(reqBody)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        onClose();
+      })
+      .catch((error) => {
+        const resMessage = (error.response && error.response.data &&
+          error.response.data.message[0].msg) || error.message || error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      })
   }
 
   return (
