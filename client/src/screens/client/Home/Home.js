@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     flex: "1 !important",
   },
+  providerDetails: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default function Home() {
@@ -90,10 +93,10 @@ export default function Home() {
         Home
       </Typography>
       <Grid container spacing={8}>
-        <Grid item md={8} xs={12}>
+        <Grid item md={7} xs={12}>
           <Calendar events={events} />
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid item md={5} xs={12}>
           <Card className={classes.root1} variant="outlined">
             <Grid
               container
@@ -128,6 +131,48 @@ export default function Home() {
                 </li>
                 <li>
                   <div>Mark Heyman, MD</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className={classes.providerDetails} variant="outlined">
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              className={classes.titleContainer}
+            >
+              <Typography className={classes.title}>
+                Provider Details- Mark Hyman, MD
+              </Typography>
+            </Grid>
+
+            <CardContent>
+              <ul className={classes.providers}>
+                <li className={classes.providersLabel}>
+                  <div>Type</div>
+                  <div className={classes.count}>Count</div>
+                  <div>Since</div>
+                </li>
+                <li>
+                  <div>Patient Labs</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Messages from Patients</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Messages To Patient Unread</div>
+                  <div className={classes.count}>10</div>
+                  <div>Jan 1 2020 (2 days ago)</div>
+                </li>
+                <li>
+                  <div>Patient Appointments Request</div>
                   <div className={classes.count}>10</div>
                   <div>Jan 1 2020 (2 days ago)</div>
                 </li>
