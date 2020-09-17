@@ -43,8 +43,14 @@ To run:
 
 ## Database
 
-If you want to query the database install MySQL Workbench
+Load file mysql_start.txt in your database
+
+To query the database install MySQL Workbench
 https://www.mysql.com/products/workbench/
+
+## Usage
+
+Login to the app with email test@test.com and password 12345678
 
 ## File system
 
