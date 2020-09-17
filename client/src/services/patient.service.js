@@ -91,6 +91,13 @@ class Patient {
       }
     );
   }
+
+  //create methods
+  createDiagnosis(data) {
+    return axios.post(API_URL + `/patient/diagnoses`, data, {
+      headers: authHeader(),
+    });
+  }
 }
 
 export default new Patient();
