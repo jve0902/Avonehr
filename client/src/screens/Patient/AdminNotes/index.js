@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import PatientService from "../../../services/patient.service"
+import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from '../../../store/common/actions';
 import { useDispatch } from "react-redux";
 
@@ -22,7 +22,7 @@ const AdminNotes = (props) => {
     })
   }
 
-  const onUpdateNotesHandler = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     const reqBody = {
       "data": {
@@ -51,7 +51,7 @@ const AdminNotes = (props) => {
   return (
     <>
       <Typography variant="h3" color="textSecondary">Edit Notes</Typography>
-      <form onSubmit={onUpdateNotesHandler}>
+      <form onSubmit={onFormSubmit}>
         <Grid className={classes.inputRow}>
           <Grid item lg={2}>
             <Typography gutterBottom variant="body1" color="textPrimary">Notes</Typography>
