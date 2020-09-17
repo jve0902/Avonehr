@@ -98,8 +98,11 @@ export default function Home() {
     fetchAppointments();
   }, []);
 
-  const handleProviderClick = (provider) => {
+  const handleProviderClick = async (provider) => {
     setSelectedProvider(provider);
+    const { data } = await Appointments.getAllByProvider(provider.id);
+    const eventsFromAPI = getMapFromArray(data);
+    setEvents(eventsFromAPI);
   };
 
   return (

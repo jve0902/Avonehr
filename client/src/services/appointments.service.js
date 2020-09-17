@@ -10,6 +10,11 @@ class Appointments {
       .get(API_URL + `/appointments`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getAllByProvider(providerId) {
+    return axios
+      .get(API_URL + `/appointments/${providerId}`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   create(data) {
     return axios.post(API_URL + `/appointments`, data, {
       headers: authHeader(),
