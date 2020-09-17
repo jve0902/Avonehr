@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Colors from "../../../theme/colors";
@@ -9,6 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import { Calendar } from "./components";
 import Appointments from "./../../../services/appointments.service";
+import DashboardHome from "../../../services/DashboardHome.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +64,7 @@ export default function Home() {
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
   ]);
-
+  const [providers, setProviders] = useState([]);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -84,6 +86,14 @@ export default function Home() {
       const eventsFromAPI = getMapFromArray(data);
       setEvents(eventsFromAPI);
     }
+
+    async function fetchProviders() {
+      const { data } = await DashboardHome.getProviders();
+      setProviders(data);
+      console.log("providers", providers);
+    }
+
+    fetchProviders();
     fetchAppointments();
   }, []);
 
@@ -114,26 +124,18 @@ export default function Home() {
                   <div className={classes.count}>Count</div>
                   <div>Since</div>
                 </li>
-                <li>
-                  <div>Mark Heyman, MD</div>
-                  <div className={classes.count}>10</div>
-                  <div>Jan 1 2020 (2 days ago)</div>
-                </li>
-                <li>
-                  <div>Mark Heyman, MD</div>
-                  <div className={classes.count}>10</div>
-                  <div>Jan 1 2020 (2 days ago)</div>
-                </li>
-                <li>
-                  <div>Mark Heyman, MD</div>
-                  <div className={classes.count}>10</div>
-                  <div>Jan 1 2020 (2 days ago)</div>
-                </li>
-                <li>
-                  <div>Mark Heyman, MD</div>
-                  <div className={classes.count}>10</div>
-                  <div>Jan 1 2020 (2 days ago)</div>
-                </li>
+                {providers &&
+                  providers.map((provider) => (
+                    <li key={provider.id}>
+                      <div>{provider.name}</div>
+                      <div className={classes.count}>{provider.count}</div>
+                      <div>{`${moment(provider.dt).format("ll")} (${moment(
+                        provider.dt
+                      )
+                        .startOf("day")
+                        .fromNow()})`}</div>
+                    </li>
+                  ))}
               </ul>
             </CardContent>
           </Card>
