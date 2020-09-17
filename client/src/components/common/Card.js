@@ -87,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     padding: theme.spacing(2),
+    userSelect: 'none',
   },
   sideIcon: {
     minWidth: 35,
