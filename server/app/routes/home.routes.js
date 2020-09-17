@@ -6,6 +6,11 @@ const fieldValidation = require("../helpers/fieldValidation");
 const router = express.Router();
 
 router.get("/appointments", [authJwt.verifyToken], homeController.getAll);
+router.get(
+  "/appointments/:providerId",
+  [authJwt.verifyToken],
+  homeController.getEventsByProvider
+);
 router.post(
   "/appointments",
   [authJwt.verifyToken],
