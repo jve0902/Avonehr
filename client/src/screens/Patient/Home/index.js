@@ -36,6 +36,9 @@ import MedicationsCardContent from "../Medications/content";
 import RequisitionsCardContent from "../Requisitions/content";
 import TestsCardContent from "../Tests/content";
 
+//expand detail components
+import MedicalNotesDetails from "../MedicalNotes/details";
+
 //service
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from '../../../store/common/actions';
@@ -477,7 +480,7 @@ export default function Home() {
       <Dialog
         open={showMedicalNotesDialog}
         title={" "}
-        message={<MedicalNotes onClose={toggleMedicalNotesDialog} />}
+        message={<MedicalNotesDetails data={medicalNotes} />}
         applyForm={() => toggleMedicalNotesDialog()}
         cancelForm={() => toggleMedicalNotesDialog()}
         hideActions={true}
