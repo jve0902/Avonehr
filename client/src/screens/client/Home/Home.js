@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -37,6 +38,22 @@ const useStyles = makeStyles((theme) => ({
       listStyle: "none",
       padding: "3px 0px",
       cursor: "pointer",
+      "&:hover": {
+        background: "#fafafa",
+      },
+      "& div": {
+        flex: 2,
+      },
+    },
+    "& a": {
+      fontSize: "13px",
+      display: "flex",
+      justifyContent: "space-between",
+      listStyle: "none",
+      padding: "3px 0px",
+      cursor: "pointer",
+      textDecoration: "none",
+      width: "100%",
       "&:hover": {
         background: "#fafafa",
       },
@@ -180,22 +197,25 @@ export default function Home() {
                     <div>Since</div>
                   </li>
                   <li>
-                    <div>Patient Labs</div>
-                    <div className={classes.count}>
-                      {!!providerDetails &&
-                        providerDetails.patientLabs["count(l.id)"]}
-                    </div>
-                    <div>
-                      {!!providerDetails &&
-                        `${moment(
-                          providerDetails.patientLabs["min(l.created)"]
-                        ).format("ll")} (${moment(
-                          providerDetails.patientLabs["min(l.created)"]
-                        )
-                          .startOf("day")
-                          .fromNow()})`}
-                    </div>
+                    <Link to={`/process-lab/${selectedProvider.id}`}>
+                      <div>Patient Labs</div>
+                      <div className={classes.count}>
+                        {!!providerDetails &&
+                          providerDetails.patientLabs["count(l.id)"]}
+                      </div>
+                      <div>
+                        {!!providerDetails &&
+                          `${moment(
+                            providerDetails.patientLabs["min(l.created)"]
+                          ).format("ll")} (${moment(
+                            providerDetails.patientLabs["min(l.created)"]
+                          )
+                            .startOf("day")
+                            .fromNow()})`}
+                      </div>
+                    </Link>
                   </li>
+
                   <li>
                     <div>Messages from Patients</div>
 
