@@ -38,10 +38,13 @@ import TestsCardContent from "../Tests/content";
 
 //service
 import PatientService from "../../../services/patient.service";
+import { setError, setSuccess } from '../../../store/common/actions';
+import { useDispatch } from "react-redux";
 
 export default function Home() {
   const classes = useStyles();
-  const inputFile = useRef(null)
+  const inputFile = useRef(null);
+  const dispatch = useDispatch();
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
@@ -330,11 +333,11 @@ export default function Home() {
     } else if (value === 'Billing') {
       return !!billings && <BillingCardContent data={billings} />;
     } else if (value === 'Allergies') {
-      return !!allergies && <AllergiesCardContent data={allergies} />;
+      return !!allergies && <AllergiesCardContent data={allergies} reloadData={() => fetchAllergies()} />;
     } else if (value === 'Medical Notes') {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
     } else if (value === 'Messages') {
-      return !!messages && <MessagesCardContent data={messages} />;
+      return !!messages && <MessagesCardContent data={messages} reloadData={() => fetchMessages()} />;
     } else if (value === 'Medications') {
       return !!medications && <MedicationsCardContent data={medications} />;
     } else if (value === 'Diagnoses') {
@@ -357,9 +360,35 @@ export default function Home() {
     inputFile.current.click();
   };
 
+  const createDocument = (filename) => {
+    const reqBody = {
+      "data": {
+          "patient_id": 1,
+          "filename": filename,
+      }
+    }
+    PatientService.createDocuments(reqBody)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        fetchDocuments();
+      })
+      .catch((error) => {
+        const resMessage = (error.response && error.response.data &&
+          error.response.data.message) || error.message || error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      })
+  }
+
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
     console.log("files", files)
+    createDocument(files[0].name);
   }
 
   return (
@@ -601,7 +630,7 @@ export default function Home() {
         <Grid item md={6} xs={12}>
           <Card
             title="Documents"
-            data={!!documents && <DocumentsCardContent data={documents} />}
+            data={!!documents && <DocumentsCardContent data={documents} reloadData={() => fetchDocuments()} />}
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
