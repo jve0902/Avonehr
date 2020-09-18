@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   unreadMsgActions: {
     display: "flex",
-    width: "160px",
+    width: "138px",
     justifyContent: "space-between",
     fontSize: "13px",
     marginTop: "3px",
@@ -118,6 +118,7 @@ export default function Home() {
   const classes = useStyles();
   const [selectedProvider, setSelectedProvider] = useState("");
   const [providerDetails, setProviderDetails] = useState("");
+  const [messagesUnread, setMessagesUnread] = useState([]);
   const [events, setEvents] = useState([
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
@@ -162,14 +163,20 @@ export default function Home() {
     setEvents(eventsFromAPI);
 
     fetchProviderDetails(provider.id);
+    fetchUnreadPatientMessages(provider.id);
   };
 
   async function fetchProviderDetails(providerId) {
     const { data } = await DashboardHome.getProviderDetails(providerId);
     setProviderDetails(data);
   }
+  async function fetchUnreadPatientMessages(providerId) {
+    const { data } = await DashboardHome.getPatientUnreadMessages(providerId);
+    setMessagesUnread(data);
+  }
 
-  console.log("selectedProvider", selectedProvider);
+  console.log("messagesUnread", messagesUnread);
+
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -344,22 +351,16 @@ export default function Home() {
             </Grid>
             <CardContent>
               <ul>
-                <li>
-                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
-                  medication just called, I would like to let you know that...
-                  <div className={classes.unreadMsgActions}>
-                    <Link to="/patient">Patient</Link>
-                    <Button>Edit Message</Button>
-                  </div>
-                </li>
-                <li>
-                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
-                  medication just called, I would like to let you know that...
-                  <div className={classes.unreadMsgActions}>
-                    <Link to="/patient">Patient</Link>
-                    <Button>Edit Message</Button>
-                  </div>
-                </li>
+                {messagesUnread.map((msg) => (
+                  <li key={msg.key}>
+                    {moment(msg.created).format("ll")}, {msg.name},{" "}
+                    {msg.subject}, {msg.message}
+                    <div className={classes.unreadMsgActions}>
+                      <Link to="/patient">Patient</Link>
+                      <Button>Edit Message</Button>
+                    </div>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>

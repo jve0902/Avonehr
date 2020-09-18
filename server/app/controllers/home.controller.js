@@ -279,13 +279,14 @@ const getAppointmentRequest = async (req, res) => {
 
 const getUnreadMessages = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
       `select m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
         from message m
         left join patient p on p.id=m.patient_id_to
         where m.client_id=${req.client_id}
-        and m.user_id_from=1
+        and m.user_id_from=${providerId}
         and m.read_dt is null
         and m.unread_notify_dt<=current_date()
         order by m.unread_notify_dt

@@ -33,7 +33,7 @@ router.get(
   homeController.getAppointmentRequest
 );
 router.get(
-  "/unread-messages",
+  "/unread-messages/:providerId",
   [authJwt.verifyToken],
   homeController.getUnreadMessages
 );

@@ -15,6 +15,13 @@ class DashboardHome {
       .get(API_URL + `/providers/${providerId}`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getPatientUnreadMessages(providerId) {
+    return axios
+      .get(API_URL + `/unread-messages/${providerId}`, {
+        headers: authHeader(),
+      })
+      .then((res) => res.data);
+  }
 }
 
 export default new DashboardHome();
