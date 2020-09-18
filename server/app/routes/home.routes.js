@@ -33,7 +33,7 @@ router.get(
   homeController.getAppointmentRequest
 );
 router.get(
-  "/appointments/unread-messages",
+  "/unread-messages",
   [authJwt.verifyToken],
   homeController.getUnreadMessages
 );
