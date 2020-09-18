@@ -10,6 +10,11 @@ class DashboardHome {
       .get(API_URL + `/providers`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getProviderDetails(providerId) {
+    return axios
+      .get(API_URL + `/providers/${providerId}`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
 }
 
 export default new DashboardHome();

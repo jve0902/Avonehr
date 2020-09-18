@@ -411,10 +411,10 @@ const getProviderDetails = async (req, res) => {
       return res.status(status.notfound).send(errorMessage);
     }
     successMessage.data = {
-      patientLabs: patientLabs,
-      messageFromPatients: messageFromPatients,
-      messageToPatientsNotRead: messageToPatientsNotRead,
-      patientAppointmentRequest: patientAppointmentRequest,
+      patientLabs: patientLabs[0],
+      messageFromPatients: messageFromPatients[0],
+      messageToPatientsNotRead: messageToPatientsNotRead[0],
+      patientAppointmentRequest: patientAppointmentRequest[0],
     };
     return res.status(status.created).send(successMessage);
   } catch (err) {
