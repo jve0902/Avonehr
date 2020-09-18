@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import _ from "lodash";
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 
 //common components
 import Card from "../../../components/common/Card";
 import Dialog from "../../../components/Dialog";
-import { FirstColumnPatientCards, ThirdColumnPatientCards, FourthColumnPatientCards } from "../../../static/patient";
+import {
+  FirstColumnPatientCards,
+  ThirdColumnPatientCards,
+  FourthColumnPatientCards,
+} from "../../../static/patient";
 
 // dialog components
 import BasicInfo from "../BasicInfo";
@@ -56,13 +60,17 @@ export default function Home() {
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
-  const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(false);
+  const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(
+    false
+  );
 
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
-  const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(false);
+  const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
+    false
+  );
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
 
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
@@ -74,13 +82,20 @@ export default function Home() {
   const [showMessageExpandDialog, setShowMessageExpandDialog] = useState(false);
 
   const [showDiagnosesDialog, setShowDiagnosesDialog] = useState(false);
-  const [showDiagnosesExpandDialog, setShowDiagnosesExpandDialog] = useState(false);
+  const [showDiagnosesExpandDialog, setShowDiagnosesExpandDialog] = useState(
+    false
+  );
 
   const [showMedicationDialog, setShowMedicationDialog] = useState(false);
-  const [showMedicationExpandDialog, setShowMedicationExpandDialog] = useState(false);
+  const [showMedicationExpandDialog, setShowMedicationExpandDialog] = useState(
+    false
+  );
 
   const [showRequisitionDialog, setShowRequisitionDialog] = useState(false);
-  const [showRequisitionExpandDialog, setShowRequisitionExpandDialog] = useState(false);
+  const [
+    showRequisitionExpandDialog,
+    setShowRequisitionExpandDialog,
+  ] = useState(false);
 
   //data states
   const [patientData, setPatientData] = useState(null);
@@ -115,106 +130,92 @@ export default function Home() {
   }, []);
 
   const fetchPatientData = () => {
-    PatientService.getPatientData()
-    .then((res) => {
+    PatientService.getPatientData().then((res) => {
       setPatientData(res.data);
-    })
+    });
   };
 
   const fetchPatientHistory = () => {
-    PatientService.getPatientHistory()
-    .then((res) => {
+    PatientService.getPatientHistory().then((res) => {
       setPatientHistory(res.data);
-    })
+    });
   };
 
   const fetchAllergies = () => {
-    PatientService.getAllergies()
-    .then((res) => {
+    PatientService.getAllergies().then((res) => {
       setAllergies(res.data);
-    })
+    });
   };
 
   const fetchForms = () => {
-    PatientService.getForms()
-    .then((res) => {
+    PatientService.getForms().then((res) => {
       setForms(res.data);
-    })
+    });
   };
 
   const fetchBillings = () => {
-    PatientService.getBillings()
-    .then((res) => {
+    PatientService.getBillings().then((res) => {
       setBillings(res.data);
-    })
+    });
   };
 
   const fetchDocuments = () => {
-    PatientService.getDocuments()
-    .then((res) => {
+    PatientService.getDocuments().then((res) => {
       setDocuments(res.data);
-    })
+    });
   };
 
   const fetchEncounters = () => {
-    PatientService.getEncounters()
-    .then((res) => {
+    PatientService.getEncounters().then((res) => {
       setEncounters(res.data);
-    })
+    });
   };
 
   const fetchMedicalNotes = () => {
-    PatientService.getMedicalNotes()
-    .then((res) => {
+    PatientService.getMedicalNotes().then((res) => {
       setMedicalNotes(res.data);
-    })
+    });
   };
 
   const fetchMessages = () => {
-    PatientService.getMessages()
-    .then((res) => {
+    PatientService.getMessages().then((res) => {
       setMessages(res.data);
-    })
+    });
   };
 
   const fetchDiagnoses = () => {
-    PatientService.getDiagnoses()
-    .then((res) => {
+    PatientService.getDiagnoses().then((res) => {
       setDiagnoses(res.data);
-    })
+    });
   };
 
   const fetchMedications = () => {
-    PatientService.getMedications()
-    .then((res) => {
+    PatientService.getMedications().then((res) => {
       setMedications(res.data);
-    })
+    });
   };
 
   const fetchRequisitions = () => {
-    PatientService.getRequisitions()
-    .then((res) => {
+    PatientService.getRequisitions().then((res) => {
       setRequisitions(res.data);
-    })
+    });
   };
 
   const fetchTests = () => {
-    PatientService.getTests()
-    .then((res) => {
+    PatientService.getTests().then((res) => {
       setTests(res.data);
-    })
+    });
   };
 
   const searchPatientHandler = (searchText) => {
     const reqBody = {
-      "data": {
-          "text": searchText
-      } 
-    }
-    PatientService.searchPatient(reqBody)
-    .then((res) => {
+      data: {
+        text: searchText,
+      },
+    };
+    PatientService.searchPatient(reqBody).then((res) => {
       setPatients(res.data);
-    })
+    });
   };
   
   const debouncedSearchPatients = _.debounce(query => {
@@ -222,146 +223,148 @@ export default function Home() {
   }, 1000);
 
   const togglePatientInfoDialog = () => {
-    setShowPatientInfoDialog(prevState => !prevState)
-  }
+    setShowPatientInfoDialog((prevState) => !prevState);
+  };
 
   const togglePatientHistoryDialog = () => {
-    setShowPatientHistoryDialog(prevState => !prevState)
-  }
+    setShowPatientHistoryDialog((prevState) => !prevState);
+  };
 
   const toggleAdminHistoryDialog = () => {
-    setShowAdminHistoryDialog(prevState => !prevState)
-  }
+    setShowAdminHistoryDialog((prevState) => !prevState);
+  };
 
   const toggleFormsExpandDialog = () => {
-    setShowFormsExpandDialog(prevState => !prevState)
-  }
+    setShowFormsExpandDialog((prevState) => !prevState);
+  };
 
   const toggleNewTransactionDialog = () => {
-    setShowNewTransactionDialog(prevState => !prevState)
-  }
+    setShowNewTransactionDialog((prevState) => !prevState);
+  };
 
   const togglePaymentDialog = () => {
-    setShowPaymentDialog(prevState => !prevState)
-  }
+    setShowPaymentDialog((prevState) => !prevState);
+  };
 
   const toggleAllergyDialog = () => {
-    setShowAllergyDialog(prevState => !prevState)
-  }
+    setShowAllergyDialog((prevState) => !prevState);
+  };
 
   const toggleAllergyExpandDialog = () => {
-    setShowAllergyExpandDialog(prevState => !prevState)
-  }
+    setShowAllergyExpandDialog((prevState) => !prevState);
+  };
 
   const toggleMedicalNotesDialog = () => {
-    setShowMedicalNotesDialog(prevState => !prevState)
-  }
+    setShowMedicalNotesDialog((prevState) => !prevState);
+  };
 
   const toggleMessageDialog = () => {
-    setShowMessageDialog(prevState => !prevState)
-  }
+    setShowMessageDialog((prevState) => !prevState);
+  };
 
   const toggleMessageExpandDialog = () => {
-    setShowMessageExpandDialog(prevState => !prevState)
-  }
+    setShowMessageExpandDialog((prevState) => !prevState);
+  };
 
   const toggleMedicationDialog = () => {
-    setShowMedicationDialog(prevState => !prevState)
-  }
+    setShowMedicationDialog((prevState) => !prevState);
+  };
 
   const toggleMedicationExpandDialog = () => {
-    setShowMedicationExpandDialog(prevState => !prevState)
-  }
+    setShowMedicationExpandDialog((prevState) => !prevState);
+  };
 
   const toggleDiagnosesDialog = () => {
-    setShowDiagnosesDialog(prevState => !prevState)
-  }
+    setShowDiagnosesDialog((prevState) => !prevState);
+  };
 
   const toggleDiagnosesExpandDialog = () => {
-    setShowDiagnosesExpandDialog(prevState => !prevState)
-  }
+    setShowDiagnosesExpandDialog((prevState) => !prevState);
+  };
 
   const toggleRequisitionDialog = () => {
-    setShowRequisitionDialog(prevState => !prevState)
-  }
+    setShowRequisitionDialog((prevState) => !prevState);
+  };
 
   const toggleRequisitionExpandDialog = () => {
-    setShowRequisitionExpandDialog(prevState => !prevState)
-  }
+    setShowRequisitionExpandDialog((prevState) => !prevState);
+  };
 
   const mapPrimaryButtonHandlers = (value) => {
-    if (value === 'Patient') {
+    if (value === "Patient") {
       return togglePatientHistoryDialog;
-    } else if (value === 'Admin Notes') {
+    } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
-    } else if (value === 'Forms') {
+    } else if (value === "Forms") {
       return toggleFormsExpandDialog;
-    } else if (value === 'Billing') {
+    } else if (value === "Billing") {
       return toggleNewTransactionDialog;
-    } else if (value === 'Allergies') {
+    } else if (value === "Allergies") {
       return toggleAllergyDialog;
-    } else if (value === 'Medical Notes') {
+    } else if (value === "Medical Notes") {
       return toggleMedicalNotesDialog;
-    } else if (value === 'Messages') {
+    } else if (value === "Messages") {
       return toggleMessageDialog;
-    } else if (value === 'Medications') {
+    } else if (value === "Medications") {
       return toggleMedicationDialog;
-    } else if (value === 'Diagnoses') {
+    } else if (value === "Diagnoses") {
       return toggleDiagnosesDialog;
-    } else if (value === 'Requisitions') {
+    } else if (value === "Requisitions") {
       return toggleRequisitionDialog;
     }
-  }
+  };
 
   const mapSecondaryButtonHandlers = (value) => {
-    if (value === 'Patient') {
+    if (value === "Patient") {
       return togglePatientInfoDialog;
-    } else if (value === 'Admin Notes') {
+    } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
-    } else if (value === 'Allergies') {
+    } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
-    } else if (value === 'Messages') {
+    } else if (value === "Messages") {
       return toggleMessageExpandDialog;
-    } else if (value === 'Diagnoses') {
+    } else if (value === "Diagnoses") {
       return toggleDiagnosesExpandDialog;
-    } else if (value === 'Medications') {
+    } else if (value === "Medications") {
       return toggleMedicationExpandDialog;
-    } else if (value === 'Requisitions') {
+    } else if (value === "Requisitions") {
       return toggleRequisitionExpandDialog;
     }
-  }
+  };
 
   const mapCardContentDataHandlers = (value) => {
-    if (value === 'Patient') {
+    if (value === "Patient") {
       return !!patientData && <PatientCardContent data={patientData} />;
-    } else if (value === 'Admin Notes') {
-      return !!patientHistory && <AdminNotesCardContent data={patientHistory} />;
-    } else if (value === 'Forms') {
+    } else if (value === "Admin Notes") {
+      return (
+        !!patientHistory && <AdminNotesCardContent data={patientHistory} />
+      );
+    } else if (value === "Forms") {
       return !!forms && <FormCardContent data={forms} />;
-    } else if (value === 'Billing') {
+    } else if (value === "Billing") {
       return !!billings && <BillingCardContent data={billings} />;
-    } else if (value === 'Allergies') {
+    } else if (value === "Allergies") {
       return !!allergies && <AllergiesCardContent data={allergies} reloadData={() => fetchAllergies()} />;
-    } else if (value === 'Medical Notes') {
+    } else if (value === "Medical Notes") {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
-    } else if (value === 'Messages') {
+    } else if (value === "Messages") {
       return !!messages && <MessagesCardContent data={messages} reloadData={() => fetchMessages()} />;
-    } else if (value === 'Medications') {
+    } else if (value === "Medications") {
       return !!medications && <MedicationsCardContent data={medications} />;
-    } else if (value === 'Diagnoses') {
+    } else if (value === "Diagnoses") {
       return !!diagnoses && <DiagnosesCardContent data={diagnoses} />;
-    } else if (value === 'Requisitions') {
+    } else if (value === "Requisitions") {
       return !!requisitions && <RequisitionsCardContent data={requisitions} />;
     }
-  }
+  };
 
   const mapIconHandlers = (value) => {
-    if (value === 'Patient') {
+    if (value === "Patient") {
       return togglePatientInfoDialog;
-    } else if (value === 'Billing') {
+    } else if (value === "Billing") {
       return togglePaymentDialog;
     }
-  }
+  };
 
   const onFilePickerClick = () => {
     // `current` points to the mounted file input element
@@ -402,13 +405,13 @@ export default function Home() {
   return (
     <>
       <input
-        type='file'
-        id='file'
+        type="file"
+        id="file"
         accept=".pdf, .json"
         multiple
         ref={inputFile}
         className={classes.noDisplay}
-        onChange={e => handleDocumentsFile(e)}
+        onChange={(e) => handleDocumentsFile(e)}
       />
       <Dialog
         open={showPatientInfoDialog}
@@ -579,11 +582,9 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
-                searchHandler={value => {
-                  debouncedSearchPatients(value)
-                }}
+                searchHandler={value => debouncedSearchPatients(value)}
               />
-            )
+            );
           })}
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
@@ -611,7 +612,7 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
               />
-            )
+            );
           })}
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
@@ -629,7 +630,7 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
               />
-            )
+            );
           })}
         </Grid>
       </Grid>
@@ -660,7 +661,7 @@ export default function Home() {
         </Grid>
       </Grid>
     </>
-  )
+  );
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -668,6 +669,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 0, 1, 0),
   },
   noDisplay: {
-    display: 'none',
-  }
-}))
+    display: "none",
+  },
+}));

@@ -31,11 +31,6 @@ Setup:
 4. `yarn dev` for development `yarn start` for production
 5. copy `.env.sample` into `.env` and fill in credentials
 
-To test email notifications(only for development):
-
-1. Get `username` and `password` from `https://ethereal.email/create`
-2. Check emails on `https://ethereal.email/messages`
-
 To run:
 
 1. `yarn dev` or `npm run dev`
@@ -43,8 +38,21 @@ To run:
 
 ## Database
 
-If you want to query the database install MySQL Workbench
+Load file mysql_start.txt in your database
+
+To query the database install MySQL Workbench
 https://www.mysql.com/products/workbench/
+
+## Email
+
+To test email notifications (only for development):
+
+1. Get `username` and `password` from `https://ethereal.email/create`
+2. Check emails on `https://ethereal.email/messages`
+
+## Usage
+
+Login to the app with email test@test.com and password 12345678
 
 ## File system
 

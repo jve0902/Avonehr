@@ -12,16 +12,46 @@ const {
 
 const getAll = async (req, res) => {
   const db = makeDb(configuration, res);
+
   try {
     const dbResponse = await db.query(
+      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
+        , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
+        from user_calendar uc
+        left join patient p on p.id=uc.patient_id
+        left join user u on u.id=uc.user_id
+        where uc.client_id=${req.client_id}
+            and uc.user_id=1
       `
-      select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
-      , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
-      from user_calendar uc
-      left join patient p on p.id=uc.patient_id
-      left join user u on u.id=uc.user_id
-      where uc.client_id=${req.client_id}
-      and uc.user_id=${req.user_id}
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const getEventsByProvider = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { providerId } = req.params;
+  try {
+    const dbResponse = await db.query(
+      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
+        , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
+        from user_calendar uc
+        left join patient p on p.id=uc.patient_id
+        left join user u on u.id=uc.user_id
+        where uc.client_id=${req.client_id}
+            and uc.user_id=${providerId}
       `
     );
 
@@ -219,13 +249,14 @@ const updateAppointment = async (req, res) => {
 
 const getAppointmentRequest = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
       `select uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
         from user_calendar uc
         join patient p on p.id=uc.patient_id
         where uc.client_id=${req.client_id}
-        and uc.user_id=1
+        and uc.user_id=${providerId}
         and uc.status='R' /*R=Requested*/
         order by uc.created
         limit 2
@@ -249,13 +280,14 @@ const getAppointmentRequest = async (req, res) => {
 
 const getUnreadMessages = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
       `select m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
         from message m
         left join patient p on p.id=m.patient_id_to
         where m.client_id=${req.client_id}
-        and m.user_id_from=1
+        and m.user_id_from=${providerId}
         and m.read_dt is null
         and m.unread_notify_dt<=current_date()
         order by m.unread_notify_dt
@@ -381,10 +413,10 @@ const getProviderDetails = async (req, res) => {
       return res.status(status.notfound).send(errorMessage);
     }
     successMessage.data = {
-      patientLabs: patientLabs,
-      messageFromPatients: messageFromPatients,
-      messageToPatientsNotRead: messageToPatientsNotRead,
-      patientAppointmentRequest: patientAppointmentRequest,
+      patientLabs: patientLabs[0],
+      messageFromPatients: messageFromPatients[0],
+      messageToPatientsNotRead: messageToPatientsNotRead[0],
+      patientAppointmentRequest: patientAppointmentRequest[0],
     };
     return res.status(status.created).send(successMessage);
   } catch (err) {
@@ -398,6 +430,7 @@ const getProviderDetails = async (req, res) => {
 
 const appointmentTypes = {
   getAll,
+  getEventsByProvider,
   createAppointment,
   cancelAppointment,
   updateAppointment,

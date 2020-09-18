@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import clsx from "clsx";
 import { NavLink as RouterLink } from "react-router-dom";
@@ -16,7 +16,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useDispatch } from "react-redux";
 import DropdownItems from "./DropdownItems";
+import useDebounce from "./../../../../hooks/useDebounce";
+import * as API from "./../../../../utils/API";
 
+import { SearchResults } from "./components";
 import { logOut } from "./../../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -105,7 +108,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -129,7 +131,7 @@ const pages = [
     subMenus: [
       {
         title: "Accounting Search",
-        href: "/manage/search",
+        href: "/manage/accounting-search",
       },
       {
         title: "Email Patients",
@@ -243,7 +245,38 @@ const Topbar = (props) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const handleClose = (event) => {
+    setOpen(false);
+  };
 
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  useEffect(
+    () => {
+      // Make sure we have a value (user has entered something in input)
+      if (debouncedSearchTerm) {
+        // Fire off our API call
+        API.search(debouncedSearchTerm).then(
+          (response) => {
+            const { data } = response;
+            setResults(data);
+          },
+          (error) => {
+            console.log("search error", error);
+          }
+        );
+      } else {
+        setResults([]);
+      }
+    },
+    // This is the useEffect input array
+    // Our useEffect function will only execute if this value changes ...
+    // ... and thanks to our hook it will only change if the original ...
+    // value (searchTerm) hasn't changed for more than 500ms.
+    [debouncedSearchTerm]
+  );
   const handleLogout = (event) => {
     event.preventDefault();
     dispatch(logOut());
@@ -302,12 +335,23 @@ const Topbar = (props) => {
               </div>
               <InputBase
                 placeholder="Search…"
+                onChange={(e) => setSearchTerm(e.target.value)}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 inputProps={{ "aria-label": "search" }}
               />
+              {!!searchTerm && (
+                <SearchResults
+                  open={open}
+                  handleClose={handleClose}
+                  results={results}
+                  noContent={
+                    !!searchTerm && results.length < 1 && "Nothing found!"
+                  }
+                />
+              )}
             </div>
           </div>
         </Hidden>

@@ -6,6 +6,11 @@ const fieldValidation = require("../helpers/fieldValidation");
 const router = express.Router();
 
 router.get("/appointments", [authJwt.verifyToken], homeController.getAll);
+router.get(
+  "/appointments/:providerId",
+  [authJwt.verifyToken],
+  homeController.getEventsByProvider
+);
 router.post(
   "/appointments",
   [authJwt.verifyToken],
@@ -23,12 +28,12 @@ router.put(
 );
 
 router.get(
-  "/appointments/request",
+  "/appointment-requests/:providerId",
   [authJwt.verifyToken],
   homeController.getAppointmentRequest
 );
 router.get(
-  "/appointments/unread-messages",
+  "/unread-messages/:providerId",
   [authJwt.verifyToken],
   homeController.getUnreadMessages
 );

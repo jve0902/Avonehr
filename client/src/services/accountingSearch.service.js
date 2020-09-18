@@ -10,6 +10,11 @@ class Accounting {
       headers: authHeader(),
     });
   }
+  searchType() {
+    return axios.get(`${API_URL}/client/accounting`, {
+      headers: authHeader(),
+    });
+  }
 }
 
 export default new Accounting();
