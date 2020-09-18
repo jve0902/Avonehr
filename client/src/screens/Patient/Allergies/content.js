@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core";
 import ContextMenu from "../Messages/contextMenu";
 import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from '../../../store/common/actions';
+import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 export default function Content(props) {

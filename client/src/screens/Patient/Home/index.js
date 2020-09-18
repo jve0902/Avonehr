@@ -46,7 +46,7 @@ import RequisitionsDetails from "../Requisitions/details";
 
 //service
 import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from '../../../store/common/actions';
+import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 export default function Home() {

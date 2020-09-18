@@ -12,7 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
 
 import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from '../../../store/common/actions';
+import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
