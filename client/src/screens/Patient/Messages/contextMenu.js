@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Grid, Popover, Typography, Menu, MenuItem } from "@material-ui/core"; 
+import { Grid, Menu, MenuItem } from "@material-ui/core"; 
 import { makeStyles } from "@material-ui/core/styles";
 
 const useContextMenu = () => {
@@ -37,8 +37,14 @@ const useContextMenu = () => {
 
 const ContextMenu = (props) => {
   const { xPos, yPos, showMenu } = useContextMenu();
-  const { menu, element } = props
+  const { menu, element, deleteHandler } = props
   const classes = useStyles();
+
+  const onActionHandler = (value) => {
+    if(value === "delete") {
+      deleteHandler();
+    }
+  }
 
   return (
     <>
@@ -56,17 +62,17 @@ const ContextMenu = (props) => {
             keepMounted
             open={showMenu}
             // onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
+            // anchorOrigin={{
+            //   vertical: 'bottom',
+            //   horizontal: 'center',
+            // }}
             // transformOrigin={{
             //   vertical: 'top',
             //   horizontal: 'center',
             // }}
           >
             {menu.length && menu.map((item, index) => (
-              <MenuItem key={index} onClick={() => alert(item.value)}>{item.label}</MenuItem>
+              <MenuItem key={index} onClick={() => onActionHandler(item.value)}>{item.label}</MenuItem>
             ))}
           </Menu>
         </Grid>
