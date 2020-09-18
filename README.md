@@ -46,8 +46,8 @@ https://www.mysql.com/products/workbench/
 
 ## Usage
 
-Login page for clients/doctors http://localhost:3000/login_client
-Login with email test@test.com and password 12345678
+1. Login page for clients/doctors http://localhost:3000/login_client
+2. Login with email test@test.com and password 12345678
 
 ## Email
 
