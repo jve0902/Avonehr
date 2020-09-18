@@ -43,22 +43,22 @@ const search = async (req, res) => {
       left join encounter e on e.id=t.encounter_id
       where t.client_id=${req.client_id} \n`;
     if (amount1) {
-      $sql=$sql+`and t.amount >= ${amount1} \n`
+      $sql = $sql + `and t.amount >= ${amount1} \n`;
     }
     if (amount2) {
-      $sql=$sql+`and t.amount <= ${amount2} \n`
+      $sql = $sql + `and t.amount <= ${amount2} \n`;
     }
     if (dateFrom) {
-      $sql=$sql+`and t.dt >= '${dateFrom}' \n`
+      $sql = $sql + `and t.dt >= '${dateFrom}' \n`;
     }
     if (dateTo) {
-      $sql=$sql+`and t.dt <= '${dateTo}' \n`
+      $sql = $sql + `and t.dt <= '${dateTo}' \n`;
     }
     if (typeID) {
-      $sql=$sql+`and t.type_id = ${typeID} \n`
+      $sql = $sql + `and t.type_id = ${typeID} \n`;
     }
-    $sql=$sql+`order by t.dt desc \n`
-    $sql=$sql+`limit 100 \n`
+    $sql = $sql + `order by t.dt desc \n`;
+    $sql = $sql + `limit 100 \n`;
 
     const dbResponse = await db.query($sql);
     if (!dbResponse) {
