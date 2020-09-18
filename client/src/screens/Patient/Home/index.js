@@ -37,7 +37,12 @@ import RequisitionsCardContent from "../Requisitions/content";
 import TestsCardContent from "../Tests/content";
 
 //expand detail components
+import AllergiesDetails from "../Allergies/details";
+import MessagesDetails from "../Messages/details";
 import MedicalNotesDetails from "../MedicalNotes/details";
+import MedicationsDetails from "../Medications/details";
+import DiagnosesDetails from "../Diagnoses/details";
+import RequisitionsDetails from "../Requisitions/details";
 
 //service
 import PatientService from "../../../services/patient.service";
@@ -471,7 +476,7 @@ export default function Home() {
       <Dialog
         open={showAllergyExpandDialog}
         title={" "}
-        message={<Allergies onClose={toggleAllergyExpandDialog} />}
+        message={<AllergiesDetails data={allergies} onClose={toggleAllergyExpandDialog} />}
         applyForm={() => toggleAllergyExpandDialog()}
         cancelForm={() => toggleAllergyExpandDialog()}
         hideActions={true}
@@ -497,8 +502,8 @@ export default function Home() {
       />
       <Dialog
         open={showMessageExpandDialog}
-        title={"Admin Notes History"}
-        message={<h3>showMessageExpandDialog</h3>}
+        title={" "}
+        message={<MessagesDetails data={messages} onClose={toggleMessageDialog} />}
         applyForm={() => toggleMessageExpandDialog()}
         cancelForm={() => toggleMessageExpandDialog()}
         hideActions={true}
@@ -516,7 +521,7 @@ export default function Home() {
       <Dialog
         open={showDiagnosesExpandDialog}
         title={" "}
-        message={<DiagnosesForm onClose={toggleDiagnosesExpandDialog} />}
+        message={<DiagnosesDetails data={diagnoses} onClose={toggleDiagnosesExpandDialog} />}
         applyForm={() => toggleDiagnosesExpandDialog()}
         cancelForm={() => toggleDiagnosesExpandDialog()}
         hideActions={true}
@@ -534,7 +539,7 @@ export default function Home() {
       <Dialog
         open={showMedicationExpandDialog}
         title={" "}
-        message={<MedicationsForm onClose={toggleMedicationExpandDialog} />}
+        message={<MedicationsDetails data={medications} onClose={toggleMedicationExpandDialog} />}
         applyForm={() => toggleMedicationExpandDialog()}
         cancelForm={() => toggleMedicationExpandDialog()}
         hideActions={true}
@@ -552,11 +557,11 @@ export default function Home() {
       <Dialog
         open={showRequisitionExpandDialog}
         title={" "}
-        message={<RequisitionsForm onClose={toggleRequisitionExpandDialog} />}
+        message={<RequisitionsDetails data={requisitions} onClose={toggleRequisitionExpandDialog} />}
         applyForm={() => toggleRequisitionExpandDialog()}
         cancelForm={() => toggleRequisitionExpandDialog()}
         hideActions={true}
-        size={"lg"}
+        size={"md"}
       />
       <Grid className={classes.main} container spacing={1}>
         <Grid item md={3} sm={6} xs={12}>
