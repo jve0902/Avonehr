@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Calendar } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +74,43 @@ const useStyles = makeStyles((theme) => ({
   },
   providerDetails: {
     marginTop: theme.spacing(2),
+  },
+  messageToPatientsUnread: {
+    marginTop: theme.spacing(16),
+    "& li": {
+      fontSize: "13px",
+      listStyle: "none",
+      lineHeight: "19px",
+      marginBottom: theme.spacing(1.5),
+    },
+  },
+  unreadMsgActions: {
+    display: "flex",
+    width: "160px",
+    justifyContent: "space-between",
+    fontSize: "13px",
+    marginTop: "3px",
+    lineHeight: 1.75,
+
+    "& a": {
+      textDecoration: "none",
+      fontSize: "13px",
+      color: theme.palette.text.primary,
+    },
+    "& button": {
+      border: "none",
+      padding: 0,
+      fontSize: "13px",
+    },
+  },
+  PatientsApptRequest: {
+    marginTop: theme.spacing(1),
+    "& li": {
+      fontSize: "13px",
+      listStyle: "none",
+      lineHeight: "19px",
+      marginBottom: theme.spacing(1.5),
+    },
   },
 }));
 
@@ -292,6 +330,73 @@ export default function Home() {
               </CardContent>
             </Card>
           )}
+
+          <Card className={classes.messageToPatientsUnread} variant="outlined">
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              className={classes.titleContainer}
+            >
+              <Typography className={classes.title}>
+                Messages to Patients Unread
+              </Typography>
+            </Grid>
+            <CardContent>
+              <ul>
+                <li>
+                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
+                  medication just called, I would like to let you know that...
+                  <div className={classes.unreadMsgActions}>
+                    <Link to="/patient">Patient</Link>
+                    <Button>Edit Message</Button>
+                  </div>
+                </li>
+                <li>
+                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
+                  medication just called, I would like to let you know that...
+                  <div className={classes.unreadMsgActions}>
+                    <Link to="/patient">Patient</Link>
+                    <Button>Edit Message</Button>
+                  </div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className={classes.PatientsApptRequest} variant="outlined">
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              className={classes.titleContainer}
+            >
+              <Typography className={classes.title}>
+                Patient Appointment Requests
+              </Typography>
+            </Grid>
+            <CardContent>
+              <ul>
+                <li>
+                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
+                  medication just called, I would like to let you know that...
+                  <div className={classes.unreadMsgActions}>
+                    <Button>Accept</Button>
+                    <Button>Reject</Button>
+                    <Button>Message</Button>
+                  </div>
+                </li>
+                <li>
+                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
+                  medication just called, I would like to let you know that...
+                  <div className={classes.unreadMsgActions}>
+                    <Button>Accept</Button>
+                    <Button>Reject</Button>
+                    <Button>Message</Button>
+                  </div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </div>
