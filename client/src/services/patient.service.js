@@ -92,9 +92,78 @@ class Patient {
     );
   }
 
+  updateMedicalNotes(data, noteId) {
+    return axios.put(
+      API_URL + `/patient/medical-notes/history/${noteId}`,
+      data,
+      {
+        headers: authHeader(),
+      }
+    );
+  }
+
+  updateDiagnoses(data, id) {
+    return axios.put(
+      API_URL + `/patient/diagnoses/1/${id}`,
+      data,
+      {
+        headers: authHeader(),
+      }
+    );
+  }
+
   //create methods
-  createDiagnosis(data) {
+  createDocuments(data) {
+    return axios.post(API_URL + `/patient/documents`, data, {
+      headers: authHeader(),
+    });
+  }
+
+  createAllergy(data) {
+    return axios.post(API_URL + `/patient/allergies`, data, {
+      headers: authHeader(),
+    });
+  }
+
+  createDiagnoses(data) {
     return axios.post(API_URL + `/patient/diagnoses`, data, {
+      headers: authHeader(),
+    });
+  }
+
+  //delete methods
+  deleteMessages(id) {
+    return axios.delete(API_URL + `/patient/messages/${id}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteAllergy(id) {
+    return axios.delete(API_URL + `/patient/allergies/1/${id}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteDocument(id) {
+    return axios.delete(API_URL + `/patient/documents/${id}`, {
+      headers: authHeader(),
+    });
+  }
+  
+  deleteDiagnoses(id) {
+    return axios.delete(API_URL + `/patient/diagnoses/1/${id}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteMedications(id) {
+    return axios.delete(API_URL + `/patient/medications/1/1/${id}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteRequisitions(id) {
+    return axios.delete(API_URL + `/patient/requisitions/1/${id}`, {
       headers: authHeader(),
     });
   }
