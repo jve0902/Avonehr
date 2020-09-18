@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Grid, Typography } from '@material-ui/core';
+import { TextField, Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PatientService from "../../../services/patient.service"
 import { setError, setSuccess } from '../../../store/common/actions';
@@ -97,6 +97,11 @@ const Diagnoses = (props) => {
           </Grid>
         </Grid>
       </Grid>
+
+      <Grid className={classes.actionContainer} container justify="space-between">
+        <Button variant="outlined" onClick={(e) => onFormSubmit(e)} type="submit">Save</Button>
+        <Button variant="outlined" onClick={() => onClose()}>Cancel</Button>
+      </Grid>
     </>
   );
 }
@@ -115,6 +120,9 @@ const useStyles = makeStyles((theme) => ({
   height100: {
     height: '100%'
   },
+  actionContainer: {
+    paddingTop: theme.spacing(2)
+  }
 })
 )
 
