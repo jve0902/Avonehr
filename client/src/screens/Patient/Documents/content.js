@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: 8,
+    padding: 9,
     color: theme.palette.error.main,
   },
   tableContainer: {
