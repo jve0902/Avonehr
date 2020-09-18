@@ -43,6 +43,7 @@ import {
 } from "../screens/Client/Setup";
 import Agreement from "../screens/Agreement";
 import ProcessLab from "../screens/ProcessLab";
+import ProcessMessage from "../screens/ProcessMessage";
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
 import Dashboard from "../layouts/Dashboard";
@@ -261,6 +262,12 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/process-lab/:user_id"
               component={ProcessLab}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/process-message/:user_id"
+              component={ProcessMessage}
               exact
             />
             <Route path="*" component={NotFound} />

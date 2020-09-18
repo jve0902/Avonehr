@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
       textDecoration: "none",
       width: "100%",
+      color: theme.palette.text.primary,
       "&:hover": {
         background: "#fafafa",
       },
@@ -217,22 +218,23 @@ export default function Home() {
                   </li>
 
                   <li>
-                    <div>Messages from Patients</div>
-
-                    <div className={classes.count}>
-                      {!!providerDetails &&
-                        providerDetails.messageFromPatients["count(m.id)"]}
-                    </div>
-                    <div>
-                      {!!providerDetails &&
-                        `${moment(
-                          providerDetails.patientLabs["min(m.created)"]
-                        ).format("ll")} (${moment(
-                          providerDetails.patientLabs["min(m.created)"]
-                        )
-                          .startOf("day")
-                          .fromNow()})`}
-                    </div>
+                    <Link to={`/process-message/${selectedProvider.id}`}>
+                      <div>Messages from Patients</div>
+                      <div className={classes.count}>
+                        {!!providerDetails &&
+                          providerDetails.messageFromPatients["count(m.id)"]}
+                      </div>
+                      <div>
+                        {!!providerDetails &&
+                          `${moment(
+                            providerDetails.patientLabs["min(m.created)"]
+                          ).format("ll")} (${moment(
+                            providerDetails.patientLabs["min(m.created)"]
+                          )
+                            .startOf("day")
+                            .fromNow()})`}
+                      </div>
+                    </Link>
                   </li>
                   <li>
                     <div>Messages To Patient Unread</div>
