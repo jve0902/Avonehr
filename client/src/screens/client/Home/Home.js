@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       justifyContent: "space-between",
       listStyle: "none",
-      padding: "3px 0px",
+      padding: "0px 0px",
       cursor: "pointer",
       textDecoration: "none",
       width: "100%",
@@ -119,6 +119,7 @@ export default function Home() {
   const [selectedProvider, setSelectedProvider] = useState("");
   const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
+  const [appointmentRequests, setAppointmentRequests] = useState([]);
   const [events, setEvents] = useState([
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
@@ -164,6 +165,7 @@ export default function Home() {
 
     fetchProviderDetails(provider.id);
     fetchUnreadPatientMessages(provider.id);
+    fetchPatientApptRequests(provider.id);
   };
 
   async function fetchProviderDetails(providerId) {
@@ -174,8 +176,10 @@ export default function Home() {
     const { data } = await DashboardHome.getPatientUnreadMessages(providerId);
     setMessagesUnread(data);
   }
-
-  console.log("messagesUnread", messagesUnread);
+  async function fetchPatientApptRequests(providerId) {
+    const { data } = await DashboardHome.getPatientApptRequests(providerId);
+    setAppointmentRequests(data);
+  }
 
   return (
     <div className={classes.root}>
@@ -338,66 +342,82 @@ export default function Home() {
             </Card>
           )}
 
-          <Card className={classes.messageToPatientsUnread} variant="outlined">
-            <Grid
-              container
-              justify="space-between"
-              alignItems="center"
-              className={classes.titleContainer}
-            >
-              <Typography className={classes.title}>
-                Messages to Patients Unread
-              </Typography>
-            </Grid>
-            <CardContent>
-              <ul>
-                {messagesUnread.map((msg) => (
-                  <li key={msg.key}>
-                    {moment(msg.created).format("ll")}, {msg.name},{" "}
-                    {msg.subject}, {msg.message}
-                    <div className={classes.unreadMsgActions}>
-                      <Link to="/patient">Patient</Link>
-                      <Button>Edit Message</Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className={classes.PatientsApptRequest} variant="outlined">
-            <Grid
-              container
-              justify="space-between"
-              alignItems="center"
-              className={classes.titleContainer}
-            >
-              <Typography className={classes.title}>
-                Patient Appointment Requests
-              </Typography>
-            </Grid>
-            <CardContent>
-              <ul>
-                <li>
-                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
-                  medication just called, I would like to let you know that...
-                  <div className={classes.unreadMsgActions}>
-                    <Button>Accept</Button>
-                    <Button>Reject</Button>
-                    <Button>Message</Button>
-                  </div>
-                </li>
-                <li>
-                  Jan 1, 2020, John Doe, Your Medication, Hi John, Your
-                  medication just called, I would like to let you know that...
-                  <div className={classes.unreadMsgActions}>
-                    <Button>Accept</Button>
-                    <Button>Reject</Button>
-                    <Button>Message</Button>
-                  </div>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+          {!!providerDetails && (
+            <React.Fragment>
+              <Card
+                className={classes.messageToPatientsUnread}
+                variant="outlined"
+              >
+                <Grid
+                  container
+                  justify="space-between"
+                  alignItems="center"
+                  className={classes.titleContainer}
+                >
+                  <Typography className={classes.title}>
+                    Messages to Patients Unread
+                  </Typography>
+                </Grid>
+                <CardContent>
+                  <ul>
+                    {appointmentRequests.length > 0 ? (
+                      messagesUnread.map((msg) => (
+                        <li key={msg.key}>
+                          {moment(msg.created).format("ll")}, {msg.name},{" "}
+                          {msg.subject}, {msg.message}
+                          <div className={classes.unreadMsgActions}>
+                            <Link to="/patient">Patient</Link>
+                            <Button>Edit Message</Button>
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <p>No record!</p>
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+              <Card className={classes.PatientsApptRequest} variant="outlined">
+                <Grid
+                  container
+                  justify="space-between"
+                  alignItems="center"
+                  className={classes.titleContainer}
+                >
+                  <Typography className={classes.title}>
+                    Patient Appointment Requests
+                  </Typography>
+                </Grid>
+                <CardContent>
+                  <ul>
+                    {appointmentRequests.length > 0 ? (
+                      appointmentRequests.map((appt) => (
+                        <li>
+                          {moment(appt.created).format("ll")}, {appt.name},
+                          requests office visits{" "}
+                          {moment
+                            .duration(
+                              moment(appt.end_dt).diff(moment(appt.start_dt))
+                            )
+                            .asMinutes()}{" "}
+                          minutes with {selectedProvider.name} on{" "}
+                          {moment(appt.start_dt).format("ll, h:mm")} -{" "}
+                          {moment(appt.end_dt).format("h:mm")}
+                          <div className={classes.unreadMsgActions}>
+                            <Button>Accept</Button>
+                            <Button>Reject</Button>
+                            <Button>Message</Button>
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <p>No record!</p>
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+            </React.Fragment>
+          )}
         </Grid>
       </Grid>
     </div>

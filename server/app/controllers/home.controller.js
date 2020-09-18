@@ -249,13 +249,14 @@ const updateAppointment = async (req, res) => {
 
 const getAppointmentRequest = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
       `select uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
         from user_calendar uc
         join patient p on p.id=uc.patient_id
         where uc.client_id=${req.client_id}
-        and uc.user_id=1
+        and uc.user_id=${providerId}
         and uc.status='R' /*R=Requested*/
         order by uc.created
         limit 2

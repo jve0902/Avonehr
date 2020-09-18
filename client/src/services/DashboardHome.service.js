@@ -22,6 +22,13 @@ class DashboardHome {
       })
       .then((res) => res.data);
   }
+  getPatientApptRequests(providerId) {
+    return axios
+      .get(API_URL + `/appointment-requests/${providerId}`, {
+        headers: authHeader(),
+      })
+      .then((res) => res.data);
+  }
 }
 
 export default new DashboardHome();
