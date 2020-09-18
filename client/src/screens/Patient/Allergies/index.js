@@ -11,10 +11,13 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PatientService from "../../../services/patient.service";
+import { setError, setSuccess } from '../../../store/common/actions';
+import { useDispatch } from "react-redux";
 
 
 const Allergies = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { onClose } = props;
   const [allergies, setAllergies] = useState([])
 
@@ -43,6 +46,31 @@ const Allergies = (props) => {
       })
   };
 
+  const createAllergy = () => {
+    const reqBody = {
+      "data": {
+        "patient_id": "1",
+        "drug_id": "1"
+      }
+    }
+    PatientService.createAllergy(reqBody)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        onClose();
+      })
+      .catch((error) => {
+        const resMessage = (error.response && error.response.data &&
+          error.response.data.message) || error.message || error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      })
+  };
+
   return (
     <>
       <Grid className={classes.heading} container justify="space-between">
@@ -59,6 +87,8 @@ const Allergies = (props) => {
           onChange={(e) => handleInputChange(e)}
           size="small"
         />
+
+        <Button variant="outlined" onClick={() => createAllergy()}>Create</Button>
 
         <List component="ul">
           {
