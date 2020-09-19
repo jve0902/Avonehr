@@ -186,6 +186,8 @@ export default function Home() {
     setIsOpen(true);
     setSelectedDate(date);
   };
+
+  console.log("providers:", providers);
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -429,6 +431,7 @@ export default function Home() {
         selectedDate={selectedDate}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        providers={providers}
       />
     </div>
   );

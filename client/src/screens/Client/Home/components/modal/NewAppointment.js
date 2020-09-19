@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -23,6 +24,8 @@ import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Select from "@material-ui/core/Select";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import useDebounce from "./../../../../../hooks/useDebounce";
+import * as API from "./../../../../../utils/API";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -82,21 +85,57 @@ const NewAppointment = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { providers } = props;
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
   const [startDate, handleStartDateChange] = useState(selectedDate);
   const [endDate, handleEndDateChange] = useState(new Date(selectedDate));
   const [status, setStatus] = React.useState("female");
   const [provider, setProvider] = React.useState("");
-  const [patient, setPatient] = React.useState("");
+  const [patients, setPatients] = React.useState([]);
+  const [selectedPatient, setSelectedPatient] = React.useState("");
   const [notes, setNotes] = React.useState("");
+  const [patientSearchTerm, setPatientSearchTerm] = useState("");
 
+  const debouncedSearchTerm = useDebounce(patientSearchTerm, 500);
+  useEffect(
+    () => {
+      if (debouncedSearchTerm) {
+        // Fire off our API call
+        API.search(debouncedSearchTerm).then(
+          (response) => {
+            const { data } = response;
+            setPatients(data);
+          },
+          (error) => {
+            console.log("search error", error);
+          }
+        );
+      } else {
+        setPatients([]);
+      }
+    },
+    // This is the useEffect input array
+    // Our useEffect function will only execute if this value changes ...
+    // ... and thanks to our hook it will only change if the original ...
+    // value (searchTerm) hasn't changed for more than 500ms.
+    [debouncedSearchTerm]
+  );
   const handleOnChange = (event) => {
     console.log("event", event);
   };
   const handleProviderChange = (event) => {
-    console.log("event", event);
+    const p = providers.filter((p) => p.id === event.target.value);
+    console.log("event", event.target.value);
+    setProvider(p[0]);
   };
+  console.log("title:", title);
+  console.log("startDate:", startDate);
+  console.log("endDate:", endDate);
+  console.log("status:", status);
+  console.log("provider:", provider);
+  console.log("patients:", patients);
+  console.log("notes:", notes);
   return (
     <Dialog
       open={isOpen}
@@ -201,21 +240,21 @@ const NewAppointment = ({
             <Select
               labelId="provider-select-outlined-label"
               id="provider-select-outlined-label"
-              value={provider}
+              value={!!provider && provider.id}
               onChange={handleProviderChange}
               label="Provider"
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {providers.map((provider) => (
+                <MenuItem value={provider.id}>{provider.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl component="div" className={classes.formControl}>
             <TextField
-              value={patient}
+              value={patientSearchTerm}
               variant="outlined"
               margin="normal"
               size="small"
@@ -226,7 +265,7 @@ const NewAppointment = ({
               name="patient"
               autoComplete="patient"
               autoFocus
-              onChange={(event) => setPatient(event.target.value)}
+              onChange={(event) => setPatientSearchTerm(event.target.value)}
             />
           </FormControl>
           <Typography component="p" variant="body2" color="textPrimary">
