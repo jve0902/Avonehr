@@ -42,6 +42,7 @@ import RequisitionsCardContent from "../Requisitions/content";
 import TestsCardContent from "../Tests/content";
 
 //expand detail components
+import PatientHistoryDetails from "../BasicInfo/details";
 import AllergiesDetails from "../Allergies/details";
 import EncountersDetails from "../Encounters/details";
 import MedicalNotesDetails from "../MedicalNotes/details";
@@ -464,7 +465,7 @@ export default function Home() {
       <Dialog
         open={showPatientHistoryDialog}
         title={"Patient History"}
-        message={<h3>History</h3>}
+        message={<PatientHistoryDetails data={patientHistory} onClose={togglePatientHistoryDialog} />}
         applyForm={() => togglePatientHistoryDialog()}
         cancelForm={() => togglePatientHistoryDialog()}
         hideActions={true}
