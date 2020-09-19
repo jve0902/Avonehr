@@ -108,7 +108,6 @@ const DocumentsContent = (props) => {
               <TableCell>{row.medical_note}</TableCell>
 
               <TableCell className={classes.actions}>
-                {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>

@@ -113,7 +113,6 @@ const MessagesContent = (props) => {
               <TableCell>{row.user_to_name || "-"}</TableCell>
 
               <TableCell className={classes.actions}>
-                {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>
