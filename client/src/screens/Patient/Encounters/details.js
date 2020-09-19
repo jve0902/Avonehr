@@ -91,20 +91,26 @@ const EncountersContent = (props) => {
       <Table size="small" className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Created</StyledTableCell>
+            <StyledTableCell>Date</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>Title</StyledTableCell>
+            <StyledTableCell>Encounter Type</StyledTableCell>
+            <StyledTableCell>Notes</StyledTableCell>
+            <StyledTableCell>Payment Plan</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <StyledTableRow key={row.created}>
+            <StyledTableRow key={row.dt}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.dt).format("MMM, DD, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+              <TableCell>{row.title}</TableCell>
+              <TableCell>{row.encounter_type}</TableCell>
+              <TableCell>{row.notes || "-"}</TableCell>
+              <TableCell>{row.paymentPlan || "-"}</TableCell>
 
               <TableCell className={classes.actions}>
                 {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
