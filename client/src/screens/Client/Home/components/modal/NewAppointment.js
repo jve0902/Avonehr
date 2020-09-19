@@ -55,6 +55,12 @@ const NewAppointment = ({
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
+  const [selectedDate, setSelectedDate] = React.useState(
+    new Date("2014-08-18T21:11:54")
+  );
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   const handleOnChange = (event) => {
     console.log("event", event);
   };
