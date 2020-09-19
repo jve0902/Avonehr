@@ -474,7 +474,7 @@ export default function Home() {
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
-        message={<AdminNotes onClose={toggleAdminHistoryDialog} />}
+        message={<AdminNotes onClose={toggleAdminHistoryDialog} reloadData={() => fetchPatientHistory()} />}
         applyForm={() => toggleAdminHistoryDialog()}
         cancelForm={() => toggleAdminHistoryDialog()}
         hideActions={true}
