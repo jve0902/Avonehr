@@ -160,13 +160,16 @@ export default function Home() {
   };
 
   const fetchDocuments = () => {
-    PatientService.getDocuments().then((res) => {
+    let encounterId = "1";
+    let tab = 'Labs';
+    PatientService.getDocuments(encounterId, tab).then((res) => {
       setDocuments(res.data);
     });
   };
 
   const fetchEncounters = () => {
-    PatientService.getEncounters().then((res) => {
+    let encounterId = "1";
+    PatientService.getEncounters(encounterId).then((res) => {
       setEncounters(res.data);
     });
   };
@@ -184,25 +187,29 @@ export default function Home() {
   };
 
   const fetchDiagnoses = () => {
-    PatientService.getDiagnoses().then((res) => {
+    let encounterId = "1";
+    PatientService.getDiagnoses(encounterId).then((res) => {
       setDiagnoses(res.data);
     });
   };
 
   const fetchMedications = () => {
-    PatientService.getMedications().then((res) => {
+    let encounterId = "1";
+    PatientService.getMedications(encounterId).then((res) => {
       setMedications(res.data);
     });
   };
 
   const fetchRequisitions = () => {
-    PatientService.getRequisitions().then((res) => {
+    let encounterId = "1";
+    PatientService.getRequisitions(encounterId).then((res) => {
       setRequisitions(res.data);
     });
   };
 
   const fetchTests = () => {
-    PatientService.getTests().then((res) => {
+    let encounterId = "1";
+    PatientService.getTests(encounterId).then((res) => {
       setTests(res.data);
     });
   };

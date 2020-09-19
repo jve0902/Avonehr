@@ -22,8 +22,9 @@ export default function Content(props) {
   }
 
   const onItemDelete = () => {
-    const allergyId = selectedItem.drug_id;
-    PatientService.deleteAllergy(allergyId)
+    const drugId = selectedItem.drug_id;
+    const patientId = "1";
+    PatientService.deleteAllergy(patientId, drugId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

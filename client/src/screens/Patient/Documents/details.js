@@ -68,7 +68,8 @@ const DocumentsContent = (props) => {
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
+    const tab = "Labs";
+    PatientService.deleteDocument(documentId, tab)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
