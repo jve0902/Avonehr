@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     textAlign: "center",
     display: "flex",
+    justifyContent: "center",
     border: "none",
     "& button": {
       fontSize: "12px",
@@ -61,15 +61,14 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Content = (props) => {
+const EncountersContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
-    const tab = "Labs";
-    PatientService.deleteDocument(documentId, tab)
+    PatientService.deleteDocument(documentId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -93,31 +92,19 @@ const Content = (props) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Created</StyledTableCell>
-            <StyledTableCell>Filename</StyledTableCell>
-            <StyledTableCell>Type</StyledTableCell>
-            <StyledTableCell>Lab Date</StyledTableCell>
-            <StyledTableCell>Physician</StyledTableCell>
-            <StyledTableCell align="center">Conventional Flag</StyledTableCell>
-            <StyledTableCell>Functional Flag</StyledTableCell>
-            <StyledTableCell>Error</StyledTableCell>
-            <StyledTableCell>Notes</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>Medical Note</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <StyledTableRow key={row.filename}>
+            <StyledTableRow key={row.created}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
-              <TableCell>{row.filename}</TableCell>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DD, YYYY") : "-"}</TableCell>
-              <TableCell>{row.physician}</TableCell>
-              <TableCell>{row.physician}</TableCell>
-              <TableCell>{row.physician}</TableCell>
-              <TableCell>{row.upload_error}</TableCell>
-              <TableCell>{row.note}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.medical_note}</TableCell>
 
               <TableCell className={classes.actions}>
                 {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
@@ -133,4 +120,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default EncountersContent;

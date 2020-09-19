@@ -43,6 +43,6 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 1, 1, 0),
   }
 }));
