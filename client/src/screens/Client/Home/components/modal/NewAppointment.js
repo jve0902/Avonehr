@@ -5,15 +5,21 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
+import Select from "@material-ui/core/Select";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
   startdatePicker: {
     marginRight: theme.spacing(4),
   },
+  statuses: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  statusList: {
+    flexDirection: "row",
+  },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
     display: "flex",
@@ -65,8 +78,14 @@ const NewAppointment = ({
   const [errors, setErrors] = useState([]);
   const [startDate, handleStartDateChange] = useState(new Date());
   const [endDate, handleEndDateChange] = useState(new Date());
+  const [status, setStatus] = React.useState("female");
+  const [provider, setProvider] = React.useState("");
+  const [patient, setPatient] = React.useState("");
 
   const handleOnChange = (event) => {
+    console.log("event", event);
+  };
+  const handleProviderChange = (event) => {
     console.log("event", event);
   };
   return (
@@ -95,6 +114,7 @@ const NewAppointment = ({
               value={title}
               variant="outlined"
               margin="normal"
+              size="small"
               required
               fullWidth
               id="title"
@@ -135,6 +155,71 @@ const NewAppointment = ({
               }}
             />
           </div>
+          <FormControl className={classes.statuses}>
+            <FormLabel component="legend">Status</FormLabel>
+            <RadioGroup
+              aria-label="status"
+              name="status"
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+              className={classes.statusList}
+            >
+              <FormControlLabel
+                value="R"
+                control={<Radio />}
+                label="Requested"
+              />
+              <FormControlLabel
+                value="A"
+                control={<Radio />}
+                label="Approved"
+              />
+              <FormControlLabel
+                value="D"
+                control={<Radio />}
+                label="Declined"
+              />
+            </RadioGroup>
+          </FormControl>
+          <FormControl
+            variant="outlined"
+            size="small"
+            className={classes.formControl}
+          >
+            <InputLabel id="provider-select-outlined-label">
+              Provider
+            </InputLabel>
+            <Select
+              labelId="provider-select-outlined-label"
+              id="provider-select-outlined-label"
+              value={provider}
+              onChange={handleProviderChange}
+              label="Provider"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl component="div" className={classes.formControl}>
+            <TextField
+              value={patient}
+              variant="outlined"
+              margin="normal"
+              size="small"
+              required
+              fullWidth
+              id="patient"
+              label="Patient"
+              name="patient"
+              autoComplete="patient"
+              autoFocus
+              onChange={(event) => setPatient(event.target.value)}
+            />
+          </FormControl>
         </div>
       </DialogContent>
       <DialogActions className={classes.modalAction}>
