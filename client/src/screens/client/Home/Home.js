@@ -9,7 +9,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar } from "./components";
+import { Calendar, NewAppointment } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
 import { Button } from "@material-ui/core";
@@ -235,7 +235,7 @@ export default function Home() {
                 className={classes.titleContainer}
               >
                 <Typography className={classes.title}>
-                  Provider Details- {selectedProvider.name}
+                  Provider Details - {selectedProvider.name}
                 </Typography>
               </Grid>
 
@@ -420,6 +420,7 @@ export default function Home() {
           )}
         </Grid>
       </Grid>
+      <NewAppointment isOpen={true} />
     </div>
   );
 }
