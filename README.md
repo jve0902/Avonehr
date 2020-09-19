@@ -41,6 +41,9 @@ To run:
 1. Install MySQL
 2. Load file mysql_start.txt
 
+If you get an error "Client does not support authentication protocol requested by server" then enter in MySQL
+    `alter user 'root'@'localhost' identified with mysql_native_password by '12345678'`
+
 To query the database we recommend MySQL Workbench
 https://www.mysql.com/products/workbench/
 
