@@ -101,8 +101,8 @@ const MessagesContent = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <StyledTableRow key={row.created}>
+          {data.map((row, index) => (
+            <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>

@@ -98,8 +98,8 @@ const DiagnosesContent = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(!!data && data.length) && data.map((row) => (
-            <StyledTableRow key={row.created}>
+          {(!!data && data.length) && data.map((row, index) => (
+            <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
