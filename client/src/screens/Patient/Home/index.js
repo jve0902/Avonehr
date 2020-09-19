@@ -20,7 +20,7 @@ import NewTransactionForm from "../Billing/NewTransaction";
 import PaymentForm from "../Billing/PaymentForm";
 import Allergies from "../Allergies";
 import EncountersForm from "../Encounters";
-import MedicalNotes from "../MedicalNotes";
+import MedicalNotesForm from "../MedicalNotes";
 import NewMessageForm from "../Messages/NewMessage";
 import DiagnosesForm from "../Diagnoses";
 import MedicationsForm from "../Medications";
@@ -81,6 +81,7 @@ export default function Home() {
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
   const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(false);
 
+  const [showMedicalNotesFormDialog, setShowMedicalNotesFormDialog] = useState(false);
   const [showMedicalNotesDialog, setShowMedicalNotesDialog] = useState(false);
 
   const [showMessageDialog, setShowMessageDialog] = useState(false);
@@ -101,6 +102,10 @@ export default function Home() {
     showRequisitionExpandDialog,
     setShowRequisitionExpandDialog,
   ] = useState(false);
+
+  const [showDocumentsExpandDialog, setShowDocumentsExpandDialog] = useState(false);
+
+  const [showTestsExpandDialog, setShowTestsExpandDialog] = useState(false);
 
   //data states
   const [patientData, setPatientData] = useState(null);
@@ -229,7 +234,7 @@ export default function Home() {
       setPatients(res.data);
     });
   };
-  
+
   const debouncedSearchPatients = _.debounce(query => {
     searchPatientHandler(query);
   }, 1000);
@@ -278,6 +283,10 @@ export default function Home() {
     setShowMedicalNotesDialog((prevState) => !prevState);
   };
 
+  const toggleMedicalNotesFormDialog = () => {
+    setShowMedicalNotesFormDialog((prevState) => !prevState);
+  };
+
   const toggleMessageDialog = () => {
     setShowMessageDialog((prevState) => !prevState);
   };
@@ -308,6 +317,14 @@ export default function Home() {
 
   const toggleRequisitionExpandDialog = () => {
     setShowRequisitionExpandDialog((prevState) => !prevState);
+  };
+
+  const toggleDocumentsExpandDialog = () => {
+    setShowDocumentsExpandDialog((prevState) => !prevState);
+  };
+
+  const toggleTestsExpandDialog = () => {
+    setShowTestsExpandDialog((prevState) => !prevState);
   };
 
   const mapPrimaryButtonHandlers = (value) => {
@@ -345,6 +362,8 @@ export default function Home() {
       return toggleAllergyExpandDialog;
     } else if (value === "Encounters") {
       return toggleEncountersExpandDialog;
+    } else if (value === "Medical Notes") {
+      return toggleMedicalNotesFormDialog;
     } else if (value === "Messages") {
       return toggleMessageExpandDialog;
     } else if (value === "Diagnoses") {
@@ -398,8 +417,8 @@ export default function Home() {
   const createDocument = (filename) => {
     const reqBody = {
       "data": {
-          "patient_id": 1,
-          "filename": filename,
+        "patient_id": 1,
+        "filename": filename,
       }
     }
     PatientService.createDocuments(reqBody)
@@ -537,6 +556,15 @@ export default function Home() {
         size={"md"}
       />
       <Dialog
+        open={showMedicalNotesFormDialog}
+        title={" "}
+        message={<MedicalNotesForm onClose={toggleMedicalNotesFormDialog} />}
+        applyForm={() => toggleMedicalNotesFormDialog()}
+        cancelForm={() => toggleMedicalNotesFormDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
         open={showMessageDialog}
         title={"New Message"}
         message={<NewMessageForm onClose={toggleMessageDialog} />}
@@ -607,6 +635,26 @@ export default function Home() {
         cancelForm={() => toggleRequisitionExpandDialog()}
         hideActions={true}
         size={"md"}
+      />
+
+      <Dialog
+        open={showDocumentsExpandDialog}
+        title={" "}
+        message={<DocumentsCardContent data={documents} onClose={toggleDocumentsExpandDialog} />}
+        applyForm={() => toggleDocumentsExpandDialog()}
+        cancelForm={() => toggleDocumentsExpandDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
+
+      <Dialog
+        open={showTestsExpandDialog}
+        title={" "}
+        message={<TestsCardContent data={tests} onClose={toggleTestsExpandDialog} />}
+        applyForm={() => toggleTestsExpandDialog()}
+        cancelForm={() => toggleTestsExpandDialog()}
+        hideActions={true}
+        size={"lg"}
       />
       <Grid className={classes.main} container spacing={1}>
         <Grid item md={3} sm={6} xs={12}>
@@ -689,7 +737,7 @@ export default function Home() {
             secondaryButtonText={"Expand"}
             showSearch={false}
             primaryButtonHandler={onFilePickerClick}
-            secondaryButtonHandler={togglePatientInfoDialog}
+            secondaryButtonHandler={toggleDocumentsExpandDialog}
           />
         </Grid>
         <Grid item md={6} xs={12}>
@@ -700,7 +748,7 @@ export default function Home() {
             primaryButtonText={"Expand"}
             secondaryButtonText={null}
             showSearch={false}
-            primaryButtonHandler={togglePatientInfoDialog}
+            primaryButtonHandler={toggleTestsExpandDialog}
           />
         </Grid>
       </Grid>
