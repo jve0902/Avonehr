@@ -338,8 +338,6 @@ export default function Home() {
       return toggleNewTransactionDialog;
     } else if (value === "Allergies") {
       return toggleAllergyDialog;
-    } else if (value === "Encounters") {
-      return toggleEncountersDialog;
     } else if (value === "Medical Notes") {
       return toggleMedicalNotesDialog;
     } else if (value === "Messages") {
@@ -360,8 +358,6 @@ export default function Home() {
       return toggleAdminHistoryDialog;
     } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
-    } else if (value === "Encounters") {
-      return toggleEncountersExpandDialog;
     } else if (value === "Medical Notes") {
       return toggleMedicalNotesFormDialog;
     } else if (value === "Messages") {
@@ -684,8 +680,8 @@ export default function Home() {
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
-            primaryButtonHandler={mapPrimaryButtonHandlers("Encounters")}
-            secondaryButtonHandler={mapSecondaryButtonHandlers("Encounters")}
+            primaryButtonHandler={toggleEncountersDialog}
+            secondaryButtonHandler={toggleEncountersExpandDialog}
             showSearch={false}
           />
         </Grid>
