@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -9,6 +10,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
+import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
@@ -55,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
   statusList: {
     flexDirection: "row",
   },
+  textArea: {
+    height: "100px !important",
+    width: "100%",
+    padding: "5px",
+  },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
     display: "flex",
@@ -68,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 const NewAppointment = ({
   isOpen,
   onClose,
+  selectedDate,
   user,
   isNewAppointment,
   ...props
@@ -76,11 +84,12 @@ const NewAppointment = ({
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
-  const [startDate, handleStartDateChange] = useState(new Date());
-  const [endDate, handleEndDateChange] = useState(new Date());
+  const [startDate, handleStartDateChange] = useState(selectedDate);
+  const [endDate, handleEndDateChange] = useState(new Date(selectedDate));
   const [status, setStatus] = React.useState("female");
   const [provider, setProvider] = React.useState("");
   const [patient, setPatient] = React.useState("");
+  const [notes, setNotes] = React.useState("");
 
   const handleOnChange = (event) => {
     console.log("event", event);
@@ -96,7 +105,7 @@ const NewAppointment = ({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title" className={classes.title}>
-        New Appointment
+        New Appointment - {moment(selectedDate).format("YYYY.MM.DD")}
       </DialogTitle>
       <DialogContent className={classes.content}>
         <DialogContentText id="alert-dialog-description">
@@ -220,6 +229,15 @@ const NewAppointment = ({
               onChange={(event) => setPatient(event.target.value)}
             />
           </FormControl>
+          <Typography component="p" variant="body2" color="textPrimary">
+            Notes
+          </Typography>
+          <TextareaAutosize
+            className={classes.textArea}
+            aria-label="minimum height"
+            placeholder="Notes..."
+            onChange={(event) => setNotes(event.target.value)}
+          />
         </div>
       </DialogContent>
       <DialogActions className={classes.modalAction}>

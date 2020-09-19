@@ -120,11 +120,13 @@ export default function Home() {
   const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
   const [appointmentRequests, setAppointmentRequests] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
   ]);
   const [providers, setProviders] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -180,7 +182,10 @@ export default function Home() {
     const { data } = await DashboardHome.getPatientApptRequests(providerId);
     setAppointmentRequests(data);
   }
-
+  const handleDayClick = (date) => {
+    setIsOpen(true);
+    setSelectedDate(date);
+  };
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -188,7 +193,7 @@ export default function Home() {
       </Typography>
       <Grid container spacing={8}>
         <Grid item md={7} xs={12}>
-          <Calendar events={events} />
+          <Calendar events={events} onDayClick={handleDayClick} />
         </Grid>
         <Grid item md={5} xs={12}>
           <Card className={classes.root1} variant="outlined">
@@ -420,7 +425,11 @@ export default function Home() {
           )}
         </Grid>
       </Grid>
-      <NewAppointment isOpen={true} />
+      <NewAppointment
+        selectedDate={selectedDate}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 }
