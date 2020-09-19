@@ -41,16 +41,21 @@ To run:
 1. Install MySQL
 2. Load file mysql_start.txt
 
-If you get an error "Client does not support authentication protocol requested by server" then enter in MySQL
+If you get an error "Client does not support authentication protocol requested by server" then
     `alter user 'root'@'localhost' identified with mysql_native_password by '12345678'`
 
-To query the database we recommend MySQL Workbench
-https://www.mysql.com/products/workbench/
+To query the database we recommend MySQL Workbench https://www.mysql.com/products/workbench/
 
-## Usage
+## Prettier
 
-1. Login page for clients/doctors http://localhost:3000/login_client
-2. Login with email test@test.com and password 12345678
+1. In Visual Studio Code install the Prettier extension.
+2. Go to Code -> Settings -> Preferences, search for `editor.formatOnSave`, set to True.
+
+## App
+
+Login page for clients/doctors http://localhost:3000/login_client
+Use email test@test.com password 12345678
+Use these credentials so you will see the demo data for this client.
 
 ## Email
 
@@ -58,11 +63,3 @@ To test email notifications (only for development):
 
 1. Get `username` and `password` from `https://ethereal.email/create`
 2. Check emails on `https://ethereal.email/messages`
-
-## PDFs
-
-To create PDF files on a Mac
-
-    sudo mkdir /app/
-    sudo mkdir /app/client
-    sudo chmod 777 /app/client
