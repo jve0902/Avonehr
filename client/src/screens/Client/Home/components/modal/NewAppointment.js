@@ -14,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -33,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiSelect-select": {
       minWidth: 220,
     },
+  },
+  datePickers: {
+    display: "flex",
+    marginTop: theme.spacing(2),
+  },
+  startdatePicker: {
+    marginRight: theme.spacing(4),
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -55,12 +63,9 @@ const NewAppointment = ({
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+  const [startDate, handleStartDateChange] = useState(new Date());
+  const [endDate, handleEndDateChange] = useState(new Date());
+
   const handleOnChange = (event) => {
     console.log("event", event);
   };
@@ -100,6 +105,36 @@ const NewAppointment = ({
               onChange={(event) => setTitle(event.target.value)}
             />
           </FormControl>
+          <div className={classes.datePickers}>
+            <KeyboardDatePicker
+              className={classes.startdatePicker}
+              clearable
+              id="date-picker-inline"
+              label="Start"
+              value={startDate}
+              placeholder="10/10/2018"
+              onChange={(date) => handleStartDateChange(date)}
+              minDate={new Date()}
+              format="MM/dd/yyyy"
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+            <KeyboardDatePicker
+              clearable
+              variant="outlined"
+              id="date-picker-inline"
+              label="Start"
+              value={endDate}
+              placeholder="10/10/2018"
+              onChange={(date) => handleEndDateChange(date)}
+              minDate={new Date()}
+              format="MM/dd/yyyy"
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </div>
         </div>
       </DialogContent>
       <DialogActions className={classes.modalAction}>
