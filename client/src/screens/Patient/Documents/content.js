@@ -106,7 +106,7 @@ const Content = (props) => {
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <StyledTableRow key={row.filename}>
+            <StyledTableRow key={row.created}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
