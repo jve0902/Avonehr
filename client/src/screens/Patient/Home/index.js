@@ -19,6 +19,7 @@ import Form from "../Form";
 import NewTransactionForm from "../Billing/NewTransaction";
 import PaymentForm from "../Billing/PaymentForm";
 import Allergies from "../Allergies";
+import EncountersForm from "../Encounters";
 import MedicalNotes from "../MedicalNotes";
 import NewMessageForm from "../Messages/NewMessage";
 import DiagnosesForm from "../Diagnoses";
@@ -42,8 +43,9 @@ import TestsCardContent from "../Tests/content";
 
 //expand detail components
 import AllergiesDetails from "../Allergies/details";
-import MessagesDetails from "../Messages/details";
+import EncountersDetails from "../Encounters/details";
 import MedicalNotesDetails from "../MedicalNotes/details";
+import MessagesDetails from "../Messages/details";
 import MedicationsDetails from "../Medications/details";
 import DiagnosesDetails from "../Diagnoses/details";
 import RequisitionsDetails from "../Requisitions/details";
@@ -75,6 +77,9 @@ export default function Home() {
 
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
+
+  const [showEncountersDialog, setShowEncountersDialog] = useState(false);
+  const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(false);
 
   const [showMedicalNotesDialog, setShowMedicalNotesDialog] = useState(false);
 
@@ -261,6 +266,14 @@ export default function Home() {
     setShowAllergyExpandDialog((prevState) => !prevState);
   };
 
+  const toggleEncountersDialog = () => {
+    setShowEncountersDialog((prevState) => !prevState);
+  }
+
+  const toggleEncountersExpandDialog = () => {
+    setShowEncountersExpandDialog((prevState) => !prevState);
+  }
+
   const toggleMedicalNotesDialog = () => {
     setShowMedicalNotesDialog((prevState) => !prevState);
   };
@@ -308,6 +321,8 @@ export default function Home() {
       return toggleNewTransactionDialog;
     } else if (value === "Allergies") {
       return toggleAllergyDialog;
+    } else if (value === "Encounters") {
+      return toggleEncountersDialog;
     } else if (value === "Medical Notes") {
       return toggleMedicalNotesDialog;
     } else if (value === "Messages") {
@@ -328,6 +343,8 @@ export default function Home() {
       return toggleAdminHistoryDialog;
     } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
+    } else if (value === "Encounters") {
+      return toggleEncountersExpandDialog;
     } else if (value === "Messages") {
       return toggleMessageExpandDialog;
     } else if (value === "Diagnoses") {
@@ -493,6 +510,24 @@ export default function Home() {
         size={"md"}
       />
       <Dialog
+        open={showEncountersDialog}
+        title={" "}
+        message={<EncountersForm onClose={toggleEncountersDialog} />}
+        applyForm={() => toggleEncountersDialog()}
+        cancelForm={() => toggleEncountersDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showEncountersExpandDialog}
+        title={" "}
+        message={<EncountersDetails data={encounters} onClose={toggleEncountersExpandDialog} />}
+        applyForm={() => toggleEncountersExpandDialog()}
+        cancelForm={() => toggleEncountersExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
         open={showMedicalNotesDialog}
         title={" "}
         message={<MedicalNotesDetails data={medicalNotes} />}
@@ -601,6 +636,8 @@ export default function Home() {
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
+            primaryButtonHandler={mapPrimaryButtonHandlers("Encounters")}
+            secondaryButtonHandler={mapSecondaryButtonHandlers("Encounters")}
             showSearch={false}
           />
         </Grid>
