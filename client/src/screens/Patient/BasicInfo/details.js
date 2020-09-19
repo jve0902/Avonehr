@@ -61,7 +61,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const DiagnosesContent = (props) => {
+const PatientHistory = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -122,4 +122,5 @@ const DiagnosesContent = (props) => {
   );
 };
 
-export default DiagnosesContent;
+export default PatientHistory;
+
