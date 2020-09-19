@@ -38,10 +38,19 @@ To run:
 
 ## Database
 
-Load file mysql_start.txt in your database
+1. Install MySQL
+2. Load file mysql_start.txt
 
-To query the database install MySQL Workbench
+If you get an error "Client does not support authentication protocol requested by server" then enter in MySQL
+    `alter user 'root'@'localhost' identified with mysql_native_password by '12345678'`
+
+To query the database we recommend MySQL Workbench
 https://www.mysql.com/products/workbench/
+
+## Usage
+
+1. Login page for clients/doctors http://localhost:3000/login_client
+2. Login with email test@test.com and password 12345678
 
 ## Email
 
@@ -50,11 +59,7 @@ To test email notifications (only for development):
 1. Get `username` and `password` from `https://ethereal.email/create`
 2. Check emails on `https://ethereal.email/messages`
 
-## Usage
-
-Login to the app with email test@test.com and password 12345678
-
-## File system
+## PDFs
 
 To create PDF files on a Mac
 
