@@ -53,9 +53,9 @@ To query the database we recommend MySQL Workbench https://www.mysql.com/product
 
 ## App
 
-Login page for clients/doctors http://localhost:3000/login_client
-Use email test@test.com password 12345678
-Use these credentials so you will see the demo data for this client.
+1. Login page for clients/doctors http://localhost:3000/login_client
+2. Use email test@test.com password 12345678
+3. Use these credentials so you will see the demo data for this client.
 
 ## Email
 
