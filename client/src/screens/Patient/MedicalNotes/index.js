@@ -13,7 +13,7 @@ const MedicalNotes = (props) => {
   return (
     <>
       <Typography variant="h3" color="textSecondary">
-        Medical Notes
+        Medical Notes Form
       </Typography>
       <form>
         <Grid
