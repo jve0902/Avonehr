@@ -25,9 +25,9 @@ class Patient {
       .get(API_URL + `/patient/billing/?limit=3`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getDocuments() {
+  getDocuments(encounter_id, tab) {
     return axios
-      .get(API_URL + `/patient/documents/1/?tab="Labs"`, { headers: authHeader() })
+      .get(API_URL + `/patient/documents/${encounter_id}/?tab="${tab}"`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getPatientData() {
@@ -45,9 +45,9 @@ class Patient {
       .post(API_URL + `/patient/search`, data, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getEncounters() {
+  getEncounters(encounter_id) {
     return axios
-      .get(API_URL + `/patient/encounters/1`, { headers: authHeader() })
+      .get(API_URL + `/patient/encounters/${encounter_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getMedicalNotes() {
@@ -60,24 +60,24 @@ class Patient {
       .get(API_URL + `/patient/messages`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getDiagnoses() {
+  getDiagnoses(encounter_id) {
     return axios
-      .get(API_URL + `/patient/diagnoses/1/?active=true`, { headers: authHeader() })
+      .get(API_URL + `/patient/diagnoses/${encounter_id}/?active=true`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getMedications() {
+  getMedications(encounter_id) {
     return axios
-      .get(API_URL + `/patient/medications/1`, { headers: authHeader() })
+      .get(API_URL + `/patient/medications/${encounter_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getRequisitions() {
+  getRequisitions(encounter_id) {
     return axios
-      .get(API_URL + `/patient/requisitions/1`, { headers: authHeader() })
+      .get(API_URL + `/patient/requisitions/${encounter_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getTests() {
+  getTests(encounter_id) {
     return axios
-      .get(API_URL + `/patient/all-tests/1`, { headers: authHeader() })
+      .get(API_URL + `/patient/all-tests/${encounter_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
 
@@ -102,9 +102,9 @@ class Patient {
     );
   }
 
-  updateDiagnoses(data, id) {
+  updateDiagnoses(data, encounter_id, icd_id) {
     return axios.put(
-      API_URL + `/patient/diagnoses/1/${id}`,
+      API_URL + `/patient/diagnoses/${encounter_id}/${icd_id}`,
       data,
       {
         headers: authHeader(),
@@ -138,32 +138,32 @@ class Patient {
     });
   }
 
-  deleteAllergy(id) {
-    return axios.delete(API_URL + `/patient/allergies/1/${id}`, {
+  deleteAllergy(patient_id, drug_id) {
+    return axios.delete(API_URL + `/patient/allergies/${patient_id}/${drug_id}`, {
       headers: authHeader(),
     });
   }
 
-  deleteDocument(id) {
-    return axios.delete(API_URL + `/patient/documents/${id}`, {
+  deleteDocument(patient_id, tab) {
+    return axios.delete(API_URL + `/patient/documents/${patient_id}/?tab="${tab}"`, {
       headers: authHeader(),
     });
   }
   
-  deleteDiagnoses(id) {
-    return axios.delete(API_URL + `/patient/diagnoses/1/${id}`, {
+  deleteDiagnoses(encounter_id, icd_id) {
+    return axios.delete(API_URL + `/patient/diagnoses/${encounter_id}/${icd_id}`, {
       headers: authHeader(),
     });
   }
 
-  deleteMedications(id) {
-    return axios.delete(API_URL + `/patient/medications/1/1/${id}`, {
+  deleteMedications(encounter_id, drug_id, drug_strength_id) {
+    return axios.delete(API_URL + `/patient/medications/${encounter_id}/${drug_id}/${drug_strength_id}`, {
       headers: authHeader(),
     });
   }
 
-  deleteRequisitions(id) {
-    return axios.delete(API_URL + `/patient/requisitions/1/${id}`, {
+  deleteRequisitions(encounter_id, cpt_id) {
+    return axios.delete(API_URL + `/patient/requisitions/${encounter_id}/${cpt_id}`, {
       headers: authHeader(),
     });
   }
