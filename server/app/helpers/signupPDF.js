@@ -3,6 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
+/*
+To set file permissions in Linux or a Mac
+  sudo mkdir /app/
+  sudo mkdir /app/client
+  sudo chmod 777 /app/client
+*/
+
 const signupPDF = async (content, user, client) => {
   try {
     const pdfPath = path.join(
