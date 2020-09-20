@@ -555,7 +555,7 @@ export default function Home() {
       <Dialog
         open={showMedicalNotesFormDialog}
         title={" "}
-        message={<MedicalNotesForm onClose={toggleMedicalNotesFormDialog} />}
+        message={<MedicalNotesForm onClose={toggleMedicalNotesFormDialog} reloadData={fetchMedicalNotes} />}
         applyForm={() => toggleMedicalNotesFormDialog()}
         cancelForm={() => toggleMedicalNotesFormDialog()}
         hideActions={true}
