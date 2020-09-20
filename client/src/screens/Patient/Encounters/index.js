@@ -1,26 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from "moment"; 
 import { TextField, Button, Grid, Typography, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { EncountersFormFields, EncountersCards } from "../../../static/encountersForm";
 import Card from "../../../components/common/Card";
+import { useSelector, shallowEqual } from "react-redux";
 
 const Form = (props) => {
   const classes = useStyles();
   const { onClose } = props;
-
   const [formFields, setFormFields] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
+    title: '',
     type: '',
-    paymentType: '',
-    address1: '',
-    address2: '',
-    country: '',
-    state: '',
-    city: '',
-    zipPostal: '',
+    name: '',
+    date: '',
   })
+  const encounter = useSelector((state) => state.patient.selectedEncounter, shallowEqual);
+
+  useEffect(() => {
+    if(!!encounter) {
+      mapDataToState();
+    }
+  }, [encounter])
+
+  const mapDataToState = () => {
+    formFields.title = encounter.title;
+    formFields.type = encounter.encounter_type;
+    formFields.name = encounter.name;
+    formFields.date = moment(encounter.dt).format("YYYY-MM-DD");
+    setFormFields({ ...formFields })
+  }
 
   const handleInputChnage = (e) => {
     const { value, name } = e.target;
@@ -51,6 +60,7 @@ const Form = (props) => {
                           name={item.name}
                           id={item.id}
                           type={item.type}
+                          value={formFields[item.name]}
                           fullWidth
                           onChange={(e) => handleInputChnage(e)}
                         />
@@ -134,10 +144,12 @@ const Form = (props) => {
             ))
           }
         
-        <Grid container justify="space-between">
+        <Grid className={classes.formInput} container justify="space-between">
           <Button variant="outlined" onClick={() => onClose()}>Save</Button>
           <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
         </Grid>
+        <Typography gutterBottom>Created {moment().format("MMM, DD, YYYY")}</Typography>
+        <Typography gutterBottom>Created By {!!encounter && encounter.name || "Mark Hyman MD"}</Typography>
         </Grid>
       </Grid>
     </>

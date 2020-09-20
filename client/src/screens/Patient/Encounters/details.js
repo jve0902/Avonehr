@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
+import { setEncounter, resetEncounter } from "../../../store/patient/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +87,11 @@ const EncountersContent = (props) => {
       })
   }
 
+  const onItemEdit = (selectedItem) => {
+    dispatch(setEncounter(selectedItem));
+    toggleEncountersDialog();
+  }
+
   return (
     <TableContainer className={classes.tableContainer}>
       <Table size="small" className={classes.table}>
@@ -113,7 +119,7 @@ const EncountersContent = (props) => {
               <TableCell>{row.paymentPlan || "-"}</TableCell>
 
               <TableCell className={classes.actions}>
-                <IconButton className={classes.button} onClick={() => toggleEncountersDialog(row)}>
+                <IconButton className={classes.button} onClick={() => onItemEdit(row)}>
                   <EditIcon fontSize="small" />
                 </IconButton>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
