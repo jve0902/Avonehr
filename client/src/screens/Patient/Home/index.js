@@ -564,7 +564,7 @@ export default function Home() {
       <Dialog
         open={showMessageDialog}
         title={"New Message"}
-        message={<NewMessageForm onClose={toggleMessageDialog} />}
+        message={<NewMessageForm onClose={toggleMessageDialog} reloadData={fetchMessages} />}
         applyForm={() => toggleMessageDialog()}
         cancelForm={() => toggleMessageDialog()}
         hideActions={true}
@@ -573,7 +573,7 @@ export default function Home() {
       <Dialog
         open={showMessageExpandDialog}
         title={" "}
-        message={<MessagesDetails data={messages} onClose={toggleMessageDialog} />}
+        message={<MessagesDetails data={messages} onClose={toggleMessageDialog} reloadData={fetchMessages} />}
         applyForm={() => toggleMessageExpandDialog()}
         cancelForm={() => toggleMessageExpandDialog()}
         hideActions={true}
