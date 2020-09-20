@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
@@ -61,7 +62,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const EncountersContent = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, toggleEncountersDialog } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -112,6 +113,9 @@ const EncountersContent = (props) => {
               <TableCell>{row.paymentPlan || "-"}</TableCell>
 
               <TableCell className={classes.actions}>
+                <IconButton className={classes.button} onClick={() => toggleEncountersDialog(row)}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>
