@@ -298,7 +298,7 @@ const NewOrEditAppointment = ({
             Cancel
           </Button>
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             size="small"
             onClick={() => handleFormSubmission()}
