@@ -78,7 +78,7 @@ const Form = (props) => {
               ))
             }
             <Grid className={classes.formInput}>
-              <Grid item lg={4}>
+              <Grid item lg={6}>
                 <Typography gutterBottom variant="h5" color="textPrimary">Internal Notes (Not Visible to Patients)</Typography>
               </Grid>
               <Grid item md={12}>
@@ -97,7 +97,7 @@ const Form = (props) => {
           </Grid>
 
           <Grid className={classes.formInput}>
-            <Grid item lg={4}>
+            <Grid item lg={6}>
               <Typography gutterBottom variant="h5" color="textPrimary">Treatment Plan (Not Visible to Patients)</Typography>
             </Grid>
             <Grid item md={12}>
