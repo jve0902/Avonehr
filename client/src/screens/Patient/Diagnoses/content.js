@@ -14,7 +14,7 @@ export default function Content(props) {
       {
         data.map(item => (
           <Grid key={item.icd_id} className={classes.inputRow}>
-            <Typography variant="body1" color="textPrimary" gutterBottom>{item.name}</Typography>
+            <Typography variant="body1" color="textPrimary">{item.name}</Typography>
           </Grid>
         ))
       }
@@ -24,6 +24,6 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(0.5),
+    marginBottom: theme.spacing(0),
   },
 }));

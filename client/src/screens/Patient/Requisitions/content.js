@@ -14,7 +14,7 @@ export default function Content(props) {
       {
         data.map(item => (
           <Grid key={item.id}>
-            <Typography variant="body1" color="textPrimary" gutterBottom>{item.name} {item.created}</Typography>
+            <Typography variant="body1" color="textPrimary">{item.name} {item.created}</Typography>
           </Grid>
         ))
       }

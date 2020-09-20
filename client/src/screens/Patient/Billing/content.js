@@ -24,9 +24,11 @@ export default function Content(props) {
             <Grid item className={classes.block}>
               <Typography component="span" variant="body1" color="textPrimary">{item.encounter_title}</Typography>
             </Grid>
-            <Grid item className={classes.block}>
+            {!!item.cpt_procedure && (
+              <Grid item className={classes.block}>
               <Typography component="span" variant="body1" color="textPrimary">{item.cpt_procedure}</Typography>
             </Grid>
+            )}
           </Grid>
         ))
       }
@@ -40,10 +42,10 @@ const useStyles = makeStyles((theme) => ({
     // fontSize: 14
   },
   block: {
-    width: 110,
+    width: 90,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    padding: theme.spacing(0.5, 0.5, 0.5, 0),
+    padding: theme.spacing(0, 0.5, 0, 0),
   }
 }));

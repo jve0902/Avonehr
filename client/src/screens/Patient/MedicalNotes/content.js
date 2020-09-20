@@ -14,7 +14,7 @@ export default function Content(props) {
       {
         data.map((item, index) => (
           <Grid key={`${item.medical_note}_${index}`}>
-            <Typography variant="body1" color="textPrimary" gutterBottom>{item.medical_note}</Typography>
+            <Typography variant="body1" color="textPrimary">{item.medical_note}</Typography>
           </Grid>
         ))
       }

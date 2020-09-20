@@ -62,7 +62,7 @@ export default function Content(props) {
       {
         data.map(item => (
           <Grid key={item.id} className={classes.inputRow} onContextMenu={(e) => menuHandler(e, item)}>
-            <Typography variant="body1" color="textPrimary" gutterBottom>{item.message}</Typography>
+            <Typography variant="body1" color="textPrimary">{item.message}</Typography>
           </Grid>
         ))
       }

@@ -35,18 +35,18 @@ export default function Content(props) {
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography variant="body1" color="textPrimary" gutterBottom>Notes:</Typography>
+              <Typography variant="body1" color="textPrimary">Notes:</Typography>
               <Typography variant="body1" color="textPrimary">{item.notes ? item.notes : "No notes found..."}</Typography>
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography variant="body1" color="textPrimary" gutterBottom>Payment Plan:</Typography>
+              <Typography variant="body1" color="textPrimary">Payment Plan:</Typography>
               <Typography variant="body1" color="textPrimary">{item.payment_plan ? item.payment_plan : "No payment plan found..."}</Typography>
             </Grid>
 
             {
               index + 1 !== data.length && (
-                <Divider />
+                <Divider className={classes.divider} />
               )
             }
           </Grid>
@@ -58,13 +58,16 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(0.5),
+    marginBottom: theme.spacing(0),
   },
   block: {
-    width: 120,
+    width: 90,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(0, 0, 1, 0),
+  },
+  divider: {
+    margin: theme.spacing(1, 0)
   }
 }));

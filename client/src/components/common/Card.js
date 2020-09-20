@@ -35,6 +35,9 @@ const PatientCard = (props) => {
                 variant='outlined'
                 placeholder="Search ..."
                 className={classes.searchInput}
+                InputProps={{
+                  classes: { input: classes.textField },
+                }}
                 onChange={(e) => {
                   const searchedValue = e.target.value;
                   if(!!searchedValue && searchedValue.length) {
@@ -68,7 +71,7 @@ const PatientCard = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 150,
+    minHeight: 100,
     background: Colors.white,
     border: '1px solid rgba(38, 38, 38, 0.12)',
     borderRadius: 4,
@@ -76,10 +79,9 @@ const useStyles = makeStyles((theme) => ({
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 47,
   },
   fullPadding: {
-    padding: '1em',
+    padding: '6px 1em',
   },
   leftPadding: {
     padding: '0 0 0 1em',
@@ -119,6 +121,9 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     cursor: 'pointer'
+  },
+  textField: {
+    height: 8,
   }
 }))
 

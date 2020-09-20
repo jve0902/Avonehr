@@ -24,6 +24,6 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: 4,
+    marginBottom: 0,
   },
 }));
