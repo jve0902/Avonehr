@@ -13,7 +13,7 @@
 Setup:
 
 1. `cd client`
-2. `npm install` or `yarn`
+2. `yarn install`
 3. copy `.env.sample` into `.env` and fill in credentials
 
 To run:
@@ -26,14 +26,13 @@ To run:
 Setup:
 
 1. `cd server`
-2. `yarn or npm install`
+2. `yarn install`
 3. Make sure your database is running on your machine
-4. `yarn dev` for development `yarn start` for production
-5. copy `.env.sample` into `.env` and fill in credentials
+4. copy `.env.sample` into `.env` and fill in credentials
 
 To run:
 
-1. `yarn dev` or `npm run dev`
+1. `yarn dev` or `npm run dev` for development, `yarn start` for production
 2. API end point would be `http://localhost:5001`
 
 ## Database
