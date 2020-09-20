@@ -30,7 +30,9 @@ const AdminNotes = (props) => {
         "old_admin_note": "Always late update",
       }
     }
-    PatientService.updateAdminNotes(reqBody, 1)
+    // TODO:: static for the time being - discussion required
+    let noteId = 1;
+    PatientService.updateAdminNotes(reqBody, noteId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

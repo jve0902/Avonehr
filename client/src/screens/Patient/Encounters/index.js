@@ -130,16 +130,12 @@ const Form = (props) => {
               <Card
                 key={index}
                 title={item.title}
-                // data={mapCardContentDataHandlers(item.title)}
                 showActions={item.showActions}
                 showSearch={item.showSearch}
                 icon={item.icon}
                 primaryButtonText={item.primaryButtonText}
                 secondaryButtonText={item.secondaryButtonText}
-                // primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
-                // secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={() => console.log(item.title)}
-                // searchHandler={value => debouncedSearchPatients(value)}
               />
             ))
           }

@@ -18,7 +18,8 @@ const MedicalNotes = (props) => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    let noteId = 1 //static for the time being - discussion required
+    // TODO:: static for the time being - discussion required
+    let noteId = 1;
     const reqBody = {
       "data": {
         "old_medical_note": "Patient is hashimotos",
