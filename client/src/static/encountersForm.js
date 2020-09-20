@@ -15,8 +15,8 @@ export const EncountersFormFields = [
     type: null,
     options: [
       {
-        label: 'Fees',
-        value: 'fees'
+        label: "Office Visit",
+        value: "Office Visit"
       },
       {
         label: 'Advance',
@@ -25,8 +25,8 @@ export const EncountersFormFields = [
     ],
   },
   {
-    name: 'dob',
-    id: 'dob',
+    name: 'date',
+    id: 'date',
     label: 'Date',
     baseType: 'input',
     type: 'date',
