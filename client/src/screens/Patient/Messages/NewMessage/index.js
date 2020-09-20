@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PatientService from "../../../../services/patient.service";
+import { setError, setSuccess } from "../../../../store/common/actions";
+import { useDispatch } from "react-redux";
 
 const NewMessage = (props) => {
   const classes = useStyles();
-  const { onClose } = props;
+  const dispatch = useDispatch();
+  const { onClose, reloadData } = props;
 
   const [formFields, setFormFields] = useState({
     subject: '',
     message: '',
   })
 
-  const handleInputChnage = (e) => {
+  const handleInputChange = (e) => {
     const { value, name } = e.target;
     setFormFields({
       ...formFields,
@@ -19,20 +23,48 @@ const NewMessage = (props) => {
     })
   }
 
+  const onMessageSend = (e) => {
+    e.preventDefault();
+    const reqBody = {
+      "data": {
+        "message": formFields.message,
+        "subject": formFields.subject,
+      }
+    }
+    PatientService.createMessage(reqBody)
+    .then((response) => {
+      dispatch(setSuccess(`${response.data.message}`));
+      reloadData();
+      onClose();
+    })
+    .catch((error) => {
+      const resMessage = (error.response && error.response.data &&
+          error.response.data.message) || error.message || error.toString();
+      let severity = "error";
+      dispatch(
+        setError({
+          severity: severity,
+          message: resMessage,
+        })
+      );
+    })
+  }
+
   return (
     <>
       <Typography variant="h3" color="textSecondary">Send a Secure Message</Typography>
-      <form>
+      <form onSubmit={onMessageSend}>
         <Grid className={classes.inputRow}>
           <Grid className={classes.formInput} item md={4}>
             <TextField
+              required
               variant="standard"
               name="subject"
               id="subject"
               label="Subject"
               type={"text"}
               fullWidth
-              onChange={(e) => handleInputChnage(e)}
+              onChange={(e) => handleInputChange(e)}
             />
           </Grid>
           <Grid item lg={2}>
@@ -40,12 +72,13 @@ const NewMessage = (props) => {
           </Grid>
           <Grid className={classes.formInput} item md={12}>
             <TextField
+              required
               variant="outlined"
               name="message"
               id="message"
               type="text"
               fullWidth
-              onChange={(e) => handleInputChnage(e)}
+              onChange={(e) => handleInputChange(e)}
               multiline={true}
               rows={5}
             />
@@ -55,7 +88,7 @@ const NewMessage = (props) => {
         <Typography variant="h5" color="textSecondary" gutterBottom>Notify me if not read by Jan 1, 2020.</Typography>
 
         <Grid className={classes.actionContainer} container justify="space-between">
-          <Button variant="outlined" onClick={() => onClose()}>Save</Button>
+          <Button variant="outlined" type="submit">Save</Button>
           <Button variant="outlined" onClick={() => onClose()}>Cancel</Button>
         </Grid>
       </form>
