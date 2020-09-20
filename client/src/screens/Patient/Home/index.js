@@ -532,12 +532,12 @@ export default function Home() {
         applyForm={() => toggleEncountersDialog()}
         cancelForm={() => toggleEncountersDialog()}
         hideActions={true}
-        size={"md"}
+        size={"lg"}
       />
       <Dialog
         open={showEncountersExpandDialog}
         title={" "}
-        message={<EncountersDetails data={encounters} onClose={toggleEncountersExpandDialog} />}
+        message={<EncountersDetails data={encounters} onClose={toggleEncountersExpandDialog} toggleEncountersDialog={toggleEncountersDialog} />}
         applyForm={() => toggleEncountersExpandDialog()}
         cancelForm={() => toggleEncountersExpandDialog()}
         hideActions={true}
