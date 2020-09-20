@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { calculateAge, formatPhoneNumber } from "../../../utils/helpers"
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 export default function Content(props) {
   const classes = useStyles();
@@ -11,53 +11,41 @@ export default function Content(props) {
   return (
     <>
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>Name: </label>
-          {data.firstname} {data.lastname}
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">Name: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{data.firstname} {data.lastname}</Typography>
       </Grid>
 
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>Gender: </label>
-          {data.gender === "M" ? "Male" : "Female"}&nbsp;
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">Gender: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{data.gender === "M" ? "Male" : "Female"}</Typography>
       </Grid>
 
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>DOB: </label>
-          {moment(data.dob).format("MMM DD YYYY")} (Age: {calculateAge(data.dob)})&nbsp;
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">DOB: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{moment(data.dob).format("MMM DD YYYY")} (Age: {calculateAge(data.dob)})</Typography>
       </Grid>
 
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>Home: </label>
-          {formatPhoneNumber(data.phone_home)}&nbsp;
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">Home: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{formatPhoneNumber(data.phone_home)}</Typography>
       </Grid>
 
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>Mobile: </label>
-          {formatPhoneNumber(data.phone_cell)}&nbsp;
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">Mobile: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{formatPhoneNumber(data.phone_cell)}</Typography>
       </Grid>
 
       <Grid className={classes.inputRow}>
-        <Grid component="span">
-          <label>Provider: </label>
-          {data.provider}&nbsp;
-        </Grid>
+        <Typography component="span" variant="body1" color="textPrimary">Provider: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">{data.provider}</Typography>
       </Grid>
 
       <Grid>
-        <Grid component="span">
-          <label>Next Appointment: </label>
+        <Typography component="span" variant="body1" color="textPrimary">Next Appointment: </Typography>
+        <Typography component="span" variant="body1" color="textPrimary">
           {data.firstname}&nbsp;
-        {data.lastname}
-        </Grid>
+          {data.lastname}
+        </Typography>
       </Grid>
     </>
   );
@@ -65,6 +53,6 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
+    marginBottom: 4,
   },
 }));
