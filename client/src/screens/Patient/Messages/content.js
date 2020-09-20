@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid
+  Grid,
+  Typography
 } from "@material-ui/core";
 import ContextMenu from "./contextMenu";
 import PatientService from "../../../services/patient.service";
@@ -61,9 +62,7 @@ export default function Content(props) {
       {
         data.map(item => (
           <Grid key={item.id} className={classes.inputRow} onContextMenu={(e) => menuHandler(e, item)}>
-            <Grid component="span">
-              {item.message}
-            </Grid>
+            <Typography variant="body1" color="textPrimary" gutterBottom>{item.message}</Typography>
           </Grid>
         ))
       }
@@ -73,6 +72,6 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
   },
 }));
