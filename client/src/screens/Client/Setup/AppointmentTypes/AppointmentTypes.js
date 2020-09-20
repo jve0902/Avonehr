@@ -101,7 +101,7 @@ export default function AppointmentTypes(props) {
                 Appointment Types
               </Typography>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 component="span"
                 onClick={() => handleOnNewClick()}
