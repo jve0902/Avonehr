@@ -8,16 +8,17 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/DeleteOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
+import { setEncounter, resetEncounter } from "../../../store/patient/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: 9,
-    color: theme.palette.error.main,
   },
   tableContainer: {
     minWidth: 650,
@@ -62,7 +63,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const EncountersContent = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, toggleEncountersDialog } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -86,28 +87,41 @@ const EncountersContent = (props) => {
       })
   }
 
+  const onItemEdit = (selectedItem) => {
+    dispatch(setEncounter(selectedItem));
+    toggleEncountersDialog();
+  }
+
   return (
     <TableContainer className={classes.tableContainer}>
       <Table size="small" className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Created</StyledTableCell>
+            <StyledTableCell>Date</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>Title</StyledTableCell>
+            <StyledTableCell>Encounter Type</StyledTableCell>
+            <StyledTableCell>Notes</StyledTableCell>
+            <StyledTableCell>Payment Plan</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <StyledTableRow key={row.created}>
+            <StyledTableRow key={row.dt}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.dt).format("MMM, DD, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+              <TableCell>{row.title}</TableCell>
+              <TableCell>{row.encounter_type}</TableCell>
+              <TableCell>{row.notes || "-"}</TableCell>
+              <TableCell>{row.paymentPlan || "-"}</TableCell>
 
               <TableCell className={classes.actions}>
-                {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
+                <IconButton className={classes.button} onClick={() => onItemEdit(row)}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>

@@ -60,15 +60,14 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const DocumentsContent = (props) => {
+const PatientHistory = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
-    const tab = "Labs";
-    PatientService.deleteDocument(documentId, tab)
+    PatientService.deleteDocument(documentId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -94,18 +93,21 @@ const DocumentsContent = (props) => {
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
             <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>Admin Note</StyledTableCell>
+            <StyledTableCell>Created User</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {(!!data && data.length) && data.map((row, index) => (
             <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
-
+              <TableCell>{row.name || "-"}</TableCell>
+              <TableCell>{row.medical_note || "-"}</TableCell>
+              <TableCell>{row.admin_note || "-"}</TableCell>
+              <TableCell>{row.created_user || "-"}</TableCell>
               <TableCell className={classes.actions}>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
@@ -119,4 +121,5 @@ const DocumentsContent = (props) => {
   );
 };
 
-export default DocumentsContent;
+export default PatientHistory;
+

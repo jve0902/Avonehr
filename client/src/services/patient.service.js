@@ -10,11 +10,6 @@ class Patient {
       .get(API_URL + `/patient/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  searchAllergies(data) {
-    return axios
-      .post(API_URL + `/patient/allergies/search`, data, { headers: authHeader() })
-      .then((res) => res.data);
-  }
   getForms() {
     return axios
       .get(API_URL + `/patient/forms`, { headers: authHeader() })
@@ -81,6 +76,19 @@ class Patient {
       .then((res) => res.data);
   }
 
+  //search methods
+  searchAllergies(data) {
+    return axios
+      .post(API_URL + `/patient/allergies/search`, data, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+
+  searchDiagnosis(data) {
+    return axios
+      .post(API_URL + `/patient/diagnoses/search`, data, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+
   //update methods
   updateAdminNotes(data, noteId) {
     return axios.put(
@@ -127,6 +135,12 @@ class Patient {
 
   createDiagnoses(data) {
     return axios.post(API_URL + `/patient/diagnoses`, data, {
+      headers: authHeader(),
+    });
+  }
+
+  createMessage(data) {
+    return axios.post(API_URL + `/patient/message`, data, {
       headers: authHeader(),
     });
   }

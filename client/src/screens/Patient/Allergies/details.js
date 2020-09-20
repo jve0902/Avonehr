@@ -8,7 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/DeleteOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: 9,
-    color: theme.palette.error.main,
   },
   textCenter: {
     textAlign: 'center',
@@ -103,8 +102,8 @@ const AllergiesContent = (props) => {
         <TableBody>
           {(!!data && data.length)
           ?
-          data.map((row) => (
-            <StyledTableRow key={row.created}>
+          data.map((row, index) => (
+            <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
@@ -112,7 +111,6 @@ const AllergiesContent = (props) => {
               <TableCell>{row.medical_note}</TableCell>
 
               <TableCell className={classes.actions}>
-                {/* <Button variant="text" onClick={() => onItemDelete(row)}>Delete</Button> */}
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>

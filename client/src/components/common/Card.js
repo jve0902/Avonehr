@@ -5,17 +5,18 @@ import { Card, Typography, Grid, Button, TextField } from '@material-ui/core';
 import Colors from '../../theme/colors';
 import CardIcon from '@material-ui/icons/CreditCard';
 import DesktopIcon from '@material-ui/icons/DesktopMac';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 const PatientCard = (props) => {
   const classes = useStyles();
   const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler } = props;
   
-  const menuIcons = { DesktopIcon, CardIcon };
+  const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
   return (
     <>
       <Card className={classes.root} variant="outlined">
-        <Grid container justify="space-between" alignItems="center" className={classes.titleContainer}>
+        <Grid container justify="space-between" alignItems="center" className={`${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
@@ -74,9 +75,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10
   },
   titleContainer: {
-    padding: '0 0 0 1em',
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 47,
+  },
+  fullPadding: {
+    padding: '1em',
+  },
+  leftPadding: {
+    padding: '0 0 0 1em',
   },
   title: {
     fontWeight: '600',
@@ -86,8 +92,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer"
   },
   cardContent: {
-    padding: theme.spacing(2),
-    userSelect: 'none',
+    padding: theme.spacing(2)
   },
   sideIcon: {
     minWidth: 35,

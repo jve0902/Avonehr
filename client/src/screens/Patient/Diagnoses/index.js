@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import _ from "lodash";
 import { TextField, Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PatientService from "../../../services/patient.service"
@@ -9,12 +10,32 @@ const Diagnoses = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { onClose } = props;
-  const [searchText, setSearchText] = useState('');
+  const [diagnosis, setDiagnosis] = useState([]);
+
+  useEffect(() => {
+    fetchDiagnosis('');
+  }, [])
 
   const handleInputChnage = (e) => {
     const { value } = e.target;
-    setSearchText(value);
+    debouncedSearchDiagnosis(value);
   }
+  
+  const debouncedSearchDiagnosis = _.debounce(query => {
+    fetchDiagnosis(query);
+  }, 1000);
+
+  const fetchDiagnosis = (searchText) => {
+    const reqBody = {
+      "data": {
+        "text": searchText
+      }
+    }
+    PatientService.searchDiagnosis(reqBody)
+      .then((res) => {
+        setDiagnosis(res.data);
+      })
+  };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +44,7 @@ const Diagnoses = (props) => {
         "patient_id": 1
       }
     }
-    PatientService.createDiagnosis(reqBody)
+    PatientService.createDiagnoses(reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         onClose();
@@ -56,7 +77,6 @@ const Diagnoses = (props) => {
               name="search"
               fullWidth
               variant="outlined"
-              value={searchText}
               onChange={(e) => handleInputChnage(e)}
               size="small"
               className={classes.heading}
