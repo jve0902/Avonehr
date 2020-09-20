@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${Colors.border}`,
   },
   fullPadding: {
-    padding: '6px 1em',
+    padding: '8px 1em',
   },
   leftPadding: {
     padding: '0 0 0 1em',
