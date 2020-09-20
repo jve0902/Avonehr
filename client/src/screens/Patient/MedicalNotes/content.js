@@ -11,8 +11,8 @@ export default function Content(props) {
   return (
     <>
       {
-        data.map(item => (
-          <Grid key={item.medical_note} className={classes.inputRow}>
+        data.map((item, index) => (
+          <Grid key={`${item.medical_note}_${index}`} className={classes.inputRow}>
             <Grid component="span">
               {item.medical_note}
             </Grid>
