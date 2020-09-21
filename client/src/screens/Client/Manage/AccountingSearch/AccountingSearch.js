@@ -112,9 +112,12 @@ export default function AccountingSearch() {
       },
     };
     Accounting.search(payload).then((res) => {
-      res.data.data.length > 0
-        ? setSearchResults(res.data.data)
-        : setEmptyResult("None Found");
+      if (res.data.data.length > 0) {
+        setSearchResults(res.data.data);
+      } else {
+        setSearchResults([]);
+        setEmptyResult("None Found");
+      }
     });
   };
 
@@ -271,6 +274,7 @@ export default function AccountingSearch() {
       ) : (
         <Typography component="p" variant="body2" color="textPrimary">
           {emptyResult}
+          {console.log("dddddd", emptyResult)}
         </Typography>
       )}
     </div>
