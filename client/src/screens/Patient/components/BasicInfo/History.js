@@ -7,29 +7,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-
-import PatientService from "./../../../../services/patient.service";
-import { setError, setSuccess } from "./../../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    padding: 9,
-  },
   tableContainer: {
     minWidth: 650,
-  },
-  actions: {
-    textAlign: "center",
-    display: "flex",
-    justifyContent: "center",
-    border: "none",
-    "& button": {
-      fontSize: "12px",
-    },
-  },
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -62,32 +44,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 const PatientHistory = (props) => {
   const { data, reloadData } = props;
-  const dispatch = useDispatch();
   const classes = useStyles();
-
-  const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
-      .then((response) => {
-        dispatch(setSuccess(`${response.data.message}`));
-        reloadData();
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        let severity = "error";
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage,
-          })
-        );
-      });
-  };
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -99,7 +56,6 @@ const PatientHistory = (props) => {
             <StyledTableCell>Medical Note</StyledTableCell>
             <StyledTableCell>Admin Note</StyledTableCell>
             <StyledTableCell>Created User</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -114,14 +70,6 @@ const PatientHistory = (props) => {
                 <TableCell>{row.medical_note || "-"}</TableCell>
                 <TableCell>{row.admin_note || "-"}</TableCell>
                 <TableCell>{row.created_user || "-"}</TableCell>
-                <TableCell className={classes.actions}>
-                  <IconButton
-                    className={classes.button}
-                    onClick={() => onItemDelete(row)}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </TableCell>
               </StyledTableRow>
             ))}
         </TableBody>
