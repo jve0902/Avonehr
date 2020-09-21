@@ -18,32 +18,35 @@ export default function Content(props) {
           <Grid key={index}>
             <Grid key={index} container>
               <Grid item className={classes.block}>
-                {moment(item.dt).format("MMM DD YYYY")}
+                <Typography component="span" variant="body1" color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
               </Grid>
+
               <Grid item className={classes.block}>
-                {item.encounter_type}
+                <Typography component="span" variant="body1" color="textPrimary">{item.encounter_type}</Typography>
               </Grid>
+
               <Grid item className={classes.block}>
-                {item.title}
+                <Typography component="span" variant="body1" color="textPrimary">{item.title}</Typography>
               </Grid>
+
               <Grid item className={classes.block}>
-                {item.name}
+                <Typography component="span" variant="body1" color="textPrimary">{item.name}</Typography>
               </Grid>
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography gutterBottom>Notes:</Typography>
-              <Typography>{item.notes ? item.notes : "No notes found..."}</Typography>
+              <Typography variant="body1" color="textPrimary">Notes:</Typography>
+              <Typography variant="body1" color="textPrimary">{item.notes ? item.notes : "No notes found..."}</Typography>
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography gutterBottom>Payment Plan:</Typography>
-              <Typography>{item.payment_plan ? item.payment_plan : "No payment plan found..."}</Typography>
+              <Typography variant="body1" color="textPrimary">Payment Plan:</Typography>
+              <Typography variant="body1" color="textPrimary">{item.payment_plan ? item.payment_plan : "No payment plan found..."}</Typography>
             </Grid>
 
             {
               index + 1 !== data.length && (
-                <Divider />
+                <Divider className={classes.divider} />
               )
             }
           </Grid>
@@ -55,13 +58,16 @@ export default function Content(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0),
   },
   block: {
-    width: 120,
+    width: 90,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(0, 0, 1, 0),
+  },
+  divider: {
+    margin: theme.spacing(1, 0)
   }
 }));

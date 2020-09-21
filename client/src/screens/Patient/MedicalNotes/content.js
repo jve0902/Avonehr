@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid
+  Grid,
+  Typography
 } from "@material-ui/core";
 
 export default function Content(props) {
@@ -12,10 +13,8 @@ export default function Content(props) {
     <>
       {
         data.map((item, index) => (
-          <Grid key={`${item.medical_note}_${index}`} className={classes.inputRow}>
-            <Grid component="span">
-              {item.medical_note}
-            </Grid>
+          <Grid key={`${item.medical_note}_${index}`}>
+            <Typography variant="body1" color="textPrimary">{item.medical_note}</Typography>
           </Grid>
         ))
       }
