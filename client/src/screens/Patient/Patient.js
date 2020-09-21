@@ -13,7 +13,7 @@ import {
 } from "./../../static/patient";
 
 // dialog components
-import AdminNotes from "./AdminNotes";
+import { AdminNotes, AdminNotesCardContent } from "./components/AdminNotes";
 import Form from "./Form";
 import NewTransactionForm from "./Billing/NewTransaction";
 import PaymentForm from "./Billing/PaymentForm";
@@ -41,7 +41,7 @@ import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
 
 //card content components
-import AdminNotesCardContent from "./AdminNotes/content";
+//import AdminNotesCardContent from "./AdminNotes/content";
 import FormCardContent from "./Form/content";
 import BillingCardContent from "./Billing/content";
 //import AllergiesCardContent from "./Allergies/content";
