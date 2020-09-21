@@ -31,6 +31,7 @@ import {
   DiagnosesCardContent,
   DiagnosesDetails,
 } from "./components/Diagnoses";
+import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
 
@@ -39,7 +40,6 @@ import AdminNotesCardContent from "./AdminNotes/content";
 import FormCardContent from "./Form/content";
 import BillingCardContent from "./Billing/content";
 import AllergiesCardContent from "./Allergies/content";
-import DocumentsCardContent from "./Documents/content";
 import EncountersCardContent from "./Encounters/content";
 import MedicalNotesCardContent from "./MedicalNotes/content";
 import MessagesCardContent from "./Messages/content";
