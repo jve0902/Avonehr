@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { calculateAge, formatPhoneNumber } from "../../../utils/helpers";
+import { calculateAge, formatPhoneNumber } from "./../../../../utils/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 

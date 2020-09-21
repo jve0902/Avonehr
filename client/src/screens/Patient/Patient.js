@@ -13,7 +13,6 @@ import {
 } from "./../../static/patient";
 
 // dialog components
-import BasicInfo from "./BasicInfo";
 import AdminNotes from "./AdminNotes";
 import Form from "./Form";
 import NewTransactionForm from "./Billing/NewTransaction";
@@ -23,6 +22,11 @@ import EncountersForm from "./Encounters";
 import MedicalNotesForm from "./MedicalNotes";
 import NewMessageForm from "./Messages/NewMessage";
 import {
+  BasicInfo,
+  PatientCardContent,
+  PatientHistoryDetails,
+} from "./components/BasicInfo";
+import {
   DiagnosesForm,
   DiagnosesCardContent,
   DiagnosesDetails,
@@ -31,7 +35,6 @@ import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
 
 //card content components
-import PatientCardContent from "./BasicInfo/content";
 import AdminNotesCardContent from "./AdminNotes/content";
 import FormCardContent from "./Form/content";
 import BillingCardContent from "./Billing/content";
@@ -46,7 +49,6 @@ import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
 
 //expand detail components
-import PatientHistoryDetails from "./BasicInfo/details";
 import AllergiesDetails from "./Allergies/details";
 import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
