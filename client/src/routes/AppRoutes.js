@@ -13,7 +13,7 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
-import PatientHome from "../screens/Patient/Home";
+import Patient from "../screens/Patient";
 import { Reports, Myself } from "../screens/Client";
 import {
   AccountingSearch,
@@ -110,7 +110,7 @@ class AppRouter extends Component {
             <PrivateRouteWithLayout
               layout={Plain}
               path="/patient"
-              component={PatientHome}
+              component={Patient}
               exact
             />
             <PrivateRouteWithLayout

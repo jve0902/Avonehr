@@ -4,59 +4,59 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
 //common components
-import Card from "../../../components/common/Card";
-import Dialog from "../../../components/Dialog";
+import Card from "./../../components/common/Card";
+import Dialog from "./../../components/Dialog";
 import {
   FirstColumnPatientCards,
   ThirdColumnPatientCards,
   FourthColumnPatientCards,
-} from "../../../static/patient";
+} from "./../../static/patient";
 
 // dialog components
-import BasicInfo from "../BasicInfo";
-import AdminNotes from "../AdminNotes";
-import Form from "../Form";
-import NewTransactionForm from "../Billing/NewTransaction";
-import PaymentForm from "../Billing/PaymentForm";
-import Allergies from "../Allergies";
-import EncountersForm from "../Encounters";
-import MedicalNotesForm from "../MedicalNotes";
-import NewMessageForm from "../Messages/NewMessage";
-import DiagnosesForm from "../Diagnoses";
-import MedicationsForm from "../Medications";
-import RequisitionsForm from "../Requisitions";
+import BasicInfo from "./BasicInfo";
+import AdminNotes from "./AdminNotes";
+import Form from "./Form";
+import NewTransactionForm from "./Billing/NewTransaction";
+import PaymentForm from "./Billing/PaymentForm";
+import Allergies from "./Allergies";
+import EncountersForm from "./Encounters";
+import MedicalNotesForm from "./MedicalNotes";
+import NewMessageForm from "./Messages/NewMessage";
+import DiagnosesForm from "./Diagnoses";
+import MedicationsForm from "./Medications";
+import RequisitionsForm from "./Requisitions";
 
 //card content components
-import PatientCardContent from "../BasicInfo/content";
-import AdminNotesCardContent from "../AdminNotes/content";
-import FormCardContent from "../Form/content";
-import BillingCardContent from "../Billing/content";
-import AllergiesCardContent from "../Allergies/content";
-import DocumentsCardContent from "../Documents/content";
-import EncountersCardContent from "../Encounters/content";
-import MedicalNotesCardContent from "../MedicalNotes/content";
-import MessagesCardContent from "../Messages/content";
-import DiagnosesCardContent from "../Diagnoses/content";
-import MedicationsCardContent from "../Medications/content";
-import RequisitionsCardContent from "../Requisitions/content";
-import TestsCardContent from "../Tests/content";
+import PatientCardContent from "./BasicInfo/content";
+import AdminNotesCardContent from "./AdminNotes/content";
+import FormCardContent from "./Form/content";
+import BillingCardContent from "./Billing/content";
+import AllergiesCardContent from "./Allergies/content";
+import DocumentsCardContent from "./Documents/content";
+import EncountersCardContent from "./Encounters/content";
+import MedicalNotesCardContent from "./MedicalNotes/content";
+import MessagesCardContent from "./Messages/content";
+import DiagnosesCardContent from "./Diagnoses/content";
+import MedicationsCardContent from "./Medications/content";
+import RequisitionsCardContent from "./Requisitions/content";
+import TestsCardContent from "./Tests/content";
 
 //expand detail components
-import PatientHistoryDetails from "../BasicInfo/details";
-import AllergiesDetails from "../Allergies/details";
-import EncountersDetails from "../Encounters/details";
-import MedicalNotesDetails from "../MedicalNotes/details";
-import MessagesDetails from "../Messages/details";
-import MedicationsDetails from "../Medications/details";
-import DiagnosesDetails from "../Diagnoses/details";
-import RequisitionsDetails from "../Requisitions/details";
+import PatientHistoryDetails from "./BasicInfo/details";
+import AllergiesDetails from "./Allergies/details";
+import EncountersDetails from "./Encounters/details";
+import MedicalNotesDetails from "./MedicalNotes/details";
+import MessagesDetails from "./Messages/details";
+import MedicationsDetails from "./Medications/details";
+import DiagnosesDetails from "./Diagnoses/details";
+import RequisitionsDetails from "./Requisitions/details";
 
 //service
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
+import PatientService from "./../../services/patient.service";
+import { setError, setSuccess } from "./../../store/common/actions";
 import { useDispatch } from "react-redux";
 
-export default function Home() {
+export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
@@ -80,9 +80,13 @@ export default function Home() {
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
 
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
-  const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(false);
+  const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(
+    false
+  );
 
-  const [showMedicalNotesFormDialog, setShowMedicalNotesFormDialog] = useState(false);
+  const [showMedicalNotesFormDialog, setShowMedicalNotesFormDialog] = useState(
+    false
+  );
   const [showMedicalNotesDialog, setShowMedicalNotesDialog] = useState(false);
 
   const [showMessageDialog, setShowMessageDialog] = useState(false);
@@ -104,7 +108,9 @@ export default function Home() {
     setShowRequisitionExpandDialog,
   ] = useState(false);
 
-  const [showDocumentsExpandDialog, setShowDocumentsExpandDialog] = useState(false);
+  const [showDocumentsExpandDialog, setShowDocumentsExpandDialog] = useState(
+    false
+  );
 
   const [showTestsExpandDialog, setShowTestsExpandDialog] = useState(false);
 
@@ -172,7 +178,7 @@ export default function Home() {
 
   const fetchDocuments = () => {
     let encounterId = "1";
-    let tab = 'Labs';
+    let tab = "Labs";
     PatientService.getDocuments(encounterId, tab).then((res) => {
       setDocuments(res.data);
     });
@@ -236,7 +242,7 @@ export default function Home() {
     });
   };
 
-  const debouncedSearchPatients = _.debounce(query => {
+  const debouncedSearchPatients = _.debounce((query) => {
     searchPatientHandler(query);
   }, 1000);
 
@@ -274,11 +280,11 @@ export default function Home() {
 
   const toggleEncountersDialog = () => {
     setShowEncountersDialog((prevState) => !prevState);
-  }
+  };
 
   const toggleEncountersExpandDialog = () => {
     setShowEncountersExpandDialog((prevState) => !prevState);
-  }
+  };
 
   const toggleMedicalNotesDialog = () => {
     setShowMedicalNotesDialog((prevState) => !prevState);
@@ -384,11 +390,25 @@ export default function Home() {
     } else if (value === "Billing") {
       return !!billings && <BillingCardContent data={billings} />;
     } else if (value === "Allergies") {
-      return !!allergies && <AllergiesCardContent data={allergies} reloadData={() => fetchAllergies()} />;
+      return (
+        !!allergies && (
+          <AllergiesCardContent
+            data={allergies}
+            reloadData={() => fetchAllergies()}
+          />
+        )
+      );
     } else if (value === "Medical Notes") {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
     } else if (value === "Messages") {
-      return !!messages && <MessagesCardContent data={messages} reloadData={() => fetchMessages()} />;
+      return (
+        !!messages && (
+          <MessagesCardContent
+            data={messages}
+            reloadData={() => fetchMessages()}
+          />
+        )
+      );
     } else if (value === "Medications") {
       return !!medications && <MedicationsCardContent data={medications} />;
     } else if (value === "Diagnoses") {
@@ -413,19 +433,23 @@ export default function Home() {
 
   const createDocument = (filename) => {
     const reqBody = {
-      "data": {
-        "patient_id": 1,
-        "filename": filename,
-      }
-    }
+      data: {
+        patient_id: 1,
+        filename: filename,
+      },
+    };
     PatientService.createDocuments(reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         fetchDocuments();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
@@ -433,14 +457,14 @@ export default function Home() {
             message: resMessage,
           })
         );
-      })
-  }
+      });
+  };
 
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
-    console.log("files", files)
+    console.log("files", files);
     createDocument(files[0].name);
-  }
+  };
 
   return (
     <>
@@ -465,7 +489,12 @@ export default function Home() {
       <Dialog
         open={showPatientHistoryDialog}
         title={"Patient History"}
-        message={<PatientHistoryDetails data={patientHistory} onClose={togglePatientHistoryDialog} />}
+        message={
+          <PatientHistoryDetails
+            data={patientHistory}
+            onClose={togglePatientHistoryDialog}
+          />
+        }
         applyForm={() => togglePatientHistoryDialog()}
         cancelForm={() => togglePatientHistoryDialog()}
         hideActions={true}
@@ -474,7 +503,12 @@ export default function Home() {
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
-        message={<AdminNotes onClose={toggleAdminHistoryDialog} reloadData={() => fetchPatientHistory()} />}
+        message={
+          <AdminNotes
+            onClose={toggleAdminHistoryDialog}
+            reloadData={() => fetchPatientHistory()}
+          />
+        }
         applyForm={() => toggleAdminHistoryDialog()}
         cancelForm={() => toggleAdminHistoryDialog()}
         hideActions={true}
@@ -519,7 +553,12 @@ export default function Home() {
       <Dialog
         open={showAllergyExpandDialog}
         title={" "}
-        message={<AllergiesDetails data={allergies} onClose={toggleAllergyExpandDialog} />}
+        message={
+          <AllergiesDetails
+            data={allergies}
+            onClose={toggleAllergyExpandDialog}
+          />
+        }
         applyForm={() => toggleAllergyExpandDialog()}
         cancelForm={() => toggleAllergyExpandDialog()}
         hideActions={true}
@@ -537,7 +576,13 @@ export default function Home() {
       <Dialog
         open={showEncountersExpandDialog}
         title={" "}
-        message={<EncountersDetails data={encounters} onClose={toggleEncountersExpandDialog} toggleEncountersDialog={toggleEncountersDialog} />}
+        message={
+          <EncountersDetails
+            data={encounters}
+            onClose={toggleEncountersExpandDialog}
+            toggleEncountersDialog={toggleEncountersDialog}
+          />
+        }
         applyForm={() => toggleEncountersExpandDialog()}
         cancelForm={() => toggleEncountersExpandDialog()}
         hideActions={true}
@@ -555,7 +600,12 @@ export default function Home() {
       <Dialog
         open={showMedicalNotesFormDialog}
         title={" "}
-        message={<MedicalNotesForm onClose={toggleMedicalNotesFormDialog} reloadData={fetchMedicalNotes} />}
+        message={
+          <MedicalNotesForm
+            onClose={toggleMedicalNotesFormDialog}
+            reloadData={fetchMedicalNotes}
+          />
+        }
         applyForm={() => toggleMedicalNotesFormDialog()}
         cancelForm={() => toggleMedicalNotesFormDialog()}
         hideActions={true}
@@ -564,7 +614,12 @@ export default function Home() {
       <Dialog
         open={showMessageDialog}
         title={"New Message"}
-        message={<NewMessageForm onClose={toggleMessageDialog} reloadData={fetchMessages} />}
+        message={
+          <NewMessageForm
+            onClose={toggleMessageDialog}
+            reloadData={fetchMessages}
+          />
+        }
         applyForm={() => toggleMessageDialog()}
         cancelForm={() => toggleMessageDialog()}
         hideActions={true}
@@ -573,7 +628,13 @@ export default function Home() {
       <Dialog
         open={showMessageExpandDialog}
         title={" "}
-        message={<MessagesDetails data={messages} onClose={toggleMessageDialog} reloadData={fetchMessages} />}
+        message={
+          <MessagesDetails
+            data={messages}
+            onClose={toggleMessageDialog}
+            reloadData={fetchMessages}
+          />
+        }
         applyForm={() => toggleMessageExpandDialog()}
         cancelForm={() => toggleMessageExpandDialog()}
         hideActions={true}
@@ -591,7 +652,12 @@ export default function Home() {
       <Dialog
         open={showDiagnosesExpandDialog}
         title={" "}
-        message={<DiagnosesDetails data={diagnoses} onClose={toggleDiagnosesExpandDialog} />}
+        message={
+          <DiagnosesDetails
+            data={diagnoses}
+            onClose={toggleDiagnosesExpandDialog}
+          />
+        }
         applyForm={() => toggleDiagnosesExpandDialog()}
         cancelForm={() => toggleDiagnosesExpandDialog()}
         hideActions={true}
@@ -609,7 +675,12 @@ export default function Home() {
       <Dialog
         open={showMedicationExpandDialog}
         title={" "}
-        message={<MedicationsDetails data={medications} onClose={toggleMedicationExpandDialog} />}
+        message={
+          <MedicationsDetails
+            data={medications}
+            onClose={toggleMedicationExpandDialog}
+          />
+        }
         applyForm={() => toggleMedicationExpandDialog()}
         cancelForm={() => toggleMedicationExpandDialog()}
         hideActions={true}
@@ -627,7 +698,12 @@ export default function Home() {
       <Dialog
         open={showRequisitionExpandDialog}
         title={" "}
-        message={<RequisitionsDetails data={requisitions} onClose={toggleRequisitionExpandDialog} />}
+        message={
+          <RequisitionsDetails
+            data={requisitions}
+            onClose={toggleRequisitionExpandDialog}
+          />
+        }
         applyForm={() => toggleRequisitionExpandDialog()}
         cancelForm={() => toggleRequisitionExpandDialog()}
         hideActions={true}
@@ -637,7 +713,12 @@ export default function Home() {
       <Dialog
         open={showDocumentsExpandDialog}
         title={" "}
-        message={<DocumentsCardContent data={documents} onClose={toggleDocumentsExpandDialog} />}
+        message={
+          <DocumentsCardContent
+            data={documents}
+            onClose={toggleDocumentsExpandDialog}
+          />
+        }
         applyForm={() => toggleDocumentsExpandDialog()}
         cancelForm={() => toggleDocumentsExpandDialog()}
         hideActions={true}
@@ -647,7 +728,9 @@ export default function Home() {
       <Dialog
         open={showTestsExpandDialog}
         title={" "}
-        message={<TestsCardContent data={tests} onClose={toggleTestsExpandDialog} />}
+        message={
+          <TestsCardContent data={tests} onClose={toggleTestsExpandDialog} />
+        }
         applyForm={() => toggleTestsExpandDialog()}
         cancelForm={() => toggleTestsExpandDialog()}
         hideActions={true}
@@ -669,7 +752,7 @@ export default function Home() {
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
-                searchHandler={value => debouncedSearchPatients(value)}
+                searchHandler={(value) => debouncedSearchPatients(value)}
               />
             );
           })}
@@ -728,7 +811,14 @@ export default function Home() {
         <Grid item md={6} xs={12}>
           <Card
             title="Documents"
-            data={!!documents && <DocumentsCardContent data={documents} reloadData={() => fetchDocuments()} />}
+            data={
+              !!documents && (
+                <DocumentsCardContent
+                  data={documents}
+                  reloadData={() => fetchDocuments()}
+                />
+              )
+            }
             showActions={true}
             primaryButtonText={"New"}
             secondaryButtonText={"Expand"}
