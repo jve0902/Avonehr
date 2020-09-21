@@ -31,22 +31,22 @@ const DialogForm = ({
           <DialogActions className={continueNext ? classes.buttonSkip : classes.buttonClose}>
             {
               continueNext && (
-                <IconButton onClick={continueNext} aria-label="next">
-                  <ArrowForwardIcon />
+                <IconButton className={classes.iconButton} onClick={continueNext} aria-label="next">
+                  <ArrowForwardIcon fontSize="small" />
                 </IconButton>
               )
             }
             {
               cancelForm && (
-                <IconButton onClick={cancelForm} aria-label="close">
-                  <CloseIcon />
+                <IconButton className={classes.iconButton} onClick={cancelForm} aria-label="close">
+                  <CloseIcon fontSize="small" />
                 </IconButton>
               )
             }
             {
               backAction && (
-                <IconButton onClick={applyForm} aria-label="back">
-                  <ArrowBackIcon />
+                <IconButton className={classes.iconButton} onClick={applyForm} aria-label="back">
+                  <ArrowBackIcon fontSize="small" />
                 </IconButton>
               )
             }
@@ -96,7 +96,10 @@ const useStyles = makeStyles((theme) =>
     buttonClose: {
       position: 'absolute',
       right: 0,
-      top: '-6px'
+      top: 0
+    },
+    iconButton: {
+      padding: 8,
     },
     buttonSkip: {
       display: "flex",
