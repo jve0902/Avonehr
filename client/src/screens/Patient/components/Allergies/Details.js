@@ -8,10 +8,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
+import PatientService from "./../../../../services/patient.service";
+import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 9,
   },
   textCenter: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   tableContainer: {
     minWidth: 650,
@@ -58,7 +58,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      height: "50px",
     },
   },
 }))(TableRow);
@@ -76,8 +76,12 @@ const AllergiesContent = (props) => {
         reloadData();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
@@ -85,8 +89,8 @@ const AllergiesContent = (props) => {
             message: resMessage,
           })
         );
-      })
-  }
+      });
+  };
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -100,30 +104,37 @@ const AllergiesContent = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(!!data && data.length)
-          ?
-          data.map((row, index) => (
-            <StyledTableRow key={`${row.created}_${index}`}>
-              <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
-              </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+          {!!data && data.length ? (
+            data.map((row, index) => (
+              <StyledTableRow key={`${row.created}_${index}`}>
+                <TableCell component="th" scope="row">
+                  {moment(row.created).format("MMM, DD, YYYY")}
+                </TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.medical_note}</TableCell>
 
-              <TableCell className={classes.actions}>
-                <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
+                <TableCell className={classes.actions}>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => onItemDelete(row)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </StyledTableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                className={classes.textCenter}
+                component="td"
+                colSpan="8"
+                scope="row"
+              >
+                No Records found...
               </TableCell>
-            </StyledTableRow>
-          ))
-          :
-          <TableRow>
-            <TableCell className={classes.textCenter} component="td" colSpan="8" scope="row">
-              No Records found...
-            </TableCell>
-          </TableRow>
-        }
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

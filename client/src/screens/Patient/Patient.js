@@ -17,10 +17,15 @@ import AdminNotes from "./AdminNotes";
 import Form from "./Form";
 import NewTransactionForm from "./Billing/NewTransaction";
 import PaymentForm from "./Billing/PaymentForm";
-import Allergies from "./Allergies";
+//import Allergies from "./Allergies";
 import EncountersForm from "./Encounters";
 import MedicalNotesForm from "./MedicalNotes";
 import NewMessageForm from "./Messages/NewMessage";
+import {
+  Allergies,
+  AllergiesCardContent,
+  AllergiesDetails,
+} from "./components/Allergies";
 import {
   BasicInfo,
   PatientCardContent,
@@ -39,7 +44,7 @@ import RequisitionsForm from "./Requisitions";
 import AdminNotesCardContent from "./AdminNotes/content";
 import FormCardContent from "./Form/content";
 import BillingCardContent from "./Billing/content";
-import AllergiesCardContent from "./Allergies/content";
+//import AllergiesCardContent from "./Allergies/content";
 import EncountersCardContent from "./Encounters/content";
 import MedicalNotesCardContent from "./MedicalNotes/content";
 import MessagesCardContent from "./Messages/content";
@@ -49,7 +54,7 @@ import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
 
 //expand detail components
-import AllergiesDetails from "./Allergies/details";
+//import AllergiesDetails from "./Allergies/details";
 import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
 import MessagesDetails from "./Messages/details";
