@@ -147,7 +147,7 @@ export default function AccountingSearchResults(props) {
                   </TableCell>
                 )}
                 <TableCell
-                  onClick={() => history.push(`patient/${result.patient_id}`)}
+                  onClick={() => history.push(`/patient/${result.patient_id}`)}
                   className={classes.patientLink}
                 >
                   {result.patient_name}

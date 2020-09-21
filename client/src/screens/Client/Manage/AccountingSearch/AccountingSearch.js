@@ -274,7 +274,6 @@ export default function AccountingSearch() {
       ) : (
         <Typography component="p" variant="body2" color="textPrimary">
           {emptyResult}
-          {console.log("dddddd", emptyResult)}
         </Typography>
       )}
     </div>
