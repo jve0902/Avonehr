@@ -8,7 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
@@ -55,7 +55,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      height: "50px",
     },
   },
 }))(TableRow);
@@ -73,8 +73,12 @@ const BillingContent = (props) => {
         reloadData();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
@@ -82,8 +86,8 @@ const BillingContent = (props) => {
             message: resMessage,
           })
         );
-      })
-  }
+      });
+  };
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -106,7 +110,10 @@ const BillingContent = (props) => {
               <TableCell>{row.medical_note}</TableCell>
 
               <TableCell className={classes.actions}>
-                <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => onItemDelete(row)}
+                >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </TableCell>
