@@ -37,6 +37,7 @@ app.use("/api/v1", require("./app/routes/home.routes"));
 app.use("/api/v1", require("./app/routes/patient-search.routes"));
 app.use("/api/v1", require("./app/routes/patient.routes"));
 app.use("/api/v1", require("./app/routes/email-patient.routes"));
+app.use("/api/v1", require("./app/routes/password-reset.routes"));
 app.use("/api/v1", require("./app/routes/support.routes"));
 app.use("/api/v1", require("./app/routes/forms.routes"));
 app.use("/api/v1", require("./app/routes/process-lab.routes"));
