@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) =>
       top: 0
     },
     iconButton: {
-      padding: 8,
+      padding: theme.spacing(1),
     },
     buttonSkip: {
       display: "flex",
