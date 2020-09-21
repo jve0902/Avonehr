@@ -22,7 +22,11 @@ import Allergies from "./Allergies";
 import EncountersForm from "./Encounters";
 import MedicalNotesForm from "./MedicalNotes";
 import NewMessageForm from "./Messages/NewMessage";
-import DiagnosesForm from "./Diagnoses";
+import {
+  DiagnosesForm,
+  DiagnosesCardContent,
+  DiagnosesDetails,
+} from "./components/Diagnoses";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
 
@@ -36,7 +40,7 @@ import DocumentsCardContent from "./Documents/content";
 import EncountersCardContent from "./Encounters/content";
 import MedicalNotesCardContent from "./MedicalNotes/content";
 import MessagesCardContent from "./Messages/content";
-import DiagnosesCardContent from "./Diagnoses/content";
+
 import MedicationsCardContent from "./Medications/content";
 import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
@@ -48,7 +52,6 @@ import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
 import MessagesDetails from "./Messages/details";
 import MedicationsDetails from "./Medications/details";
-import DiagnosesDetails from "./Diagnoses/details";
 import RequisitionsDetails from "./Requisitions/details";
 
 //service
