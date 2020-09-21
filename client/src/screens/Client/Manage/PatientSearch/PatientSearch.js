@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15px",
   },
   paper: {
-    padding: "25px",
     maxWidth: "900px",
   },
   textField: {
@@ -31,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
   customSelect: {
     width: "200px",
     marginTop: "16px",
-  },
-  serachResults: {
-    marginTop: "55px",
   },
 }));
 
@@ -101,6 +97,7 @@ export default function PatientSearch() {
                     type="firstName"
                     id="firstName"
                     autoComplete="firstName"
+                    size="small"
                     onChange={(event) => setFirstName(event.target.value)}
                   />
                 </Grid>
@@ -110,6 +107,7 @@ export default function PatientSearch() {
                     value={lastName}
                     variant="outlined"
                     margin="normal"
+                    size="small"
                     name="lastName"
                     label="Last Name"
                     type="lastName"
@@ -123,6 +121,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={createdFrom}
                     variant="outlined"
+                    size="small"
                     margin="normal"
                     name="createdFrom"
                     label="Created From"
@@ -136,6 +135,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={createdTo}
                     variant="outlined"
+                    size="small"
                     margin="normal"
                     name="createdTo"
                     label="Created To"
@@ -152,6 +152,7 @@ export default function PatientSearch() {
                     margin="normal"
                     name="phone"
                     label="Phone"
+                    size="small"
                     type="phone"
                     id="phone"
                     autoComplete="phone"
@@ -165,6 +166,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     margin="normal"
                     name="email"
+                    size="small"
                     label="Email"
                     type="email"
                     id="email"
@@ -179,6 +181,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     margin="normal"
                     name="appointmentFrom"
+                    size="small"
                     label="Appointment From"
                     id="appointmentFrom"
                     autoComplete="appointmentFrom"
@@ -192,6 +195,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     margin="normal"
                     name="appointmentTO"
+                    size="small"
                     label="Appointment To"
                     id="appointmentTO"
                     autoComplete="appointmentTO"
@@ -205,6 +209,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     margin="normal"
                     name="patientId"
+                    size="small"
                     label="Patient Id"
                     type="patientId"
                     id="patientId"
@@ -214,6 +219,7 @@ export default function PatientSearch() {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <Select
+                    size="small"
                     variant="outlined"
                     className={classes.customSelect}
                     displayEmpty
@@ -230,6 +236,7 @@ export default function PatientSearch() {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
+                    size="small"
                     className={classes.textField}
                     value={paymentFrom}
                     variant="outlined"
@@ -243,6 +250,7 @@ export default function PatientSearch() {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
+                    size="small"
                     className={classes.textField}
                     value={paymnetTo}
                     variant="outlined"
@@ -259,6 +267,7 @@ export default function PatientSearch() {
             </div>
             <Grid item xs={12} sm={3}>
               <Button
+                size="small"
                 fullWidth
                 variant="contained"
                 color="primary"

@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 const useStyles = makeStyles((theme) => ({
   root: {
     // marginTop: "20px",
-    padding: "0 25px",
+    // padding: "0 25px",
   },
   paper: {
     padding: "5px",
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 650,
     marginTop: theme.spacing(2),
-    maxWidth: "850px",
+    maxWidth: "880px",
   },
 }));
 
