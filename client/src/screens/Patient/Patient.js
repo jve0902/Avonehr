@@ -853,7 +853,7 @@ export default function Patient() {
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    margin: theme.spacing(1, 0, 1, 0),
+    margin: theme.spacing(0.5, 0, 0.5, 0),
   },
   noDisplay: {
     display: "none",

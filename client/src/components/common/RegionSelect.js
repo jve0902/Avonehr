@@ -15,6 +15,7 @@ const getRegions = country => {
 function RegionMUISelectors(props) {
   return (
       <TextField
+        size={props.size || "medium"}
         id="state"
         label={props.label}
         value={props.region}

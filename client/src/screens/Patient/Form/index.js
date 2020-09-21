@@ -77,43 +77,45 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               BasicInfo.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    {
-                      item.baseType === "input"
-                        ?
-                        <TextField
-                          variant="outlined"
-                          label={item.label}
-                          name={item.name}
-                          id={item.id}
-                          type={item.type}
-                          fullWidth
-                          onChange={(e) => handleInputChnage(e)}
-                        />
-                        :
-                        <TextField
-                          // className={classes.select}
-                          variant="outlined"
-                          select
-                          placeholder={item.label}
-                          label={item.label}
-                          id={item.id}
-                          name={item.name}
-                          value={formFields[item.name]}
-                          fullWidth
-                          onChange={(e) => handleInputChnage(e)}
-                        >
-                          {
-                            item.options.map((option, index) => {
-                              return (
-                                <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
-                              )
-                            })
-                          }
-                        </TextField>
-                    }
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  {
+                    item.baseType === "input"
+                      ?
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        label={item.label}
+                        name={item.name}
+                        id={item.id}
+                        type={item.type}
+                        fullWidth
+                        onChange={(e) => handleInputChnage(e)}
+                      />
+                      :
+                      <TextField
+                        // className={classes.select}
+                        size="small"
+                        variant="outlined"
+                        select
+                        placeholder={item.label}
+                        label={item.label}
+                        id={item.id}
+                        name={item.name}
+                        value={formFields[item.name]}
+                        fullWidth
+                        onChange={(e) => handleInputChnage(e)}
+                      >
+                        {
+                          item.options.map((option, index) => {
+                            return (
+                              <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
+                            )
+                          })
+                        }
+                      </TextField>
+                  }
+                </Grid>
+              )
               )
             }
           </Grid>
@@ -126,22 +128,24 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               AddressDetails.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                  />
+                </Grid>
+              )
               )
             }
             <Grid item lg={4}>
               <CountrySelect
+                size="small"
                 id={"country-select"}
                 error={null}
                 name={"country-select"}
@@ -154,6 +158,7 @@ const Form = (props) => {
             </Grid>
             <Grid item lg={4}>
               <RegionSelect
+                size="small"
                 id={"state-select"}
                 error={null}
                 name={"state-select"}
@@ -175,43 +180,45 @@ const Form = (props) => {
           <Grid container spacing={1} alignItems="flex-end">
             {
               ContactInfo.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    {
-                      item.baseType === "input"
-                        ?
-                        <TextField
-                          variant="outlined"
-                          label={item.label}
-                          name={item.name}
-                          id={item.id}
-                          type={item.type}
-                          fullWidth
-                          onChange={(e) => handleInputChnage(e)}
-                        />
-                        :
-                        <TextField
-                          variant="outlined"
-                          // className={classes.select}
-                          select
-                          placeholder={item.label}
-                          label={item.label}
-                          id={item.id}
-                          name={item.name}
-                          value={formFields[item.name]}
-                          fullWidth
-                          onChange={(e) => handleInputChnage(e)}
-                        >
-                          {
-                            item.options.map((option, index) => {
-                              return (
-                                <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
-                              )
-                            })
-                          }
-                        </TextField>
-                    }
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  {
+                    item.baseType === "input"
+                      ?
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        label={item.label}
+                        name={item.name}
+                        id={item.id}
+                        type={item.type}
+                        fullWidth
+                        onChange={(e) => handleInputChnage(e)}
+                      />
+                      :
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        // className={classes.select}
+                        select
+                        placeholder={item.label}
+                        label={item.label}
+                        id={item.id}
+                        name={item.name}
+                        value={formFields[item.name]}
+                        fullWidth
+                        onChange={(e) => handleInputChnage(e)}
+                      >
+                        {
+                          item.options.map((option, index) => {
+                            return (
+                              <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
+                            )
+                          })
+                        }
+                      </TextField>
+                  }
+                </Grid>
+              )
               )
             }
           </Grid>
@@ -224,18 +231,19 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               EmergencyInfo.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                  />
+                </Grid>
+              )
               )
             }
           </Grid>
@@ -246,18 +254,19 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               InsuranceInfo.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                  />
+                </Grid>
+              )
               )
             }
           </Grid>
@@ -270,36 +279,38 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               MedicalInfo.slice(0, 2).map((item, index) => (
-                  <Grid key={index} item md={6}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={6}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                  />
+                </Grid>
+              )
               )
             }
             {
               MedicalInfo.slice(2, 3).map((item, index) => (
-                  <Grid key={index} item md={12}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                      multiline={true}
-                      rows={5}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={12}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                    multiline={true}
+                    rows={5}
+                  />
+                </Grid>
+              )
               )
             }
           </Grid>
@@ -312,18 +323,19 @@ const Form = (props) => {
           <Grid container spacing={1}>
             {
               UserNamePasswordInfo.map((item, index) => (
-                  <Grid key={index} item md={4}>
-                    <TextField
-                      variant="outlined"
-                      label={item.label}
-                      name={item.name}
-                      id={item.id}
-                      type={item.type}
-                      fullWidth
-                      onChange={(e) => handleInputChnage(e)}
-                    />
-                  </Grid>
-                )
+                <Grid key={index} item md={4}>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    label={item.label}
+                    name={item.name}
+                    id={item.id}
+                    type={item.type}
+                    fullWidth
+                    onChange={(e) => handleInputChnage(e)}
+                  />
+                </Grid>
+              )
               )
             }
           </Grid>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import moment from "moment"; 
+import moment from "moment";
 import { TextField, Button, Grid, Typography, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { EncountersFormFields, EncountersCards } from "../../../static/encountersForm";
@@ -18,18 +18,14 @@ const Form = (props) => {
   const encounter = useSelector((state) => state.patient.selectedEncounter, shallowEqual);
 
   useEffect(() => {
-    if(!!encounter) {
-      mapDataToState();
+    if (!!encounter) {
+      formFields.title = encounter.title;
+      formFields.type = encounter.encounter_type;
+      formFields.name = encounter.name;
+      formFields.date = moment(encounter.dt).format("YYYY-MM-DD");
+      setFormFields({ ...formFields })
     }
   }, [encounter])
-
-  const mapDataToState = () => {
-    formFields.title = encounter.title;
-    formFields.type = encounter.encounter_type;
-    formFields.name = encounter.name;
-    formFields.date = moment(encounter.dt).format("YYYY-MM-DD");
-    setFormFields({ ...formFields })
-  }
 
   const handleInputChnage = (e) => {
     const { value, name } = e.target;
@@ -139,13 +135,13 @@ const Form = (props) => {
               />
             ))
           }
-        
-        <Grid className={classes.formInput} container justify="space-between">
-          <Button variant="outlined" onClick={() => onClose()}>Save</Button>
-          <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
-        </Grid>
-        <Typography gutterBottom>Created {moment().format("MMM, DD, YYYY")}</Typography>
-        <Typography gutterBottom>Created By {!!encounter && encounter.name || "Mark Hyman MD"}</Typography>
+
+          <Grid className={classes.formInput} container justify="space-between">
+            <Button variant="outlined" onClick={() => onClose()}>Save</Button>
+            <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
+          </Grid>
+          <Typography gutterBottom>Created {moment().format("MMM, DD, YYYY")}</Typography>
+          <Typography gutterBottom>Created By {!!encounter && encounter.name || "Mark Hyman MD"}</Typography>
         </Grid>
       </Grid>
     </>
