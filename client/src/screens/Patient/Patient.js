@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -68,6 +69,7 @@ export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
+  const history =  useHistory();
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
@@ -426,9 +428,13 @@ export default function Patient() {
     }
   };
 
+  const redirectToPatientPortal = () => {
+    history.push("/manage/patient-search");
+  }
+
   const mapIconHandlers = (value) => {
     if (value === "Patient") {
-      return togglePatientInfoDialog;
+      return redirectToPatientPortal;
     } else if (value === "Billing") {
       return togglePaymentDialog;
     }
