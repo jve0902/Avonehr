@@ -63,7 +63,7 @@ export const calculateAge = (date) => {
     month = month - 1;
   }
 
-  return year + " yrs, " + month + " mo, " + day + " days";
+  return year > 0 ? year + " yrs, " + month + " mo" : month + " mo";
 }
 
 export const formatPhoneNumber = (phoneNumber) => {
