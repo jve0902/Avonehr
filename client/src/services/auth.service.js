@@ -5,19 +5,6 @@ const API_URL =
   "http://localhost:5000/api/v1/auth/";
 
 class AuthService {
-  /* login(user) {
-    return axios
-      .post(API_URL + "login", {
-        email: user.email,
-        password: user.password,
-      })
-      .then((response) => {
-        if (response.data.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data.data));
-        }
-        return response.data;
-      });
-  } */
   async login(user) {
     const loginResponse = await axios.post(API_URL + "login", {
       email: user.email,
@@ -33,10 +20,6 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("user");
-  }
-
-  sendEmailVerification(user) {
-    return axios.post(API_URL + `email/send/confirmation/${user}`);
   }
   passwordChangeRequest(email) {
     return axios.post(API_URL + `reset_password/user/${email}`);

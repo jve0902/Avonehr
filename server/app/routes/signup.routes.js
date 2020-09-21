@@ -1,5 +1,5 @@
 const express = require("express");
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/signup.controller");
 const fieldValidation = require("./../helpers/fieldValidation");
 
 const router = express.Router();
@@ -10,11 +10,6 @@ router.post(
   "/auth/signup",
   fieldValidation.validate("createUser"),
   controller.signup
-);
-router.post(
-  "/auth/login",
-  fieldValidation.validate("login"),
-  controller.signin
 );
 router.post("/auth/field/validate", controller.fieldValiate);
 
