@@ -75,16 +75,16 @@ const useStyles = makeStyles((theme) => ({
     background: Colors.white,
     border: '1px solid rgba(38, 38, 38, 0.12)',
     borderRadius: 4,
-    marginBottom: 10
+    marginBottom: 6
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
   },
   fullPadding: {
-    padding: '8px 1em',
+    padding: 8,
   },
   leftPadding: {
-    padding: '0 0 0 1em',
+    padding: '0 0 0 8px',
   },
   title: {
     fontWeight: '600',
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer"
   },
   cardContent: {
-    padding: theme.spacing(1, 2)
+    padding: 8,
   },
   sideIcon: {
     minWidth: 35,
