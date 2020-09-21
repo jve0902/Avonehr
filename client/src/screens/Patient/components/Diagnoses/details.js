@@ -8,10 +8,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
+import PatientService from "./../../../../services/patient.service";
+import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,12 +55,12 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      height: "50px",
     },
   },
 }))(TableRow);
 
-const BillingContent = (props) => {
+const DiagnosesContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -73,8 +73,12 @@ const BillingContent = (props) => {
         reloadData();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
@@ -82,8 +86,8 @@ const BillingContent = (props) => {
             message: resMessage,
           })
         );
-      })
-  }
+      });
+  };
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -92,30 +96,35 @@ const BillingContent = (props) => {
           <TableRow>
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>ICD Id</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
-            <StyledTableRow key={`${row.created}_${index}`}>
-              <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
-              </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+          {!!data &&
+            data.length &&
+            data.map((row, index) => (
+              <StyledTableRow key={`${row.created}_${index}`}>
+                <TableCell component="th" scope="row">
+                  {moment(row.created).format("MMM, DD, YYYY")}
+                </TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.icd_id}</TableCell>
 
-              <TableCell className={classes.actions}>
-                <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
-            </StyledTableRow>
-          ))}
+                <TableCell className={classes.actions}>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => onItemDelete(row)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </StyledTableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
 };
 
-export default BillingContent;
+export default DiagnosesContent;

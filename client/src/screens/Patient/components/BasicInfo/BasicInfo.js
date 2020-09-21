@@ -18,9 +18,9 @@ import {
   InsuranceForm,
   Pharmacies,
   PaymentData,
-} from "../../../static/patientBasicInfoForm";
-import CountrySelect from "../../../components/common/CountrySelect";
-import RegionSelect from "../../../components/common/RegionSelect";
+} from "./../../../../static/patientBasicInfoForm";
+import CountrySelect from "./../../../../components/common/CountrySelect";
+import RegionSelect from "./../../../../components/common/RegionSelect";
 
 export default function BasicInfo() {
   const classes = useStyles();

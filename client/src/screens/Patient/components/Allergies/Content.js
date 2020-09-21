@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid
-} from "@material-ui/core";
-import ContextMenu from "../Messages/contextMenu";
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
+import { Grid } from "@material-ui/core";
+import ContextMenu from "./../../Messages/contextMenu";
+import PatientService from "./../../../../services/patient.service";
+import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 export default function Content(props) {
@@ -13,13 +11,13 @@ export default function Content(props) {
   const dispatch = useDispatch();
   const { data, reloadData } = props;
 
-  const [element, setElement] = useState(null)
-  const [selectedItem, setSelectedItem] = useState(null)
+  const [element, setElement] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const menuHandler = (e, item) => {
     setElement(e.currentTarget);
     setSelectedItem(item);
-  }
+  };
 
   const onItemDelete = () => {
     const drugId = selectedItem.drug_id;
@@ -30,8 +28,12 @@ export default function Content(props) {
         reloadData();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
@@ -39,12 +41,12 @@ export default function Content(props) {
             message: resMessage,
           })
         );
-      })
-  }
+      });
+  };
 
   return (
     <>
-    {/* <ContextMenu
+      {/* <ContextMenu
         element={element}
         deleteHandler={() => onItemDelete()}
         menu={[
@@ -58,15 +60,15 @@ export default function Content(props) {
           },
         ]}
       /> */}
-      {
-        data.map(item => (
-          <Grid key={item.drug_id} className={classes.inputRow} onContextMenu={(e) => menuHandler(e, item)}>
-            <Grid component="span">
-              {item.name}
-            </Grid>
-          </Grid>
-        ))
-      }
+      {data.map((item) => (
+        <Grid
+          key={item.drug_id}
+          className={classes.inputRow}
+          onContextMenu={(e) => menuHandler(e, item)}
+        >
+          <Grid component="span">{item.name}</Grid>
+        </Grid>
+      ))}
     </>
   );
 }
