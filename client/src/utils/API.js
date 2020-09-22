@@ -10,3 +10,10 @@ export const fetchClientAgreement = () =>
       headers: authHeader(),
     })
     .then((res) => res.data);
+
+export const search = (searchTerm) =>
+  axios
+    .get(`${api}/search/?query=${searchTerm}`, {
+      headers: authHeader(),
+    })
+    .then((res) => res.data);

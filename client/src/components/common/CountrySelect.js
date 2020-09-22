@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 function CountryRegionMUISelectors(props) {
   return (
       <TextField
+        size={props.size || "medium"}
         id="country"
         label="Country"
         value={props.country}

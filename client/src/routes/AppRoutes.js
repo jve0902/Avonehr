@@ -13,7 +13,7 @@ import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
 import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
-import PatientHome from "../screens/Patient/Home";
+import Patient from "../screens/Patient";
 import { Reports, Myself } from "../screens/Client";
 import {
   AccountingSearch,
@@ -42,6 +42,8 @@ import {
   Users,
 } from "../screens/Client/Setup";
 import Agreement from "../screens/Agreement";
+import ProcessLab from "../screens/ProcessLab";
+import ProcessMessage from "../screens/ProcessMessage";
 import { Main } from "../layouts";
 import { AuthProvider } from "../providers/AuthProvider";
 import Dashboard from "../layouts/Dashboard";
@@ -108,7 +110,7 @@ class AppRouter extends Component {
             <PrivateRouteWithLayout
               layout={Plain}
               path="/patient"
-              component={PatientHome}
+              component={Patient}
               exact
             />
             <PrivateRouteWithLayout
@@ -254,6 +256,18 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/myself"
               component={Myself}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/process-lab/:user_id"
+              component={ProcessLab}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/process-message/:user_id"
+              component={ProcessMessage}
               exact
             />
             <Route path="*" component={NotFound} />
