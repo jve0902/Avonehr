@@ -98,6 +98,7 @@ export default function AccountingSearch() {
   const [types, setTypes] = useState([]);
   const [selectType, setSelectedType] = useState("");
   const [searchResult, setSearchResults] = useState([]);
+  const [emptyResult, setEmptyResult] = useState("");
 
   const searchAccounts = (e) => {
     e.preventDefault();
@@ -111,7 +112,12 @@ export default function AccountingSearch() {
       },
     };
     Accounting.search(payload).then((res) => {
-      setSearchResults(res.data.data);
+      if (res.data.data.length > 0) {
+        setSearchResults(res.data.data);
+      } else {
+        setSearchResults([]);
+        setEmptyResult("None Found");
+      }
     });
   };
 
@@ -152,7 +158,6 @@ export default function AccountingSearch() {
               <Grid item xs={6} sm={6}>
                 <TextField
                   autoFocus
-                  required
                   variant="outlined"
                   label="Amount From"
                   value={amountFrom}
@@ -176,7 +181,6 @@ export default function AccountingSearch() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   label="Amount To"
                   variant="outlined"
                   value={amountTo}
@@ -200,7 +204,6 @@ export default function AccountingSearch() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   variant="outlined"
                   id="date"
                   label="Date From"
@@ -213,7 +216,6 @@ export default function AccountingSearch() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   variant="outlined"
                   id="date"
                   label="Date To"
@@ -227,7 +229,6 @@ export default function AccountingSearch() {
               <Grid item xs={12} sm={6}>
                 <FormControl
                   variant="outlined"
-                  required
                   className={classes.customSelect}
                   size="small"
                 >
@@ -256,13 +257,6 @@ export default function AccountingSearch() {
               <Button
                 fullWidth
                 size="small"
-                disabled={
-                  !amountFrom ||
-                  !amountTo ||
-                  !dateFrom ||
-                  !dateTo ||
-                  !selectType
-                }
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -275,8 +269,12 @@ export default function AccountingSearch() {
           </form>
         </Grid>
       </div>
-      {searchResult.length > 0 && (
+      {searchResult.length > 0 ? (
         <AccountingSearchResults result={searchResult} />
+      ) : (
+        <Typography component="p" variant="body2" color="textPrimary">
+          {emptyResult}
+        </Typography>
       )}
     </div>
   );
