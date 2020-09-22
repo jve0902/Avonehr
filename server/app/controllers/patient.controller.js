@@ -8,7 +8,7 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
-    const dest = "./app/patient/";
+    const dest = process.env.LAB_UPLOAD_DIR;
     fs.access(dest, function (error) {
       if (error) {
         console.log("Directory does not exist.");
