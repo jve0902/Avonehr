@@ -141,7 +141,7 @@ exports.signup = async (req, res) => {
       );
       const contractContent = contractRows[0];
 
-      if (process.env.NODE_ENV === "production") {
+      if (process.env.NODE_ENV !== "production") {
         const pdf = await signupPDF(
           contractContent.contract,
           userRows[0],

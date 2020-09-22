@@ -53,7 +53,7 @@ const search = async (req, res) => {
       $sql = $sql + `and p.lastname like '${lastname}%' \n`;
     }
     if (phone) {
-      $sql = $sql + `and p.phone like '${phone}%' \n`;
+      $sql = $sql + `and p.phone_home like '${phone}%' \n`;
     }
     if (email) {
       $sql = $sql + `and p.email like '${email}%' \n`;
