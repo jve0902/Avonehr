@@ -19,6 +19,7 @@ import {
   NewTransactionForm,
   PaymentForm,
   BillingCardContent,
+  BillingDetails,
 } from "./components/Billing";
 import Form from "./Form";
 import EncountersForm from "./Encounters";
@@ -81,6 +82,9 @@ export default function Patient() {
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
+  const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(
+    false
+  );
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
     false
   );
@@ -181,7 +185,8 @@ export default function Patient() {
   };
 
   const fetchBillings = () => {
-    PatientService.getBillings().then((res) => {
+    let limit = 3;
+    PatientService.getBillings(limit).then((res) => {
       setBillings(res.data);
     });
   };
@@ -280,6 +285,10 @@ export default function Patient() {
     setShowPaymentDialog((prevState) => !prevState);
   };
 
+  const toggleBillngExpandDialog = () => {
+    setShowBillingExpandDialog((prevState) => !prevState);
+  };
+
   const toggleAllergyDialog = () => {
     setShowAllergyDialog((prevState) => !prevState);
   };
@@ -373,6 +382,10 @@ export default function Patient() {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsExpandDialog;
+    } else if (value === "Billing") {
+      return toggleBillngExpandDialog;
     } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
     } else if (value === "Medical Notes") {
@@ -543,6 +556,15 @@ export default function Patient() {
         message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
         applyForm={() => toggleNewTransactionDialog()}
         cancelForm={() => toggleNewTransactionDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showBillingExpandDialog}
+        title={" "}
+        message={<BillingDetails data={billings} onClose={toggleBillngExpandDialog} />}
+        applyForm={() => toggleBillngExpandDialog()}
+        cancelForm={() => toggleBillngExpandDialog()}
         hideActions={true}
         size={"md"}
       />
