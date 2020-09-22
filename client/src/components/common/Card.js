@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: '600',
-    fontSize: '1em'
+    fontSize: 13
   },
   seeMoreLinks: {
     cursor: "pointer"

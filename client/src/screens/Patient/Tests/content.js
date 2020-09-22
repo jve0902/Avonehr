@@ -35,7 +35,7 @@ const StyledTableCell = withStyles((theme) => ({
     fontWeight: 700,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 

@@ -18,30 +18,30 @@ export default function Content(props) {
           <Grid key={index}>
             <Grid key={index} container>
               <Grid item className={classes.block}>
-                <Typography component="span" variant="body1" color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
+                <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
               </Grid>
 
               <Grid item className={classes.block}>
-                <Typography component="span" variant="body1" color="textPrimary">{item.encounter_type}</Typography>
+                <Typography component="span" className={classes.text12} color="textPrimary">{item.encounter_type}</Typography>
               </Grid>
 
               <Grid item className={classes.block}>
-                <Typography component="span" variant="body1" color="textPrimary">{item.title}</Typography>
+                <Typography component="span" className={classes.text12} color="textPrimary">{item.title}</Typography>
               </Grid>
 
               <Grid item className={classes.block}>
-                <Typography component="span" variant="body1" color="textPrimary">{item.name}</Typography>
+                <Typography component="span" className={classes.text12} color="textPrimary">{item.name}</Typography>
               </Grid>
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography variant="body1" color="textPrimary">Notes:</Typography>
-              <Typography variant="body1" color="textPrimary">{item.notes ? item.notes : "No notes found..."}</Typography>
+              <Typography className={classes.text12} color="textPrimary">Notes:</Typography>
+              <Typography className={classes.text12} color="textPrimary">{item.notes ? item.notes : "No notes found..."}</Typography>
             </Grid>
 
             <Grid className={classes.inputRow}>
-              <Typography variant="body1" color="textPrimary">Payment Plan:</Typography>
-              <Typography variant="body1" color="textPrimary">{item.payment_plan ? item.payment_plan : "No payment plan found..."}</Typography>
+              <Typography className={classes.text12} color="textPrimary">Payment Plan:</Typography>
+              <Typography className={classes.text12} color="textPrimary">{item.payment_plan ? item.payment_plan : "No payment plan found..."}</Typography>
             </Grid>
 
             {
@@ -69,5 +69,8 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     margin: theme.spacing(1, 0)
+  },
+  text12: {
+    fontSize: 12
   }
 }));

@@ -10,7 +10,7 @@ export default function Content(props) {
     <>
       {data.map((item, index) => (
         <Grid key={index} className={classes.inputRow}>
-          <Typography component="span" variant="body1" color="textPrimary">
+          <Typography component="span" className={classes.text12} color="textPrimary">
             {item.admin_note}
           </Typography>
         </Grid>
@@ -23,4 +23,7 @@ const useStyles = makeStyles((theme) => ({
   inputRow: {
     marginBottom: 0,
   },
+  text12: {
+    fontSize: 12
+  }
 }));
