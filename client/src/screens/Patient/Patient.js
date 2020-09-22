@@ -486,13 +486,7 @@ export default function Patient() {
     inputFile.current.click();
   };
 
-  const createDocument = (filename) => {
-    const reqBody = {
-      data: {
-        patient_id: 1,
-        filename: filename,
-      },
-    };
+  const createDocument = (reqBody) => {
     PatientService.createDocuments(reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
@@ -518,7 +512,10 @@ export default function Patient() {
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
     console.log("files", files);
-    createDocument(files[0].name);
+    let fd = new FormData();
+    fd.append("file", files[0]);
+    fd.append("patient_id", 1)
+    createDocument(fd);
   };
 
   return (

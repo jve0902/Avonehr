@@ -122,7 +122,7 @@ class Patient {
 
   //create methods
   createDocuments(data) {
-    return axios.post(API_URL + `/patient/documents`, data, {
+    return axios.post(API_URL + `/patient/documents/`, data, {
       headers: authHeader(),
     });
   }
