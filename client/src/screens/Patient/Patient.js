@@ -157,7 +157,7 @@ export default function Patient() {
     fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
-    fetchHandouts();
+    fetchPatientHandouts();
     fetchForms();
     fetchBillings();
     fetchDocuments();
@@ -188,8 +188,8 @@ export default function Patient() {
     });
   };
 
-  const fetchHandouts = () => {
-    PatientService.getHandouts().then((res) => {
+  const fetchPatientHandouts = () => {
+    PatientService.getPatientHandouts().then((res) => {
       setHandouts(res.data);
     });
   };
@@ -523,7 +523,7 @@ export default function Patient() {
       <input
         type="file"
         id="file"
-        accept=".pdf, .json"
+        accept=".pdf, .txt"
         multiple
         ref={inputFile}
         className={classes.noDisplay}
@@ -628,7 +628,7 @@ export default function Patient() {
       <Dialog
         open={showHandoutsDialog}
         title={" "}
-        message={<HandoutsForm onClose={toggleHandoutsDialog} />}
+        message={<HandoutsForm onClose={toggleHandoutsDialog} reloadData={fetchPatientHandouts} />}
         applyForm={() => toggleHandoutsDialog()}
         cancelForm={() => toggleHandoutsDialog()}
         hideActions={true}
@@ -640,6 +640,7 @@ export default function Patient() {
         message={
           <HandoutsDetails
             data={handouts}
+            reloadData={fetchPatientHandouts}
             onClose={toggleHandoutsExpandDialog}
           />
         }
