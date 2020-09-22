@@ -147,6 +147,11 @@ router.delete(
 router.get(
   "/patient/requisitions/:encounter_id",
   [authJwt.verifyToken],
+  Patient.getRequisitions
+);
+router.post(
+  "/patient/requisitions",
+  [authJwt.verifyToken],
   Patient.createRequisitions
 );
 router.delete(
