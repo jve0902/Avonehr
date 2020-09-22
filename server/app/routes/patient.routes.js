@@ -103,6 +103,7 @@ router.put(
   Patient.medicalNotesHistoryUpdate
 );
 router.get("/patient/messages", [authJwt.verifyToken], Patient.getMessages);
+router.post("/patient/messages", [authJwt.verifyToken], Patient.createMessage);
 router.delete(
   "/patient/messages/:id",
   [authJwt.verifyToken],
@@ -145,6 +146,11 @@ router.delete(
 );
 router.get(
   "/patient/requisitions/:encounter_id",
+  [authJwt.verifyToken],
+  Patient.getRequisitions
+);
+router.post(
+  "/patient/requisitions",
   [authJwt.verifyToken],
   Patient.createRequisitions
 );
