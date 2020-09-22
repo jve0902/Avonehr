@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: "20%",
   },
   overFlowControl: {
-    maxWidth: "230px",
+    maxWidth: "130px",
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
@@ -79,18 +79,8 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AccountingSearchResults(props) {
-  const [open, setOpen] = React.useState(false);
-
   const classes = useStyles();
   const history = useHistory();
-
-  const handleTooltipClose = () => {
-    setOpen(false);
-  };
-  const handleTooltipOpen = (str) => {
-    str && str.length > 40 && setOpen(true);
-    return str;
-  };
 
   return (
     <div className={classes.root}>
@@ -104,7 +94,7 @@ export default function AccountingSearchResults(props) {
               <StyledTableCell>Encounter</StyledTableCell>
               <StyledTableCell>CPT ID</StyledTableCell>
               <StyledTableCell>CPT Name</StyledTableCell>
-              <StyledTableCell>Note</StyledTableCell>
+              <StyledTableCell align="center">Note</StyledTableCell>
               <StyledTableCell>Patient</StyledTableCell>
               <StyledTableCell>Created</StyledTableCell>
             </TableRow>
@@ -119,60 +109,45 @@ export default function AccountingSearchResults(props) {
                   {result.name}
                 </TableCell>
                 <TableCell>{`$ ${result.amount}`}</TableCell>
-                <LightTooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={handleTooltipClose}
-                  open={open}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  arrow
-                  title={result.encounter_title}
-                >
+                {result.encounter_title.length > 40 ? (
+                  <LightTooltip title={result.encounter_title}>
+                    <TableCell className={classes.overFlowControl}>
+                      {result.encounter_title}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
                   <TableCell className={classes.overFlowControl}>
-                    {handleTooltipOpen(result.encounter_title)}
+                    {result.encounter_title}
                   </TableCell>
-                </LightTooltip>
+                )}
                 <TableCell>{result.cpt_id ? result.cpt_id : "N/A"}</TableCell>
-                <LightTooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={handleTooltipClose}
-                  open={open}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  arrow
-                  title={result.cpt_name}
-                >
+                {result.cpt_name && result.cpt_name.length > 40 ? (
+                  <LightTooltip title={result.cpt_name ? result.cpt_name : ""}>
+                    <TableCell className={classes.overFlowControl}>
+                      {result.cpt_name ? result.cpt_name : "N/A"}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
                   <TableCell className={classes.overFlowControl}>
-                    {handleTooltipOpen(result.cpt_name)
-                      ? result.cpt_name
-                      : "N/A"}
+                    {result.cpt_name ? result.cpt_name : "N/A"}
                   </TableCell>
-                </LightTooltip>
-                <LightTooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={handleTooltipClose}
-                  open={open}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  arrow
-                  title={result.note}
-                >
-                  <TableCell className={classes.overFlowControl}>
-                    {handleTooltipOpen(result.note) || "-"}
+                )}
+                {result.note && result.note.length > 40 ? (
+                  <LightTooltip title={result.note}>
+                    <TableCell
+                      align="center"
+                      className={classes.overFlowControl}
+                    >
+                      {result.note || "-"}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
+                  <TableCell align="center" className={classes.overFlowControl}>
+                    {result.note || "-"}
                   </TableCell>
-                </LightTooltip>
+                )}
                 <TableCell
-                  //Todo: Link to patient page
-                  onClick={() => history.push(`patient/${result.patient_id}`)}
+                  onClick={() => history.push(`/patient/${result.patient_id}`)}
                   className={classes.patientLink}
                 >
                   {result.patient_name}
