@@ -40,6 +40,11 @@ import {
   DiagnosesCardContent,
   DiagnosesDetails,
 } from "./components/Diagnoses";
+import {
+  HandoutsForm,
+  HandoutsCardContent,
+  HandoutsDetails
+} from "./components/Handouts";
 import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
@@ -93,6 +98,9 @@ export default function Patient() {
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
 
+  const [showHandoutsDialog, setShowHandoutsDialog] = useState(false);
+  const [showHandoutsExpandDialog, setShowHandoutsExpandDialog] = useState(false);
+
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
   const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(
     false
@@ -133,6 +141,7 @@ export default function Patient() {
   const [patientHistory, setPatientHistory] = useState([]);
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
+  const [handouts, setHandouts] = useState([]);
   const [billings, setBillings] = useState([]);
   const [forms, setForms] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -148,6 +157,7 @@ export default function Patient() {
     fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
+    fetchHandouts();
     fetchForms();
     fetchBillings();
     fetchDocuments();
@@ -175,6 +185,12 @@ export default function Patient() {
   const fetchAllergies = () => {
     PatientService.getAllergies().then((res) => {
       setAllergies(res.data);
+    });
+  };
+
+  const fetchHandouts = () => {
+    PatientService.getHandouts().then((res) => {
+      setHandouts(res.data);
     });
   };
 
@@ -297,6 +313,14 @@ export default function Patient() {
     setShowAllergyExpandDialog((prevState) => !prevState);
   };
 
+  const toggleHandoutsDialog = () => {
+    setShowHandoutsDialog((prevState) => !prevState);
+  };
+
+  const toggleHandoutsExpandDialog = () => {
+    setShowHandoutsExpandDialog((prevState) => !prevState);
+  };
+
   const toggleEncountersDialog = () => {
     setShowEncountersDialog((prevState) => !prevState);
   };
@@ -360,6 +384,8 @@ export default function Patient() {
       return toggleAdminHistoryDialog;
     } else if (value === "Forms") {
       return toggleFormsExpandDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsDialog;
     } else if (value === "Billing") {
       return toggleNewTransactionDialog;
     } else if (value === "Allergies") {
@@ -423,6 +449,8 @@ export default function Patient() {
       );
     } else if (value === "Medical Notes") {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
+    } else if (value === "Handouts") {
+      return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
       return (
         !!messages && (
@@ -597,6 +625,29 @@ export default function Patient() {
         }
         applyForm={() => toggleAllergyExpandDialog()}
         cancelForm={() => toggleAllergyExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsDialog}
+        title={" "}
+        message={<HandoutsForm onClose={toggleHandoutsDialog} />}
+        applyForm={() => toggleHandoutsDialog()}
+        cancelForm={() => toggleHandoutsDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsExpandDialog}
+        title={" "}
+        message={
+          <HandoutsDetails
+            data={handouts}
+            onClose={toggleHandoutsExpandDialog}
+          />
+        }
+        applyForm={() => toggleHandoutsExpandDialog()}
+        cancelForm={() => toggleHandoutsExpandDialog()}
         hideActions={true}
         size={"md"}
       />
