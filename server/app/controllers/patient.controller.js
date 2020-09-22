@@ -950,10 +950,12 @@ const getMessages = async (req, res) => {
 
 const createMessage = async (req, res) => {
   const { subject, message, unread_notify_dt } = req.body.data;
+  //TODO:: patient_id_from hardcoded to display on get Query
+  const patient_id_from = 1;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id})`
+      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id_from})`
     );
 
     if (!insertResponse.affectedRows) {
