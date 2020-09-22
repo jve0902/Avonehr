@@ -1,8 +1,49 @@
 "use strict";
-
+const multer = require("multer");
+const fs = require("fs");
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log("req:", req.body);
+    const dest = process.env.LAB_UPLOAD_DIR;
+    fs.access(dest, function (error) {
+      if (error) {
+        console.log("Directory does not exist.");
+        return fs.mkdir(dest, (error) => cb(error, dest));
+      } else {
+        console.log("Directory exists.");
+        return cb(null, dest);
+      }
+    });
+  },
+  filename: (req, file, cb) => {
+    const fileName =
+      "pid" +
+      req.body.patient_id +
+      "_" +
+      file.originalname.split(" ").join("-");
+    cb(null, fileName);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 },
+  fileFilter: (req, file, cb) => {
+    if (file.originalname.startsWith("pid")) {
+      return cb(new Error("File name should not start with pid"));
+    }
+    if (file.mimetype == "application/pdf" || file.mimetype == "text/*") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Allowed only .pdf and text"));
+    }
+  },
+});
 
 const getPatient = async (req, res) => {
   const db = makeDb(configuration, res);
@@ -716,28 +757,73 @@ const checkDocument = async (req, res) => {
   }
 };
 
+const documentUpload = upload.single("file");
 const createDocuments = async (req, res) => {
-  const { patient_id, filename } = req.body.data;
-  const db = makeDb(configuration, res);
-  try {
-    const insertResponse = await db.query(
-      `insert into lab (client_id, user_id, patient_id, filename, status, source, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, '${filename}', 'R', 'U', now(), ${req.user_id})`
-    );
-
-    if (!insertResponse.affectedRows) {
-      errorMessage.error = "Insert not successful";
-      return res.status(status.notfound).send(errorMessage);
+  documentUpload(req, res, async (err) => {
+    if (err) {
+      console.log("documentUpload Error:", err.message);
+      errorMessage.error = err.message;
+      return res.status(status.error).send(errorMessage);
     }
-    successMessage.data = insertResponse;
-    successMessage.message = "Insert successful";
-    return res.status(status.created).send(successMessage);
-  } catch (err) {
-    console.log("err", err);
-    errorMessage.error = "Insert not successful";
-    return res.status(status.error).send(errorMessage);
-  } finally {
-    await db.close();
-  }
+    if (!req.file) {
+      errorMessage.error = "File content can not be empty!";
+      return res.status(status.error).send(errorMessage);
+    }
+
+    const { patient_id } = req.body;
+    const uploadedFilename = req.file.originalname;
+    const db = makeDb(configuration, res);
+    try {
+      const existingLabDocument = await db.query(
+        `select 1
+        from lab
+        where patient_id=${patient_id}
+        and filename='${uploadedFilename}'
+        limit 1`
+      );
+      if (existingLabDocument.length > 0) {
+        removeFile(req.file);
+        errorMessage.error = "Same file is already in our database system!";
+        return res.status(status.error).send(errorMessage);
+      }
+
+      const insertResponse = await db.query(
+        `insert into lab (client_id, user_id, patient_id, filename, status, source, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, '${uploadedFilename}', 'R', 'U', now(), ${req.user_id})`
+      );
+
+      if (!insertResponse.affectedRows) {
+        removeFile(req.file);
+        errorMessage.error = "Insert not successful";
+        return res.status(status.notfound).send(errorMessage);
+      }
+
+      // It's limitation of Multer to pass variable to use as filename.
+      // Got this idea from https://stackoverflow.com/a/52794573/1960558
+      fs.renameSync(
+        req.file.path,
+        req.file.path.replace("undefined", patient_id)
+      );
+
+      successMessage.data = insertResponse;
+      successMessage.message = "Insert successful";
+      return res.status(status.created).send(successMessage);
+    } catch (err) {
+      console.log("err", err);
+      errorMessage.error = "Insert not successful";
+      return res.status(status.error).send(errorMessage);
+    } finally {
+      await db.close();
+    }
+  });
+};
+
+const removeFile = (file) => {
+  fs.unlink(file.path, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    console.log(file.path, "removed successfully!");
+  });
 };
 
 const getEncounters = async (req, res) => {
