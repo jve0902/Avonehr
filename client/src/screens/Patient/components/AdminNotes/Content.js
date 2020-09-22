@@ -10,7 +10,7 @@ export default function Content(props) {
     <>
       {data.map((item, index) => (
         <Grid key={index} className={classes.inputRow}>
-          <Typography component="span" className={classes.text12} color="textPrimary">
+          <Typography variant="body1" className={classes.text12} color="textPrimary">
             {item.admin_note}
           </Typography>
         </Grid>
