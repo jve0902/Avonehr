@@ -948,6 +948,30 @@ const getMessages = async (req, res) => {
   }
 };
 
+const createMessage = async (req, res) => {
+  const { subject, message, unread_notify_dt } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const deleteMessage = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -1283,6 +1307,7 @@ const appointmentTypes = {
   getMedicalNotesHistory,
   medicalNotesHistoryUpdate,
   getMessages,
+  createMessage,
   deleteMessage,
   getAllTests,
   getDiagnoses,
