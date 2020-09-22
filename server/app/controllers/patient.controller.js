@@ -8,7 +8,6 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
-    ///app/patient/pid{patientid}_filename
     const dest = "./app/patient/";
     fs.access(dest, function (error) {
       if (error) {
@@ -766,18 +765,45 @@ const createDocuments = async (req, res) => {
       errorMessage.error = err.message;
       return res.status(status.error).send(errorMessage);
     }
+    if (!req.file) {
+      errorMessage.error = "File content can not be empty!";
+      return res.status(status.error).send(errorMessage);
+    }
+
     const { patient_id } = req.body;
     const uploadedFilename = req.file.originalname;
     const db = makeDb(configuration, res);
     try {
+      const existingLabDocument = await db.query(
+        `select 1
+        from lab
+        where patient_id=${patient_id}
+        and filename='${uploadedFilename}'
+        limit 1`
+      );
+      if (existingLabDocument.length > 0) {
+        removeFile(req.file);
+        errorMessage.error = "Same file is already in our database system!";
+        return res.status(status.error).send(errorMessage);
+      }
+
       const insertResponse = await db.query(
         `insert into lab (client_id, user_id, patient_id, filename, status, source, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, '${uploadedFilename}', 'R', 'U', now(), ${req.user_id})`
       );
 
       if (!insertResponse.affectedRows) {
+        removeFile(req.file);
         errorMessage.error = "Insert not successful";
         return res.status(status.notfound).send(errorMessage);
       }
+
+      // It's limitation of Multer to pass variable to use as filename.
+      // Got this idea from https://stackoverflow.com/a/52794573/1960558
+      /*  fs.renameSync(
+          req.file.path,
+          req.file.path.replace("undefined", patient_id)
+        );*/
+
       successMessage.data = insertResponse;
       successMessage.message = "Insert successful";
       return res.status(status.created).send(successMessage);
@@ -788,6 +814,18 @@ const createDocuments = async (req, res) => {
     } finally {
       await db.close();
     }
+  });
+};
+
+const removeFile = (file) => {
+  console.log("removeFile file", file);
+  const filePath = "pidundefined" + "_" + file.originalname;
+  //fs.renameSync(file.path, filePath);
+  fs.unlink(file.path, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    console.log(file.path, "removed successfully!");
   });
 };
 
