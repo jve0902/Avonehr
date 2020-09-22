@@ -8,6 +8,8 @@ import SearchPatient from "../../../../services/patientSearch.service";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import PatientSearchResults from "./components";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,9 +45,9 @@ export default function PatientSearch() {
   const [createdFrom, setCreatedFrom] = useState("");
   const [createdTo, setCreatedTo] = useState("");
   const [appointmentFrom, setAppointmentFrom] = useState("");
-  const [appointmentTO, setAppointmentTO] = useState("");
+  const [appointmentTo, setAppointmentTO] = useState("");
   const [paymentFrom, setPaymentFrom] = useState("");
-  const [paymnetTo, setPaymnetTo] = useState("");
+  const [paymentTo, setPaymnetTo] = useState("");
 
   const [searchResults, setSearchResults] = useState([]);
   const [selectStatus, setSelectedStatus] = useState("");
@@ -59,7 +61,18 @@ export default function PatientSearch() {
 
     const payload = {
       data: {
-        text: "patient",
+        firstname: firstName,
+        lastname: lastName,
+        phone,
+        email,
+        createdFrom,
+        createdTo,
+        appointmentFrom,
+        appointmentTo,
+        paymentFrom,
+        paymentTo,
+        id: patientId,
+        status: selectStatus,
       },
     };
     SearchPatient.search(payload).then((res) => {
@@ -191,7 +204,7 @@ export default function PatientSearch() {
                 <Grid item xs={12} sm={3}>
                   <TextField
                     className={classes.textField}
-                    value={appointmentTO}
+                    value={appointmentTo}
                     variant="outlined"
                     margin="normal"
                     name="appointmentTO"
@@ -210,7 +223,7 @@ export default function PatientSearch() {
                     margin="normal"
                     name="patientId"
                     size="small"
-                    label="Patient Id"
+                    label="Patient ID"
                     type="patientId"
                     id="patientId"
                     autoComplete="patientId"
@@ -218,21 +231,27 @@ export default function PatientSearch() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <Select
-                    size="small"
+                  <FormControl
                     variant="outlined"
                     className={classes.customSelect}
-                    displayEmpty
-                    value={selectStatus}
-                    onChange={handleChange}
+                    size="small"
                   >
-                    <MenuItem value="" disabled>
-                      Status
-                    </MenuItem>
-
-                    <MenuItem value={10}>Active</MenuItem>
-                    <MenuItem value={20}>Inactive</MenuItem>
-                  </Select>
+                    <InputLabel htmlFor="age-native-simple">Status</InputLabel>
+                    <Select
+                      native
+                      value={selectStatus}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "type",
+                        id: "age-native-simple",
+                      }}
+                      label="Status"
+                    >
+                      <option aria-label="None" value="" />
+                      <option value={10}>Active</option>
+                      <option value={20}>Inactive</option>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
@@ -252,7 +271,7 @@ export default function PatientSearch() {
                   <TextField
                     size="small"
                     className={classes.textField}
-                    value={paymnetTo}
+                    value={paymentTo}
                     variant="outlined"
                     margin="normal"
                     name="paymnetTo"

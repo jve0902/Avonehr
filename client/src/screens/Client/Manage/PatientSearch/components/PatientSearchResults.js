@@ -63,7 +63,7 @@ export default function PatientSearchResults(props) {
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Encounter</StyledTableCell>
-              <StyledTableCell>Client Id</StyledTableCell>
+              <StyledTableCell>Client ID</StyledTableCell>
               <StyledTableCell>Note</StyledTableCell>
             </TableRow>
           </TableHead>
