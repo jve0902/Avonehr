@@ -13,8 +13,7 @@ To set file permissions in Linux or a Mac
 const signupPDF = async (content, user, client) => {
   try {
     const pdfPath = path.join(
-      "/app",
-      "client",
+      process.env.CONTRACT_UPLOAD_DIR,
       `c${user.client_id}_u${user.id}_contract` + ".pdf"
     );
     const pdfDoc = new PDFDocument({ size: "A4", margin: 50 });

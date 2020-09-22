@@ -16,7 +16,6 @@
  **/
 "use strict";
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const { configuration, makeDb } = require("../db/db.js");
 const { validationResult } = require("express-validator");
@@ -26,9 +25,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const { errorMessage, successMessage, status } = require("../helpers/status");
 const {
   transporter,
-  getPasswordResetURL,
   getEmailVerificationURL,
-  resetPasswordTemplate,
   signUpConfirmationTemplate,
 } = require("../helpers/email");
 
@@ -194,164 +191,4 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   successMessage.message =
     "We have email verification link on your email address!";
   return res.status(status.success).send(successMessage);
-};
-
-/**
- * Send password reset email
- * Calling this function with a user's email sends an email URL to reset password
- * @param {object} req
- * @param {object} res
- * @returns {object} response
- */
-exports.sendPasswordResetEmail = async (req, res) => {
-  // Check for validation errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    errorMessage.status = "invalidFields";
-    errorMessage.message = errors.array();
-    return res.status(status.bad).send(errorMessage);
-  }
-
-  const db = makeDb(configuration, res);
-  //Check where user already signed up or not
-  const { email } = req.params;
-  const userRows = await db.query(
-    "SELECT id, firstname, lastname, email, password, sign_dt, email_confirm_dt, created FROM user WHERE email = ? LIMIT 1",
-    [email]
-  );
-  if (userRows.length < 1) {
-    errorMessage.message =
-      "We couldn't find any record with that email address.";
-    return res.status(status.notfound).send(errorMessage);
-  }
-
-  const user = userRows[0];
-  if (!user) {
-    errorMessage.message = "User not found";
-    errorMessage.user = user;
-    return res.status(status.notfound).send(errorMessage);
-  }
-  const clientRows = await db.query(
-    "SELECT id, name FROM client WHERE id = ?",
-    [user.client_id]
-  );
-
-  if (!user.sign_dt) {
-    errorMessage.message =
-      "The password for this additional user can not be reset until user registration has first been completed.";
-    delete user.password; // delete password from response
-    user.client = clientRows[0];
-    errorMessage.user = user;
-    return res.status(status.unauthorized).send(errorMessage);
-  }
-
-  if (!user.email_confirm_dt) {
-    errorMessage.message =
-      "Login can not be done until the email address is confirmed.  Please see the request in your email inbox.";
-    delete user.password; // delete password from response
-    errorMessage.user = user;
-    return res.status(status.unauthorized).send(errorMessage);
-  }
-
-  if (user) {
-    const token = usePasswordHashToMakeToken(user);
-    const token_expires = moment()
-      .add(1, "hours")
-      .format("YYYY-MM-DD HH:mm:ss"); // 1 hour
-
-    // update user table for password reset token and expires time
-    const userUpdate = await db.query(
-      `UPDATE user SET reset_password_token='${token}', reset_password_expires='${token_expires}' WHERE id =${user.id}`
-    );
-    if (userUpdate.affectedRows) {
-      sendRecoveryEmail(user, res);
-    }
-  }
-};
-
-/**
- * Calling this function with a user will send email with URL
- * @param {object} user
- * @param {object} res
- * @returns {object} response
- */
-
-const sendRecoveryEmail = async (user, res) => {
-  const accesstToken = usePasswordHashToMakeToken(user);
-  const url = getPasswordResetURL(user, accesstToken);
-  const emailTemplate = resetPasswordTemplate(user, url);
-
-  if (process.env.NODE_ENV === "development") {
-    let info = await transporter.sendMail(emailTemplate);
-    successMessage.message =
-      "We have sent an email with instructions to reset your credentionals.";
-    return res.status(status.success).send(successMessage);
-  } else {
-    console.log("process.env.SENDGRID_API_KEY", process.env.SENDGRID_API_KEY);
-    sgMail.send(emailTemplate).then(
-      (info) => {
-        console.log(`** Email sent **`, info);
-        return res.status(200).json({
-          status: "success",
-          message:
-            "We have sent an email with instructions to reset your credentionals.",
-        });
-      },
-      (error) => {
-        console.error(error);
-        if (error.response) {
-          console.error("error.response.body:", error.response.body);
-        }
-        return res.status(500).json({
-          status: "error",
-          message: "Something went wrong while sending an reset email.",
-        });
-      }
-    );
-  }
-};
-
-/**
- * Calling this function with correct url will let user to reset password
- * @param {object} user
- * @param {object} res
- * @returns {object} response
- */
-exports.receiveNewPassword = async (req, res) => {
-  // Check for validation errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    errorMessage.message = errors.array();
-    return res.status(status.error).send(errorMessage);
-  }
-
-  const db = makeDb(configuration, res);
-  const { userId, token } = req.params;
-  const { password } = req.body;
-
-  //find user with reset_password_token AND userId
-  //check token expires validity
-  const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const userRows = await db.query(
-    `SELECT id, email, reset_password_token, reset_password_expires FROM user WHERE id=${userId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
-  );
-  let user = userRows[0];
-
-  if (!user) {
-    errorMessage.message = "User not found";
-    errorMessage.user = user;
-    return res.status(status.notfound).send(errorMessage);
-  }
-
-  //if all set then accept new password
-  const hashedPassword = bcrypt.hashSync(password, 8);
-
-  const updateUserResponse = await db.query(
-    `UPDATE user SET password='${hashedPassword}', reset_password_token=NULL, reset_password_expires=NULL WHERE id =${user.id}`
-  );
-
-  if (updateUserResponse.affectedRows) {
-    successMessage.message = "Password changed succesfullly!";
-    return res.status(status.success).send(successMessage);
-  }
 };
