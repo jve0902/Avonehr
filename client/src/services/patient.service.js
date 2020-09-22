@@ -140,7 +140,7 @@ class Patient {
   }
 
   createMessage(data) {
-    return axios.post(API_URL + `/patient/message`, data, {
+    return axios.post(API_URL + `/patient/messages`, data, {
       headers: authHeader(),
     });
   }
