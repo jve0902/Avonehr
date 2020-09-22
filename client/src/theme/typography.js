@@ -62,7 +62,7 @@ export default {
     color: palette.text.primary,
     fontSize: "14px",
     letterSpacing: "-0.05px",
-    lineHeight: "21px",
+    lineHeight: "14px",
   },
   body2: {
     color: palette.text.secondary,
