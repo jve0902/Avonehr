@@ -799,10 +799,10 @@ const createDocuments = async (req, res) => {
 
       // It's limitation of Multer to pass variable to use as filename.
       // Got this idea from https://stackoverflow.com/a/52794573/1960558
-      /*  fs.renameSync(
-          req.file.path,
-          req.file.path.replace("undefined", patient_id)
-        );*/
+      fs.renameSync(
+        req.file.path,
+        req.file.path.replace("undefined", patient_id)
+      );
 
       successMessage.data = insertResponse;
       successMessage.message = "Insert successful";
@@ -818,9 +818,6 @@ const createDocuments = async (req, res) => {
 };
 
 const removeFile = (file) => {
-  console.log("removeFile file", file);
-  const filePath = "pidundefined" + "_" + file.originalname;
-  //fs.renameSync(file.path, filePath);
   fs.unlink(file.path, (err) => {
     if (err) {
       console.error(err);
