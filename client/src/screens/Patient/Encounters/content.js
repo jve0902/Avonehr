@@ -7,7 +7,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-export default function Content(props) {
+export default function EncountersContent(props) {
   const classes = useStyles();
   const { data } = props;
 

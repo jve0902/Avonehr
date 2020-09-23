@@ -55,7 +55,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Content = (props) => {
+const TestsContent = (props) => {
   const { data } = props;
   const classes = useStyles();
 
@@ -104,4 +104,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default TestsContent;

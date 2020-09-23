@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
-export default function Content(props) {
+export default function AdminNotesContent(props) {
   const classes = useStyles();
   const { data } = props;
 

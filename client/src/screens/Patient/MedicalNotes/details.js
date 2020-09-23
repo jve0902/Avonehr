@@ -54,7 +54,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Content = (props) => {
+const MedicalNotesDetails = (props) => {
   const { data, reloadData } = props;
   const classes = useStyles();
 
@@ -84,4 +84,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default MedicalNotesDetails;

@@ -8,7 +8,7 @@ import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
-export default function Content(props) {
+export default function MessagesContent(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, reloadData } = props;
