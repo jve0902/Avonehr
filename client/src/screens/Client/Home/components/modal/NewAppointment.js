@@ -105,7 +105,7 @@ const NewAppointment = ({
   const [errors, setErrors] = useState([]);
   const [startDate, handleStartDateChange] = useState(selectedDate);
   const [endDate, handleEndDateChange] = useState(new Date(selectedDate));
-  const [status, setStatus] = React.useState("female");
+  const [status, setStatus] = React.useState("R");
   const [provider, setProvider] = React.useState("");
   const [patients, setPatients] = React.useState([]);
   const [selectedPatient, setSelectedPatient] = React.useState("");
@@ -146,6 +146,21 @@ const NewAppointment = ({
   const handleProviderChange = (event) => {
     const p = providers.filter((p) => p.id === event.target.value);
     setProvider(p[0]);
+  };
+
+  const handleSaveAppointment = () => {
+    const payload = {
+      data: {
+        title: title,
+        providerName: provider.name,
+        patient: selectedPatient,
+        ApptStatus: status,
+        notes: notes,
+        start_dt: startDate,
+        end_dt: endDate,
+      },
+    };
+    props.onSave(payload);
   };
   return (
     <Dialog
@@ -326,10 +341,11 @@ const NewAppointment = ({
           Cancel
         </Button>
         <Button
+          disabled={!status || !selectedPatient || !provider}
           variant="outlined"
           color="primary"
           size="small"
-          onClick={() => alert("save")}
+          onClick={() => handleSaveAppointment()}
         >
           Save
         </Button>

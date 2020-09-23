@@ -187,6 +187,11 @@ export default function Home() {
     setSelectedDate(date);
   };
 
+  const handleEventCreation = async (payload) => {
+    const newAppt = await Appointments.create(payload);
+    console.log("newAppt:", newAppt);
+  };
+
   console.log("providers:", providers);
   return (
     <div className={classes.root}>
@@ -432,6 +437,7 @@ export default function Home() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
+        onSave={handleEventCreation}
       />
     </div>
   );
