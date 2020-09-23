@@ -10,7 +10,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar, NewAppointment } from "./components";
+import { Calendar, NewAppointment, EditOrCancel } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
 import { useDispatch } from "react-redux";
@@ -132,6 +132,7 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditOrCancelOpen, setIsEditOrCancelOpen] = useState(false);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -209,7 +210,8 @@ export default function Home() {
     const eventClicked = events.filter(
       (event) => event.id == calEvent.event.id
     );
-    setSelectedEvent(eventClicked);
+    setSelectedEvent(eventClicked[0]);
+    setIsEditOrCancelOpen(true);
   };
   console.log("providers:", providers);
   console.log("selectedEvent:", selectedEvent);
@@ -462,6 +464,11 @@ export default function Home() {
         onClose={() => setIsOpen(false)}
         providers={providers}
         onSave={handleEventCreation}
+      />
+      <EditOrCancel
+        event={selectedEvent}
+        isOpen={isEditOrCancelOpen}
+        onClose={() => setIsEditOrCancelOpen(false)}
       />
     </div>
   );
