@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import _ from "lodash";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -14,6 +17,9 @@ import FormControl from "@material-ui/core/FormControl";
 import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import Switch from "@material-ui/core/Switch";
 import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
@@ -65,6 +71,17 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     padding: "5px",
   },
+  patientListCard: {
+    position: "absolute",
+    width: "100%",
+    top: "54px",
+  },
+  patientListContent: {
+    padding: 0,
+    "&:last-child": {
+      padding: 0,
+    },
+  },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
     display: "flex",
@@ -97,6 +114,7 @@ const NewAppointment = ({
   const [notes, setNotes] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
 
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const debouncedSearchTerm = useDebounce(patientSearchTerm, 500);
   useEffect(
     () => {
@@ -113,6 +131,7 @@ const NewAppointment = ({
         );
       } else {
         setPatients([]);
+        setSelectedPatient("");
       }
     },
     // This is the useEffect input array
@@ -121,12 +140,14 @@ const NewAppointment = ({
     // value (searchTerm) hasn't changed for more than 500ms.
     [debouncedSearchTerm]
   );
-  const handleOnChange = (event) => {
-    console.log("event", event);
+
+  const handlePatientChange = (_, patient) => {
+    const sp = patients.filter((p) => p.id === patient.id);
+    setSelectedPatient(sp[0]);
+    setPatientSearchTerm(`${patient.firstname} ${patient.lastname}`);
   };
   const handleProviderChange = (event) => {
     const p = providers.filter((p) => p.id === event.target.value);
-    console.log("event", event.target.value);
     setProvider(p[0]);
   };
   console.log("title:", title);
@@ -135,6 +156,7 @@ const NewAppointment = ({
   console.log("status:", status);
   console.log("provider:", provider);
   console.log("patients:", patients);
+  console.log("selected patient:", selectedPatient);
   console.log("notes:", notes);
   return (
     <Dialog
@@ -267,6 +289,24 @@ const NewAppointment = ({
               autoFocus
               onChange={(event) => setPatientSearchTerm(event.target.value)}
             />
+            {patients.length > 0 && !selectedPatient && (
+              <Card className={classes.patientListCard}>
+                <CardContent className={classes.patientListContent}>
+                  <List component="nav" aria-label="secondary mailbox folder">
+                    {patients.map((patient) => (
+                      <ListItem
+                        button
+                        onClick={(event) => handlePatientChange(event, patient)}
+                      >
+                        <ListItemText
+                          primary={`${patient.firstname} ${patient.lastname}`}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </CardContent>
+              </Card>
+            )}
           </FormControl>
           <Typography component="p" variant="body2" color="textPrimary">
             Notes
