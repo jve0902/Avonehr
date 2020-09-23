@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import {
-  TextField,
   Button,
   Grid,
   Typography,
@@ -17,7 +16,7 @@ import PatientService from "../../../../services/patient.service";
 import { setError, setSuccess } from "../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
-const PaymentForm = (props) => {
+const HandoutsForm = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { onClose, reloadData } = props;
@@ -130,4 +129,5 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default PaymentForm;
+export default HandoutsForm;
+

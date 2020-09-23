@@ -48,7 +48,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const Content = (props) => {
+const HandoutsContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -96,4 +96,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default HandoutsContent;
