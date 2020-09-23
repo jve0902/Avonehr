@@ -8,19 +8,23 @@ import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-// import { Appointments } from "./components";
-// import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
-// import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
-import AppointmentService from "./../../../../services/appointmentType.service";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import { Reports } from "./components";
+import FinanceReportService from "./../../../../services/financeReport.service";
 import { AuthConsumer } from "./../../../../providers/AuthProvider";
 import Video from "./../../../../components/videos/Video";
+import { formatDate, get3MonthsAgo } from "../../../../utils/helpers"
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: "40px 0px",
   },
-  uploadButtons: {
+  header: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -42,16 +46,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FinanceReport(props) {
   const classes = useStyles();
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState("");
-  const [selectedappointment, setSelectedAppointment] = useState("");
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [appointments, setAppointments] = useState([]);
-  const [isNewAppointment, setIsNewAppointment] = useState(true);
+  const [selectedFromDate, setSelectedFromDate] = useState(
+    formatDate(get3MonthsAgo())
+  );
+  const [selectedToDate, setSelectedToDate] = useState(formatDate(new Date()));
+  const [reports, setReports] = useState([]);
 
   const fetchFinanceReport = () => {
-    AppointmentService.getAll().then((res) => {
-      setAppointments(res.data);
+    FinanceReportService.getAll(selectedFromDate, selectedToDate).then((res) => {
+      setReports(res.data);
     });
   };
 
@@ -59,35 +62,18 @@ export default function FinanceReport(props) {
     fetchFinanceReport();
   }, []);
 
-  const handleEditButtonClick = (id) => {
-    setIsEditModalOpen(true);
-    setIsNewAppointment(false);
-    const appointmentById = appointments.filter(
-      (appointment) => appointment.id === id
-    );
-    appointmentById && setSelectedAppointment(_.head(appointmentById));
+  const handleDateFromChange = (date) => {
+    setSelectedFromDate(formatDate(new Date(date)));
   };
 
-  const handleDeleteButton = (id) => {
-    setIsDeleteModalOpen(true);
-    setSelectedAppointmentId(id);
+  const handleDateToChange = (date) => {
+    setSelectedToDate(formatDate(new Date(date)));
   };
 
-  const handleEditModalClose = () => {
-    setIsEditModalOpen(false);
-    setIsNewAppointment(false);
-    fetchFinanceReport();
-  };
-
-  const handleDeleteModalClose = () => {
-    setIsDeleteModalOpen(false);
-    fetchFinanceReport();
-  };
-
-  const handleOnNewClick = () => {
-    setIsEditModalOpen(true);
-    setIsNewAppointment(true);
-    setSelectedAppointment("");
+  const handleOnEnterClick = () => {
+    FinanceReportService.getAll(selectedFromDate, selectedToDate).then((res) => {
+      setReports(res.data);
+    });
   };
 
   return (
@@ -96,29 +82,66 @@ export default function FinanceReport(props) {
         <React.Fragment>
           <CssBaseline />
           <Container maxWidth={false} className={classes.root}>
-            <div className={classes.uploadButtons}>
+            <div className={classes.header}>
               <Typography component="h1" variant="h2" color="textPrimary">
                 Finance Report
               </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                component="span"
-                onClick={() => handleOnNewClick()}
-              >
-                New
-              </Button>
             </div>
+            <Typography component="p" variant="body2" color="textPrimary">
+              This page is used to search accounting records
+            </Typography>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={3}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline1"
+                    label="From"
+                    value={selectedFromDate}
+                    onChange={handleDateFromChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    maxDate={selectedToDate}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline2"
+                    label="To"
+                    value={selectedToDate}
+                    onChange={handleDateToChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    minDate={selectedFromDate}
+                    maxDate={new Date()}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+            </Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={() => handleOnEnterClick()}
+            >
+              Enter
+            </Button>
             <Grid container justify="center" spacing={2}>
               <Grid item md={12} xs={12}>
-                <Typography component="p" variant="body2" color="textPrimary">
-                  This page is used to search accounting records
-                </Typography>
-                {/* <Appointments
-                  appointments={appointments}
-                  onEdit={handleEditButtonClick}
-                  onDelete={handleDeleteButton}
-                /> */}
+                <Reports
+                  reports={reports}
+                />
               </Grid>
               <Grid item md={12} xs={12}>
                 <Card className={classes.card}>
@@ -130,18 +153,6 @@ export default function FinanceReport(props) {
                 </Card>
               </Grid>
             </Grid>
-            {/* <NewOrEditAppointment
-              appointment={selectedappointment}
-              isOpen={isEditModalOpen}
-              onClose={() => handleEditModalClose(false)}
-              user={user}
-              isNewAppointment={isNewAppointment}
-            /> */}
-            {/* <DeleteAppointmentModal
-              id={selectedAppointmentId}
-              isOpen={isDeleteModalOpen}
-              onClose={() => handleDeleteModalClose(false)}
-            /> */}
           </Container>
         </React.Fragment>
       )}

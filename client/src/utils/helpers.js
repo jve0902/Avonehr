@@ -74,3 +74,21 @@ export const formatPhoneNumber = (phoneNumber) => {
   }
   return null
 }
+
+export const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+}
+
+export const get3MonthsAgo = () => {
+  const from = new Date();
+  from.setMonth(from.getMonth() - 3);
+  return from;
+}
