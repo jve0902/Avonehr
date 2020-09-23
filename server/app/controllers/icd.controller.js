@@ -5,19 +5,18 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 
 const search = async (req, res) => {
   const db = makeDb(configuration, res);
-  let { searchTerm, favorite } = req.body;
-
+  const { searchTerm, favorite } = req.body;
   let $sql;
-  try {
-    $sql = `select d.id, d.name, cd.favorite, cd.updated, concat(u.firstname, ' ', u.lastname) updated_name
-    from drug d
-    left join client_drug cd on cd.client_id=${req.client_id}
-      and cd.drug_id=d.id
-    left join user u on u.id=cd.updated_user_id
-    where d.name like '${searchTerm}%' and cd.favorite like ${favorite} or d.name like '${searchTerm}%' \n`;
 
-    $sql = $sql + `order by d.name \n`;
-    $sql = $sql + `limit 50 \n`;
+  try {
+    $sql = `select i.id, i.name, ci.favorite, ci.updated, concat(u.firstname, ' ', u.lastname) updated_name
+        from icd i
+        left join client_icd ci on ci.icd_id=i.id and ci.client_id=${req.client_id}
+        left join user u on u.id=ci.updated_user_id
+        where i.name like '${searchTerm}%' and ci.favorite like ${favorite} or i.name like '${searchTerm}%' \n`;
+
+    $sql = $sql + `order by i.name \n`;
+    $sql = $sql + `limit 100 \n`;
 
     const dbResponse = await db.query($sql);
 
@@ -26,10 +25,8 @@ const search = async (req, res) => {
       return res.status(status.notfound).send(errorMessage);
     }
     successMessage.data = dbResponse;
-    console.log(successMessage);
     return res.status(status.created).send(successMessage);
   } catch (err) {
-    console.log(err);
     errorMessage.error = "Select not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
@@ -44,31 +41,32 @@ const addFavorite = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
   const db = makeDb(configuration, res);
-  let client_drug = req.body;
+  let client_icd = req.body;
 
-  (client_drug.created_user_id = req.user_id),
-    (client_drug.updated_user_id = req.user_id),
-    (client_drug.client_id = req.client_id),
-    (client_drug.drug_id = req.body.drug_id),
-    (client_drug.favorite = true),
-    (client_drug.updated = new Date());
-  client_drug.created = new Date();
+  (client_icd.created_user_id = req.user_id),
+    (client_icd.updated_user_id = req.user_id),
+    (client_icd.client_id = req.client_id),
+    (client_icd.icd_id = req.body.icd_id),
+    (client_icd.favorite = true),
+    (client_icd.created = new Date());
+  client_icd.updated = new Date();
 
   try {
     const dbResponse = await db.query(
-      "insert into client_drug set ?",
-      client_drug
+      "insert into client_icd set ?",
+      client_icd
     );
 
     if (!dbResponse) {
       errorMessage.error = "Creation not successful";
-      return res.status(status.notfound).send(errorMessage);
+      res.status(status.notfound).send(errorMessage);
     }
 
     successMessage.data = dbResponse;
     successMessage.message = "Creation successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
+    console.log(err);
     errorMessage.error = "Creation not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
@@ -85,7 +83,7 @@ const deleteFavorite = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const deleteResponse = await db.query(
-      `delete from client_drug where client_id=${req.client_id} and drug_id=${req.params.id}`
+      `delete from client_icd where client_id=${req.client_id} and icd_id='${req.params.id}'`
     );
     if (!deleteResponse.affectedRows) {
       errorMessage.error = "Deletion not successful";
@@ -95,6 +93,7 @@ const deleteFavorite = async (req, res) => {
     successMessage.message = "Deletion successful";
     return res.status(status.success).send(successMessage);
   } catch (error) {
+    console.log(error);
     errorMessage.error = "Deletion not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
@@ -102,10 +101,10 @@ const deleteFavorite = async (req, res) => {
   }
 };
 
-const drug = {
+const icd = {
   search,
   addFavorite,
   deleteFavorite,
 };
 
-module.exports = drug;
+module.exports = icd;
