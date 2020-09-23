@@ -66,8 +66,9 @@ const RequisitionsContent = (props) => {
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
+    const cpt_id = selectedItem.id || 1;
+    const encounter_id = selectedItem.cpt_id || 1;
+    PatientService.deleteRequisitions(encounter_id, cpt_id)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
