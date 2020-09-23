@@ -9,7 +9,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar } from "./components";
+import { Calendar, NewAppointment } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
 import { Button } from "@material-ui/core";
@@ -120,11 +120,13 @@ export default function Home() {
   const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
   const [appointmentRequests, setAppointmentRequests] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
   ]);
   const [providers, setProviders] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -180,7 +182,12 @@ export default function Home() {
     const { data } = await DashboardHome.getPatientApptRequests(providerId);
     setAppointmentRequests(data);
   }
+  const handleDayClick = (date) => {
+    setIsOpen(true);
+    setSelectedDate(date);
+  };
 
+  console.log("providers:", providers);
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -188,7 +195,7 @@ export default function Home() {
       </Typography>
       <Grid container spacing={8}>
         <Grid item md={7} xs={12}>
-          <Calendar events={events} />
+          <Calendar events={events} onDayClick={handleDayClick} />
         </Grid>
         <Grid item md={5} xs={12}>
           <Card className={classes.root1} variant="outlined">
@@ -235,7 +242,7 @@ export default function Home() {
                 className={classes.titleContainer}
               >
                 <Typography className={classes.title}>
-                  Provider Details- {selectedProvider.name}
+                  Provider Details - {selectedProvider.name}
                 </Typography>
               </Grid>
 
@@ -420,6 +427,12 @@ export default function Home() {
           )}
         </Grid>
       </Grid>
+      <NewAppointment
+        selectedDate={selectedDate}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        providers={providers}
+      />
     </div>
   );
 }
