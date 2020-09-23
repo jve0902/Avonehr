@@ -129,6 +129,7 @@ export default function Home() {
     { title: "event 1", date: "2020-08-01" },
     { title: "event 2", date: "2020-08-02" },
   ]);
+  const [selectedEvent, setSelectedEvent] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const getMapFromArray = (data) => {
@@ -204,7 +205,14 @@ export default function Home() {
     );
   };
 
+  const handleEventClick = (calEvent) => {
+    const eventClicked = events.filter(
+      (event) => event.id == calEvent.event.id
+    );
+    setSelectedEvent(eventClicked);
+  };
   console.log("providers:", providers);
+  console.log("selectedEvent:", selectedEvent);
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -212,7 +220,11 @@ export default function Home() {
       </Typography>
       <Grid container spacing={8}>
         <Grid item md={7} xs={12}>
-          <Calendar events={events} onDayClick={handleDayClick} />
+          <Calendar
+            events={events}
+            onDayClick={handleDayClick}
+            onEventClick={handleEventClick}
+          />
         </Grid>
         <Grid item md={5} xs={12}>
           <Card className={classes.root1} variant="outlined">

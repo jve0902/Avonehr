@@ -23,12 +23,7 @@ function renderEventContent(eventInfo) {
   );
 }
 
-const EventCalendar = ({ events, onDayClick }) => {
-  const handleDateClick = (arg) => {
-    // bind with an arrow function
-    //alert(arg.dateStr);
-    onDayClick(arg.dateStr);
-  };
+const EventCalendar = ({ events, onDayClick, onEventClick }) => {
   console.log("events", events);
   return (
     <FullCalendar
@@ -42,7 +37,8 @@ const EventCalendar = ({ events, onDayClick }) => {
       weekends={true}
       events={events}
       eventContent={renderEventContent}
-      dateClick={handleDateClick}
+      dateClick={(arg) => onDayClick(arg.dateStr)}
+      eventClick={(info) => onEventClick(info)}
     />
   );
 };
