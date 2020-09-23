@@ -9,7 +9,7 @@ const getResult = async (req, res) => {
   const { query } = req.query;
   let $sql;
   try {
-    $sql = `select id, firstname, middlename, lastname
+    $sql = `select id, firstname, middlename, lastname, email
     from patient
     where client_id=${req.client_id}
     and (firstname like '${query}%' or lastname like '${query}%')

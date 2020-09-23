@@ -8,11 +8,13 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Calendar, NewAppointment } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
-import { Button } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "./../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,6 +118,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState([]);
   const [selectedProvider, setSelectedProvider] = useState("");
   const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
@@ -187,9 +191,17 @@ export default function Home() {
     setSelectedDate(date);
   };
 
-  const handleEventCreation = async (payload) => {
-    const newAppt = await Appointments.create(payload);
-    console.log("newAppt:", newAppt);
+  const handleEventCreation = (payload) => {
+    Appointments.create(payload).then(
+      (response) => {
+        console.log("newAppt:", response);
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
   };
 
   console.log("providers:", providers);

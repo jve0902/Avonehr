@@ -99,7 +99,6 @@ const NewAppointment = ({
   ...props
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { providers } = props;
   const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
