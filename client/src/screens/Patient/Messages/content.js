@@ -4,7 +4,6 @@ import {
   Grid,
   Typography
 } from "@material-ui/core";
-import ContextMenu from "./contextMenu";
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
@@ -19,26 +18,6 @@ export default function Content(props) {
   const menuHandler = (e, item) => {
     setElement(e.currentTarget);
     setSelectedItem(item);
-  }
-
-  const onItemDelete = () => {
-    const messageId = selectedItem.id;
-    PatientService.deleteMessages(messageId)
-      .then((response) => {
-        dispatch(setSuccess(`${response.data.message}`));
-        reloadData();
-      })
-      .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
-        let severity = "error";
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage,
-          })
-        );
-      })
   }
 
   return (
