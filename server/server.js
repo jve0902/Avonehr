@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", require("./app/routes/accounting-search.routes"));
 app.use("/api/v1", require("./app/routes/appointment-type-user.routes"));
 app.use("/api/v1", require("./app/routes/appointment-type.routes"));
+app.use("/api/v1", require("./app/routes/finance-report.routes"));
 app.use("/api/v1", require("./app/routes/auth-email.routes"));
 app.use("/api/v1", require("./app/routes/signup.routes"));
 app.use("/api/v1", require("./app/routes/login.routes"));
