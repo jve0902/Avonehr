@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -18,6 +19,7 @@ import {
   NewTransactionForm,
   PaymentForm,
   BillingCardContent,
+  BillingDetails,
 } from "./components/Billing";
 import Form from "./Form";
 import EncountersForm from "./Encounters";
@@ -38,6 +40,11 @@ import {
   DiagnosesCardContent,
   DiagnosesDetails,
 } from "./components/Diagnoses";
+import {
+  HandoutsForm,
+  HandoutsCardContent,
+  HandoutsDetails
+} from "./components/Handouts";
 import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
@@ -68,6 +75,7 @@ export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
+  const history =  useHistory();
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
@@ -79,6 +87,9 @@ export default function Patient() {
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
+  const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(
+    false
+  );
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
     false
   );
@@ -86,6 +97,9 @@ export default function Patient() {
 
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
+
+  const [showHandoutsDialog, setShowHandoutsDialog] = useState(false);
+  const [showHandoutsExpandDialog, setShowHandoutsExpandDialog] = useState(false);
 
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
   const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(
@@ -127,6 +141,7 @@ export default function Patient() {
   const [patientHistory, setPatientHistory] = useState([]);
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
+  const [handouts, setHandouts] = useState([]);
   const [billings, setBillings] = useState([]);
   const [forms, setForms] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -142,6 +157,7 @@ export default function Patient() {
     fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
+    fetchPatientHandouts();
     fetchForms();
     fetchBillings();
     fetchDocuments();
@@ -172,6 +188,12 @@ export default function Patient() {
     });
   };
 
+  const fetchPatientHandouts = () => {
+    PatientService.getPatientHandouts().then((res) => {
+      setHandouts(res.data);
+    });
+  };
+
   const fetchForms = () => {
     PatientService.getForms().then((res) => {
       setForms(res.data);
@@ -179,7 +201,8 @@ export default function Patient() {
   };
 
   const fetchBillings = () => {
-    PatientService.getBillings().then((res) => {
+    let limit = 3;
+    PatientService.getBillings(limit).then((res) => {
       setBillings(res.data);
     });
   };
@@ -278,12 +301,24 @@ export default function Patient() {
     setShowPaymentDialog((prevState) => !prevState);
   };
 
+  const toggleBillngExpandDialog = () => {
+    setShowBillingExpandDialog((prevState) => !prevState);
+  };
+
   const toggleAllergyDialog = () => {
     setShowAllergyDialog((prevState) => !prevState);
   };
 
   const toggleAllergyExpandDialog = () => {
     setShowAllergyExpandDialog((prevState) => !prevState);
+  };
+
+  const toggleHandoutsDialog = () => {
+    setShowHandoutsDialog((prevState) => !prevState);
+  };
+
+  const toggleHandoutsExpandDialog = () => {
+    setShowHandoutsExpandDialog((prevState) => !prevState);
   };
 
   const toggleEncountersDialog = () => {
@@ -349,6 +384,8 @@ export default function Patient() {
       return toggleAdminHistoryDialog;
     } else if (value === "Forms") {
       return toggleFormsExpandDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsDialog;
     } else if (value === "Billing") {
       return toggleNewTransactionDialog;
     } else if (value === "Allergies") {
@@ -371,6 +408,10 @@ export default function Patient() {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsExpandDialog;
+    } else if (value === "Billing") {
+      return toggleBillngExpandDialog;
     } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
     } else if (value === "Medical Notes") {
@@ -408,6 +449,8 @@ export default function Patient() {
       );
     } else if (value === "Medical Notes") {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
+    } else if (value === "Handouts") {
+      return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
       return (
         !!messages && (
@@ -426,9 +469,13 @@ export default function Patient() {
     }
   };
 
+  const redirectToPatientPortal = () => {
+    history.push("/manage/patient-search");
+  }
+
   const mapIconHandlers = (value) => {
     if (value === "Patient") {
-      return togglePatientInfoDialog;
+      return redirectToPatientPortal;
     } else if (value === "Billing") {
       return togglePaymentDialog;
     }
@@ -439,13 +486,7 @@ export default function Patient() {
     inputFile.current.click();
   };
 
-  const createDocument = (filename) => {
-    const reqBody = {
-      data: {
-        patient_id: 1,
-        filename: filename,
-      },
-    };
+  const createDocument = (reqBody) => {
     PatientService.createDocuments(reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
@@ -471,7 +512,10 @@ export default function Patient() {
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
     console.log("files", files);
-    createDocument(files[0].name);
+    let fd = new FormData();
+    fd.append("file", files[0]);
+    fd.append("patient_id", 1)
+    createDocument(fd);
   };
 
   return (
@@ -479,7 +523,7 @@ export default function Patient() {
       <input
         type="file"
         id="file"
-        accept=".pdf, .json"
+        accept=".pdf, .txt"
         multiple
         ref={inputFile}
         className={classes.noDisplay}
@@ -541,6 +585,15 @@ export default function Patient() {
         size={"md"}
       />
       <Dialog
+        open={showBillingExpandDialog}
+        title={" "}
+        message={<BillingDetails data={billings} onClose={toggleBillngExpandDialog} />}
+        applyForm={() => toggleBillngExpandDialog()}
+        cancelForm={() => toggleBillngExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
         open={showPaymentDialog}
         title={" "}
         message={<PaymentForm onClose={togglePaymentDialog} />}
@@ -569,6 +622,30 @@ export default function Patient() {
         }
         applyForm={() => toggleAllergyExpandDialog()}
         cancelForm={() => toggleAllergyExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsDialog}
+        title={" "}
+        message={<HandoutsForm onClose={toggleHandoutsDialog} reloadData={fetchPatientHandouts} />}
+        applyForm={() => toggleHandoutsDialog()}
+        cancelForm={() => toggleHandoutsDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsExpandDialog}
+        title={" "}
+        message={
+          <HandoutsDetails
+            data={handouts}
+            reloadData={fetchPatientHandouts}
+            onClose={toggleHandoutsExpandDialog}
+          />
+        }
+        applyForm={() => toggleHandoutsExpandDialog()}
+        cancelForm={() => toggleHandoutsExpandDialog()}
         hideActions={true}
         size={"md"}
       />

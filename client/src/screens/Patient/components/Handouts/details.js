@@ -7,6 +7,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import PatientService from "../../../../services/patient.service";
+import { setError, setSuccess } from "../../../../store/common/actions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -54,9 +60,31 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const MedicalNotesDetails = (props) => {
+const HandoutsDetails = (props) => {
   const { data, reloadData } = props;
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const onItemDelete = (selectedItem) => {
+    const handoutId = selectedItem.id || 1;
+    const patientId = 1;
+    PatientService.deleteHandout(patientId, handoutId)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        reloadData();
+      })
+      .catch((error) => {
+        const resMessage = (error.response && error.response.data &&
+          error.response.data.message) || error.message || error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      })
+  }
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -64,8 +92,9 @@ const MedicalNotesDetails = (props) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Created</StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>Created By</StyledTableCell>
+            <StyledTableCell>File Name</StyledTableCell>
+            <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,8 +103,14 @@ const MedicalNotesDetails = (props) => {
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
               </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+              <TableCell>{row.name || "-"}</TableCell>
+              <TableCell>{row.filename}</TableCell>
+
+              <TableCell className={classes.actions}>
+                <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </TableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -84,4 +119,5 @@ const MedicalNotesDetails = (props) => {
   );
 };
 
-export default MedicalNotesDetails;
+export default HandoutsDetails;
+

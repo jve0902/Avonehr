@@ -1,10 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid
+  Grid,
+  Typography
 } from "@material-ui/core";
 
-export default function Content(props) {
+export default function FormContent(props) {
   const classes = useStyles();
   const { data } = props;
 
@@ -13,9 +14,9 @@ export default function Content(props) {
       {
         data.map(item => (
           <Grid key={item.title} className={classes.inputRow}>
-            <Grid component="span">
+            <Typography component="span" className={classes.text12} color="textPrimary">
               {item.title}
-            </Grid>
+            </Typography>
           </Grid>
         ))
       }
@@ -27,4 +28,7 @@ const useStyles = makeStyles((theme) => ({
   inputRow: {
     marginBottom: theme.spacing(1),
   },
+  text12: {
+    fontSize: 12
+  }
 }));

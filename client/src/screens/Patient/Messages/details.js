@@ -60,7 +60,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const MessagesContent = (props) => {
+const MessagesDetails = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -124,4 +124,4 @@ const MessagesContent = (props) => {
   );
 };
 
-export default MessagesContent;
+export default MessagesDetails;

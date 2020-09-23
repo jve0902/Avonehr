@@ -60,7 +60,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const DocumentsContent = (props) => {
+const DocumentsDetails = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -119,4 +119,4 @@ const DocumentsContent = (props) => {
   );
 };
 
-export default DocumentsContent;
+export default DocumentsDetails;
