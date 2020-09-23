@@ -18,9 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Switch from "@material-ui/core/Switch";
 import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -29,7 +27,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Select from "@material-ui/core/Select";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
 
@@ -114,7 +112,6 @@ const NewAppointment = ({
   const [notes, setNotes] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
 
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const debouncedSearchTerm = useDebounce(patientSearchTerm, 500);
   useEffect(
     () => {
@@ -150,14 +147,6 @@ const NewAppointment = ({
     const p = providers.filter((p) => p.id === event.target.value);
     setProvider(p[0]);
   };
-  console.log("title:", title);
-  console.log("startDate:", startDate);
-  console.log("endDate:", endDate);
-  console.log("status:", status);
-  console.log("provider:", provider);
-  console.log("patients:", patients);
-  console.log("selected patient:", selectedPatient);
-  console.log("notes:", notes);
   return (
     <Dialog
       open={isOpen}
@@ -196,30 +185,35 @@ const NewAppointment = ({
             />
           </FormControl>
           <div className={classes.datePickers}>
-            <KeyboardDatePicker
+            <KeyboardDateTimePicker
               className={classes.startdatePicker}
+              ampm={false}
               clearable
               id="date-picker-inline"
               label="Start"
               value={startDate}
-              placeholder="10/10/2018"
+              placeholder="2020/10/10 10:00"
               onChange={(date) => handleStartDateChange(date)}
               minDate={new Date()}
-              format="MM/dd/yyyy"
+              onError={console.log}
+              disablePast
+              format="yyyy/MM/dd HH:mm"
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
             />
-            <KeyboardDatePicker
+            <KeyboardDateTimePicker
               clearable
               variant="outlined"
               id="date-picker-inline"
-              label="Start"
+              label="End"
               value={endDate}
-              placeholder="10/10/2018"
+              placeholder="2020/10/10 11:00"
               onChange={(date) => handleEndDateChange(date)}
               minDate={new Date()}
-              format="MM/dd/yyyy"
+              onError={console.log}
+              disablePast
+              format="yyyy/MM/dd HH:mm"
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}

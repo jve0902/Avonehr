@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
         left join patient p on p.id=uc.patient_id
         left join user u on u.id=uc.user_id
         where uc.client_id=${req.client_id}
-            and uc.user_id=1
+            and uc.user_id=${req.user_id}
       `
     );
 
