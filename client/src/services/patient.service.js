@@ -174,8 +174,14 @@ class Patient {
     });
   }
 
-  deleteHandout(patient_id, handoutId) {
+  deletePatientHandout(patient_id, handoutId) {
     return axios.delete(API_URL + `/patient/patient-handout/${patient_id}/${handoutId}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteHandout(handoutId) {
+    return axios.delete(API_URL + `/patient/handouts/${handoutId}`, {
       headers: authHeader(),
     });
   }
