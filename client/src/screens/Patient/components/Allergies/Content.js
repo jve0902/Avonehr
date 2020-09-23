@@ -46,20 +46,6 @@ export default function Content(props) {
 
   return (
     <>
-      {/* <ContextMenu
-        element={element}
-        deleteHandler={() => onItemDelete()}
-        menu={[
-          {
-            label: 'Edit',
-            value: 'edit',
-          },
-          {
-            label: 'Delete',
-            value: 'delete',
-          },
-        ]}
-      /> */}
       {data.map((item) => (
         <Grid
           key={item.drug_id}
