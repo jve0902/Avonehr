@@ -132,6 +132,7 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isEditOrCancelOpen, setIsEditOrCancelOpen] = useState(false);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
@@ -152,12 +153,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    async function fetchAppointments() {
-      const { data } = await Appointments.getAll();
-      const eventsFromAPI = getMapFromArray(data);
-      setEvents(eventsFromAPI);
-    }
-
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
       setProviders(data);
@@ -167,6 +162,12 @@ export default function Home() {
     fetchAppointments();
     fetchProviderDetails();
   }, []);
+
+  async function fetchAppointments() {
+    const { data } = await Appointments.getAll();
+    const eventsFromAPI = getMapFromArray(data);
+    setEvents(eventsFromAPI);
+  }
 
   const handleProviderClick = async (provider) => {
     setSelectedProvider(provider);
@@ -217,8 +218,11 @@ export default function Home() {
   };
 
   const handleEventCancellation = (payload) => {
+    setIsLoading(true);
     Appointments.cancelEvent(payload).then(
       (response) => {
+        setIsLoading(false);
+        fetchAppointments();
         dispatch(setSuccess(`${response.data.message}`));
         setIsEditOrCancelOpen(false);
       },
@@ -239,7 +243,6 @@ export default function Home() {
     );
   };
 
-  console.log("providerDetails", providerDetails);
   return (
     <div className={classes.root}>
       <Typography
@@ -508,6 +511,7 @@ export default function Home() {
         onSave={handleEventCreation}
       />
       <EditOrCancel
+        isLoading={isLoading}
         event={selectedEvent}
         isOpen={isEditOrCancelOpen}
         onClose={() => setIsEditOrCancelOpen(false)}

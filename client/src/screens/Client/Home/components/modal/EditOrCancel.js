@@ -8,7 +8,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   startdatePicker: {
     marginRight: theme.spacing(4),
   },
+  contentWithLoading: {
+    opacity: "0.5",
+  },
   buttonContainer: {
     display: "flex",
     justifyContent: "space-around",
@@ -44,10 +50,10 @@ const EditOrCancel = ({
   onClose,
   onCancel,
   onEventTimeChange,
+  isLoading,
   ...props
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [changeTime, handleChangeTime] = useState(false);
   const [eventId, setEventId] = useState(null);
   const [startDate, handleStartDateChange] = useState(new Date());
@@ -110,7 +116,22 @@ const EditOrCancel = ({
           ).format("HH:mm")})`}
         </DialogTitle>
         <DialogContent className={classes.content}>
-          <DialogContentText id="alert-dialog-description">
+          {isLoading && (
+            <div
+              style={{
+                textAlign: "center",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          )}
+          <DialogContentText
+            id="alert-dialog-description"
+            className={clsx({
+              [classes.modalConent]: true, //always apply
+              [classes.contentWithLoading]: isLoading, //only when isLoading === true
+            })}
+          >
             This appointment with <b>{props.event.provider_name}</b> on
             <b>{` ${moment(props.event.start_dt).format(
               "YYYY-MM-DD HH:mm:ss"
