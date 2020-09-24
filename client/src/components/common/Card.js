@@ -1,27 +1,31 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, ListItem, ListItemIcon, ListItemText, Button, TextField } from '@material-ui/core';
+import { Card, Typography, Grid, Button, TextField } from '@material-ui/core';
 import Colors from '../../theme/colors';
 import CardIcon from '@material-ui/icons/CreditCard';
-import DesktopIcon from '@material-ui/icons/Dvr';
+import DesktopIcon from '@material-ui/icons/DesktopMac';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler } = props;
   
-  const menuIcons = { DesktopIcon, CardIcon };
+  const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
   return (
     <>
       <Card className={classes.root} variant="outlined">
-        <Grid container justify="space-between" alignItems="center" className={classes.titleContainer}>
+        <Grid container justify="space-between" alignItems="center" className={`${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
           {
             !!icon && (
-              React.createElement(menuIcons[icon])
+              React.createElement(menuIcons[icon], {
+                onClick: iconHandler,
+                className: classes.icon
+              })
             )
           }
           {
@@ -31,14 +35,23 @@ const PatientCard = (props) => {
                 variant='outlined'
                 placeholder="Search ..."
                 className={classes.searchInput}
+                InputProps={{
+                  classes: { input: classes.textField },
+                }}
+                onChange={(e) => {
+                  const searchedValue = e.target.value;
+                  if(!!searchedValue && searchedValue.length) {
+                    searchHandler(searchedValue)
+                  }
+                }}
               />
             )
           }
           {
             showActions && (
               <Grid>
-                {!!primaryButtonText && (<Button>{primaryButtonText}</Button>)}
-                {!!secondaryButtonText && (<Button>{secondaryButtonText}</Button>)}
+                {!!primaryButtonText && (<Button onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
+                {!!secondaryButtonText && (<Button onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
               </Grid>
             )
           }
@@ -48,7 +61,7 @@ const PatientCard = (props) => {
             !!data ?
             data
             :
-            "Data goes here.."
+            "Fetching Data..."
           }
         </Grid>
       </Card>
@@ -58,26 +71,30 @@ const PatientCard = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 150,
+    minHeight: 100,
     background: Colors.white,
     border: '1px solid rgba(38, 38, 38, 0.12)',
     borderRadius: 4,
-    marginBottom: 10
+    marginBottom: 6
   },
   titleContainer: {
-    padding: '0 0 0 1em',
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 47,
+  },
+  fullPadding: {
+    padding: 8,
+  },
+  leftPadding: {
+    padding: '0 0 0 8px',
   },
   title: {
     fontWeight: '600',
-    fontSize: '1em'
+    fontSize: 13
   },
   seeMoreLinks: {
     cursor: "pointer"
   },
   cardContent: {
-    padding: theme.spacing(2),
+    padding: 8,
   },
   sideIcon: {
     minWidth: 35,
@@ -101,6 +118,12 @@ const useStyles = makeStyles((theme) => ({
   searchInput: {
     margin: "4px 0",
     maxWidth: '100px'
+  },
+  icon: {
+    cursor: 'pointer'
+  },
+  textField: {
+    height: 8,
   }
 }))
 
@@ -108,20 +131,28 @@ PatientCard.defaultProps = {
   title: 'Title',
   showActions: false,
   showSearch: false,
-  data: [],
+  data: <div />,
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
+  primaryButtonHandler: () => {},
+  secondaryButtonHandler: () => {},
+  iconHandler: () => {},
+  searchHandler: () => {},
 };
 
 PatientCard.propTypes = {
   title: PropTypes.string,
   showActions: PropTypes.bool.isRequired,
   showSearch: PropTypes.bool.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.node.isRequired,
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
-  icon: PropTypes.node
+  icon: PropTypes.node,
+  primaryButtonHandler: PropTypes.func,
+  secondaryButtonHandler: PropTypes.func,
+  iconHandler: PropTypes.func,
+  searchHandler: PropTypes.func,
 };
 
 

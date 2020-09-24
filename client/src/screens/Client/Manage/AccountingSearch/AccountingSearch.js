@@ -1,20 +1,25 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import PropTypes from 'prop-types';
-import Accounting from '../../../../services/accountingSerarch.service';
+//Todo: Have to add validation
+import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Select from "@material-ui/core/Select";
+import moment from "moment";
+// import InputAdornment from "@material-ui/core/InputAdornment";
+
+import Accounting from "../../../../services/accountingSearch.service";
+import AccountingSearchResults from "./components";
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: '40px 0px',
+    padding: "40px 0px",
   },
   formControl: {
     margin: theme.spacing(1),
@@ -24,162 +29,253 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '30%', // Fix IE 11 issue.
+    display: "flex",
+    flexDirection: "column",
     marginTop: theme.spacing(1),
   },
   formElments: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '500px',
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "500px",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: '180px',
-  },
-  dateInput: {
-    padding: '10px',
+    marginTop: "20px",
+    maxWidth: "440px",
   },
   customSelect: {
-    width: '185px',
+    width: "200px",
   },
   type: {
-    marginTop: '10px',
+    marginTop: "20px",
+  },
+  paper: {
+    maxWidth: "456px",
+  },
+  textField: {
+    width: "200px",
+  },
+  amount: {
+    marginTop: "18px",
   },
 }));
-const CustomInput = ({ value, onClick }) => {
-  const classes = useStyles();
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
 
   return (
-    <input value={value} className={classes.dateInput} onClick={onClick} />
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
   );
+}
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
+
 export default function AccountingSearch() {
   const classes = useStyles();
-  const [amountFrom, setAmountFrom] = React.useState('');
-  const [amountTo, setAmountTo] = React.useState('');
-  const [dateFrom, setDateFrom] = React.useState(new Date());
-  const [dateTo, setDateTo] = React.useState(new Date());
-  const [type, setType] = React.useState('');
-  const [allAccount, setAllAccounts] = React.useState([]);
+  const [amountFrom, setAmountFrom] = useState("-100");
+  const [amountTo, setAmountTo] = useState("100");
+  const [dateFrom, setDateFrom] = useState(
+    moment().subtract(7, "days").format("YYYY-MM-DD")
+  );
+  const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
+  const [types, setTypes] = useState([]);
+  const [selectType, setSelectedType] = useState("");
+  const [searchResult, setSearchResults] = useState([]);
+  const [emptyResult, setEmptyResult] = useState("");
 
-  const serachAccounts = () => {
+  const searchAccounts = (e) => {
+    e.preventDefault();
     const payload = {
-      amount1: amountFrom,
-      amount2: amountTo,
+      data: {
+        amount1: amountFrom,
+        amount2: amountTo,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        typeID: selectType,
+      },
     };
-    Accounting.getAccounting(payload).then((res) => {
-      setAllAccounts(res.data);
+    Accounting.search(payload).then((res) => {
+      if (res.data.data.length > 0) {
+        setSearchResults(res.data.data);
+      } else {
+        setSearchResults([]);
+        setEmptyResult("None Found");
+      }
     });
   };
 
+  useEffect(() => {
+    Accounting.searchType().then((res) => setTypes(res.data.data));
+  }, []);
+
   const handleChange = (event) => {
-    setType(event.target.value);
+    setSelectedType(event.target.value);
   };
-  const handleDateChangeFrom = (date) => {
-    setDateFrom(date);
+  const handleDateChangeFrom = (event) => {
+    setDateFrom(event.target.value);
   };
-  const handleDateChangeTo = (date) => {
-    setDateTo(date);
+  const handleDateChangeTo = (event) => {
+    setDateTo(event.target.value);
   };
   return (
     <div className={classes.root}>
-      <Typography
-        component="h1"
-        variant="h2"
-        color="textPrimary"
-        className={classes.title}
-      >
-        Accounting Search
-      </Typography>
-      <Typography component="p" variant="body2" color="textPrimary">
-        This page is used to search accounting records
-      </Typography>
-      <form className={classes.form} noValidate>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              value={amountFrom}
-              variant="outlined"
-              margin="normal"
-              id="email"
-              label="Amount From"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(event) => setAmountFrom(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              value={amountTo}
-              variant="outlined"
-              margin="normal"
-              id="email"
-              label="Amount To"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(event) => setAmountTo(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography component="p" variant="body2" color="textPrimary">
-              Date From
-            </Typography>
-            <DatePicker
-              selected={dateFrom}
-              onChange={handleDateChangeFrom}
-              customInput={<CustomInput />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography component="p" variant="body2" color="textPrimary">
-              Date To
-            </Typography>
-            <DatePicker
-              selected={dateTo}
-              onChange={handleDateChangeTo}
-              customInput={<CustomInput />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography
-              className={classes.type}
-              component="p"
-              variant="body2"
-              color="textPrimary"
-            >
-              Type
-            </Typography>
-            <Select
-              className={classes.customSelect}
-              displayEmpty
-              value={type}
-              onChange={handleChange}
-            >
-              <MenuItem value="" disabled>
-                Insurance Form Fee
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </Grid>
+      <div className={classes.paper}>
+        <Grid container direction="column" justify="center">
+          <Typography
+            component="h1"
+            variant="h2"
+            color="textPrimary"
+            className={classes.title}
+          >
+            Accounting Search
+          </Typography>
+          <Typography component="p" variant="body2" color="textPrimary">
+            This page is used to search accounting records
+          </Typography>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => searchAccounts(e)}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={6} sm={6}>
+                <TextField
+                  autoFocus
+                  variant="outlined"
+                  label="Amount From"
+                  value={amountFrom}
+                  id="amountFrom"
+                  className={`${classes.textField} ${classes.amount}`}
+                  onChange={(event) => setAmountFrom(event.target.value)}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                  inputProps={{
+                    maxLength: 16,
+                  }}
+                  error={amountFrom.length >= 13}
+                  helperText={
+                    amountFrom &&
+                    amountFrom.length >= 13 &&
+                    "Enter between 12 digit"
+                  }
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Amount To"
+                  variant="outlined"
+                  value={amountTo}
+                  id="amountTo"
+                  onChange={(event) => setAmountTo(event.target.value)}
+                  className={`${classes.textField} ${classes.amount}`}
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                  inputProps={{
+                    maxLength: 16,
+                  }}
+                  error={amountTo.length >= 13}
+                  helperText={
+                    amountTo &&
+                    amountTo.length >= 13 &&
+                    "Enter between 12 digit"
+                  }
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date From"
+                  value={dateFrom}
+                  className={classes.textField}
+                  onChange={handleDateChangeFrom}
+                  type="date"
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date To"
+                  type="date"
+                  value={dateTo}
+                  className={classes.textField}
+                  onChange={handleDateChangeTo}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.customSelect}
+                  size="small"
+                >
+                  <InputLabel htmlFor="age-native-simple">Type</InputLabel>
+                  <Select
+                    native
+                    value={selectType}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "type",
+                      id: "age-native-simple",
+                    }}
+                    label="Age"
+                  >
+                    <option aria-label="None" value="" />
+                    {types.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Button
+                fullWidth
+                size="small"
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onSubmit={() => searchAccounts()}
+              >
+                Search
+              </Button>
+            </Grid>
+          </form>
         </Grid>
-        <Button
-          disabled={!dateFrom || !dateTo || !type || !amountFrom || !amountTo}
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={(event) => serachAccounts()}
-        >
-          Search
-        </Button>
-      </form>
+      </div>
+      {searchResult.length > 0 ? (
+        <AccountingSearchResults result={searchResult} />
+      ) : (
+        <Typography component="p" variant="body2" color="textPrimary">
+          {emptyResult}
+        </Typography>
+      )}
     </div>
   );
 }
-
-AccountingSearch.propTypes = {};

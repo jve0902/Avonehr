@@ -1,5 +1,5 @@
 import React from "react";
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { combineEventUis } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
@@ -7,16 +7,27 @@ import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClic
 function renderEventContent(eventInfo) {
   return (
     <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
+      <p
+        style={{
+          color: "#fff",
+          backgroundColor: "#2196f3",
+          width: "100%",
+          padding: "3px 5px",
+          borderRadius: "3px",
+          cursor: "pointer",
+        }}
+      >
+        {eventInfo.timeText} {eventInfo.event.title}
+      </p>
     </>
   );
 }
 
-const EventCalendar = ({ events }) => {
+const EventCalendar = ({ events, onDayClick }) => {
   const handleDateClick = (arg) => {
     // bind with an arrow function
-    alert(arg.dateStr);
+    //alert(arg.dateStr);
+    onDayClick(arg.dateStr);
   };
   console.log("events", events);
   return (

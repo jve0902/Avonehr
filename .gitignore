@@ -57,6 +57,7 @@ yarn-error.log*
 # Test Routes and Controller in gitignore
 # exclude everything
 /server/app/client/*
+/server/app/patient/*
 
 # exception to the rule
 /server/app/routes/test.routes.js

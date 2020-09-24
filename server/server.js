@@ -2,14 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./config.js");
-
-const clientsRoute = require("./app/routes/client.routes");
-const authRoute = require("./app/routes/auth.routes");
-const emailRoute = require("./app/routes/email.routes");
-const accountingSearchRoute = require("./app/routes/accounting-search.routes");
-const appointmentsRoute = require("./app/routes/appointments.routes");
-const appointmentTypesRoute = require("./app/routes/appointment-types.routes");
-
 const app = express();
 
 // Add middleware for parsing URL encoded bodies (which are usually sent by browser)
@@ -22,23 +14,35 @@ app.set("trust proxy", true);
 app.get("/", (req, res) => {
   const help = `
     <pre>
-      Welcome to the Clinios API!
+      Welcome to the API!
       Use an x-access-token header to work with your own data:
       fetch(url, { headers: { 'x-access-token': 'whatever-you-want' }})
       The following endpoints are available:
-      GET /users
     </pre>
   `;
 
   res.send(help);
 });
 
-app.use("/api/v1", accountingSearchRoute);
-app.use("/api/v1", appointmentsRoute);
-app.use("/api/v1", appointmentTypesRoute);
-app.use("/api/v1", clientsRoute);
-app.use("/api/v1", authRoute);
-app.use("/api/v1", emailRoute);
+app.use("/api/v1", require("./app/routes/accounting-search.routes"));
+app.use("/api/v1", require("./app/routes/appointment-type-user.routes"));
+app.use("/api/v1", require("./app/routes/appointment-type.routes"));
+app.use("/api/v1", require("./app/routes/auth-email.routes"));
+app.use("/api/v1", require("./app/routes/signup.routes"));
+app.use("/api/v1", require("./app/routes/login.routes"));
+app.use("/api/v1", require("./app/routes/client-agreement.routes"));
+app.use("/api/v1", require("./app/routes/config.routes"));
+app.use("/api/v1", require("./app/routes/drug.routes"));
+app.use("/api/v1", require("./app/routes/home.routes"));
+app.use("/api/v1", require("./app/routes/patient-search.routes"));
+app.use("/api/v1", require("./app/routes/patient.routes"));
+app.use("/api/v1", require("./app/routes/email-patient.routes"));
+app.use("/api/v1", require("./app/routes/password-reset.routes"));
+app.use("/api/v1", require("./app/routes/support.routes"));
+app.use("/api/v1", require("./app/routes/forms.routes"));
+app.use("/api/v1", require("./app/routes/process-lab.routes"));
+app.use("/api/v1", require("./app/routes/setup.routes"));
+app.use("/api/v1", require("./app/routes/search.routes"));
 
 app.listen(config.port).on("listening", () => {
   console.log(`API is live on ${config.port}`);
