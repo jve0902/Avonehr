@@ -1,18 +1,16 @@
 import React from "react";
-import FullCalendar, { combineEventUis } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 
 function renderEventContent(eventInfo) {
-  console.log("eventInfo.event.status", eventInfo.event);
   return (
     <>
       <p
         style={{
           color: "#fff",
           backgroundColor: eventInfo.event.backgroundColor,
-          // backgroundColor: "#2196f3",
           width: "100%",
           padding: "3px 5px",
           borderRadius: "3px",
@@ -26,7 +24,6 @@ function renderEventContent(eventInfo) {
 }
 
 const EventCalendar = ({ events, onDayClick, onEventClick }) => {
-  console.log("events", events);
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

@@ -5,8 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Colors from "../../../theme/colors";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -197,9 +195,11 @@ export default function Home() {
   };
 
   const handleEventCreation = (payload) => {
+    setIsLoading(true);
     Appointments.create(payload).then(
       (response) => {
-        console.log("newAppt:", response);
+        setIsLoading(false);
+        fetchAppointments();
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -232,8 +232,11 @@ export default function Home() {
     );
   };
   const handleEventTimeChange = (payload) => {
+    setIsLoading(true);
     Appointments.update(payload).then(
       (response) => {
+        setIsLoading(false);
+        fetchAppointments();
         dispatch(setSuccess(`${response.data.message}`));
         setIsEditOrCancelOpen(false);
       },
@@ -504,6 +507,7 @@ export default function Home() {
         </Grid>
       </Grid>
       <NewAppointment
+        isLoading={isLoading}
         selectedDate={selectedDate}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

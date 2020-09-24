@@ -25,9 +25,10 @@ import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { colors } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
+import clsx from "clsx";
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
 
@@ -74,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     top: "54px",
   },
+  contentWithLoading: {
+    opacity: "0.5",
+  },
   patientListContent: {
     padding: 0,
     "&:last-child": {
@@ -96,6 +100,7 @@ const NewAppointment = ({
   selectedDate,
   user,
   isNewAppointment,
+  isLoading,
   ...props
 }) => {
   const classes = useStyles();
@@ -172,160 +177,177 @@ const NewAppointment = ({
         New Appointment - {moment(selectedDate).format("YYYY.MM.DD")}
       </DialogTitle>
       <DialogContent className={classes.content}>
-        <DialogContentText id="alert-dialog-description">
+        {isLoading && (
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
+        <DialogContentText
+          id="alert-dialog-description"
+          className={clsx({
+            [classes.modalConent]: true, //always apply
+            [classes.contentWithLoading]: isLoading, //only when isLoading === true
+          })}
+        >
           This page is used to create a new appointment
-        </DialogContentText>
-        {errors &&
-          errors.map((error, index) => (
-            <Alert severity="error" key={index}>
-              {error.msg}
-            </Alert>
-          ))}
-        <div className={classes.root}>
-          <FormControl component="div" className={classes.formControl}>
-            <TextField
-              value={title}
+          {errors &&
+            errors.map((error, index) => (
+              <Alert severity="error" key={index}>
+                {error.msg}
+              </Alert>
+            ))}
+          <div className={classes.root}>
+            <FormControl component="div" className={classes.formControl}>
+              <TextField
+                value={title}
+                variant="outlined"
+                margin="normal"
+                size="small"
+                required
+                fullWidth
+                id="title"
+                label="Title"
+                name="title"
+                autoComplete="title"
+                autoFocus
+                onChange={(event) => setTitle(event.target.value)}
+              />
+            </FormControl>
+            <div className={classes.datePickers}>
+              <KeyboardDateTimePicker
+                className={classes.startdatePicker}
+                ampm={false}
+                clearable
+                id="date-picker-inline"
+                label="Start"
+                value={startDate}
+                placeholder="2020/10/10 10:00"
+                onChange={(date) => handleStartDateChange(date)}
+                minDate={new Date()}
+                onError={console.log}
+                disablePast
+                format="yyyy/MM/dd HH:mm"
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+              <KeyboardDateTimePicker
+                clearable
+                variant="outlined"
+                id="date-picker-inline"
+                label="End"
+                value={endDate}
+                placeholder="2020/10/10 11:00"
+                onChange={(date) => handleEndDateChange(date)}
+                minDate={new Date()}
+                onError={console.log}
+                disablePast
+                format="yyyy/MM/dd HH:mm"
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </div>
+            <FormControl className={classes.statuses}>
+              <FormLabel component="legend">Status</FormLabel>
+              <RadioGroup
+                aria-label="status"
+                name="status"
+                value={status}
+                onChange={(event) => setStatus(event.target.value)}
+                className={classes.statusList}
+              >
+                <FormControlLabel
+                  value="R"
+                  control={<Radio />}
+                  label="Requested"
+                />
+                <FormControlLabel
+                  value="A"
+                  control={<Radio />}
+                  label="Approved"
+                />
+                <FormControlLabel
+                  value="D"
+                  control={<Radio />}
+                  label="Declined"
+                />
+              </RadioGroup>
+            </FormControl>
+            <FormControl
               variant="outlined"
-              margin="normal"
               size="small"
-              required
-              fullWidth
-              id="title"
-              label="Title"
-              name="title"
-              autoComplete="title"
-              autoFocus
-              onChange={(event) => setTitle(event.target.value)}
-            />
-          </FormControl>
-          <div className={classes.datePickers}>
-            <KeyboardDateTimePicker
-              className={classes.startdatePicker}
-              ampm={false}
-              clearable
-              id="date-picker-inline"
-              label="Start"
-              value={startDate}
-              placeholder="2020/10/10 10:00"
-              onChange={(date) => handleStartDateChange(date)}
-              minDate={new Date()}
-              onError={console.log}
-              disablePast
-              format="yyyy/MM/dd HH:mm"
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-            <KeyboardDateTimePicker
-              clearable
-              variant="outlined"
-              id="date-picker-inline"
-              label="End"
-              value={endDate}
-              placeholder="2020/10/10 11:00"
-              onChange={(date) => handleEndDateChange(date)}
-              minDate={new Date()}
-              onError={console.log}
-              disablePast
-              format="yyyy/MM/dd HH:mm"
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
+              className={classes.formControl}
+            >
+              <InputLabel id="provider-select-outlined-label">
+                Provider
+              </InputLabel>
+              <Select
+                labelId="provider-select-outlined-label"
+                id="provider-select-outlined-label"
+                value={!!provider && provider.id}
+                onChange={handleProviderChange}
+                label="Provider"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {providers.map((provider) => (
+                  <MenuItem value={provider.id}>{provider.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl component="div" className={classes.formControl}>
+              <TextField
+                value={patientSearchTerm}
+                variant="outlined"
+                margin="normal"
+                size="small"
+                required
+                fullWidth
+                id="patient"
+                label="Patient"
+                name="patient"
+                autoComplete="patient"
+                autoFocus
+                onChange={(event) => setPatientSearchTerm(event.target.value)}
+              />
+              {patients.length > 0 && !selectedPatient && (
+                <Card className={classes.patientListCard}>
+                  <CardContent className={classes.patientListContent}>
+                    <List component="nav" aria-label="secondary mailbox folder">
+                      {patients.map((patient) => (
+                        <ListItem
+                          button
+                          onClick={(event) =>
+                            handlePatientChange(event, patient)
+                          }
+                        >
+                          <ListItemText
+                            primary={`${patient.firstname} ${patient.lastname}`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </CardContent>
+                </Card>
+              )}
+            </FormControl>
+            <Typography component="p" variant="body2" color="textPrimary">
+              Notes
+            </Typography>
+            <TextareaAutosize
+              className={classes.textArea}
+              aria-label="minimum height"
+              placeholder="Notes..."
+              onChange={(event) => setNotes(event.target.value)}
             />
           </div>
-          <FormControl className={classes.statuses}>
-            <FormLabel component="legend">Status</FormLabel>
-            <RadioGroup
-              aria-label="status"
-              name="status"
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-              className={classes.statusList}
-            >
-              <FormControlLabel
-                value="R"
-                control={<Radio />}
-                label="Requested"
-              />
-              <FormControlLabel
-                value="A"
-                control={<Radio />}
-                label="Approved"
-              />
-              <FormControlLabel
-                value="D"
-                control={<Radio />}
-                label="Declined"
-              />
-            </RadioGroup>
-          </FormControl>
-          <FormControl
-            variant="outlined"
-            size="small"
-            className={classes.formControl}
-          >
-            <InputLabel id="provider-select-outlined-label">
-              Provider
-            </InputLabel>
-            <Select
-              labelId="provider-select-outlined-label"
-              id="provider-select-outlined-label"
-              value={!!provider && provider.id}
-              onChange={handleProviderChange}
-              label="Provider"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {providers.map((provider) => (
-                <MenuItem value={provider.id}>{provider.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl component="div" className={classes.formControl}>
-            <TextField
-              value={patientSearchTerm}
-              variant="outlined"
-              margin="normal"
-              size="small"
-              required
-              fullWidth
-              id="patient"
-              label="Patient"
-              name="patient"
-              autoComplete="patient"
-              autoFocus
-              onChange={(event) => setPatientSearchTerm(event.target.value)}
-            />
-            {patients.length > 0 && !selectedPatient && (
-              <Card className={classes.patientListCard}>
-                <CardContent className={classes.patientListContent}>
-                  <List component="nav" aria-label="secondary mailbox folder">
-                    {patients.map((patient) => (
-                      <ListItem
-                        button
-                        onClick={(event) => handlePatientChange(event, patient)}
-                      >
-                        <ListItemText
-                          primary={`${patient.firstname} ${patient.lastname}`}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
-            )}
-          </FormControl>
-          <Typography component="p" variant="body2" color="textPrimary">
-            Notes
-          </Typography>
-          <TextareaAutosize
-            className={classes.textArea}
-            aria-label="minimum height"
-            placeholder="Notes..."
-            onChange={(event) => setNotes(event.target.value)}
-          />
-        </div>
+        </DialogContentText>
       </DialogContent>
       <DialogActions className={classes.modalAction}>
         <Button
