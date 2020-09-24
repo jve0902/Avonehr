@@ -6,7 +6,7 @@ const API_URL =
 
 class SearchPatient {
   search(data) {
-    return axios.post(API_URL + `/patient/search`, data, {
+    return axios.post(API_URL + `/client/patient-search`, data, {
       headers: authHeader(),
     });
   }

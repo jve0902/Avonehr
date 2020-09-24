@@ -6,10 +6,13 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SearchPatient from "../../../../services/patientSearch.service";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import PatientSearchResults from "./components";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import moment from "moment";
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +38,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+}
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default function PatientSearch() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState("");
@@ -42,12 +72,18 @@ export default function PatientSearch() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [patientId, setPatientId] = useState("");
-  const [createdFrom, setCreatedFrom] = useState("");
-  const [createdTo, setCreatedTo] = useState("");
-  const [appointmentFrom, setAppointmentFrom] = useState("");
-  const [appointmentTo, setAppointmentTO] = useState("");
-  const [paymentFrom, setPaymentFrom] = useState("");
-  const [paymentTo, setPaymnetTo] = useState("");
+  const [createdFrom, setCreatedFrom] = useState(
+    moment().subtract(7, "days").format("YYYY-MM-DD")
+  );
+  const [createdTo, setCreatedTo] = useState(moment().format("YYYY-MM-DD"));
+  const [appointmentFrom, setAppointmentFrom] = useState(
+    moment().subtract(7, "days").format("YYYY-MM-DD")
+  );
+  const [appointmentTo, setAppointmentTO] = useState(
+    moment().format("YYYY-MM-DD")
+  );
+  const [paymentFrom, setPaymentFrom] = useState("-100");
+  const [paymentTo, setPaymnetTo] = useState("100");
 
   const [searchResults, setSearchResults] = useState([]);
   const [selectStatus, setSelectedStatus] = useState("");
@@ -130,31 +166,41 @@ export default function PatientSearch() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <TextField
-                    className={classes.textField}
+                  <KeyboardDatePicker
+                    clearable
+                    // disablePast
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    format="yyyy/MM/dd"
+                    inputVariant="outlined"
+                    id="createdFrom"
+                    label="Created From"
                     value={createdFrom}
-                    variant="outlined"
+                    className={classes.textField}
+                    onChange={(date) => setCreatedFrom(date)}
+                    // type="date"
                     size="small"
                     margin="normal"
-                    name="createdFrom"
-                    label="Created From"
-                    id="createdFrom"
-                    autoComplete="createdFrom"
-                    onChange={(event) => setCreatedFrom(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <TextField
-                    className={classes.textField}
-                    value={createdTo}
+                  <KeyboardDatePicker
+                    clearable
+                    // disablePast
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    format="yyyy/MM/dd"
+                    inputVariant="outlined"
                     variant="outlined"
+                    id="createdTo"
+                    label="Created To"
+                    value={createdTo}
+                    className={classes.textField}
+                    onChange={(date) => setCreatedTo(date)}
                     size="small"
                     margin="normal"
-                    name="createdTo"
-                    label="Created To"
-                    id="createdTo"
-                    autoComplete="createdTo"
-                    onChange={(event) => setCreatedTo(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -188,7 +234,14 @@ export default function PatientSearch() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <TextField
+                  <KeyboardDatePicker
+                    clearable
+                    // disablePast
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    format="yyyy/MM/dd"
+                    inputVariant="outlined"
                     className={classes.textField}
                     value={appointmentFrom}
                     variant="outlined"
@@ -198,11 +251,18 @@ export default function PatientSearch() {
                     label="Appointment From"
                     id="appointmentFrom"
                     autoComplete="appointmentFrom"
-                    onChange={(event) => setAppointmentFrom(event.target.value)}
+                    onChange={(date) => setAppointmentFrom(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <TextField
+                  <KeyboardDatePicker
+                    clearable
+                    // disablePast
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    format="yyyy/MM/dd"
+                    inputVariant="outlined"
                     className={classes.textField}
                     value={appointmentTo}
                     variant="outlined"
@@ -212,7 +272,7 @@ export default function PatientSearch() {
                     label="Appointment To"
                     id="appointmentTO"
                     autoComplete="appointmentTO"
-                    onChange={(event) => setAppointmentTO(event.target.value)}
+                    onChange={(date) => setAppointmentTO(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -265,7 +325,20 @@ export default function PatientSearch() {
                     id="paymentFrom"
                     autoComplete="paymentFrom"
                     onChange={(event) => setPaymentFrom(event.target.value)}
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                    inputProps={{
+                      maxLength: 16,
+                    }}
+                    error={paymentFrom.length >= 13}
+                    helperText={
+                      paymentFrom &&
+                      paymentFrom.length >= 13 &&
+                      "Enter between 12 digit"
+                    }
                   />
+                  {console.log(paymentFrom.length)}
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField
@@ -280,6 +353,18 @@ export default function PatientSearch() {
                     id="paymnetTo"
                     autoComplete="paymnetTo"
                     onChange={(event) => setPaymnetTo(event.target.value)}
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                    inputProps={{
+                      maxLength: 16,
+                    }}
+                    error={paymentTo.length >= 13}
+                    helperText={
+                      paymentTo &&
+                      paymentTo.length >= 13 &&
+                      "Enter between 12 digit"
+                    }
                   />
                 </Grid>
               </Grid>
@@ -290,7 +375,7 @@ export default function PatientSearch() {
                 fullWidth
                 variant="contained"
                 color="primary"
-                type="submit"
+                type="subhmit"
                 className={classes.submit}
               >
                 Search

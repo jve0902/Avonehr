@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import PropTypes from "prop-types";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,22 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     maxWidth: "880px",
   },
+  overFlowControl: {
+    maxWidth: "130px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
 }));
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 13,
+  },
+}))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -73,11 +89,32 @@ export default function PatientSearchResults(props) {
                 <TableCell component="th" scope="row">
                   {moment(result.dt).format("lll")}
                 </TableCell>
-
-                <TableCell>{result.Encounter}</TableCell>
+                {result.encounter_title.length > 40 ? (
+                  <LightTooltip title={result.encounter_title}>
+                    <TableCell className={classes.overFlowControl}>
+                      {result.encounter_title}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
+                  <TableCell className={classes.overFlowControl}>
+                    {result.encounter_title}
+                  </TableCell>
+                )}
                 <TableCell>{result.client_id}</TableCell>
-
-                <TableCell>{result.notes || "-"}</TableCell>
+                {result.notes && result.notes.length > 40 ? (
+                  <LightTooltip title={result.notes}>
+                    <TableCell
+                      align="center"
+                      className={classes.overFlowControl}
+                    >
+                      {result.notes || "-"}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
+                  <TableCell align="center" className={classes.overFlowControl}>
+                    {result.notes || "-"}
+                  </TableCell>
+                )}
               </StyledTableRow>
             ))}
           </TableBody>
