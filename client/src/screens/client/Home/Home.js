@@ -5,16 +5,19 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Colors from "../../../theme/colors";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar, NewAppointment } from "./components";
+import { Calendar, NewAppointment, EditOrCancel } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
-import { Button } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { setSuccess } from "./../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
+  pageTitle: {
+    marginBottom: theme.spacing(2),
+  },
   root: {
     flexGrow: 1,
     padding: "40px 0px",
@@ -76,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   messageToPatientsUnread: {
-    marginTop: theme.spacing(16),
+    marginTop: theme.spacing(8),
     "& li": {
       fontSize: "13px",
       listStyle: "none",
@@ -116,17 +119,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState([]);
   const [selectedProvider, setSelectedProvider] = useState("");
   const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [events, setEvents] = useState([
-    { title: "event 1", date: "2020-08-01" },
-    { title: "event 2", date: "2020-08-02" },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditOrCancelOpen, setIsEditOrCancelOpen] = useState(false);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -136,6 +141,8 @@ export default function Home() {
           title: item.firstname,
           start: item.start_dt,
           end: item.end_dt,
+          backgroundColor:
+            item.status && item.status == "D" ? "#ffab40" : "#2196f3",
         },
       ];
     }, []);
@@ -144,12 +151,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    async function fetchAppointments() {
-      const { data } = await Appointments.getAll();
-      const eventsFromAPI = getMapFromArray(data);
-      setEvents(eventsFromAPI);
-    }
-
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
       setProviders(data);
@@ -157,7 +158,14 @@ export default function Home() {
 
     fetchProviders();
     fetchAppointments();
+    fetchProviderDetails();
   }, []);
+
+  async function fetchAppointments() {
+    const { data } = await Appointments.getAll();
+    const eventsFromAPI = getMapFromArray(data);
+    setEvents(eventsFromAPI);
+  }
 
   const handleProviderClick = async (provider) => {
     setSelectedProvider(provider);
@@ -165,13 +173,12 @@ export default function Home() {
     const eventsFromAPI = getMapFromArray(data);
     setEvents(eventsFromAPI);
 
-    fetchProviderDetails(provider.id);
     fetchUnreadPatientMessages(provider.id);
     fetchPatientApptRequests(provider.id);
   };
 
-  async function fetchProviderDetails(providerId) {
-    const { data } = await DashboardHome.getProviderDetails(providerId);
+  async function fetchProviderDetails() {
+    const { data } = await DashboardHome.getProviderDetails();
     setProviderDetails(data);
   }
   async function fetchUnreadPatientMessages(providerId) {
@@ -187,15 +194,75 @@ export default function Home() {
     setSelectedDate(date);
   };
 
-  console.log("providers:", providers);
+  const handleEventCreation = (payload) => {
+    setIsLoading(true);
+    Appointments.create(payload).then(
+      (response) => {
+        setIsLoading(false);
+        fetchAppointments();
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
+  };
+
+  const handleEventClick = (calEvent) => {
+    const eventClicked = events.filter(
+      (event) => event.id == calEvent.event.id
+    );
+    setSelectedEvent(eventClicked[0]);
+    setIsEditOrCancelOpen(true);
+  };
+
+  const handleEventCancellation = (payload) => {
+    setIsLoading(true);
+    Appointments.cancelEvent(payload).then(
+      (response) => {
+        setIsLoading(false);
+        fetchAppointments();
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsEditOrCancelOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
+  };
+  const handleEventTimeChange = (payload) => {
+    setIsLoading(true);
+    Appointments.update(payload).then(
+      (response) => {
+        setIsLoading(false);
+        fetchAppointments();
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsEditOrCancelOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
+  };
+
   return (
     <div className={classes.root}>
-      <Typography component="h1" variant="h2" color="textPrimary">
-        Home
+      <Typography
+        component="h1"
+        variant="h2"
+        color="textPrimary"
+        className={classes.pageTitle}
+      >
+        Home {selectedProvider && `- ${selectedProvider.name}`}
       </Typography>
       <Grid container spacing={8}>
         <Grid item md={7} xs={12}>
-          <Calendar events={events} onDayClick={handleDayClick} />
+          <Calendar
+            events={events}
+            onDayClick={handleDayClick}
+            onEventClick={handleEventClick}
+          />
         </Grid>
         <Grid item md={5} xs={12}>
           <Card className={classes.root1} variant="outlined">
@@ -233,123 +300,135 @@ export default function Home() {
               </ul>
             </CardContent>
           </Card>
-          {!!providerDetails && (
-            <Card className={classes.providerDetails} variant="outlined">
-              <Grid
-                container
-                justify="space-between"
-                alignItems="center"
-                className={classes.titleContainer}
-              >
-                <Typography className={classes.title}>
-                  Provider Details - {selectedProvider.name}
-                </Typography>
-              </Grid>
 
-              <CardContent>
-                <ul className={classes.providers}>
-                  <li className={classes.providersLabel}>
-                    <div>Type</div>
-                    <div className={classes.count}>Count</div>
-                    <div>Since</div>
-                  </li>
-                  <li>
-                    <Link to={`/process-lab/${selectedProvider.id}`}>
-                      <div>Patient Labs</div>
-                      <div className={classes.count}>
-                        {!!providerDetails &&
-                          providerDetails.patientLabs["count(l.id)"]}
-                      </div>
-                      <div>
-                        {!!providerDetails &&
-                          `${moment(
-                            providerDetails.patientLabs["min(l.created)"]
-                          ).format("ll")} (${moment(
-                            providerDetails.patientLabs["min(l.created)"]
-                          )
-                            .startOf("day")
-                            .fromNow()})`}
-                      </div>
-                    </Link>
-                  </li>
+          <Card className={classes.providerDetails} variant="outlined">
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              className={classes.titleContainer}
+            >
+              <Typography className={classes.title}>
+                Provider Details
+                {selectedProvider && ` - ${selectedProvider.name}`}
+              </Typography>
+            </Grid>
 
-                  <li>
-                    <Link to={`/process-message/${selectedProvider.id}`}>
-                      <div>Messages from Patients</div>
-                      <div className={classes.count}>
-                        {!!providerDetails &&
-                          providerDetails.messageFromPatients["count(m.id)"]}
-                      </div>
-                      <div>
-                        {!!providerDetails &&
-                          `${moment(
-                            providerDetails.patientLabs["min(m.created)"]
-                          ).format("ll")} (${moment(
-                            providerDetails.patientLabs["min(m.created)"]
-                          )
-                            .startOf("day")
-                            .fromNow()})`}
-                      </div>
-                    </Link>
-                  </li>
-                  <li>
-                    <div>Messages To Patient Unread</div>
+            <CardContent>
+              <ul className={classes.providers}>
+                <li className={classes.providersLabel}>
+                  <div>Type</div>
+                  <div className={classes.count}>Count</div>
+                  <div>Since</div>
+                </li>
+                <li>
+                  <Link
+                    to={
+                      selectedProvider
+                        ? `/process-lab/${selectedProvider.id}`
+                        : "#"
+                    }
+                  >
+                    <div>Patient Labs</div>
                     <div className={classes.count}>
                       {!!providerDetails &&
-                        providerDetails.messageToPatientsNotRead["count(m.id)"]}
+                        providerDetails.patientLabs &&
+                        providerDetails.patientLabs["count(l.id)"]}
                     </div>
                     <div>
                       {!!providerDetails &&
-                      providerDetails.messageToPatientsNotRead[
-                        "min(m.unread_notify_dt)"
-                      ]
-                        ? `${moment(
-                            providerDetails.messageToPatientsNotRead[
-                              "min(m.unread_notify_dt)"
-                            ]
-                          ).format("ll")} (${moment(
-                            providerDetails.messageToPatientsNotRead[
-                              "min(m.unread_notify_dt)"
-                            ]
-                          )
-                            .startOf("day")
-                            .fromNow()})`
-                        : "null"}
+                        providerDetails.patientLabs &&
+                        `${moment(
+                          providerDetails.patientLabs["min(l.created)"]
+                        ).format("ll")} (${moment(
+                          providerDetails.patientLabs["min(l.created)"]
+                        )
+                          .startOf("day")
+                          .fromNow()})`}
                     </div>
-                  </li>
-                  <li>
-                    <div>Patient Appointments Request</div>
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to={`/process-message/${selectedProvider.id}`}>
+                    <div>Messages from Patients</div>
                     <div className={classes.count}>
                       {!!providerDetails &&
-                        providerDetails.patientAppointmentRequest[
-                          "count(m.id)"
-                        ]}
+                        providerDetails.messageFromPatients &&
+                        providerDetails.messageFromPatients["count(m.id)"]}
                     </div>
                     <div>
                       {!!providerDetails &&
-                      providerDetails.patientAppointmentRequest[
-                        "min(m.unread_notify_dt)"
-                      ]
-                        ? `${moment(
-                            providerDetails.patientAppointmentRequest[
-                              "min(m.unread_notify_dt)"
-                            ]
-                          ).format("ll")} (${moment(
-                            providerDetails.messageToPatientsNotRead[
-                              "min(m.unread_notify_dt)"
-                            ]
-                          )
-                            .startOf("day")
-                            .fromNow()})`
-                        : "null"}
+                        providerDetails.patientLabs &&
+                        `${moment(
+                          providerDetails.patientLabs["min(m.created)"]
+                        ).format("ll")} (${moment(
+                          providerDetails.patientLabs["min(m.created)"]
+                        )
+                          .startOf("day")
+                          .fromNow()})`}
                     </div>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+                  </Link>
+                </li>
+                <li>
+                  <div>Messages To Patient Unread</div>
+                  <div className={classes.count}>
+                    {!!providerDetails &&
+                      providerDetails.messageToPatientsNotRead &&
+                      providerDetails.messageToPatientsNotRead["count(m.id)"]}
+                  </div>
+                  <div>
+                    {!!providerDetails &&
+                    providerDetails.messageToPatientsNotRead &&
+                    providerDetails.messageToPatientsNotRead[
+                      "min(m.unread_notify_dt)"
+                    ]
+                      ? `${moment(
+                          providerDetails.messageToPatientsNotRead[
+                            "min(m.unread_notify_dt)"
+                          ]
+                        ).format("ll")} (${moment(
+                          providerDetails.messageToPatientsNotRead[
+                            "min(m.unread_notify_dt)"
+                          ]
+                        )
+                          .startOf("day")
+                          .fromNow()})`
+                      : "null"}
+                  </div>
+                </li>
+                <li>
+                  <div>Patient Appointments Request</div>
+                  <div className={classes.count}>
+                    {!!providerDetails &&
+                      providerDetails.patientAppointmentRequest &&
+                      providerDetails.patientAppointmentRequest["count(m.id)"]}
+                  </div>
+                  <div>
+                    {!!providerDetails &&
+                    providerDetails.patientAppointmentRequest &&
+                    providerDetails.patientAppointmentRequest[
+                      "min(m.unread_notify_dt)"
+                    ]
+                      ? `${moment(
+                          providerDetails.patientAppointmentRequest[
+                            "min(m.unread_notify_dt)"
+                          ]
+                        ).format("ll")} (${moment(
+                          providerDetails.messageToPatientsNotRead[
+                            "min(m.unread_notify_dt)"
+                          ]
+                        )
+                          .startOf("day")
+                          .fromNow()})`
+                      : "null"}
+                  </div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
 
-          {!!providerDetails && (
+          {!!selectedProvider && (
             <React.Fragment>
               <Card
                 className={classes.messageToPatientsUnread}
@@ -428,10 +507,20 @@ export default function Home() {
         </Grid>
       </Grid>
       <NewAppointment
+        isLoading={isLoading}
         selectedDate={selectedDate}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
+        onSave={handleEventCreation}
+      />
+      <EditOrCancel
+        isLoading={isLoading}
+        event={selectedEvent}
+        isOpen={isEditOrCancelOpen}
+        onClose={() => setIsEditOrCancelOpen(false)}
+        onCancel={(id) => handleEventCancellation(id)}
+        onEventTimeChange={(payload) => handleEventTimeChange(payload)}
       />
     </div>
   );
