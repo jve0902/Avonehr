@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 56,
     height: "100%",
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 64,
+      paddingTop: 70,
     },
   },
   shiftContent: {
