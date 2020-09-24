@@ -9,7 +9,7 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler } = props;
+  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler, cardInfo } = props;
   
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
@@ -48,10 +48,17 @@ const PatientCard = (props) => {
             )
           }
           {
+            !!cardInfo && (
+              <Typography className={classes.cardInfo}>
+                {cardInfo}
+              </Typography>
+            )
+          }
+          {
             showActions && (
               <Grid>
-                {!!primaryButtonText && (<Button onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
-                {!!secondaryButtonText && (<Button onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
+                {!!primaryButtonText && (<Button className={classes.button} onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
+                {!!secondaryButtonText && (<Button className={classes.button} onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
               </Grid>
             )
           }
@@ -90,8 +97,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '600',
     fontSize: 13
   },
-  seeMoreLinks: {
-    cursor: "pointer"
+  cardInfo: {
+    fontSize: 13
+  },
+  button: {
+    fontSize: 13
   },
   cardContent: {
     padding: 8,
@@ -117,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     margin: "4px 0",
-    maxWidth: '100px'
+    maxWidth: '110px'
   },
   icon: {
     cursor: 'pointer'
@@ -135,6 +145,7 @@ PatientCard.defaultProps = {
   primaryButtonText: 'History',
   secondaryButtonText: 'Edit',
   icon: null,
+  cardInfo: null,
   primaryButtonHandler: () => {},
   secondaryButtonHandler: () => {},
   iconHandler: () => {},
@@ -149,6 +160,7 @@ PatientCard.propTypes = {
   primaryButtonText: PropTypes.string,
   secondaryButtonText: PropTypes.string,
   icon: PropTypes.node,
+  cardInfo: PropTypes.string,
   primaryButtonHandler: PropTypes.func,
   secondaryButtonHandler: PropTypes.func,
   iconHandler: PropTypes.func,
