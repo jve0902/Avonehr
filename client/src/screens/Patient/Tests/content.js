@@ -32,6 +32,7 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
+    whiteSpace: 'nowrap',
     fontWeight: 700,
   },
   body: {
@@ -47,10 +48,13 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& th": {
       fontSize: 12,
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
   },
 }))(TableRow);
@@ -80,11 +84,11 @@ const TestsContent = (props) => {
           {data.map((row) => (
             <StyledTableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, DDD, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.type}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DD, YYYY") : "-"}</TableCell>
+              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DDD, YYYY") : "-"}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>

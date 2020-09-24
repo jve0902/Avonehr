@@ -821,7 +821,7 @@ export default function Patient() {
         hideActions={true}
         size={"lg"}
       />
-      <Grid className={classes.main} container spacing={1}>
+      <Grid container spacing={1}>
         <Grid item md={3} sm={6} xs={12}>
           {FirstColumnPatientCards.map((item, index) => {
             return (
@@ -838,6 +838,7 @@ export default function Patient() {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
+                cardInfo={item.cardInfo}
               />
             );
           })}
@@ -892,7 +893,7 @@ export default function Patient() {
         </Grid>
       </Grid>
 
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Grid item md={6} xs={12}>
           <Card
             title="Documents"
@@ -929,9 +930,6 @@ export default function Patient() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  main: {
-    margin: theme.spacing(0.5, 0, 0.5, 0),
-  },
   noDisplay: {
     display: "none",
   },

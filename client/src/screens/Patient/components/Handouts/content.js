@@ -1,11 +1,10 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  Typography
+} from "@material-ui/core";
 import moment from "moment";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
 
 import PatientService from "../../../../services/patient.service";
 import { setError, setSuccess } from "../../../../store/common/actions";
@@ -26,27 +25,15 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "12px",
     },
   },
+  block: {
+    minWidth: 90,
+    maxWidth: 120,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: theme.spacing(0, 0.5, 0, 0),
+  }
 }));
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.grey,
-    color: theme.palette.grey,
-    fontSize: "12px",
-    fontWeight: 700,
-  },
-  body: {
-    padding: '6px 16px 6px 0px',
-    fontSize: 12,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    fontSize: 14,
-    cursor: "pointer"
-  },
-}))(TableRow);
 
 const HandoutsContent = (props) => {
   const { data, reloadData } = props;
@@ -79,20 +66,20 @@ const HandoutsContent = (props) => {
   };
 
   return (
-    <TableContainer className={classes.tableContainer}>
-      <Table size="small" className={classes.table}>
-        <TableBody>
-          {data.map((row, index) => (
-            <StyledTableRow onClick={() => alert(row.filename)} key={`${row.created}_${index}`}>
-              <StyledTableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
-              </StyledTableCell>
-              <StyledTableCell>{row.filename}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+    {
+      data.map(item => (
+        <Grid onClick={() => alert(item.filename)} key={item.created} container className={classes.inputRow}>
+          <Grid item className={classes.block}>
+            <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM DD YYYY")}</Typography>
+          </Grid>
+          <Grid item className={classes.block}>
+            <Typography component="span" className={classes.text12} color="textPrimary">{item.filename}</Typography>
+          </Grid>
+        </Grid>
+      ))
+    }
+    </>
   );
 };
 

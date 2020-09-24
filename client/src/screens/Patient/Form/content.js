@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -11,12 +12,15 @@ export default function FormContent(props) {
 
   return (
     <>
-      {
+    {
         data.map(item => (
-          <Grid key={item.title} className={classes.inputRow}>
-            <Typography component="span" className={classes.text12} color="textPrimary">
-              {item.title}
-            </Typography>
+          <Grid key={item.created} container className={classes.inputRow}>
+            <Grid item className={classes.block}>
+              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM DD YYYY")}</Typography>
+            </Grid>
+            <Grid item className={classes.block}>
+              <Typography component="span" className={classes.text12} color="textPrimary">{item.title}</Typography>
+            </Grid>
           </Grid>
         ))
       }
@@ -30,5 +34,12 @@ const useStyles = makeStyles((theme) => ({
   },
   text12: {
     fontSize: 12
+  },
+  block: {
+    width: 90,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: theme.spacing(0, 0.5, 0, 0),
   }
 }));
