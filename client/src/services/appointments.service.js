@@ -15,15 +15,15 @@ class Appointments {
       .get(API_URL + `/appointments/${providerId}`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  create(data) {
-    return axios.post(API_URL + `/appointments`, data, {
+  create(payload) {
+    return axios.post(API_URL + `/appointments`, payload, {
       headers: authHeader(),
     });
   }
-  update(data, userId, appointmentId) {
+  update(payload) {
     return axios.put(
-      API_URL + `/appointments/${userId}/${appointmentId}`,
-      data,
+      API_URL + `/appointments/update/${payload.data.id}`,
+      payload,
       {
         headers: authHeader(),
       }

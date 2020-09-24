@@ -58,17 +58,7 @@ const EditOrCancel = ({
     handleStartDateChange(props.event.start_dt);
     handleEndDateChange(props.event.end_dt);
   }, [props.event]);
-  /**
- *     "data": {
-        "providerName": "Dr. Garry",
-        "patient": {
-            "id": 1,
-            "firstname": "John Carry",
-            "email": "john.carry@clinios.com"
-        },
-        "appointmentDate": "2020-08-08"
-    }
- */
+
   const handleEventCancel = () => {
     const payload = {
       data: {
@@ -79,11 +69,31 @@ const EditOrCancel = ({
           firstname: props.event.firstname,
           email: props.event.email,
         },
-        appointmentDate: moment(props.event.start).format("YYYY-MM-DD"),
+        appointmentDate: moment(props.event.start).format("YYYY-MM-DD HH:mm"),
       },
     };
     onCancel(payload);
   };
+
+  const handleEventTimeChange = () => {
+    const payload = {
+      data: {
+        id: props.event.id,
+        providerName: props.event.provider_name,
+        patient: {
+          id: props.event.patient_id,
+          firstname: props.event.firstname,
+          email: props.event.email,
+        },
+        old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
+        old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
+        new_start_dt: moment(startDate).format("YYYY-MM-DD HH:mm"),
+        new_end_dt: moment(endDate).format("YYYY-MM-DD HH:mm"),
+      },
+    };
+    onEventTimeChange(payload);
+  };
+
   return (
     <div>
       <Dialog
@@ -169,7 +179,7 @@ const EditOrCancel = ({
           </Button>
           {!!changeTime && (
             <Button
-              onClick={() => onEventTimeChange()}
+              onClick={() => handleEventTimeChange()}
               color="primary"
               autoFocus
             >

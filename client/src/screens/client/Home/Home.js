@@ -225,11 +225,11 @@ export default function Home() {
       }
     );
   };
-  const handleEventTimeChange = () => {
-    Appointments.create().then(
+  const handleEventTimeChange = (payload) => {
+    Appointments.update(payload).then(
       (response) => {
         dispatch(setSuccess(`${response.data.message}`));
-        setIsOpen(false);
+        setIsEditOrCancelOpen(false);
       },
       (error) => {
         setErrors(error.response.data.error);
@@ -492,7 +492,7 @@ export default function Home() {
         isOpen={isEditOrCancelOpen}
         onClose={() => setIsEditOrCancelOpen(false)}
         onCancel={(id) => handleEventCancellation(id)}
-        onEventTimeChange={() => handleEventTimeChange()}
+        onEventTimeChange={(payload) => handleEventTimeChange(payload)}
       />
     </div>
   );

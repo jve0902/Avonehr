@@ -193,16 +193,18 @@ const updateAppointment = async (req, res) => {
   const { id } = req.params;
   const {
     patient,
-    oldAppointmentDate,
+    new_start_dt,
+    new_end_dt,
+    old_start_dt,
+    old_end_dt,
     providerName,
-    newAppointmentDate,
   } = req.body.data;
 
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
       `update user_calendar
-        set status='D', decline_dt=now()
+        set start_dt='${new_start_dt}', end_dt='${new_end_dt}'
         where id=${id}`
     );
     if (!updateResponse.affectedRows) {
@@ -211,9 +213,9 @@ const updateAppointment = async (req, res) => {
     }
     const emailTemplate = updateAppointmentTemplate(
       patient,
-      moment(oldAppointmentDate).format("YYYY-MM-DD HH:mm:ss"),
+      moment(old_start_dt).format("YYYY-MM-DD HH:mm:ss"),
       providerName,
-      moment(newAppointmentDate).format("YYYY-MM-DD HH:mm:ss")
+      moment(new_start_dt).format("YYYY-MM-DD HH:mm:ss")
     );
     if (process.env.NODE_ENV === "development") {
       let info = await transporter.sendMail(emailTemplate);
