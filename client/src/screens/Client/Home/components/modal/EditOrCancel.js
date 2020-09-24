@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -21,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     fontSize: "18px",
   },
+  datePickers: {
+    display: "flex",
+    marginTop: theme.spacing(2),
+  },
+  startdatePicker: {
+    marginRight: theme.spacing(4),
+  },
   buttonContainer: {
     display: "flex",
     justifyContent: "space-around",
@@ -34,8 +42,17 @@ const useStyles = makeStyles((theme) => ({
 const EditOrCancel = ({ isOpen, onClose, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [changeTime, handleChangeTime] = useState(false);
+  const [startDate, handleStartDateChange] = useState(new Date());
+  const [endDate, handleEndDateChange] = useState(new Date());
   const handleDeleteAppointment = () => {};
   console.log("props.event", props.event);
+
+  useEffect(() => {
+    handleChangeTime(false);
+    handleStartDateChange(props.event.start_dt);
+    handleEndDateChange(props.event.end_dt);
+  }, [props.event]);
 
   return (
     <div>
@@ -59,27 +76,72 @@ const EditOrCancel = ({ isOpen, onClose, ...props }) => {
               "YYYY-MM-DD HH:mm:ss"
             )}`}</b>
             . You can cancel or Edit this appointment.
-            <div className={classes.buttonContainer}>
-              <Button variant="outlined" color="secondary">
-                Cancel
-              </Button>
-              <Button variant="outlined" color="primary">
-                Change time
-              </Button>
-            </div>
+            {changeTime && (
+              <div className={classes.datePickers}>
+                <KeyboardDateTimePicker
+                  className={classes.startdatePicker}
+                  ampm={false}
+                  clearable
+                  id="date-picker-inline"
+                  label="Start"
+                  value={startDate}
+                  placeholder="2020/10/10 10:00"
+                  onChange={(date) => handleStartDateChange(date)}
+                  minDate={new Date()}
+                  onError={console.log}
+                  disablePast
+                  format="yyyy/MM/dd HH:mm"
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+                <KeyboardDateTimePicker
+                  clearable
+                  variant="outlined"
+                  id="date-picker-inline"
+                  label="End"
+                  value={endDate}
+                  placeholder="2020/10/10 11:00"
+                  onChange={(date) => handleEndDateChange(date)}
+                  minDate={new Date()}
+                  onError={console.log}
+                  disablePast
+                  format="yyyy/MM/dd HH:mm"
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </div>
+            )}
+            {!changeTime && (
+              <div className={classes.buttonContainer}>
+                <Button variant="outlined" color="secondary">
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleChangeTime(true)}
+                >
+                  Change time
+                </Button>
+              </div>
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions className={classes.modalAction}>
           <Button onClick={() => onClose("no")} color="primary">
             Close
           </Button>
-          {/*  <Button
-            onClick={() => handleDeleteAppointment()}
-            color="primary"
-            autoFocus
-          >
-            Yes
-          </Button> */}
+          {!!changeTime && (
+            <Button
+              onClick={() => handleDeleteAppointment()}
+              color="primary"
+              autoFocus
+            >
+              Save
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>
