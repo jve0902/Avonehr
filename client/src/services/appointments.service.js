@@ -29,10 +29,14 @@ class Appointments {
       }
     );
   }
-  deleteById(id) {
-    return axios.delete(API_URL + `/appointments/${id}`, {
-      headers: authHeader(),
-    });
+  cancelEvent(payload) {
+    return axios.put(
+      API_URL + `/appointments/cancel/${payload.data.id}`,
+      payload,
+      {
+        headers: authHeader(),
+      }
+    );
   }
 }
 

@@ -213,8 +213,30 @@ export default function Home() {
     setSelectedEvent(eventClicked[0]);
     setIsEditOrCancelOpen(true);
   };
-  console.log("providers:", providers);
-  console.log("selectedEvent:", selectedEvent);
+
+  const handleEventCancellation = (payload) => {
+    Appointments.cancelEvent(payload).then(
+      (response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsEditOrCancelOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
+  };
+  const handleEventTimeChange = () => {
+    Appointments.create().then(
+      (response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        setIsOpen(false);
+      },
+      (error) => {
+        setErrors(error.response.data.error);
+      }
+    );
+  };
+
   return (
     <div className={classes.root}>
       <Typography component="h1" variant="h2" color="textPrimary">
@@ -469,6 +491,8 @@ export default function Home() {
         event={selectedEvent}
         isOpen={isEditOrCancelOpen}
         onClose={() => setIsEditOrCancelOpen(false)}
+        onCancel={(id) => handleEventCancellation(id)}
+        onEventTimeChange={() => handleEventTimeChange()}
       />
     </div>
   );

@@ -39,21 +39,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditOrCancel = ({ isOpen, onClose, ...props }) => {
+const EditOrCancel = ({
+  isOpen,
+  onClose,
+  onCancel,
+  onEventTimeChange,
+  ...props
+}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [changeTime, handleChangeTime] = useState(false);
+  const [eventId, setEventId] = useState(null);
   const [startDate, handleStartDateChange] = useState(new Date());
   const [endDate, handleEndDateChange] = useState(new Date());
-  const handleDeleteAppointment = () => {};
-  console.log("props.event", props.event);
 
   useEffect(() => {
     handleChangeTime(false);
     handleStartDateChange(props.event.start_dt);
     handleEndDateChange(props.event.end_dt);
   }, [props.event]);
-
+  /**
+ *     "data": {
+        "providerName": "Dr. Garry",
+        "patient": {
+            "id": 1,
+            "firstname": "John Carry",
+            "email": "john.carry@clinios.com"
+        },
+        "appointmentDate": "2020-08-08"
+    }
+ */
+  const handleEventCancel = () => {
+    const payload = {
+      data: {
+        id: props.event.id,
+        providerName: props.event.provider_name,
+        patient: {
+          id: props.event.patient_id,
+          firstname: props.event.firstname,
+          email: props.event.email,
+        },
+        appointmentDate: moment(props.event.start).format("YYYY-MM-DD"),
+      },
+    };
+    onCancel(payload);
+  };
   return (
     <div>
       <Dialog
@@ -115,8 +145,12 @@ const EditOrCancel = ({ isOpen, onClose, ...props }) => {
             )}
             {!changeTime && (
               <div className={classes.buttonContainer}>
-                <Button variant="outlined" color="secondary">
-                  Cancel
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleEventCancel()}
+                >
+                  Cancel this Appt.
                 </Button>
                 <Button
                   variant="outlined"
@@ -135,11 +169,11 @@ const EditOrCancel = ({ isOpen, onClose, ...props }) => {
           </Button>
           {!!changeTime && (
             <Button
-              onClick={() => handleDeleteAppointment()}
+              onClick={() => onEventTimeChange()}
               color="primary"
               autoFocus
             >
-              Save
+              Update
             </Button>
           )}
         </DialogActions>
