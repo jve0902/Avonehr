@@ -23,10 +23,11 @@ function renderEventContent(eventInfo) {
   );
 }
 
-const EventCalendar = ({ events }) => {
+const EventCalendar = ({ events, onDayClick }) => {
   const handleDateClick = (arg) => {
     // bind with an arrow function
-    alert(arg.dateStr);
+    //alert(arg.dateStr);
+    onDayClick(arg.dateStr);
   };
   console.log("events", events);
   return (

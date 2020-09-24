@@ -5,20 +5,22 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+
+import PatientService from "../../../../services/patient.service";
+import { setError, setSuccess } from "../../../../store/common/actions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: 9,
   },
   tableContainer: {
-    minWidth: 650,
+    // minWidth: 650,
   },
   actions: {
     textAlign: "center",
     display: "flex",
-    justifyContent: "center",
     border: "none",
     "& button": {
       fontSize: "12px",
@@ -34,48 +36,58 @@ const StyledTableCell = withStyles((theme) => ({
     fontWeight: 700,
   },
   body: {
-    fontSize: 14,
+    padding: '6px 16px 6px 0px',
+    fontSize: 12,
   },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "& th": {
-      fontSize: 12,
-    },
-    "& td": {
-      fontSize: 12,
-      height: "50px"
-    },
+    cursor: "pointer"
   },
 }))(TableRow);
 
-const MedicalNotesDetails = (props) => {
+const HandoutsContent = (props) => {
   const { data, reloadData } = props;
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const onItemDelete = (selectedItem) => {
+    const documentId = selectedItem.id || 1;
+    const tab = "Labs";
+    PatientService.deleteDocument(documentId, tab)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        reloadData();
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage,
+          })
+        );
+      });
+  };
 
   return (
     <TableContainer className={classes.tableContainer}>
       <Table size="small" className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Created</StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
-          </TableRow>
-        </TableHead>
         <TableBody>
           {data.map((row, index) => (
-            <StyledTableRow key={`${row.created}_${index}`}>
-              <TableCell component="th" scope="row">
+            <StyledTableRow onClick={() => alert(row.filename)} key={`${row.created}_${index}`}>
+              <StyledTableCell component="th" scope="row">
                 {moment(row.created).format("MMM, DD, YYYY")}
-              </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+              </StyledTableCell>
+              <StyledTableCell>{row.filename}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -84,4 +96,5 @@ const MedicalNotesDetails = (props) => {
   );
 };
 
-export default MedicalNotesDetails;
+export default HandoutsContent;
+

@@ -62,7 +62,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const EncountersContent = (props) => {
+const EncountersDetails = (props) => {
   const { data, reloadData, toggleEncountersDialog } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -134,4 +134,4 @@ const EncountersContent = (props) => {
   );
 };
 
-export default EncountersContent;
+export default EncountersDetails;

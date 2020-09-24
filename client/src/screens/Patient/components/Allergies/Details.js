@@ -63,7 +63,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const AllergiesContent = (props) => {
+const AllergiesDetails = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -141,4 +141,4 @@ const AllergiesContent = (props) => {
   );
 };
 
-export default AllergiesContent;
+export default AllergiesDetails;

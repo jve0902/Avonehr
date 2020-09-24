@@ -29,6 +29,7 @@ const NewMessage = (props) => {
       "data": {
         "message": formFields.message,
         "subject": formFields.subject,
+        "unread_notify_dt": "2020-10-10"
       }
     }
     PatientService.createMessage(reqBody)

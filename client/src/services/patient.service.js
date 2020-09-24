@@ -10,14 +10,24 @@ class Patient {
       .get(API_URL + `/patient/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getAllHandouts() {
+    return axios
+      .get(API_URL + `/patient/handouts`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+  getPatientHandouts() {
+    return axios
+      .get(API_URL + `/patient/patient-handout`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getForms() {
     return axios
       .get(API_URL + `/patient/forms`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getBillings() {
+  getBillings(limit) {
     return axios
-      .get(API_URL + `/patient/billing/?limit=3`, { headers: authHeader() })
+      .get(API_URL + `/patient/billing/?limit=${limit}`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getDocuments(encounter_id, tab) {
@@ -121,8 +131,14 @@ class Patient {
   }
 
   //create methods
+  createPatientHandout(data) {
+    return axios.post(API_URL + `/patient/patient-handout`, data, {
+      headers: authHeader(),
+    });
+  }
+
   createDocuments(data) {
-    return axios.post(API_URL + `/patient/documents`, data, {
+    return axios.post(API_URL + `/patient/documents/`, data, {
       headers: authHeader(),
     });
   }
@@ -140,7 +156,7 @@ class Patient {
   }
 
   createMessage(data) {
-    return axios.post(API_URL + `/patient/message`, data, {
+    return axios.post(API_URL + `/patient/messages`, data, {
       headers: authHeader(),
     });
   }
@@ -154,6 +170,18 @@ class Patient {
 
   deleteAllergy(patient_id, drug_id) {
     return axios.delete(API_URL + `/patient/allergies/${patient_id}/${drug_id}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deletePatientHandout(patient_id, handoutId) {
+    return axios.delete(API_URL + `/patient/patient-handout/${patient_id}/${handoutId}`, {
+      headers: authHeader(),
+    });
+  }
+
+  deleteHandout(handoutId) {
+    return axios.delete(API_URL + `/patient/handouts/${handoutId}`, {
       headers: authHeader(),
     });
   }
