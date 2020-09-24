@@ -35,7 +35,7 @@ const update = async (req, res) => {
   }
 
   const db = makeDb(configuration, res);
-  let client = req.body;
+  let client = req.body.data;
 
   client.updated = new Date();
 

@@ -177,6 +177,12 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
+              path="/setup/integrations"
+              component={Integrations}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
               path="/setup/appoinment-user-types"
               component={AppointmentTypesUser}
               exact
