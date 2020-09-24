@@ -5,12 +5,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 
 function renderEventContent(eventInfo) {
+  console.log("eventInfo.event.status", eventInfo.event);
   return (
     <>
       <p
         style={{
           color: "#fff",
-          backgroundColor: "#2196f3",
+          backgroundColor: eventInfo.event.backgroundColor,
+          // backgroundColor: "#2196f3",
           width: "100%",
           padding: "3px 5px",
           borderRadius: "3px",

@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   messageToPatientsUnread: {
-    marginTop: theme.spacing(16),
+    marginTop: theme.spacing(8),
     "& li": {
       fontSize: "13px",
       listStyle: "none",
@@ -128,10 +128,7 @@ export default function Home() {
   const [messagesUnread, setMessagesUnread] = useState([]);
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [events, setEvents] = useState([
-    { title: "event 1", date: "2020-08-01" },
-    { title: "event 2", date: "2020-08-02" },
-  ]);
+  const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -145,6 +142,8 @@ export default function Home() {
           title: item.firstname,
           start: item.start_dt,
           end: item.end_dt,
+          backgroundColor:
+            item.status && item.status == "D" ? "#ffab40" : "#2196f3",
         },
       ];
     }, []);
