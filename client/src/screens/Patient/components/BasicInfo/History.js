@@ -42,7 +42,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const PatientHistory = (props) => {
+const BasicInfoHistory = (props) => {
   const { data, reloadData } = props;
   const classes = useStyles();
 
@@ -78,4 +78,4 @@ const PatientHistory = (props) => {
   );
 };
 
-export default PatientHistory;
+export default BasicInfoHistory;

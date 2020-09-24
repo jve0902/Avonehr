@@ -27,6 +27,15 @@ export const FirstColumnPatientCards = [
     icon: null,
   },
   {
+    title: "Handouts",
+    showActions: true,
+    showSearch: false,
+    data: [],
+    primaryButtonText: "New",
+    secondaryButtonText: "Expand",
+    icon: null,
+  },
+  {
     title: "Billing",
     showActions: true,
     showSearch: false,

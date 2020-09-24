@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -10,8 +10,8 @@ import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
+import PatientService from "../../../../services/patient.service";
+import { setError, setSuccess } from "../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,10 +60,22 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const BillingContent = (props) => {
-  const { data, reloadData } = props;
+const BillingDetails = (props) => {
+  const { reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [billings, setBillings] = useState([]);
+
+  useEffect(() => {
+    fetchAllBillings();
+  }, [])
+
+  const fetchAllBillings = () => {
+    let limit = 100;
+    PatientService.getBillings(limit).then((res) => {
+      setBillings(res.data);
+    });
+  }
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
@@ -94,20 +106,23 @@ const BillingContent = (props) => {
       <Table size="small" className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Created</StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
+            <StyledTableCell>Date</StyledTableCell>
+            <StyledTableCell>Transaction Type</StyledTableCell>
+            <StyledTableCell>Encounter Title</StyledTableCell>
+            <StyledTableCell>CPT Procedure</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
-            <StyledTableRow key={`${row.created}_${index}`}>
+          {billings.length && billings.map((row, index) => (
+            <StyledTableRow key={`${row.dt}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.dt).format("MMM, DD, YYYY")}
               </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.medical_note}</TableCell>
+              <TableCell>{row.tran_type}</TableCell>
+              <TableCell>{row.encounter_title}</TableCell>
+              <TableCell>{row.cpt_procedure || "-"}</TableCell>
+              
 
               <TableCell className={classes.actions}>
                 <IconButton
@@ -125,4 +140,4 @@ const BillingContent = (props) => {
   );
 };
 
-export default BillingContent;
+export default BillingDetails;

@@ -6,7 +6,7 @@ import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
-export default function Content(props) {
+export default function AllergiesContent(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, reloadData } = props;
@@ -46,20 +46,6 @@ export default function Content(props) {
 
   return (
     <>
-      {/* <ContextMenu
-        element={element}
-        deleteHandler={() => onItemDelete()}
-        menu={[
-          {
-            label: 'Edit',
-            value: 'edit',
-          },
-          {
-            label: 'Delete',
-            value: 'delete',
-          },
-        ]}
-      /> */}
       {data.map((item) => (
         <Grid
           key={item.drug_id}
