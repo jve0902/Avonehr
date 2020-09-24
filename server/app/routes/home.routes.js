@@ -39,7 +39,7 @@ router.get(
 );
 router.get("/providers", [authJwt.verifyToken], homeController.getProviders);
 router.get(
-  "/providers/:id",
+  "/providers-details",
   [authJwt.verifyToken],
   homeController.getProviderDetails
 );
