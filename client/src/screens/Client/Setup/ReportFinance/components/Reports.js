@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import NumberFormat from "react-number-format";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -73,7 +74,7 @@ const Reports = ({ reports, ...props }) => {
               <TableCell component="th" scope="row">
                 {report.year}
               </TableCell>
-              <TableCell>{report.month}</TableCell>
+          <TableCell>{moment(report.month, 'M').format('MMM')}</TableCell>
               <TableCell>
                 <NumberFormat
                   prefix="$"
