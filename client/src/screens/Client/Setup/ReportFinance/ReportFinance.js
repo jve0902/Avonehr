@@ -4,20 +4,16 @@ import Grid from "@material-ui/core/Grid";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import moment from "moment";
 import { Reports } from "./components";
-import FinanceReportService from "./../../../../services/financeReport.service";
-import { AuthConsumer } from "./../../../../providers/AuthProvider";
-import Video from "./../../../../components/videos/Video";
-import { formatDate, get3MonthsAgo } from "../../../../utils/helpers"
+import ReportFinanceService from "./../../../../services/reportFinance.service";
+import { AuthConsumer } from "../../../../providers/AuthProvider";
+import Video from "../../../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,36 +38,40 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  datePicker: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  }
 }));
 
-export default function FinanceReport(props) {
+export default function ReportFinance(props) {
   const classes = useStyles();
-  const [selectedFromDate, setSelectedFromDate] = useState(
-    formatDate(get3MonthsAgo())
+  const [dateFrom, setDateFrom] = useState(
+    moment().subtract(3, "months").format("YYYY-MM-DD")
   );
-  const [selectedToDate, setSelectedToDate] = useState(formatDate(new Date()));
+  const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [reports, setReports] = useState([]);
 
-  const fetchFinanceReport = () => {
-    FinanceReportService.getAll(selectedFromDate, selectedToDate).then((res) => {
+  const fetchReportFinance = () => {
+    ReportFinanceService.getAll(dateFrom, dateTo).then((res) => {
       setReports(res.data);
     });
   };
 
   useEffect(() => {
-    fetchFinanceReport();
+    fetchReportFinance();
   }, []);
 
-  const handleDateFromChange = (date) => {
-    setSelectedFromDate(formatDate(new Date(date)));
+  const handleDateChangeFrom = (event) => {
+    setDateFrom(event.target.value);
   };
 
-  const handleDateToChange = (date) => {
-    setSelectedToDate(formatDate(new Date(date)));
+  const handleDateChangeTo = (event) => {
+    setDateTo(event.target.value);
   };
 
   const handleOnEnterClick = () => {
-    FinanceReportService.getAll(selectedFromDate, selectedToDate).then((res) => {
+    ReportFinanceService.getAll(dateFrom, dateTo).then((res) => {
       setReports(res.data);
     });
   };
@@ -84,49 +84,36 @@ export default function FinanceReport(props) {
           <Container maxWidth={false} className={classes.root}>
             <div className={classes.header}>
               <Typography component="h1" variant="h2" color="textPrimary">
-                Finance Report
+                Report Finance
               </Typography>
             </div>
             <Typography component="p" variant="body2" color="textPrimary">
               This page is used to search accounting records
             </Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={3}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline1"
-                    label="From"
-                    value={selectedFromDate}
-                    onChange={handleDateFromChange}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                    maxDate={selectedToDate}
-                  />
-                </MuiPickersUtilsProvider>
+            <Grid container className={classes.datePicker}>
+              <Grid item xs={12} sm={2} spacing={2}>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date From"
+                  value={dateFrom}
+                  className={classes.textField}
+                  onChange={handleDateChangeFrom}
+                  type="date"
+                  size="small"
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline2"
-                    label="To"
-                    value={selectedToDate}
-                    onChange={handleDateToChange}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                    minDate={selectedFromDate}
-                    maxDate={new Date()}
-                  />
-                </MuiPickersUtilsProvider>
+                <TextField
+                  variant="outlined"
+                  id="date"
+                  label="Date To"
+                  type="date"
+                  value={dateTo}
+                  className={classes.textField}
+                  onChange={handleDateChangeTo}
+                  size="small"
+                />
               </Grid>
             </Grid>
             <Button

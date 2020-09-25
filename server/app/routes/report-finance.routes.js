@@ -1,12 +1,12 @@
 "use strict";
 const express = require("express");
 const { authJwt } = require("../middlewares");
-const FinanceReport = require("../controllers/finance-report.controller.js");
+const ReportFinance = require("../controllers/report-finance.controller.js");
 const router = express.Router();
 
 router.get(
-  "/finance-report",
+  "/report-finance",
   [authJwt.verifyToken],
-  FinanceReport.getAll
+  ReportFinance.getAll
 );
 module.exports = router;

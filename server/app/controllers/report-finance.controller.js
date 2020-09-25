@@ -35,8 +35,8 @@ const getAll = async (req, res) => {
 };
 
 
-const financeReport = {
+const reportFinance = {
   getAll,
 };
 
-module.exports = financeReport;
+module.exports = reportFinance;

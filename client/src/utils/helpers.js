@@ -86,9 +86,3 @@ export const formatDate = (date) => {
 
   return [year, month, day].join("-");
 }
-
-export const get3MonthsAgo = () => {
-  const from = new Date();
-  from.setMonth(from.getMonth() - 3);
-  return from;
-}
