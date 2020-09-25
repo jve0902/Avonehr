@@ -1,5 +1,6 @@
 export { default as AccountingTypes } from "./AccountingTypes";
 export { default as AppointmentTypes } from "./AppointmentTypes";
+export { default as ReportFinance } from "./ReportFinance";
 export { default as AppointmentTypesUser } from "./AppointmentTypesUser";
 export { default as Backup } from "./Backup";
 export { default as Configuration } from "./Configuration";
