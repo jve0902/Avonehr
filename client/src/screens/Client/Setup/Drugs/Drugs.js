@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles, Card, CardContent, Container } from "@material-ui/core";
+import {
+  makeStyles,
+  Card,
+  CardContent,
+  Container,
+  CssBaseline,
+} from "@material-ui/core";
 import Video from "./../../../../components/videos/Video";
 import Drugstable from "./components/Drugstable";
 import Drugsform from "./components/Drugsform";
@@ -37,7 +43,7 @@ export default function Drugs() {
   const [searchResult, setSearchResult] = useState([]);
   const payload = {
     searchTerm,
-    favorite,
+    checkBox: favorite,
   };
   const searchDrugs = (e) => {
     e.preventDefault();
@@ -55,41 +61,45 @@ export default function Drugs() {
   return (
     <AuthConsumer>
       {({ user }) => (
-        <Container maxWidth={false} className={classes.root}>
-          <Grid container justify="center" spacing={2}>
-            <Grid item md={12} xs={12}>
-              <Typography
-                component="h1"
-                variant="h2"
-                color="textPrimary"
-                className={classes.title}
-              >
-                Drugs
-              </Typography>
-              <Typography component="p" variant="body2" color="textPrimary">
-                This page is used to manage drugs information.
-              </Typography>
-              <Drugsform
-                searchDrugs={searchDrugs}
-                textChangeHandler={textChangeHandler}
-                checkBoxChangeHandler={checkBoxChangeHandler}
-                searchTerm={searchTerm}
-              />
-              {searchResult.length > 0 && (
-                <Drugstable user={user} result={searchResult} />
-              )}
-            </Grid>
-            <Grid item md={12} xs={12}>
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography variant="h4" gutterBottom>
-                    <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
+        <React.Fragment>
+          <CssBaseline>
+            <Container maxWidth={false} className={classes.root}>
+              <Grid container justify="center" spacing={2}>
+                <Grid item md={12} xs={12}>
+                  <Typography
+                    component="h1"
+                    variant="h2"
+                    color="textPrimary"
+                    className={classes.title}
+                  >
+                    Drugs
                   </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
+                  <Typography component="p" variant="body2" color="textPrimary">
+                    This page is used to manage drugs information.
+                  </Typography>
+                  <Drugsform
+                    searchDrugs={searchDrugs}
+                    textChangeHandler={textChangeHandler}
+                    checkBoxChangeHandler={checkBoxChangeHandler}
+                    searchTerm={searchTerm}
+                  />
+                  {searchResult.length > 0 && (
+                    <Drugstable user={user} result={searchResult} />
+                  )}
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography variant="h4" gutterBottom>
+                        <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Container>
+          </CssBaseline>
+        </React.Fragment>
       )}
     </AuthConsumer>
   );

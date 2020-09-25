@@ -5,19 +5,24 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 
 const search = async (req, res) => {
   const db = makeDb(configuration, res);
-  let { searchTerm, favorite } = req.body;
+  let { searchTerm, checkBox } = req.body;
 
   let $sql;
   try {
     $sql = `select d.id, d.name, cd.favorite, cd.updated, concat(u.firstname, ' ', u.lastname) updated_name
-    from drug d
-    left join client_drug cd on cd.client_id=${req.client_id}
-      and cd.drug_id=d.id
-    left join user u on u.id=cd.updated_user_id
-    where d.name like '${searchTerm}%' and cd.favorite like ${favorite} or d.name like '${searchTerm}%' \n`;
-
+            from drug d
+            left join client_drug cd on cd.client_id=1
+            and cd.drug_id=d.id
+            left join user u on u.id=cd.updated_user_id
+            where 1 \n`;
+    if (searchTerm) {
+      $sql = $sql + `and d.name like '${searchTerm}%' \n`;
+    }
+    if (checkBox == true) {
+      $sql = $sql + `and cd.favorite = true \n`;
+    }
     $sql = $sql + `order by d.name \n`;
-    $sql = $sql + `limit 50 \n`;
+    $sql = $sql + `limit 20 \n`;
 
     const dbResponse = await db.query($sql);
 
@@ -29,7 +34,6 @@ const search = async (req, res) => {
     console.log(successMessage);
     return res.status(status.created).send(successMessage);
   } catch (err) {
-    console.log(err);
     errorMessage.error = "Select not successful";
     return res.status(status.error).send(errorMessage);
   } finally {

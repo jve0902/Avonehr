@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import {
   makeStyles,
   Paper,
@@ -13,6 +14,9 @@ import {
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
 import icdcodesService from "../../../../../services/icdcodes.service";
+import { setSuccess } from "../../../../../store/common/actions";
+import { useDispatch } from "react-redux";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -73,60 +77,87 @@ const GreenSwitch = withStyles({
 
 const ICDcodestable = ({ user, result }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  let [state, setState] = useState([]);
+  const [errors, setErrors] = useState([]);
 
-  let [favorite, setFavorite] = useState();
-
-  const changeHandler = (event, icdcode_id, icdcode_favorite) => {
+  const changeHandler = (event, icdcode_id) => {
     const payload = {
       icd_id: icdcode_id,
     };
     let checked = event.target.checked;
-    setFavorite((icdcode_favorite = checked));
-    if (favorite !== true) {
-      icdcodesService.addFavorite(icdcode_id, user.id, payload).then((res) => {
-        console.log(res.data.data);
-      });
+    setState(
+      result.map((item) => {
+        if (icdcode_id == item.id) {
+          item.favorite = checked;
+        }
+      })
+    );
+    if (checked == true) {
+      icdcodesService.addFavorite(icdcode_id, user.id, payload).then(
+        (response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+        },
+        (error) => {
+          setErrors(error.response.data.error);
+        }
+      );
     } else {
-      icdcodesService.deleteFavorite(icdcode_id).then((res) => {
-        console.log(res);
-      });
+      icdcodesService.deleteFavorite(icdcode_id).then(
+        (response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+        },
+        (error) => {
+          setErrors(error.response.data.error);
+        }
+      );
     }
   };
 
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Code</StyledTableCell>
-            <StyledTableCell>Description</StyledTableCell>
-            <StyledTableCell>Favorites</StyledTableCell>
-            <StyledTableCell>Updated</StyledTableCell>
-            <StyledTableCell>Updated By</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {result.map((code) => (
-            <StyledTableRow key={code.id}>
-              <TableCell component="th" scope="row">
-                {code.id}
-              </TableCell>
-              <TableCell>{code.name}</TableCell>
-              <TableCell>
-                <GreenSwitch
-                  size="small"
-                  checked={favorite}
-                  name="checkedB"
-                  onChange={(e) => changeHandler(e, code.id, code.favorite)}
-                />
-              </TableCell>
-              <TableCell>{code.updated}</TableCell>
-              <TableCell>{code.updated_name}</TableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      {errors &&
+        errors.map((error, index) => (
+          <Alert severity="error" key={index}>
+            {error.msg}
+          </Alert>
+        ))}
+      <TableContainer component={Paper} className={classes.tableContainer}>
+        <Table className={classes.table} aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Code</StyledTableCell>
+              <StyledTableCell>Description</StyledTableCell>
+              <StyledTableCell>Favorites</StyledTableCell>
+              <StyledTableCell>Updated</StyledTableCell>
+              <StyledTableCell>Updated By</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {result.map((code) => (
+              <StyledTableRow key={code.id}>
+                <TableCell component="th" scope="row">
+                  {code.id}
+                </TableCell>
+                <TableCell>{code.name}</TableCell>
+                <TableCell>
+                  <GreenSwitch
+                    size="small"
+                    checked={Boolean(code.favorite)}
+                    name="switchBox"
+                    onChange={(e) => changeHandler(e, code.id)}
+                  />
+                </TableCell>
+                <TableCell>
+                  {code.updated ? moment(code.updated).format("lll") : ""}
+                </TableCell>
+                <TableCell>{code.updated_name}</TableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

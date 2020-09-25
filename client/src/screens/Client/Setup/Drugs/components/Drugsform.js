@@ -64,7 +64,6 @@ const Drugsform = ({
         variant="contained"
         color="primary"
         className={classes.submit}
-        disabled={!searchTerm}
       >
         Search
       </Button>

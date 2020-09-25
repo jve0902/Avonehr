@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import {
   makeStyles,
   Paper,
@@ -13,6 +14,9 @@ import {
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
 import DrugsService from "../../../../../services/drugs.service";
+import { setSuccess } from "../../../../../store/common/actions";
+import { useDispatch } from "react-redux";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -73,57 +77,86 @@ const GreenSwitch = withStyles({
 
 const Drugstable = ({ user, result }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  let [favorite, setFavorite] = useState();
+  let [state, setState] = useState([]);
+  const [errors, setErrors] = useState([]);
 
-  const changeHandler = (event, drug_id, drug_favorite) => {
+  const changeHandler = (event, drug_id) => {
     const payload = {
       drug_id,
     };
+
     let checked = event.target.checked;
-    setFavorite((drug_favorite = checked));
-    if (favorite !== true) {
-      DrugsService.addFavorite(drug_id, user.id, payload).then((res) => {
-        console.log(res.data.data);
-      });
+    setState(
+      result.map((item) => {
+        if (drug_id == item.id) {
+          item.favorite = checked;
+        }
+      })
+    );
+    if (checked == true) {
+      DrugsService.addFavorite(drug_id, user.id, payload).then(
+        (response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+        },
+        (error) => {
+          setErrors(error.response.data.error);
+        }
+      );
     } else {
-      DrugsService.deleteFavorite(drug_id).then((res) => {
-        console.log(res);
-      });
+      DrugsService.deleteFavorite(drug_id).then(
+        (response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+        },
+        (error) => {
+          setErrors(error.response.data.error);
+        }
+      );
     }
   };
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Favorites</StyledTableCell>
-            <StyledTableCell>Updated</StyledTableCell>
-            <StyledTableCell>Updated By</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {result.map((drug) => (
-            <StyledTableRow key={drug.id}>
-              <TableCell component="th" scope="row">
-                {drug.name}
-              </TableCell>
-              <TableCell>
-                <GreenSwitch
-                  size="small"
-                  checked={favorite}
-                  name="checkedB"
-                  onChange={(e) => changeHandler(e, drug.id, drug.favorite)}
-                />
-              </TableCell>
-              <TableCell>{drug.updated}</TableCell>
-              <TableCell>{drug.updated_name}</TableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      {errors &&
+        errors.map((error, index) => (
+          <Alert severity="error" key={index}>
+            {error.msg}
+          </Alert>
+        ))}
+      <TableContainer component={Paper} className={classes.tableContainer}>
+        <Table className={classes.table} aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Favorites</StyledTableCell>
+              <StyledTableCell>Updated</StyledTableCell>
+              <StyledTableCell>Updated By</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {result.map((drug) => (
+              <StyledTableRow key={drug.id}>
+                <TableCell component="th" scope="row">
+                  {drug.name}
+                </TableCell>
+                <TableCell>
+                  <GreenSwitch
+                    size="small"
+                    checked={Boolean(drug.favorite)}
+                    name="switchBox"
+                    onChange={(e) => changeHandler(e, drug.id)}
+                  />
+                </TableCell>
+                <TableCell>
+                  {drug.updated ? moment(drug.updated).format("lll") : ""}
+                </TableCell>
+                <TableCell>{drug.updated_name}</TableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

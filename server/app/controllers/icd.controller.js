@@ -5,15 +5,21 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 
 const search = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { searchTerm, favorite } = req.body;
+  const { searchTerm, checkBox } = req.body;
   let $sql;
 
   try {
     $sql = `select i.id, i.name, ci.favorite, ci.updated, concat(u.firstname, ' ', u.lastname) updated_name
-        from icd i
-        left join client_icd ci on ci.icd_id=i.id and ci.client_id=${req.client_id}
-        left join user u on u.id=ci.updated_user_id
-        where i.name like '${searchTerm}%' and ci.favorite like ${favorite} or i.name like '${searchTerm}%' \n`;
+            from icd i
+            left join client_icd ci on ci.icd_id=i.id and ci.client_id=${req.client_id}
+            left join user u on u.id=ci.updated_user_id
+            where 1 \n`;
+    if (searchTerm) {
+      $sql = $sql + `and i.name like '${searchTerm}%' \n`;
+    }
+    if (checkBox == true) {
+      $sql = $sql + `and ci.favorite = true \n`;
+    }
 
     $sql = $sql + `order by i.name \n`;
     $sql = $sql + `limit 100 \n`;
@@ -66,7 +72,6 @@ const addFavorite = async (req, res) => {
     successMessage.message = "Creation successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
-    console.log(err);
     errorMessage.error = "Creation not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
@@ -93,7 +98,6 @@ const deleteFavorite = async (req, res) => {
     successMessage.message = "Deletion successful";
     return res.status(status.success).send(successMessage);
   } catch (error) {
-    console.log(error);
     errorMessage.error = "Deletion not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
