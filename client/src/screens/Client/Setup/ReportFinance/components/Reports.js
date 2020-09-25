@@ -7,6 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import NumberFormat from "react-number-format";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -73,10 +74,34 @@ const Reports = ({ reports, ...props }) => {
                 {report.year}
               </TableCell>
               <TableCell>{report.month}</TableCell>
-              <TableCell>{report.Service}</TableCell>
-              <TableCell>{report.Credit}</TableCell>
-              <TableCell>{report.Payment}</TableCell>
-              <TableCell>{report.Refund}</TableCell>
+              <TableCell>
+                <NumberFormat
+                  prefix="$"
+                  displayType="text"
+                  value={report.Service}
+                />
+              </TableCell>
+              <TableCell>
+                <NumberFormat
+                  prefix="$"
+                  displayType="text"
+                  value={report.Credit}
+                />
+              </TableCell>
+              <TableCell>
+                <NumberFormat
+                  prefix="$"
+                  displayType="text"
+                  value={report.Payment}
+                />
+              </TableCell>
+              <TableCell>
+                <NumberFormat
+                  prefix="$"
+                  displayType="text"
+                  value={report.Refund}
+                />
+              </TableCell>
             </StyledTableRow>
           ))}
         </TableBody>
