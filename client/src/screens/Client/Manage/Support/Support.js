@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
@@ -9,11 +9,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import SupportAPI from "../../../../services/supportStatus.service";
+import moment from "moment";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,10 +44,24 @@ const useStyles = makeStyles((theme) => ({
     width: "185px",
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-    maxWidth: "180px",
+    width: "185px",
+  },
+  overFlowControl: {
+    maxWidth: "130px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   },
 }));
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0,0,0,0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 13,
+  },
+}))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -77,6 +93,28 @@ const StyledTableRow = withStyles((theme) => ({
 export default function Support() {
   const classes = useStyles();
   const [cases, setCases] = useState("");
+  const [caseStatus, setCaseStatus] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [noData, setNodata] = useState("");
+
+  const fetchStatus = () => {
+    SupportAPI.getStatus().then((res) => setCaseStatus(res.data.data));
+  };
+
+  const fetchStatusSupport = () => {
+    SupportAPI.getSuport(cases).then((res) => {
+      if (res.data.data.length > 0) {
+        setSearchResults(res.data.data);
+      } else {
+        setSearchResults([]);
+        setNodata("None Found");
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchStatus();
+  }, []);
   return (
     <div className={classes.root}>
       <Grid container direction="column" spacing={3}>
@@ -93,48 +131,108 @@ export default function Support() {
             This page is used for support
           </Typography>
         </Grid>
+        {console.log(caseStatus, cases)}
         <Grid item xs={12} sm={2}>
-          <FormControl className={classes.customSelect}>
-            <InputLabel id="opneCases">View open cases</InputLabel>
+          <FormControl
+            variant="outlined"
+            size="small"
+            className={classes.customSelect}
+          >
+            <InputLabel htmlFor="opneCases">Case Status</InputLabel>
             <Select
+              native
               labelId="opneCases"
               id="openCases"
               value={cases}
               onChange={(event) => setCases(event.target.value)}
+              label="Case Status"
             >
-              <MenuItem value={10}>Case 1</MenuItem>
-              <MenuItem value={20}>Case 2</MenuItem>
-              <MenuItem value={30}>Case 3</MenuItem>
+              <option aria-label="None" value="" />
+              {caseStatus.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+              ))}
             </Select>
           </FormControl>
         </Grid>
-        <Button
-          disabled={!cases}
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          // onClick={(event) => serachAccounts()}
-        >
-          New Case
-        </Button>
+        <Grid item xs={12} sm={2}>
+          <Button
+            margin="normal"
+            size="small"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => fetchStatusSupport()}
+          >
+            Search
+          </Button>
+        </Grid>
       </Grid>
 
-      <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Case Id</StyledTableCell>
-              <StyledTableCell>Client</StyledTableCell>
-              <StyledTableCell>Subject</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell>Created At</StyledTableCell>
-              <StyledTableCell>Created By</StyledTableCell>
-              <StyledTableCell>Updated</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody></TableBody>
-        </Table>
-      </TableContainer>
+      {searchResults.length > 0 ? (
+        <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table className={classes.table} aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Case Id</StyledTableCell>
+                <StyledTableCell>Client</StyledTableCell>
+                <StyledTableCell>Subject</StyledTableCell>
+                <StyledTableCell>Status</StyledTableCell>
+                <StyledTableCell>Created At</StyledTableCell>
+                <StyledTableCell>Created By</StyledTableCell>
+                <StyledTableCell>Updated</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {searchResults.map((result) => (
+                <StyledTableRow key={result.id}>
+                  <TableCell component="th" scope="row">
+                    {result.id}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {result.name}
+                  </TableCell>
+                  {result.subject.length > 40 ? (
+                    <LightTooltip
+                      className={classes.overFlowControl}
+                      title={result.subject}
+                    >
+                      <TableCell component="th" scope="row">
+                        {result.subject}
+                      </TableCell>
+                    </LightTooltip>
+                  ) : (
+                    <TableCell
+                      className={classes.overFlowControl}
+                      component="th"
+                      scope="row"
+                    >
+                      {result.subject}
+                    </TableCell>
+                  )}
+                  <TableCell component="th" scope="row">
+                    {result.status_id}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {moment(result.created).format("lll")}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {result.created_user}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {moment(result.updated).format("lll")}
+                  </TableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography component="p" variant="body2" color="textPrimary">
+          {noData}
+        </Typography>
+      )}
     </div>
   );
 }
