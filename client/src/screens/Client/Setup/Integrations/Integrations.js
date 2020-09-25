@@ -181,13 +181,6 @@ export default function Integrations() {
               <Button
                 fullWidth
                 size="small"
-                disabled={
-                  !labcorpKey ||
-                  !questKey ||
-                  !doctorsDataId ||
-                  !doctorsDataPw ||
-                  !stripeKey
-                }
                 type="submit"
                 variant="contained"
                 color="primary"
