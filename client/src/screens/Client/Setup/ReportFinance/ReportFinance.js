@@ -18,27 +18,48 @@ import Video from "../../../../components/videos/Video";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "20px 0px",
   },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    maxWidth: "450px",
-    marginBottom: theme.spacing(2),
-    "& h1": {
-      [theme.breakpoints.up("md")]: {
-        marginRight: theme.spacing(4),
-      },
-    },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 180,
   },
-  card: {
-    minHeight: 300,
+  title: {
+    paddingBottom: theme.spacing(1),
+  },
+  form: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "column",
+    marginTop: theme.spacing(1),
+  },
+  formElments: {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "500px",
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    marginTop: "20px",
+    maxWidth: "440px",
+  },
+  customSelect: {
+    width: "200px",
+  },
+  type: {
+    marginTop: "20px",
+  },
+  paper: {
+    maxWidth: "456px",
+  },
+  textField: {
+    width: "200px",
+  },
+  amount: {
+    marginTop: "18px",
   },
   datePicker: {
+    display: "flex",
+    flexDirection: "column",
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   }
@@ -79,69 +100,75 @@ export default function ReportFinance(props) {
   return (
     <AuthConsumer>
       {({ user }) => (
-        <React.Fragment>
-          <CssBaseline />
-          <Container maxWidth={false} className={classes.root}>
-            <div className={classes.header}>
-              <Typography component="h1" variant="h2" color="textPrimary">
-                Report Finance
+        <div className={classes.root}>
+          <div className={classes.paper}>
+            <CssBaseline />
+            <Container maxWidth={false} className={classes.root}>
+              <div className={classes.header}>
+                <Typography component="h1" variant="h2" color="textPrimary">
+                  Report Finance
+                </Typography>
+              </div>
+              <Typography component="p" variant="body2" color="textPrimary">
+                This page is used to search accounting records
               </Typography>
-            </div>
-            <Typography component="p" variant="body2" color="textPrimary">
-              This page is used to search accounting records
-            </Typography>
-            <Grid container className={classes.datePicker}>
-              <Grid item xs={12} sm={2} spacing={2}>
-                <TextField
-                  variant="outlined"
-                  id="date"
-                  label="Date From"
-                  value={dateFrom}
-                  className={classes.textField}
-                  onChange={handleDateChangeFrom}
-                  type="date"
-                  size="small"
-                />
+              <Grid container direction="column" justify="center">
+                <div className={classes.datePicker}>
+                  <Grid container>
+                    <Grid item xs={12} sm={6} spacing={2}>
+                      <TextField
+                        variant="outlined"
+                        id="date"
+                        label="Date From"
+                        value={dateFrom}
+                        className={classes.textField}
+                        onChange={handleDateChangeFrom}
+                        type="date"
+                        size="small"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        id="date"
+                        label="Date To"
+                        type="date"
+                        value={dateTo}
+                        className={classes.textField}
+                        onChange={handleDateChangeTo}
+                        size="small"
+                      />
+                    </Grid>
+                  </Grid>
+                </div>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  id="date"
-                  label="Date To"
-                  type="date"
-                  value={dateTo}
-                  className={classes.textField}
-                  onChange={handleDateChangeTo}
-                  size="small"
-                />
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                onClick={() => handleOnEnterClick()}
+              >
+                Enter
+              </Button>
+              <Grid container justify="center" spacing={2}>
+                <Grid item md={12} xs={12}>
+                  <Reports
+                    reports={reports}
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography variant="h4" gutterBottom>
+                        <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
               </Grid>
-            </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              onClick={() => handleOnEnterClick()}
-            >
-              Enter
-            </Button>
-            <Grid container justify="center" spacing={2}>
-              <Grid item md={12} xs={12}>
-                <Reports
-                  reports={reports}
-                />
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Typography variant="h4" gutterBottom>
-                      <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Container>
-        </React.Fragment>
+            </Container>
+          </div>
+        </div>
       )}
     </AuthConsumer>
   );
