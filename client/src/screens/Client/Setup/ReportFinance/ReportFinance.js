@@ -62,13 +62,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-  }
+  },
 }));
 
 export default function ReportFinance(props) {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(
-    moment().subtract(3, "months").format("YYYY-MM-DD")
+    moment()
+      .subtract(3, "months")
+      .format("YYYY-MM-DD")
   );
   const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [reports, setReports] = useState([]);
@@ -152,10 +154,10 @@ export default function ReportFinance(props) {
               </Button>
               <Grid container justify="center" spacing={2}>
                 <Grid item md={12} xs={12}>
-                  <Reports
-                    reports={reports}
-                  />
+                  <Reports reports={reports} />
                 </Grid>
+
+                {/*
                 <Grid item md={12} xs={12}>
                   <Card className={classes.card}>
                     <CardContent>
@@ -165,6 +167,8 @@ export default function ReportFinance(props) {
                     </CardContent>
                   </Card>
                 </Grid>
+                */}
+
               </Grid>
             </Container>
           </div>

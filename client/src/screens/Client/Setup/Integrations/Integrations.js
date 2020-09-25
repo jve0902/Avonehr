@@ -103,7 +103,7 @@ export default function Integrations() {
             Integrations
           </Typography>
           <Typography component="p" variant="body2" color="textPrimary">
-            This page is used to manage third party Integrations
+            This page is used to manage third party integrations
           </Typography>
           <form
             className={classes.form}
@@ -114,7 +114,7 @@ export default function Integrations() {
               <Grid item xs={6} sm={12}>
                 <TextField
                   autoFocus
-                  required
+                  //required
                   variant="outlined"
                   label="Labcorp Key"
                   value={labcorpKey}
@@ -126,8 +126,7 @@ export default function Integrations() {
               </Grid>
               <Grid item xs={6} sm={12}>
                 <TextField
-                  autoFocus
-                  required
+                  //required
                   variant="outlined"
                   label="Quest Key"
                   value={questKey}
@@ -139,8 +138,7 @@ export default function Integrations() {
               </Grid>
               <Grid item xs={6} sm={12}>
                 <TextField
-                  autoFocus
-                  required
+                  //required
                   variant="outlined"
                   label="Doctors Data ID"
                   value={doctorsDataId}
@@ -152,8 +150,7 @@ export default function Integrations() {
               </Grid>
               <Grid item xs={6} sm={12}>
                 <TextField
-                  autoFocus
-                  required
+                  //required
                   variant="outlined"
                   label="Doctors Data PW"
                   value={doctorsDataPw}
@@ -165,8 +162,7 @@ export default function Integrations() {
               </Grid>
               <Grid item xs={6} sm={12}>
                 <TextField
-                  autoFocus
-                  required
+                  //required
                   variant="outlined"
                   label="Stripe Key"
                   value={stripeKey}
