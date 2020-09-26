@@ -592,7 +592,6 @@ export default function Patient() {
   const gridProps = {
     className: "layout",
     rowHeight: 40,
-    // onLayoutChange: (layout) => console.log("onLayoutChange called", layout),
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
   };
@@ -923,7 +922,7 @@ export default function Patient() {
       >
         {FirstColumnPatientCards.map((item, index) => {
           return (
-            <div key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} style={{ overflowY: 'auto' }}>
               <Card
                 key={index}
                 title={item.title}
@@ -940,10 +939,10 @@ export default function Patient() {
                 cardInfo={item.cardInfo}
                 updateMinHeight={updateMinHeight}
               />
-            </div>
+            </Grid>
           );
         })}
-        <div key={'Encounters'} style={{ overflowY: 'auto' }}>
+        <Grid key={'Encounters'} style={{ overflowY: 'auto' }}>
           <Card
             title="Encounters"
             data={!!encounters && <EncountersCardContent data={encounters} />}
@@ -955,10 +954,10 @@ export default function Patient() {
             showSearch={false}
             updateMinHeight={updateMinHeight}
           />
-        </div>
+        </Grid>
         {ThirdColumnPatientCards.map((item, index) => {
           return (
-            <div key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} style={{ overflowY: 'auto' }}>
               <Card
                 key={index}
                 title={item.title}
@@ -972,12 +971,12 @@ export default function Patient() {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 updateMinHeight={updateMinHeight}
               />
-            </div>
+            </Grid>
           );
         })}
         {FourthColumnPatientCards.map((item, index) => {
           return (
-            <div key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} style={{ overflowY: 'auto' }}>
               <Card
                 key={index}
                 title={item.title}
@@ -991,10 +990,10 @@ export default function Patient() {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 updateMinHeight={updateMinHeight}
               />
-            </div>
+            </Grid>
           );
         })}
-        <div key={"Documents"} style={{ overflowY: 'auto' }}>
+        <Grid key={"Documents"} style={{ overflowY: 'auto' }}>
           <Card
             title="Documents"
             data={
@@ -1013,8 +1012,8 @@ export default function Patient() {
             secondaryButtonHandler={toggleDocumentsExpandDialog}
             updateMinHeight={updateMinHeight}
           />
-        </div>
-        <div key={"All Tests"} style={{ overflowY: 'auto' }}>
+        </Grid>
+        <Grid key={"All Tests"} style={{ overflowY: 'auto' }}>
           <Card
             title="All Tests"
             data={!!tests && <TestsCardContent data={tests} />}
@@ -1025,77 +1024,8 @@ export default function Patient() {
             primaryButtonHandler={toggleTestsExpandDialog}
             updateMinHeight={updateMinHeight}
           />
-        </div>
+        </Grid>
       </ResponsiveGridLayout>
-      {/* <Grid container spacing={1}>
-        <Grid item md={3} sm={6} xs={12}>
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          <Card
-            title="Encounters"
-            data={!!encounters && <EncountersCardContent data={encounters} />}
-            showActions={true}
-            primaryButtonText={"New"}
-            secondaryButtonText={"Expand"}
-            primaryButtonHandler={toggleEncountersDialog}
-            secondaryButtonHandler={toggleEncountersExpandDialog}
-            showSearch={false}
-          />
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          {ThirdColumnPatientCards.map((item, index) => {
-            return (
-              <Card
-                key={index}
-                title={item.title}
-                data={mapCardContentDataHandlers(item.title)}
-                showActions={item.showActions}
-                showSearch={item.showSearch}
-                icon={item.icon}
-                primaryButtonText={item.primaryButtonText}
-                secondaryButtonText={item.secondaryButtonText}
-                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
-                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
-              />
-            );
-          })}
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          {FourthColumnPatientCards.map((item, index) => {
-            return (
-              <Card
-                key={index}
-                title={item.title}
-                data={mapCardContentDataHandlers(item.title)}
-                showActions={item.showActions}
-                showSearch={item.showSearch}
-                icon={item.icon}
-                primaryButtonText={item.primaryButtonText}
-                secondaryButtonText={item.secondaryButtonText}
-                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
-                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
-              />
-            );
-          })}
-        </Grid>
-      </Grid> */}
-
-      {/* <Grid container spacing={2}>
-        <Grid item md={6} xs={12}>
-
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <Card
-            title="All Tests"
-            data={!!tests && <TestsCardContent data={tests} />}
-            showActions={true}
-            primaryButtonText={"Expand"}
-            secondaryButtonText={null}
-            showSearch={false}
-            primaryButtonHandler={toggleTestsExpandDialog}
-          />
-        </Grid>
-      </Grid> */}
     </>
   );
 }
