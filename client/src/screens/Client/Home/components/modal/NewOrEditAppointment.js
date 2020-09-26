@@ -142,6 +142,21 @@ const NewOrEditAppointment = ({
     [debouncedSearchTerm]
   );
 
+  useEffect(() => {
+    console.log("props.event:", props);
+    setTitle(props.event.title);
+    setStatus(props.event.status);
+    handleStartDateChange(props.event.start_dt);
+    handleEndDateChange(props.event.end_dt);
+    setNotes(props.event.notes);
+    setProvider({
+      id: props.event.user_id,
+      name: props.event.provider_name,
+    });
+    setPatientSearchTerm(`${props.event.firstname} ${props.event.lastname}`);
+  }, [props.event]);
+
+  console.log("title", title);
   const handlePatientChange = (_, patient) => {
     const sp = patients.filter((p) => p.id === patient.id);
     setSelectedPatient(sp[0]);
@@ -313,7 +328,6 @@ const NewOrEditAppointment = ({
                 label="Patient"
                 name="patient"
                 autoComplete="patient"
-                autoFocus
                 onChange={(event) => setPatientSearchTerm(event.target.value)}
               />
               {patients.length > 0 && !selectedPatient && (
@@ -345,7 +359,9 @@ const NewOrEditAppointment = ({
               aria-label="minimum height"
               placeholder="Notes..."
               onChange={(event) => setNotes(event.target.value)}
-            />
+            >
+              {notes}
+            </TextareaAutosize>
           </div>
         </DialogContentText>
       </DialogContent>

@@ -138,7 +138,7 @@ export default function Home() {
         ...acc,
         {
           ...item,
-          title: item.firstname,
+          title: item.title ? item.title : item.firstname,
           start: item.start_dt,
           end: item.end_dt,
           backgroundColor:
@@ -150,6 +150,7 @@ export default function Home() {
     return formedData;
   };
 
+  console.log("events", events);
   useEffect(() => {
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
@@ -221,7 +222,7 @@ export default function Home() {
       (event) => event.id == calEvent.event.id
     );
     setSelectedEvent(eventClicked[0]);
-    setIsEditOrCancelOpen(true);
+    setIsOpen(true);
   };
 
   const handleEventCancellation = (payload) => {
@@ -516,6 +517,7 @@ export default function Home() {
 
       <NewOrEditAppointment
         isLoading={isLoading}
+        event={selectedEvent}
         selectedDate={selectedDate}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
