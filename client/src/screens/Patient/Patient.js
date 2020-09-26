@@ -535,7 +535,7 @@ export default function Patient() {
 
   const generateLayout = () => {
 
-    const y = 4;
+    const y = 3;
     let firstlayout = FirstColumnPatientCards.map((item, i) => {
       return {
         x: 0,
@@ -597,9 +597,9 @@ export default function Patient() {
     breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
   };
 
-  const updateMinHeight = (key, newMinHeight) => {
-     let newLayout = layout.map(item => item.i === key ? { ...item, h: newMinHeight } : item);
-    // console.log("UPDATED LAYOUT", newLayout)
+  const updateMinHeight = (key, newHeight) => {
+    let calculatedHeight = newHeight / 40 + 0.5 //40 is the row height, 0.5 is the margin
+     let newLayout = layout.map(item => item.i === key ? { ...item, h: calculatedHeight } : item);
      setLayout([...newLayout])
   }
 
