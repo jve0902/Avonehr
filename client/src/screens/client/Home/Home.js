@@ -154,6 +154,9 @@ export default function Home() {
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
       setProviders(data);
+      if (data.length > 0) {
+        setSelectedProvider(data[0]);
+      }
     }
 
     fetchProviders();
@@ -394,7 +397,7 @@ export default function Home() {
                         )
                           .startOf("day")
                           .fromNow()})`
-                      : "null"}
+                      : "-"}
                   </div>
                 </li>
                 <li>
@@ -421,7 +424,7 @@ export default function Home() {
                         )
                           .startOf("day")
                           .fromNow()})`
-                      : "null"}
+                      : "-"}
                   </div>
                 </li>
               </ul>
