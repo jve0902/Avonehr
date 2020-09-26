@@ -29,10 +29,9 @@ const ICDcodes = () => {
   const [searchResult, setSearchResult] = useState([]);
   const payload = {
     searchTerm,
-    favorite,
+    checkBox: favorite,
   };
-  const searchIcdCodes = (e) => {
-    e.preventDefault();
+  const searchIcdCodes = () => {
     icdcodesService.search(payload).then((res) => {
       setSearchResult(res.data.data);
     });
@@ -68,10 +67,13 @@ const ICDcodes = () => {
                     searchIcdCodes={searchIcdCodes}
                     textChangeHandler={textChangeHandler}
                     checkBoxChangeHandler={checkBoxChangeHandler}
-                    searchTerm={searchTerm}
                   />
                   {searchResult.length > 0 && (
-                    <ICDcodestable user={user} result={searchResult} />
+                    <ICDcodestable
+                      user={user}
+                      result={searchResult}
+                      searchIcdCodes={searchIcdCodes}
+                    />
                   )}
                 </Grid>
                 <Grid item md={12} xs={12}>

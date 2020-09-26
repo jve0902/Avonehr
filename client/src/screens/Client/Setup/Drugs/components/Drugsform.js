@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Checkbox,
@@ -6,6 +5,7 @@ import {
   makeStyles,
   TextField,
 } from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   controlLabel: {
@@ -26,11 +26,11 @@ const Drugsform = ({
   searchDrugs,
   textChangeHandler,
   checkBoxChangeHandler,
-  searchTerm,
 }) => {
   const classes = useStyles();
+
   return (
-    <form onSubmit={(e) => searchDrugs(e)} style={{ margin: "10px 0" }}>
+    <div style={{ margin: "10px 0" }}>
       <FormControlLabel
         control={
           <TextField
@@ -64,10 +64,11 @@ const Drugsform = ({
         variant="contained"
         color="primary"
         className={classes.submit}
+        onClick={searchDrugs}
       >
         Search
       </Button>
-    </form>
+    </div>
   );
 };
 

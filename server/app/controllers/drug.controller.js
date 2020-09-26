@@ -6,8 +6,8 @@ const { errorMessage, successMessage, status } = require("../helpers/status");
 const search = async (req, res) => {
   const db = makeDb(configuration, res);
   let { searchTerm, checkBox } = req.body;
-
   let $sql;
+
   try {
     $sql = `select d.id, d.name, cd.favorite, cd.updated, concat(u.firstname, ' ', u.lastname) updated_name
             from drug d
@@ -50,13 +50,13 @@ const addFavorite = async (req, res) => {
   const db = makeDb(configuration, res);
   let client_drug = req.body;
 
-  (client_drug.created_user_id = req.user_id),
-    (client_drug.updated_user_id = req.user_id),
-    (client_drug.client_id = req.client_id),
+  (client_drug.client_id = req.client_id),
     (client_drug.drug_id = req.body.drug_id),
     (client_drug.favorite = true),
+    (client_drug.created = new Date());
+  (client_drug.created_user_id = req.user_id),
     (client_drug.updated = new Date());
-  client_drug.created = new Date();
+  client_drug.updated_user_id = req.user_id;
 
   try {
     const dbResponse = await db.query(

@@ -45,8 +45,8 @@ export default function Drugs() {
     searchTerm,
     checkBox: favorite,
   };
-  const searchDrugs = (e) => {
-    e.preventDefault();
+
+  const searchDrugs = () => {
     DrugsService.search(payload).then((res) => {
       setSearchResult(res.data.data);
     });
@@ -58,6 +58,7 @@ export default function Drugs() {
   const checkBoxChangeHandler = (e) => {
     setFavorite(e.target.checked);
   };
+
   return (
     <AuthConsumer>
       {({ user }) => (
@@ -81,10 +82,13 @@ export default function Drugs() {
                     searchDrugs={searchDrugs}
                     textChangeHandler={textChangeHandler}
                     checkBoxChangeHandler={checkBoxChangeHandler}
-                    searchTerm={searchTerm}
                   />
                   {searchResult.length > 0 && (
-                    <Drugstable user={user} result={searchResult} />
+                    <Drugstable
+                      user={user}
+                      result={searchResult}
+                      searchDrugs={searchDrugs}
+                    />
                   )}
                 </Grid>
                 <Grid item md={12} xs={12}>

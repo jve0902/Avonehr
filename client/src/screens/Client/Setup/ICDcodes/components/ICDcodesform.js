@@ -26,12 +26,11 @@ const ICDcodesform = ({
   searchIcdCodes,
   textChangeHandler,
   checkBoxChangeHandler,
-  searchTerm,
 }) => {
   const classes = useStyles();
 
   return (
-    <form onSubmit={(e) => searchIcdCodes(e)} style={{ margin: "10px 0" }}>
+    <div style={{ margin: "10px 0" }}>
       <FormControlLabel
         control={
           <TextField
@@ -66,10 +65,11 @@ const ICDcodesform = ({
         variant="contained"
         color="primary"
         className={classes.submit}
+        onClick={searchIcdCodes}
       >
         Search
       </Button>
-    </form>
+    </div>
   );
 };
 

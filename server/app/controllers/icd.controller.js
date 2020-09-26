@@ -49,13 +49,13 @@ const addFavorite = async (req, res) => {
   const db = makeDb(configuration, res);
   let client_icd = req.body;
 
-  (client_icd.created_user_id = req.user_id),
-    (client_icd.updated_user_id = req.user_id),
-    (client_icd.client_id = req.client_id),
+  (client_icd.client_id = req.client_id),
     (client_icd.icd_id = req.body.icd_id),
     (client_icd.favorite = true),
     (client_icd.created = new Date());
-  client_icd.updated = new Date();
+  (client_icd.created_user_id = req.user_id), 
+    (client_icd.updated = new Date());
+  client_icd.updated_user_id = req.user_id;
 
   try {
     const dbResponse = await db.query(

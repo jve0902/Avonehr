@@ -75,7 +75,7 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
-const ICDcodestable = ({ user, result }) => {
+const ICDcodestable = ({ user, result, searchIcdCodes }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   let [state, setState] = useState([]);
@@ -99,7 +99,7 @@ const ICDcodestable = ({ user, result }) => {
           dispatch(setSuccess(`${response.data.message}`));
         },
         (error) => {
-          setErrors(error.response.data.error);
+          setErrors(error.response.error);
         }
       );
     } else {
@@ -108,7 +108,7 @@ const ICDcodestable = ({ user, result }) => {
           dispatch(setSuccess(`${response.data.message}`));
         },
         (error) => {
-          setErrors(error.response.data.error);
+          setErrors(error.response.error);
         }
       );
     }
@@ -145,7 +145,10 @@ const ICDcodestable = ({ user, result }) => {
                     size="small"
                     checked={Boolean(code.favorite)}
                     name="switchBox"
-                    onChange={(e) => changeHandler(e, code.id)}
+                    onChange={(e) => {
+                      changeHandler(e, code.id);
+                      searchIcdCodes();
+                    }}
                   />
                 </TableCell>
                 <TableCell>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import {
   makeStyles,
@@ -75,46 +75,45 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
-const Drugstable = ({ user, result }) => {
+const Drugstable = ({ user, result, searchDrugs }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
   let [state, setState] = useState([]);
-  const [errors, setErrors] = useState([]);
+  let [errors, setErrors] = useState([]);
 
-  const changeHandler = (event, drug_id) => {
+  const changeHandler = (event, drugId) => {
     const payload = {
-      drug_id,
+      drug_id: drugId,
     };
-
     let checked = event.target.checked;
     setState(
       result.map((item) => {
-        if (drug_id == item.id) {
+        if (drugId == item.id) {
           item.favorite = checked;
         }
       })
     );
-    if (checked == true) {
-      DrugsService.addFavorite(drug_id, user.id, payload).then(
+    if (checked === true) {
+      DrugsService.addFavorite(drugId, user.id, payload).then(
         (response) => {
           dispatch(setSuccess(`${response.data.message}`));
         },
         (error) => {
-          setErrors(error.response.data.error);
+          setErrors(error.response.error);
         }
       );
     } else {
-      DrugsService.deleteFavorite(drug_id).then(
+      DrugsService.deleteFavorite(drugId).then(
         (response) => {
           dispatch(setSuccess(`${response.data.message}`));
         },
         (error) => {
-          setErrors(error.response.data.error);
+          setErrors(error.response.error);
         }
       );
     }
   };
+
   return (
     <div>
       {errors &&
@@ -144,7 +143,10 @@ const Drugstable = ({ user, result }) => {
                     size="small"
                     checked={Boolean(drug.favorite)}
                     name="switchBox"
-                    onChange={(e) => changeHandler(e, drug.id)}
+                    onChange={(e) => {
+                      changeHandler(e, drug.id);
+                      searchDrugs();
+                    }}
                   />
                 </TableCell>
                 <TableCell>
