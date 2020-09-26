@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -24,9 +25,29 @@ export default function MessagesContent(props) {
     <>
       {
         data.map(item => (
-          <Grid key={item.id} onContextMenu={(e) => menuHandler(e, item)}>
-            <Typography variant="body1" className={classes.text12} color="textPrimary">{item.message}</Typography>
-          </Grid>
+          <>
+            <Grid container>
+              <Grid item md={3}>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">Date: &nbsp;</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM DD YYYY")}</Typography>
+              </Grid>
+              <Grid item md={3}>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">From: &nbsp;</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_from || "-"}</Typography>
+              </Grid>
+              <Grid item md={3}>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">To: &nbsp;</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_name || "-"}</Typography>
+              </Grid>
+              <Grid item md={3}>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">Subject: &nbsp;</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.subject}</Typography>
+              </Grid>
+            </Grid>
+            <Grid key={item.id} onContextMenu={(e) => menuHandler(e, item)}>
+              <Typography variant="body1" className={classes.text12} color="textPrimary">{item.message}</Typography>
+            </Grid>
+          </>
         ))
       }
     </>
