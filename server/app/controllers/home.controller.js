@@ -76,18 +76,26 @@ const createAppointment = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient, start_dt, end_dt, providerName, ApptStatus } = req.body.data;
+  const {
+    title,
+    notes,
+    patient,
+    start_dt,
+    end_dt,
+    provider,
+    ApptStatus,
+  } = req.body.data;
 
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into user_calendar (client_id, user_id, patient_id, start_dt, end_dt, status, created, created_user_id) values (${
+      `insert into user_calendar (client_id, user_id, patient_id, start_dt, end_dt, status, title, notes, created, created_user_id) values (${
         req.client_id
-      }, ${req.user_id}, ${patient.id}, '${moment(start_dt).format(
+      }, ${provider.id}, ${patient.id}, '${moment(start_dt).format(
         "YYYY-MM-DD HH:mm:ss"
       )}', '${moment(end_dt).format(
         "YYYY-MM-DD HH:mm:ss"
-      )}', '${ApptStatus}', now(), ${req.user_id})`
+      )}', '${ApptStatus}', '${title}', '${notes}', now(), ${req.user_id})`
     );
     if (!insertResponse.affectedRows) {
       errorMessage.error = "Insert not successful";
@@ -96,7 +104,7 @@ const createAppointment = async (req, res) => {
     const emailTemplate = newAppointmentTemplate(
       patient,
       moment(start_dt).format("YYYY-MM-DD HH:mm:ss"),
-      providerName
+      provider
     );
     if (process.env.NODE_ENV === "development") {
       let info = await transporter.sendMail(emailTemplate);

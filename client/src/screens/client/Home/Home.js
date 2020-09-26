@@ -8,7 +8,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar, NewAppointment, EditOrCancel } from "./components";
+import { Calendar, NewOrEditAppointment, EditOrCancel } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
 import { useDispatch } from "react-redux";
@@ -156,6 +156,7 @@ export default function Home() {
       setProviders(data);
       if (data.length > 0) {
         setSelectedProvider(data[0]);
+        fetchEventsByProvider(data[0]);
       }
     }
 
@@ -172,13 +173,16 @@ export default function Home() {
 
   const handleProviderClick = async (provider) => {
     setSelectedProvider(provider);
-    const { data } = await Appointments.getAllByProvider(provider.id);
-    const eventsFromAPI = getMapFromArray(data);
-    setEvents(eventsFromAPI);
-
+    fetchEventsByProvider(provider);
     fetchUnreadPatientMessages(provider.id);
     fetchPatientApptRequests(provider.id);
   };
+
+  async function fetchEventsByProvider(provider) {
+    const { data } = await Appointments.getAllByProvider(provider.id);
+    const eventsFromAPI = getMapFromArray(data);
+    setEvents(eventsFromAPI);
+  }
 
   async function fetchProviderDetails() {
     const { data } = await DashboardHome.getProviderDetails();
@@ -509,7 +513,8 @@ export default function Home() {
           )}
         </Grid>
       </Grid>
-      <NewAppointment
+
+      <NewOrEditAppointment
         isLoading={isLoading}
         selectedDate={selectedDate}
         isOpen={isOpen}
