@@ -71,11 +71,22 @@ import PatientService from "./../../services/patient.service";
 import { setError, setSuccess } from "./../../store/common/actions";
 import { useDispatch } from "react-redux";
 
+//react-grid-layout styles
+import "react-grid-layout/css/styles.css"
+import "react-resizable/css/styles.css"
+
+import { Responsive, WidthProvider } from 'react-grid-layout';
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
 export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
-  const history =  useHistory();
+  const history = useHistory();
+
+  //grid layout states
+  const [layout, setLayout] = useState([]);
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
@@ -152,6 +163,10 @@ export default function Patient() {
   const [medications, setMedications] = useState([]);
   const [requisitions, setRequisitions] = useState([]);
   const [tests, setTests] = useState([]);
+
+  useEffect(() => {
+    generateLayout();
+  }, [])
 
   useEffect(() => {
     fetchPatientData();
@@ -518,6 +533,76 @@ export default function Patient() {
     createDocument(fd);
   };
 
+  const generateLayout = () => {
+
+    const y = 4;
+    let firstlayout = FirstColumnPatientCards.map((item, i) => {
+      return {
+        x: 0,
+        y: 0,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let encounterslayout = {
+      x: 3,
+      y: 0,
+      w: 3,
+      h: y,
+      i: 'Encounters'
+    };
+    let thirdlayout = ThirdColumnPatientCards.map((item, i) => {
+      return {
+        x: 6,
+        y: y,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let fourthlayout = FourthColumnPatientCards.map((item, i) => {
+      return {
+        x: 9,
+        y: 0,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let documentslayout = {
+      x: 0,
+      y: y,
+      w: 6,
+      h: y,
+      i: 'Documents'
+    };
+    let testslayout = {
+      x: 6,
+      y: y,
+      w: 6,
+      h: y,
+      i: 'All Tests'
+    };
+    setLayout([...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout]);
+    console.log("XDXDXD", [...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout])
+    // return [...firstlayout, ...thirdlayout];
+  }
+
+  const gridProps = {
+    className: "layout",
+    rowHeight: 40,
+    // onLayoutChange: (layout) => console.log("onLayoutChange called", layout),
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
+  };
+
+  const updateMinHeight = (key, newMinHeight) => {
+     let newLayout = layout.map(item => item.i === key ? { ...item, h: newMinHeight } : item);
+    // console.log("UPDATED LAYOUT", newLayout)
+     setLayout([...newLayout])
+  }
+
   return (
     <>
       <input
@@ -821,10 +906,24 @@ export default function Patient() {
         hideActions={true}
         size={"lg"}
       />
-      <Grid container spacing={1}>
-        <Grid item md={3} sm={6} xs={12}>
-          {FirstColumnPatientCards.map((item, index) => {
-            return (
+
+      <ResponsiveGridLayout
+        {...gridProps}
+        layouts={{ lg: layout }}
+        // onBreakpointChange={this.onBreakpointChange}
+        // onLayoutChange={this.onLayoutChange}
+        // onDrop={this.onDrop}
+        // WidthProvider option
+        measureBeforeMount={false}
+        // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
+        // and set `measureBeforeMount={true}`.
+        compactType={"vertical"}
+        containerPadding={[0, 0]}
+        margin={[5, 0]}
+      >
+        {FirstColumnPatientCards.map((item, index) => {
+          return (
+            <div key={item.title} style={{ overflowY: 'auto' }}>
               <Card
                 key={index}
                 title={item.title}
@@ -839,9 +938,97 @@ export default function Patient() {
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
                 cardInfo={item.cardInfo}
+                updateMinHeight={updateMinHeight}
               />
-            );
-          })}
+            </div>
+          );
+        })}
+        <div key={'Encounters'} style={{ overflowY: 'auto' }}>
+          <Card
+            title="Encounters"
+            data={!!encounters && <EncountersCardContent data={encounters} />}
+            showActions={true}
+            primaryButtonText={"New"}
+            secondaryButtonText={"Expand"}
+            primaryButtonHandler={toggleEncountersDialog}
+            secondaryButtonHandler={toggleEncountersExpandDialog}
+            showSearch={false}
+            updateMinHeight={updateMinHeight}
+          />
+        </div>
+        {ThirdColumnPatientCards.map((item, index) => {
+          return (
+            <div key={item.title} style={{ overflowY: 'auto' }}>
+              <Card
+                key={index}
+                title={item.title}
+                data={mapCardContentDataHandlers(item.title)}
+                showActions={item.showActions}
+                showSearch={item.showSearch}
+                icon={item.icon}
+                primaryButtonText={item.primaryButtonText}
+                secondaryButtonText={item.secondaryButtonText}
+                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
+                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+                updateMinHeight={updateMinHeight}
+              />
+            </div>
+          );
+        })}
+        {FourthColumnPatientCards.map((item, index) => {
+          return (
+            <div key={item.title} style={{ overflowY: 'auto' }}>
+              <Card
+                key={index}
+                title={item.title}
+                data={mapCardContentDataHandlers(item.title)}
+                showActions={item.showActions}
+                showSearch={item.showSearch}
+                icon={item.icon}
+                primaryButtonText={item.primaryButtonText}
+                secondaryButtonText={item.secondaryButtonText}
+                primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
+                secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+                updateMinHeight={updateMinHeight}
+              />
+            </div>
+          );
+        })}
+        <div key={"Documents"} style={{ overflowY: 'auto' }}>
+          <Card
+            title="Documents"
+            data={
+              !!documents && (
+                <DocumentsCardContent
+                  data={documents}
+                  reloadData={() => fetchDocuments()}
+                />
+              )
+            }
+            showActions={true}
+            primaryButtonText={"New"}
+            secondaryButtonText={"Expand"}
+            showSearch={false}
+            primaryButtonHandler={onFilePickerClick}
+            secondaryButtonHandler={toggleDocumentsExpandDialog}
+            updateMinHeight={updateMinHeight}
+          />
+        </div>
+        <div key={"All Tests"} style={{ overflowY: 'auto' }}>
+          <Card
+            title="All Tests"
+            data={!!tests && <TestsCardContent data={tests} />}
+            showActions={true}
+            primaryButtonText={"Expand"}
+            secondaryButtonText={null}
+            showSearch={false}
+            primaryButtonHandler={toggleTestsExpandDialog}
+            updateMinHeight={updateMinHeight}
+          />
+        </div>
+      </ResponsiveGridLayout>
+      {/* <Grid container spacing={1}>
+        <Grid item md={3} sm={6} xs={12}>
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
           <Card
@@ -891,27 +1078,11 @@ export default function Patient() {
             );
           })}
         </Grid>
-      </Grid>
+      </Grid> */}
 
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid item md={6} xs={12}>
-          <Card
-            title="Documents"
-            data={
-              !!documents && (
-                <DocumentsCardContent
-                  data={documents}
-                  reloadData={() => fetchDocuments()}
-                />
-              )
-            }
-            showActions={true}
-            primaryButtonText={"New"}
-            secondaryButtonText={"Expand"}
-            showSearch={false}
-            primaryButtonHandler={onFilePickerClick}
-            secondaryButtonHandler={toggleDocumentsExpandDialog}
-          />
+
         </Grid>
         <Grid item md={6} xs={12}>
           <Card
@@ -924,7 +1095,7 @@ export default function Patient() {
             primaryButtonHandler={toggleTestsExpandDialog}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 }

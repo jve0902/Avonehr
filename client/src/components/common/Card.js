@@ -6,6 +6,7 @@ import Colors from '../../theme/colors';
 import CardIcon from '@material-ui/icons/CreditCard';
 import DesktopIcon from '@material-ui/icons/DesktopMac';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
+import rglDynamicHeight from "../../screens/Patient/rglDynamicHeight"
 
 const PatientCard = (props) => {
   const classes = useStyles();
@@ -168,4 +169,4 @@ PatientCard.propTypes = {
 };
 
 
-export default PatientCard;
+export default rglDynamicHeight(PatientCard);
