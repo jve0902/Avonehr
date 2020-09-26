@@ -922,7 +922,7 @@ export default function Patient() {
       >
         {FirstColumnPatientCards.map((item, index) => {
           return (
-            <Grid key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -942,7 +942,7 @@ export default function Patient() {
             </Grid>
           );
         })}
-        <Grid key={'Encounters'} style={{ overflowY: 'auto' }}>
+        <Grid key={'Encounters'} className={classes.overflowAuto}>
           <Card
             title="Encounters"
             data={!!encounters && <EncountersCardContent data={encounters} />}
@@ -957,7 +957,7 @@ export default function Patient() {
         </Grid>
         {ThirdColumnPatientCards.map((item, index) => {
           return (
-            <Grid key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -976,7 +976,7 @@ export default function Patient() {
         })}
         {FourthColumnPatientCards.map((item, index) => {
           return (
-            <Grid key={item.title} style={{ overflowY: 'auto' }}>
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -993,7 +993,7 @@ export default function Patient() {
             </Grid>
           );
         })}
-        <Grid key={"Documents"} style={{ overflowY: 'auto' }}>
+        <Grid key={"Documents"} className={classes.overflowAuto}>
           <Card
             title="Documents"
             data={
@@ -1013,7 +1013,7 @@ export default function Patient() {
             updateMinHeight={updateMinHeight}
           />
         </Grid>
-        <Grid key={"All Tests"} style={{ overflowY: 'auto' }}>
+        <Grid key={"All Tests"} className={classes.overflowAuto}>
           <Card
             title="All Tests"
             data={!!tests && <TestsCardContent data={tests} />}
@@ -1034,4 +1034,7 @@ const useStyles = makeStyles((theme) => ({
   noDisplay: {
     display: "none",
   },
+  overflowAuto: {
+    overflowY: 'auto'
+  }
 }));
