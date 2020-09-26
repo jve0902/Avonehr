@@ -8,7 +8,7 @@ const getInit = async (req, res) => {
   let $sql;
 
   try {
-    $sql = `select s.id, c.name, s.status_id, s.subject, cs.name, s.created, concat(u.firstname, ' ', u.lastname) created_user, s.updated, s.client_id
+    $sql = `select s.id, c.name client_name, s.subject, cs.name case_status, s.created, concat(u.firstname, ' ', u.lastname) created_user, s.updated
       from support s
       left join client c on c.id=s.client_id
       left join case_status cs on cs.id=s.status_id
