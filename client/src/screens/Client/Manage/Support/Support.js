@@ -131,7 +131,6 @@ export default function Support() {
             This page is used for support
           </Typography>
         </Grid>
-        {console.log(caseStatus, cases)}
         <Grid item xs={12} sm={2}>
           <FormControl
             variant="outlined"
