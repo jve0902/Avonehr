@@ -13,13 +13,6 @@ export default function MessagesContent(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, reloadData } = props;
-  const [element, setElement] = useState(null)
-  const [selectedItem, setSelectedItem] = useState(null)
-
-  const menuHandler = (e, item) => {
-    setElement(e.currentTarget);
-    setSelectedItem(item);
-  }
 
   return (
     <>
@@ -44,7 +37,7 @@ export default function MessagesContent(props) {
                 <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.subject}</Typography>
               </Grid>
             </Grid>
-            <Grid key={item.id} onContextMenu={(e) => menuHandler(e, item)}>
+            <Grid key={item.id}>
               <Typography variant="body1" className={classes.text12} color="textPrimary">{item.message}</Typography>
             </Grid>
           </Grid>
