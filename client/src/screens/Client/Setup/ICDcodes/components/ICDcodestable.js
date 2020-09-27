@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   makeStyles,
@@ -79,6 +79,7 @@ const ICDcodestable = ({ user, result, searchIcdCodes }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   let [state, setState] = useState([]);
+  let [reload, setReload] = useState(1);
   const [errors, setErrors] = useState([]);
 
   const changeHandler = (event, icdcode_id) => {
@@ -112,7 +113,14 @@ const ICDcodestable = ({ user, result, searchIcdCodes }) => {
         }
       );
     }
+    setReload((reload += 1));
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      searchIcdCodes();
+    }, 300);
+  }, [reload]);
 
   return (
     <div>
@@ -145,10 +153,7 @@ const ICDcodestable = ({ user, result, searchIcdCodes }) => {
                     size="small"
                     checked={Boolean(code.favorite)}
                     name="switchBox"
-                    onChange={(e) => {
-                      changeHandler(e, code.id);
-                      searchIcdCodes();
-                    }}
+                    onChange={(e) => changeHandler(e, code.id)}
                   />
                 </TableCell>
                 <TableCell>

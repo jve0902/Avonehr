@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   makeStyles,
@@ -79,6 +79,7 @@ const Drugstable = ({ user, result, searchDrugs }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   let [state, setState] = useState([]);
+  let [reload, setReload] = useState(1);
   let [errors, setErrors] = useState([]);
 
   const changeHandler = (event, drugId) => {
@@ -93,7 +94,7 @@ const Drugstable = ({ user, result, searchDrugs }) => {
         }
       })
     );
-    if (checked === true) {
+    if (checked == true) {
       DrugsService.addFavorite(drugId, user.id, payload).then(
         (response) => {
           dispatch(setSuccess(`${response.data.message}`));
@@ -112,7 +113,14 @@ const Drugstable = ({ user, result, searchDrugs }) => {
         }
       );
     }
+    setReload((reload += 1));
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      searchDrugs();
+    }, 400);
+  }, [reload]);
 
   return (
     <div>
@@ -143,10 +151,7 @@ const Drugstable = ({ user, result, searchDrugs }) => {
                     size="small"
                     checked={Boolean(drug.favorite)}
                     name="switchBox"
-                    onChange={(e) => {
-                      changeHandler(e, drug.id);
-                      searchDrugs();
-                    }}
+                    onChange={(e) => changeHandler(e, drug.id)}
                   />
                 </TableCell>
                 <TableCell>

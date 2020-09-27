@@ -53,8 +53,7 @@ const addFavorite = async (req, res) => {
     (client_icd.icd_id = req.body.icd_id),
     (client_icd.favorite = true),
     (client_icd.created = new Date());
-  (client_icd.created_user_id = req.user_id), 
-    (client_icd.updated = new Date());
+  (client_icd.created_user_id = req.user_id), (client_icd.updated = new Date());
   client_icd.updated_user_id = req.user_id;
 
   try {
