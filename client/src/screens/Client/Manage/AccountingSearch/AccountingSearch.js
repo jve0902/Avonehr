@@ -7,14 +7,13 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import moment from "moment";
-// import InputAdornment from "@material-ui/core/InputAdornment";
-
 import Accounting from "../../../../services/accountingSearch.service";
 import AccountingSearchResults from "./components";
 import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,11 +127,11 @@ export default function AccountingSearch() {
   const handleChange = (event) => {
     setSelectedType(event.target.value);
   };
-  const handleDateChangeFrom = (event) => {
-    setDateFrom(event.target.value);
+  const handleDateChangeFrom = (date) => {
+    setDateFrom(date);
   };
-  const handleDateChangeTo = (event) => {
-    setDateTo(event.target.value);
+  const handleDateChangeTo = (date) => {
+    setDateTo(date);
   };
   return (
     <div className={classes.root}>
@@ -203,26 +202,38 @@ export default function AccountingSearch() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <KeyboardDatePicker
                   variant="outlined"
                   id="date"
                   label="Date From"
                   value={dateFrom}
                   className={classes.textField}
-                  onChange={handleDateChangeFrom}
-                  type="date"
+                  onChange={(date) => setDateFrom(date)}
+                  clearable
+                  // disablePast
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  format="yyyy/MM/dd"
+                  inputVariant="outlined"
                   size="small"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <KeyboardDatePicker
+                  clearable
+                  // disablePast
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  format="yyyy/MM/dd"
+                  inputVariant="outlined"
                   variant="outlined"
                   id="date"
                   label="Date To"
-                  type="date"
                   value={dateTo}
                   className={classes.textField}
-                  onChange={handleDateChangeTo}
+                  onChange={(date) => setDateTo(date)}
                   size="small"
                 />
               </Grid>
@@ -236,7 +247,7 @@ export default function AccountingSearch() {
                   <Select
                     native
                     value={selectType}
-                    onChange={handleChange}
+                    onChange={(event) => setSelectedType(event.target.value)}
                     inputProps={{
                       name: "type",
                       id: "age-native-simple",
