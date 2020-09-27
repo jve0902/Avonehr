@@ -23,14 +23,14 @@ import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { colors } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import { makeStyles } from "@material-ui/core/styles";
+import { colors } from "@material-ui/core";
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
 
@@ -102,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(3),
   },
 }));
+
 const NewOrEditEvent = ({
   isOpen,
   onClose,
