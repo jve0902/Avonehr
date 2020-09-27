@@ -200,19 +200,22 @@ const updateAppointment = async (req, res) => {
   }
   const { id } = req.params;
   const {
+    title,
+    notes,
     patient,
+    providerName,
+    ApptStatus,
     new_start_dt,
     new_end_dt,
     old_start_dt,
     old_end_dt,
-    providerName,
   } = req.body.data;
 
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
       `update user_calendar
-        set start_dt='${new_start_dt}', end_dt='${new_end_dt}'
+        set title='${title}', notes='${notes}', status='${ApptStatus}', start_dt='${new_start_dt}', end_dt='${new_end_dt}'
         where id=${id}`
     );
     if (!updateResponse.affectedRows) {

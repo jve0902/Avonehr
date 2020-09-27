@@ -132,6 +132,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditOrCancelOpen, setIsEditOrCancelOpen] = useState(false);
+  const [isNewEvent, setIsNewEvent] = useState(true);
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -150,7 +151,6 @@ export default function Home() {
     return formedData;
   };
 
-  console.log("events", events);
   useEffect(() => {
     async function fetchProviders() {
       const { data } = await DashboardHome.getProviders();
@@ -198,6 +198,7 @@ export default function Home() {
     setAppointmentRequests(data);
   }
   const handleDayClick = (date) => {
+    setIsNewEvent(true);
     setIsOpen(true);
     setSelectedDate(date);
   };
@@ -207,7 +208,7 @@ export default function Home() {
     Appointments.create(payload).then(
       (response) => {
         setIsLoading(false);
-        fetchAppointments();
+        fetchEventsByProvider(selectedProvider);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -218,6 +219,7 @@ export default function Home() {
   };
 
   const handleEventClick = (calEvent) => {
+    setIsNewEvent(false);
     const eventClicked = events.filter(
       (event) => event.id == calEvent.event.id
     );
@@ -230,7 +232,7 @@ export default function Home() {
     Appointments.cancelEvent(payload).then(
       (response) => {
         setIsLoading(false);
-        fetchAppointments();
+        fetchEventsByProvider(selectedProvider);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -239,14 +241,15 @@ export default function Home() {
       }
     );
   };
-  const handleEventTimeChange = (payload) => {
+
+  const handleEventUpdate = (payload) => {
     setIsLoading(true);
     Appointments.update(payload).then(
       (response) => {
         setIsLoading(false);
-        fetchAppointments();
+        fetchEventsByProvider(selectedProvider);
         dispatch(setSuccess(`${response.data.message}`));
-        setIsEditOrCancelOpen(false);
+        setIsOpen(false);
       },
       (error) => {
         setErrors(error.response.data.error);
@@ -517,21 +520,16 @@ export default function Home() {
 
       <NewOrEditEvent
         isLoading={isLoading}
+        isNewEvent={isNewEvent}
         event={selectedEvent}
         selectedDate={selectedDate}
+        selectedProvider={selectedProvider}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
         onCancel={(payload) => handleEventCancellation(payload)}
         onSave={handleEventCreation}
-      />
-      <EditOrCancel
-        isLoading={isLoading}
-        event={selectedEvent}
-        isOpen={isEditOrCancelOpen}
-        onClose={() => setIsEditOrCancelOpen(false)}
-        onCancel={(id) => handleEventCancellation(id)}
-        onEventTimeChange={(payload) => handleEventTimeChange(payload)}
+        onEventUpdate={(payload) => handleEventUpdate(payload)}
       />
     </div>
   );
