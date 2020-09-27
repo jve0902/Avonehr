@@ -8,7 +8,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Calendar, NewOrEditAppointment, EditOrCancel } from "./components";
+import { Calendar, NewOrEditEvent, EditOrCancel } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
 import { useDispatch } from "react-redux";
@@ -515,7 +515,7 @@ export default function Home() {
         </Grid>
       </Grid>
 
-      <NewOrEditAppointment
+      <NewOrEditEvent
         isLoading={isLoading}
         event={selectedEvent}
         selectedDate={selectedDate}

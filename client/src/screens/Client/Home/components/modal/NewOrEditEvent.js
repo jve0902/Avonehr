@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(3),
   },
 }));
-const NewOrEditAppointment = ({
+const NewOrEditEvent = ({
   isOpen,
   onClose,
   selectedDate,
@@ -105,16 +105,31 @@ const NewOrEditAppointment = ({
 }) => {
   const classes = useStyles();
   const { providers } = props;
-  const [title, setTitle] = useState("");
+  //const [title, setTitle] = useState("");
   const [errors, setErrors] = useState([]);
-  const [startDate, handleStartDateChange] = useState(selectedDate);
-  const [endDate, handleEndDateChange] = useState(new Date(selectedDate));
-  const [status, setStatus] = React.useState("R");
+  //const [startDate, handleStartDateChange] = useState(selectedDate);
+  //const [endDate, handleEndDateChange] = useState(new Date(selectedDate));
+  //const [status, setStatus] = React.useState("R");
   const [provider, setProvider] = React.useState("");
   const [patients, setPatients] = React.useState([]);
   const [selectedPatient, setSelectedPatient] = React.useState("");
-  const [notes, setNotes] = React.useState("");
+  //const [notes, setNotes] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
+  const [calEvent, setCalEvent] = useState("");
+
+  useEffect(() => {
+    setCalEvent(props.event);
+  }, [props.event]);
+
+  console.log("props.event:", props.event);
+  const handleOnChange = (event) => {
+    setCalEvent({
+      ...calEvent,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  console.log("event:", calEvent);
 
   const debouncedSearchTerm = useDebounce(patientSearchTerm, 500);
   useEffect(
@@ -142,7 +157,7 @@ const NewOrEditAppointment = ({
     [debouncedSearchTerm]
   );
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("props.event:", props);
     setTitle(props.event.title);
     setStatus(props.event.status);
@@ -154,9 +169,8 @@ const NewOrEditAppointment = ({
       name: props.event.provider_name,
     });
     setPatientSearchTerm(`${props.event.firstname} ${props.event.lastname}`);
-  }, [props.event]);
+  }, [props.event]); */
 
-  console.log("title", title);
   const handlePatientChange = (_, patient) => {
     const sp = patients.filter((p) => p.id === patient.id);
     setSelectedPatient(sp[0]);
@@ -170,15 +184,17 @@ const NewOrEditAppointment = ({
   const handleSaveAppointment = () => {
     const payload = {
       data: {
-        title: title,
+        title: calEvent.title,
         provider: provider,
         patient: selectedPatient,
-        ApptStatus: status,
-        notes: notes,
-        start_dt: startDate,
-        end_dt: endDate,
+        ApptStatus: calEvent.status,
+        notes: calEvent.notes,
+        start_dt: calEvent.start_dt,
+        end_dt: calEvent.start_dt,
       },
     };
+
+    console.log("payload:", payload);
     props.onSave(payload);
   };
   return (
@@ -218,7 +234,7 @@ const NewOrEditAppointment = ({
           <div className={classes.root}>
             <FormControl component="div" className={classes.formControl}>
               <TextField
-                value={title}
+                value={calEvent.title}
                 variant="outlined"
                 margin="normal"
                 size="small"
@@ -229,7 +245,7 @@ const NewOrEditAppointment = ({
                 name="title"
                 autoComplete="title"
                 autoFocus
-                onChange={(event) => setTitle(event.target.value)}
+                onChange={(event) => handleOnChange(event)}
               />
             </FormControl>
             <div className={classes.datePickers}>
@@ -239,9 +255,14 @@ const NewOrEditAppointment = ({
                 clearable
                 id="date-picker-inline"
                 label="Start"
-                value={startDate}
+                value={calEvent.start_dt}
                 placeholder="2020/10/10 10:00"
-                onChange={(date) => handleStartDateChange(date)}
+                onChange={(date) =>
+                  setCalEvent({
+                    ...calEvent,
+                    ["start_dt"]: date,
+                  })
+                }
                 minDate={new Date()}
                 onError={console.log}
                 disablePast
@@ -255,9 +276,14 @@ const NewOrEditAppointment = ({
                 variant="outlined"
                 id="date-picker-inline"
                 label="End"
-                value={endDate}
+                value={calEvent.end_dt}
                 placeholder="2020/10/10 11:00"
-                onChange={(date) => handleEndDateChange(date)}
+                onChange={(date) =>
+                  setCalEvent({
+                    ...calEvent,
+                    ["end_dt"]: date,
+                  })
+                }
                 minDate={new Date()}
                 onError={console.log}
                 disablePast
@@ -272,8 +298,8 @@ const NewOrEditAppointment = ({
               <RadioGroup
                 aria-label="status"
                 name="status"
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
+                value={calEvent.status ? calEvent.status : "R"}
+                onChange={(event) => handleOnChange(event)}
                 className={classes.statusList}
               >
                 <FormControlLabel
@@ -304,7 +330,7 @@ const NewOrEditAppointment = ({
               <Select
                 labelId="provider-select-outlined-label"
                 id="provider-select-outlined-label"
-                value={!!provider && provider.id}
+                value={!!provider && provider.id ? provider.id : ""}
                 onChange={handleProviderChange}
                 label="Provider"
               >
@@ -358,9 +384,10 @@ const NewOrEditAppointment = ({
               className={classes.textArea}
               aria-label="minimum height"
               placeholder="Notes..."
-              onChange={(event) => setNotes(event.target.value)}
+              name="notes"
+              onChange={(event) => handleOnChange(event)}
             >
-              {notes}
+              {calEvent.notes}
             </TextareaAutosize>
           </div>
         </DialogContentText>
@@ -378,7 +405,7 @@ const NewOrEditAppointment = ({
           Cancel
         </Button>
         <Button
-          disabled={!status || !selectedPatient || !provider}
+          disabled={!calEvent.status}
           variant="outlined"
           color="primary"
           size="small"
@@ -391,4 +418,4 @@ const NewOrEditAppointment = ({
   );
 };
 
-export default NewOrEditAppointment;
+export default NewOrEditEvent;
