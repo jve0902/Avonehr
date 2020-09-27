@@ -21,7 +21,7 @@ const search = async (req, res) => {
   let $sql;
 
   try {
-    $sql = `select distinct p.id, p.firstname, p.middlename, p.lastname, p.city, p.state, p.postal, p.country, p.phone_cell, p.phone_home, p.email, p.gender, p.created, p.client_id
+    $sql = `select distinct p.id, p.firstname, p.middlename, p.lastname, p.city, p.state, p.postal, p.country, p.phone_cell, p.phone_home, p.email, p.gender, p.created
     from patient p \n`;
     if (appointmentFrom || appointmentTo) {
       $sql =
@@ -45,7 +45,7 @@ const search = async (req, res) => {
     if (paymentTo) {
       $sql = $sql + `and t.dt <= ${paymentTo} \n`;
     }
-    $sql = $sql + `where t.client_id=${req.client_id} \n`;
+    $sql = $sql + `where p.client_id=${req.client_id} \n`;
     if (firstname) {
       $sql = $sql + `and p.firstname like '${firstname}%' \n`;
     }
@@ -65,10 +65,10 @@ const search = async (req, res) => {
       $sql = $sql + `and p.status = ${patientStatus}  \n`;
     }
     if (createdFrom) {
-      $sql = $sql + `and p.created >= '${createdFrom}%' \n`;
+      $sql = $sql + `and p.created >= '${createdFrom}' \n`;
     }
     if (createdTo) {
-      $sql = $sql + `and p.created <= '${createdTo}%' \n`;
+      $sql = $sql + `and p.created <= '${createdTo}' \n`;
     }
     $sql = $sql + `order by p.firstname \n`;
     $sql = $sql + `limit 20 \n`;
