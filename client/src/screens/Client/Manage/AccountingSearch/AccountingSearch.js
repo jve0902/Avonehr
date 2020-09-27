@@ -208,7 +208,7 @@ export default function AccountingSearch() {
                   label="Date From"
                   value={dateFrom}
                   className={classes.textField}
-                  onChange={handleDateChangeFrom}
+                  onChange={(date) => setDateFrom(date)}
                   clearable
                   // disablePast
                   KeyboardButtonProps={{
@@ -233,7 +233,7 @@ export default function AccountingSearch() {
                   label="Date To"
                   value={dateTo}
                   className={classes.textField}
-                  onChange={handleDateChangeTo}
+                  onChange={(date) => setDateTo(date)}
                   size="small"
                 />
               </Grid>
@@ -247,7 +247,7 @@ export default function AccountingSearch() {
                   <Select
                     native
                     value={selectType}
-                    onChange={handleChange}
+                    onChange={(event) => setSelectedType(event.target.value)}
                     inputProps={{
                       name: "type",
                       id: "age-native-simple",
