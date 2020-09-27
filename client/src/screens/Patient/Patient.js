@@ -74,6 +74,7 @@ import { useDispatch } from "react-redux";
 //react-grid-layout styles
 import "react-grid-layout/css/styles.css"
 import "react-resizable/css/styles.css"
+import "../../reactGridLayout.css"
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
