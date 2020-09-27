@@ -232,7 +232,7 @@ export default function Home() {
         setIsLoading(false);
         fetchAppointments();
         dispatch(setSuccess(`${response.data.message}`));
-        setIsEditOrCancelOpen(false);
+        setIsOpen(false);
       },
       (error) => {
         setErrors(error.response.data.error);
@@ -522,6 +522,7 @@ export default function Home() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
+        onCancel={(payload) => handleEventCancellation(payload)}
         onSave={handleEventCreation}
       />
       <EditOrCancel

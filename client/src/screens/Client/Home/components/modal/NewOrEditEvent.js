@@ -99,6 +99,7 @@ const NewOrEditEvent = ({
   onClose,
   selectedDate,
   user,
+  onCancel,
   isNewAppointment,
   isLoading,
   ...props
@@ -196,6 +197,22 @@ const NewOrEditEvent = ({
 
     console.log("payload:", payload);
     props.onSave(payload);
+  };
+  const handleEventCancel = () => {
+    const payload = {
+      data: {
+        id: props.event.id,
+        providerName: props.event.provider_name,
+        patient: {
+          id: props.event.patient_id,
+          firstname: props.event.firstname,
+          email: props.event.email,
+        },
+        appointmentDate: moment(props.event.start).format("YYYY-MM-DD HH:mm"),
+      },
+    };
+    console.log("Cancel payload:", payload);
+    onCancel(payload);
   };
   return (
     <Dialog
@@ -393,26 +410,32 @@ const NewOrEditEvent = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions className={classes.modalAction}>
-        <Button
-          size="small"
-          variant="outlined"
-          onClick={() => onClose()}
-          style={{
-            borderColor: colors.orange[600],
-            color: colors.orange[600],
-          }}
-        >
-          Cancel
+        <Button size="small" variant="outlined" onClick={() => onClose()}>
+          close
         </Button>
-        <Button
-          disabled={!calEvent.status}
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() => handleSaveAppointment()}
-        >
-          Save
-        </Button>
+        <div>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => handleEventCancel()}
+            style={{
+              borderColor: colors.orange[600],
+              color: colors.orange[600],
+              marginRight: "16px",
+            }}
+          >
+            Cancel this appointment
+          </Button>
+          <Button
+            disabled={!calEvent.status}
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => handleSaveAppointment()}
+          >
+            Save
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   );
