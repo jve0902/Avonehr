@@ -80,6 +80,7 @@ const PatientCard = (props) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 100,
+    overflowY: 'auto',
     background: Colors.white,
     border: '1px solid rgba(38, 38, 38, 0.12)',
     borderRadius: 4,
@@ -127,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     color: Colors.black
   },
   searchInput: {
-    margin: "4px 0",
+    margin: "2px 0",
     maxWidth: '110px'
   },
   icon: {
@@ -169,4 +170,5 @@ PatientCard.propTypes = {
 };
 
 
-export default rglDynamicHeight(PatientCard);
+// export default rglDynamicHeight(PatientCard);
+export default PatientCard;

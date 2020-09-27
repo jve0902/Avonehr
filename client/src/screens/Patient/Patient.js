@@ -535,7 +535,7 @@ export default function Patient() {
 
   const generateLayout = () => {
 
-    const y = 3;
+    const y = 4;
     let firstlayout = FirstColumnPatientCards.map((item, i) => {
       return {
         x: 0,
@@ -574,19 +574,17 @@ export default function Patient() {
       x: 0,
       y: y,
       w: 6,
-      h: y,
+      h: 5,
       i: 'Documents'
     };
     let testslayout = {
       x: 6,
       y: y,
       w: 6,
-      h: y,
+      h: 5,
       i: 'All Tests'
     };
     setLayout([...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout]);
-    console.log("XDXDXD", [...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout])
-    // return [...firstlayout, ...thirdlayout];
   }
 
   const gridProps = {
