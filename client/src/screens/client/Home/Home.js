@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Calendar,
   NewOrEditEvent,
+  MessageToPatient,
   ProviderCards,
   ProviderDetailsCard,
   MessagesUnread,
@@ -40,6 +41,9 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isNewEvent, setIsNewEvent] = useState(true);
+
+  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(true);
+
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -219,6 +223,12 @@ export default function Home() {
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
         errors={errors}
+      />
+      <MessageToPatient
+        isLoading={isLoading}
+        isNewMessage={true}
+        isOpen={isMessageToPatientOpen}
+        onClose={() => setIsMessageToPatientOpen(false)}
       />
     </div>
   );
