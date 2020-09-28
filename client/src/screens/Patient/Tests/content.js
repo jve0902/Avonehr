@@ -1,15 +1,19 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    padding: 9,
+  },
   tableContainer: {
     minWidth: 650,
   },
@@ -28,10 +32,11 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
+    whiteSpace: 'nowrap',
     fontWeight: 700,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 
@@ -43,15 +48,18 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& th": {
       fontSize: 12,
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
   },
 }))(TableRow);
 
-const Content = (props) => {
+const TestsContent = (props) => {
   const { data } = props;
   const classes = useStyles();
 
@@ -76,11 +84,11 @@ const Content = (props) => {
           {data.map((row) => (
             <StyledTableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, DDD, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.type}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DD, YYYY") : "-"}</TableCell>
+              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DDD, YYYY") : "-"}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
@@ -88,7 +96,9 @@ const Content = (props) => {
               <TableCell>{row.note}</TableCell>
 
               <TableCell className={classes.actions}>
-                <Button variant="text">Delete</Button>
+                <IconButton className={classes.button}>
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
               </TableCell>
             </StyledTableRow>
           ))}
@@ -98,4 +108,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default TestsContent;

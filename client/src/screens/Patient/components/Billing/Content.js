@@ -6,7 +6,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-export default function Content(props) {
+export default function BillingContent(props) {
   const classes = useStyles();
   const { data } = props;
 
@@ -16,17 +16,17 @@ export default function Content(props) {
         data.map(item => (
           <Grid key={item.tran_type} container className={classes.inputRow}>
             <Grid item className={classes.block}>
-              <Typography component="span" variant="body1" color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
+              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
             </Grid>
             <Grid item className={classes.block}>
-              <Typography component="span" variant="body1" color="textPrimary">{item.tran_type}</Typography>
+              <Typography component="span" className={classes.text12} color="textPrimary">{item.tran_type}</Typography>
             </Grid>
             <Grid item className={classes.block}>
-              <Typography component="span" variant="body1" color="textPrimary">{item.encounter_title}</Typography>
+              <Typography component="span" className={classes.text12} color="textPrimary">{item.encounter_title}</Typography>
             </Grid>
             {!!item.cpt_procedure && (
               <Grid item className={classes.block}>
-              <Typography component="span" variant="body1" color="textPrimary">{item.cpt_procedure}</Typography>
+              <Typography component="span" className={classes.text12} color="textPrimary">{item.cpt_procedure}</Typography>
             </Grid>
             )}
           </Grid>
@@ -37,9 +37,8 @@ export default function Content(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  inputRow: {
-    // marginBottom: theme.spacing(1),
-    // fontSize: 14
+  text12: {
+    fontSize: 12
   },
   block: {
     width: 90,

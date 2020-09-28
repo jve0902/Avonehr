@@ -63,7 +63,7 @@ export const calculateAge = (date) => {
     month = month - 1;
   }
 
-  return year > 0 ? year + " yrs, " + month + " mo" : month + " mo";
+  return year > 0 ? year + " yrs" : month + " mo";
 }
 
 export const formatPhoneNumber = (phoneNumber) => {
@@ -73,4 +73,16 @@ export const formatPhoneNumber = (phoneNumber) => {
     return match[1] + ' ' + match[2] + ' ' + match[3]
   }
   return null
+}
+
+export const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
 }

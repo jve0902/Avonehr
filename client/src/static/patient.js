@@ -7,6 +7,7 @@ export const FirstColumnPatientCards = [
     primaryButtonText: "History",
     secondaryButtonText: "Edit",
     icon: "DesktopIcon",
+    cardInfo: null,
   },
   {
     title: "Admin Notes",
@@ -16,6 +17,7 @@ export const FirstColumnPatientCards = [
     primaryButtonText: "History",
     secondaryButtonText: "Edit",
     icon: null,
+    cardInfo: null,
   },
   {
     title: "Forms",
@@ -25,6 +27,17 @@ export const FirstColumnPatientCards = [
     primaryButtonText: "Expand",
     secondaryButtonText: null,
     icon: null,
+    cardInfo: null,
+  },
+  {
+    title: "Handouts",
+    showActions: true,
+    showSearch: false,
+    data: [],
+    primaryButtonText: "New",
+    secondaryButtonText: "Expand",
+    icon: null,
+    cardInfo: null,
   },
   {
     title: "Billing",
@@ -34,6 +47,7 @@ export const FirstColumnPatientCards = [
     primaryButtonText: "New",
     secondaryButtonText: "Expand",
     icon: "CardIcon",
+    cardInfo: "Balance $100"
   },
   {
     title: "Allergies",
@@ -43,6 +57,7 @@ export const FirstColumnPatientCards = [
     primaryButtonText: "New",
     secondaryButtonText: "Expand",
     icon: null,
+    cardInfo: null,
   },
 ];
 

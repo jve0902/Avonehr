@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -13,11 +14,12 @@ import {
 } from "./../../static/patient";
 
 // dialog components
-import { AdminNotes, AdminNotesCardContent } from "./components/AdminNotes";
+import { AdminNotes, AdminNotesHistory, AdminNotesCardContent } from "./components/AdminNotes";
 import {
   NewTransactionForm,
   PaymentForm,
   BillingCardContent,
+  BillingDetails,
 } from "./components/Billing";
 import Form from "./Form";
 import EncountersForm from "./Encounters";
@@ -38,6 +40,11 @@ import {
   DiagnosesCardContent,
   DiagnosesDetails,
 } from "./components/Diagnoses";
+import {
+  HandoutsForm,
+  HandoutsCardContent,
+  HandoutsDetails
+} from "./components/Handouts";
 import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
@@ -64,10 +71,23 @@ import PatientService from "./../../services/patient.service";
 import { setError, setSuccess } from "./../../store/common/actions";
 import { useDispatch } from "react-redux";
 
+//react-grid-layout styles
+import "react-grid-layout/css/styles.css"
+import "react-resizable/css/styles.css"
+import "../../reactGridLayout.css"
+
+import { Responsive, WidthProvider } from 'react-grid-layout';
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
 export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  //grid layout states
+  const [layout, setLayout] = useState([]);
 
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
@@ -75,10 +95,14 @@ export default function Patient() {
     false
   );
 
+  const [showAdminFormDialog, setShowAdminFormDialog] = useState(false);
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
+  const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(
+    false
+  );
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
     false
   );
@@ -86,6 +110,9 @@ export default function Patient() {
 
   const [showAllergyDialog, setShowAllergyDialog] = useState(false);
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
+
+  const [showHandoutsDialog, setShowHandoutsDialog] = useState(false);
+  const [showHandoutsExpandDialog, setShowHandoutsExpandDialog] = useState(false);
 
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
   const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(
@@ -127,6 +154,7 @@ export default function Patient() {
   const [patientHistory, setPatientHistory] = useState([]);
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
+  const [handouts, setHandouts] = useState([]);
   const [billings, setBillings] = useState([]);
   const [forms, setForms] = useState([]);
   const [documents, setDocuments] = useState([]);
@@ -139,9 +167,14 @@ export default function Patient() {
   const [tests, setTests] = useState([]);
 
   useEffect(() => {
+    generateLayout();
+  }, [])
+
+  useEffect(() => {
     fetchPatientData();
     fetchPatientHistory();
     fetchAllergies();
+    fetchPatientHandouts();
     fetchForms();
     fetchBillings();
     fetchDocuments();
@@ -172,6 +205,12 @@ export default function Patient() {
     });
   };
 
+  const fetchPatientHandouts = () => {
+    PatientService.getPatientHandouts().then((res) => {
+      setHandouts(res.data);
+    });
+  };
+
   const fetchForms = () => {
     PatientService.getForms().then((res) => {
       setForms(res.data);
@@ -179,7 +218,8 @@ export default function Patient() {
   };
 
   const fetchBillings = () => {
-    PatientService.getBillings().then((res) => {
+    let limit = 3;
+    PatientService.getBillings(limit).then((res) => {
       setBillings(res.data);
     });
   };
@@ -247,6 +287,7 @@ export default function Patient() {
     };
     PatientService.searchPatient(reqBody).then((res) => {
       setPatients(res.data);
+      console.log("Patient's earch result: ", patients)
     });
   };
 
@@ -260,6 +301,10 @@ export default function Patient() {
 
   const togglePatientHistoryDialog = () => {
     setShowPatientHistoryDialog((prevState) => !prevState);
+  };
+
+  const toggleAdminFormDialog = () => {
+    setShowAdminFormDialog((prevState) => !prevState);
   };
 
   const toggleAdminHistoryDialog = () => {
@@ -278,12 +323,24 @@ export default function Patient() {
     setShowPaymentDialog((prevState) => !prevState);
   };
 
+  const toggleBillngExpandDialog = () => {
+    setShowBillingExpandDialog((prevState) => !prevState);
+  };
+
   const toggleAllergyDialog = () => {
     setShowAllergyDialog((prevState) => !prevState);
   };
 
   const toggleAllergyExpandDialog = () => {
     setShowAllergyExpandDialog((prevState) => !prevState);
+  };
+
+  const toggleHandoutsDialog = () => {
+    setShowHandoutsDialog((prevState) => !prevState);
+  };
+
+  const toggleHandoutsExpandDialog = () => {
+    setShowHandoutsExpandDialog((prevState) => !prevState);
   };
 
   const toggleEncountersDialog = () => {
@@ -349,6 +406,8 @@ export default function Patient() {
       return toggleAdminHistoryDialog;
     } else if (value === "Forms") {
       return toggleFormsExpandDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsDialog;
     } else if (value === "Billing") {
       return toggleNewTransactionDialog;
     } else if (value === "Allergies") {
@@ -370,7 +429,11 @@ export default function Patient() {
     if (value === "Patient") {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
-      return toggleAdminHistoryDialog;
+      return toggleAdminFormDialog;
+    } else if (value === "Handouts") {
+      return toggleHandoutsExpandDialog;
+    } else if (value === "Billing") {
+      return toggleBillngExpandDialog;
     } else if (value === "Allergies") {
       return toggleAllergyExpandDialog;
     } else if (value === "Medical Notes") {
@@ -408,6 +471,8 @@ export default function Patient() {
       );
     } else if (value === "Medical Notes") {
       return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
+    } else if (value === "Handouts") {
+      return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
       return (
         !!messages && (
@@ -426,9 +491,13 @@ export default function Patient() {
     }
   };
 
+  const redirectToPatientPortal = () => {
+    history.push("/manage/patient-search");
+  }
+
   const mapIconHandlers = (value) => {
     if (value === "Patient") {
-      return togglePatientInfoDialog;
+      return redirectToPatientPortal;
     } else if (value === "Billing") {
       return togglePaymentDialog;
     }
@@ -439,13 +508,7 @@ export default function Patient() {
     inputFile.current.click();
   };
 
-  const createDocument = (filename) => {
-    const reqBody = {
-      data: {
-        patient_id: 1,
-        filename: filename,
-      },
-    };
+  const createDocument = (reqBody) => {
     PatientService.createDocuments(reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
@@ -471,15 +534,78 @@ export default function Patient() {
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
     console.log("files", files);
-    createDocument(files[0].name);
+    let fd = new FormData();
+    fd.append("file", files[0]);
+    fd.append("patient_id", 1)
+    createDocument(fd);
   };
+
+  const generateLayout = () => {
+
+    const y = 4;
+    let firstlayout = FirstColumnPatientCards.map((item, i) => {
+      return {
+        x: 0,
+        y: 0,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let encounterslayout = {
+      x: 3,
+      y: 0,
+      w: 3,
+      h: y,
+      i: 'Encounters'
+    };
+    let thirdlayout = ThirdColumnPatientCards.map((item, i) => {
+      return {
+        x: 6,
+        y: y,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let fourthlayout = FourthColumnPatientCards.map((item, i) => {
+      return {
+        x: 9,
+        y: 0,
+        w: 3,
+        h: y,
+        i: item.title.toString()
+      };
+    });
+    let documentslayout = {
+      x: 0,
+      y: y,
+      w: 6,
+      h: 5,
+      i: 'Documents'
+    };
+    let testslayout = {
+      x: 6,
+      y: y,
+      w: 6,
+      h: 5,
+      i: 'All Tests'
+    };
+    setLayout([...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout]);
+  }
+
+  const updateMinHeight = (key, newHeight) => {
+    let calculatedHeight = newHeight / 40 + 0.5 //40 is the row height, 0.5 is the margin
+     let newLayout = layout.map(item => item.i === key ? { ...item, h: calculatedHeight } : item);
+     setLayout([...newLayout])
+  }
 
   return (
     <>
       <input
         type="file"
         id="file"
-        accept=".pdf, .json"
+        accept=".pdf, .txt"
         multiple
         ref={inputFile}
         className={classes.noDisplay}
@@ -509,12 +635,26 @@ export default function Patient() {
         size={"md"}
       />
       <Dialog
+        open={showAdminFormDialog}
+        title={"Admin Notes Form"}
+        message={
+          <AdminNotes
+            onClose={toggleAdminFormDialog}
+            reloadData={() => fetchPatientHistory()}
+          />
+        }
+        applyForm={() => toggleAdminFormDialog()}
+        cancelForm={() => toggleAdminFormDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
         message={
-          <AdminNotes
+          <AdminNotesHistory
             onClose={toggleAdminHistoryDialog}
-            reloadData={() => fetchPatientHistory()}
+            data={patientHistory}
           />
         }
         applyForm={() => toggleAdminHistoryDialog()}
@@ -537,6 +677,15 @@ export default function Patient() {
         message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
         applyForm={() => toggleNewTransactionDialog()}
         cancelForm={() => toggleNewTransactionDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showBillingExpandDialog}
+        title={" "}
+        message={<BillingDetails data={billings} onClose={toggleBillngExpandDialog} />}
+        applyForm={() => toggleBillngExpandDialog()}
+        cancelForm={() => toggleBillngExpandDialog()}
         hideActions={true}
         size={"md"}
       />
@@ -569,6 +718,30 @@ export default function Patient() {
         }
         applyForm={() => toggleAllergyExpandDialog()}
         cancelForm={() => toggleAllergyExpandDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsDialog}
+        title={" "}
+        message={<HandoutsForm onClose={toggleHandoutsDialog} reloadData={fetchPatientHandouts} />}
+        applyForm={() => toggleHandoutsDialog()}
+        cancelForm={() => toggleHandoutsDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
+        open={showHandoutsExpandDialog}
+        title={" "}
+        message={
+          <HandoutsDetails
+            data={handouts}
+            reloadData={fetchPatientHandouts}
+            onClose={toggleHandoutsExpandDialog}
+          />
+        }
+        applyForm={() => toggleHandoutsExpandDialog()}
+        cancelForm={() => toggleHandoutsExpandDialog()}
         hideActions={true}
         size={"md"}
       />
@@ -744,10 +917,21 @@ export default function Patient() {
         hideActions={true}
         size={"lg"}
       />
-      <Grid className={classes.main} container spacing={1}>
-        <Grid item md={3} sm={6} xs={12}>
-          {FirstColumnPatientCards.map((item, index) => {
-            return (
+
+      <ResponsiveGridLayout
+        className={"layout"}
+        rowHeight={40}
+        cols= {{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        breakpoints= {{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        layouts={{ lg: layout }}
+        // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
+        compactType={"vertical"}
+        containerPadding={[0, 0]}
+        margin={[5, 0]}
+      >
+        {FirstColumnPatientCards.map((item, index) => {
+          return (
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -761,11 +945,13 @@ export default function Patient() {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
+                cardInfo={item.cardInfo}
+                updateMinHeight={updateMinHeight}
               />
-            );
-          })}
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
+            </Grid>
+          );
+        })}
+        <Grid key={'Encounters'} className={classes.overflowAuto}>
           <Card
             title="Encounters"
             data={!!encounters && <EncountersCardContent data={encounters} />}
@@ -775,11 +961,12 @@ export default function Patient() {
             primaryButtonHandler={toggleEncountersDialog}
             secondaryButtonHandler={toggleEncountersExpandDialog}
             showSearch={false}
+            updateMinHeight={updateMinHeight}
           />
         </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          {ThirdColumnPatientCards.map((item, index) => {
-            return (
+        {ThirdColumnPatientCards.map((item, index) => {
+          return (
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -791,13 +978,14 @@ export default function Patient() {
                 secondaryButtonText={item.secondaryButtonText}
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+                updateMinHeight={updateMinHeight}
               />
-            );
-          })}
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          {FourthColumnPatientCards.map((item, index) => {
-            return (
+            </Grid>
+          );
+        })}
+        {FourthColumnPatientCards.map((item, index) => {
+          return (
+            <Grid key={item.title} className={classes.overflowAuto}>
               <Card
                 key={index}
                 title={item.title}
@@ -809,14 +997,12 @@ export default function Patient() {
                 secondaryButtonText={item.secondaryButtonText}
                 primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
+                updateMinHeight={updateMinHeight}
               />
-            );
-          })}
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={1}>
-        <Grid item md={6} xs={12}>
+            </Grid>
+          );
+        })}
+        <Grid key={"Documents"} className={classes.overflowAuto}>
           <Card
             title="Documents"
             data={
@@ -833,9 +1019,10 @@ export default function Patient() {
             showSearch={false}
             primaryButtonHandler={onFilePickerClick}
             secondaryButtonHandler={toggleDocumentsExpandDialog}
+            updateMinHeight={updateMinHeight}
           />
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid key={"All Tests"} className={classes.overflowAuto}>
           <Card
             title="All Tests"
             data={!!tests && <TestsCardContent data={tests} />}
@@ -844,18 +1031,19 @@ export default function Patient() {
             secondaryButtonText={null}
             showSearch={false}
             primaryButtonHandler={toggleTestsExpandDialog}
+            updateMinHeight={updateMinHeight}
           />
         </Grid>
-      </Grid>
+      </ResponsiveGridLayout>
     </>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  main: {
-    margin: theme.spacing(0.5, 0, 0.5, 0),
-  },
   noDisplay: {
     display: "none",
   },
+  overflowAuto: {
+    overflowY: 'auto'
+  }
 }));

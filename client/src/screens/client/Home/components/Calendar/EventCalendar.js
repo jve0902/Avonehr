@@ -1,5 +1,6 @@
 import React from "react";
-import FullCalendar, { combineEventUis } from "@fullcalendar/react";
+import PropTypes from "prop-types";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
@@ -10,7 +11,7 @@ function renderEventContent(eventInfo) {
       <p
         style={{
           color: "#fff",
-          backgroundColor: "#2196f3",
+          backgroundColor: eventInfo.event.backgroundColor,
           width: "100%",
           padding: "3px 5px",
           borderRadius: "3px",
@@ -23,12 +24,7 @@ function renderEventContent(eventInfo) {
   );
 }
 
-const EventCalendar = ({ events }) => {
-  const handleDateClick = (arg) => {
-    // bind with an arrow function
-    alert(arg.dateStr);
-  };
-  console.log("events", events);
+const EventCalendar = ({ events, onDayClick, onEventClick }) => {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -41,9 +37,21 @@ const EventCalendar = ({ events }) => {
       weekends={true}
       events={events}
       eventContent={renderEventContent}
-      dateClick={handleDateClick}
+      dateClick={(arg) => onDayClick(arg.dateStr)}
+      eventClick={(info) => onEventClick(info)}
     />
   );
+};
+
+EventCalendar.propTypes = {
+  onDayClick: PropTypes.func.isRequired,
+  onEventClick: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      start_dt: PropTypes.string.isRequired,
+      end_dt: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default EventCalendar;

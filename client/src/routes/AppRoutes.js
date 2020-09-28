@@ -27,6 +27,7 @@ import {
 import {
   AccountingTypes,
   AppointmentTypes,
+  ReportFinance,
   AppointmentTypesUser,
   Backup,
   Configuration,
@@ -166,6 +167,18 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/setup/appointment-types"
               component={AppointmentTypes}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/report-finance"
+              component={ReportFinance}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/setup/integrations"
+              component={Integrations}
               exact
             />
             <PrivateRouteWithLayout

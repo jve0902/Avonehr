@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -36,11 +35,12 @@ const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
+    whiteSpace: 'nowrap',
     fontSize: "12px",
     fontWeight: 700,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 
@@ -52,15 +52,18 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& th": {
       fontSize: 12,
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
     "& td": {
       fontSize: 12,
-      height: "50px",
+      whiteSpace: 'nowrap',
+      padding: "2px 4px"
     },
   },
 }))(TableRow);
 
-const Content = (props) => {
+const DocumentsContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -140,4 +143,4 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+export default DocumentsContent;
