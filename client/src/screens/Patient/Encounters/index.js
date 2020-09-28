@@ -146,7 +146,7 @@ const Form = (props) => {
             <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
           </Grid>
           <Typography gutterBottom>Created {moment().format("MMM, DD, YYYY")}</Typography>
-          <Typography gutterBottom>Created By {!!encounter && (encounter.name || "Mark Hyman MD")}</Typography>
+          <Typography gutterBottom>Created By {!!encounter && encounter.name}</Typography>
         </Grid>
       </Grid>
     </>
