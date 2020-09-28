@@ -46,6 +46,7 @@ app.use(baseAPIPath, require("./app/routes/forms.routes"));
 app.use(baseAPIPath, require("./app/routes/process-lab.routes"));
 app.use(baseAPIPath, require("./app/routes/setup.routes"));
 app.use(baseAPIPath, require("./app/routes/search.routes"));
+app.use(baseAPIPath, require("./app/routes/icd.routes"));
 
 app.listen(config.port).on("listening", () => {
   console.log(`API is live on ${config.port}`);
