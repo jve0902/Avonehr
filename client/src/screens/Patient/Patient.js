@@ -14,7 +14,7 @@ import {
 } from "./../../static/patient";
 
 // dialog components
-import { AdminNotes, AdminNotesCardContent } from "./components/AdminNotes";
+import { AdminNotes, AdminNotesHistory, AdminNotesCardContent } from "./components/AdminNotes";
 import {
   NewTransactionForm,
   PaymentForm,
@@ -95,6 +95,7 @@ export default function Patient() {
     false
   );
 
+  const [showAdminFormDialog, setShowAdminFormDialog] = useState(false);
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
@@ -302,6 +303,10 @@ export default function Patient() {
     setShowPatientHistoryDialog((prevState) => !prevState);
   };
 
+  const toggleAdminFormDialog = () => {
+    setShowAdminFormDialog((prevState) => !prevState);
+  };
+
   const toggleAdminHistoryDialog = () => {
     setShowAdminHistoryDialog((prevState) => !prevState);
   };
@@ -424,7 +429,7 @@ export default function Patient() {
     if (value === "Patient") {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
-      return toggleAdminHistoryDialog;
+      return toggleAdminFormDialog;
     } else if (value === "Handouts") {
       return toggleHandoutsExpandDialog;
     } else if (value === "Billing") {
@@ -630,12 +635,26 @@ export default function Patient() {
         size={"md"}
       />
       <Dialog
+        open={showAdminFormDialog}
+        title={"Admin Notes Form"}
+        message={
+          <AdminNotes
+            onClose={toggleAdminFormDialog}
+            reloadData={() => fetchPatientHistory()}
+          />
+        }
+        applyForm={() => toggleAdminFormDialog()}
+        cancelForm={() => toggleAdminFormDialog()}
+        hideActions={true}
+        size={"md"}
+      />
+      <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
         message={
-          <AdminNotes
+          <AdminNotesHistory
             onClose={toggleAdminHistoryDialog}
-            reloadData={() => fetchPatientHistory()}
+            data={patientHistory}
           />
         }
         applyForm={() => toggleAdminHistoryDialog()}
