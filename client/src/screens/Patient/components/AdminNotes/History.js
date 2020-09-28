@@ -42,7 +42,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const BasicInfoHistory = (props) => {
+const AdminNotesHistory = (props) => {
   const { data, /* reloadData */ } = props;
   const classes = useStyles();
 
@@ -53,7 +53,6 @@ const BasicInfoHistory = (props) => {
           <TableRow>
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Medical Note</StyledTableCell>
             <StyledTableCell>Admin Note</StyledTableCell>
             <StyledTableCell>Created User</StyledTableCell>
           </TableRow>
@@ -67,7 +66,6 @@ const BasicInfoHistory = (props) => {
                   {moment(row.created).format("MMM, DD, YYYY")}
                 </TableCell>
                 <TableCell>{row.name || "-"}</TableCell>
-                <TableCell>{row.medical_note || "-"}</TableCell>
                 <TableCell>{row.admin_note || "-"}</TableCell>
                 <TableCell>{row.created_user || "-"}</TableCell>
               </StyledTableRow>
@@ -78,4 +76,5 @@ const BasicInfoHistory = (props) => {
   );
 };
 
-export default BasicInfoHistory;
+export default AdminNotesHistory;
+

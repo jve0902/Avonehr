@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import _ from "lodash";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -117,8 +116,7 @@ const NewOrEditEvent = ({
   ...props
 }) => {
   const classes = useStyles();
-  const { providers } = props;
-  const [errors, setErrors] = useState([]);
+  const { providers, errors } = props;
   const [provider, setProvider] = React.useState("");
   const [patients, setPatients] = React.useState([]);
   const [selectedPatient, setSelectedPatient] = React.useState("");
@@ -135,6 +133,7 @@ const NewOrEditEvent = ({
       setPatientSearchTerm(`${props.event.firstname} ${props.event.firstname}`);
       setProvider(selectedProvider);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.event, isNewEvent]);
 
   const handleOnChange = (event) => {
@@ -308,12 +307,13 @@ const NewOrEditEvent = ({
                 label="Start"
                 value={calEvent.start_dt}
                 placeholder="2020/10/10 10:00"
-                onChange={(date) =>
+                onChange={(date) => {
+                  let property = "start_dt";
                   setCalEvent({
                     ...calEvent,
-                    ["start_dt"]: date,
+                    [property]: date,
                   })
-                }
+                }}
                 minDate={new Date()}
                 onError={console.log}
                 disablePast
@@ -329,12 +329,13 @@ const NewOrEditEvent = ({
                 label="End"
                 value={calEvent.end_dt}
                 placeholder="2020/10/10 11:00"
-                onChange={(date) =>
+                onChange={(date) => {
+                  let property = "end_dt";
                   setCalEvent({
                     ...calEvent,
-                    ["end_dt"]: date,
+                    [property]: date,
                   })
-                }
+                }}
                 minDate={new Date()}
                 onError={console.log}
                 disablePast

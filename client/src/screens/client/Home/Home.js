@@ -50,7 +50,7 @@ export default function Home() {
           start: item.start_dt,
           end: item.end_dt,
           backgroundColor:
-            item.status && item.status == "D" ? "#ffab40" : "#2196f3",
+            item.status && item.status === "D" ? "#ffab40" : "#2196f3",
         },
       ];
     }, []);
@@ -71,6 +71,7 @@ export default function Home() {
     fetchProviders();
     fetchAppointments();
     fetchProviderDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchAppointments() {
@@ -128,7 +129,7 @@ export default function Home() {
   const handleEventClick = (calEvent) => {
     setIsNewEvent(false);
     const eventClicked = events.filter(
-      (event) => event.id == calEvent.event.id
+      (event) => event.id === calEvent.event.id
     );
     setSelectedEvent(eventClicked[0]);
     setIsOpen(true);
@@ -217,6 +218,7 @@ export default function Home() {
         onCancel={(payload) => handleEventCancellation(payload)}
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
+        errors={errors}
       />
     </div>
   );
