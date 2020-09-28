@@ -29,10 +29,10 @@ const search = async (req, res) => {
         `join user_calendar uc on uc.client_id=${req.client_id} and uc.patient_id=p.id \n`;
     }
     if (appointmentFrom) {
-      $sql = $sql + `and uc.start_dt >= '${appointmentFrom}' \n`;
+      $sql = $sql + `  and uc.start_dt >= '${appointmentFrom}' \n`;
     }
     if (appointmentTo) {
-      $sql = $sql + `and uc.start_dt <= '${appointmentTo}' \n`;
+      $sql = $sql + `  and uc.start_dt <= '${appointmentTo}' \n`;
     }
     if (paymentFrom || paymentTo) {
       $sql =
@@ -40,10 +40,10 @@ const search = async (req, res) => {
         `join tran t on t.client_id=${req.client_id} and t.patient_id=p.id \n`;
     }
     if (paymentFrom) {
-      $sql = $sql + `and t.dt >= ${paymentFrom} \n`;
+      $sql = $sql + `  and t.dt >= ${paymentFrom} \n`;
     }
     if (paymentTo) {
-      $sql = $sql + `and t.dt <= ${paymentTo} \n`;
+      $sql = $sql + `  and t.dt <= ${paymentTo} \n`;
     }
     $sql = $sql + `where p.client_id=${req.client_id} \n`;
     if (firstname) {
