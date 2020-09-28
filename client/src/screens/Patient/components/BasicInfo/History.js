@@ -43,7 +43,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const BasicInfoHistory = (props) => {
-  const { data, reloadData } = props;
+  const { data, /* reloadData */ } = props;
   const classes = useStyles();
 
   return (

@@ -286,6 +286,7 @@ export default function Patient() {
     };
     PatientService.searchPatient(reqBody).then((res) => {
       setPatients(res.data);
+      console.log("Patient's earch result: ", patients)
     });
   };
 

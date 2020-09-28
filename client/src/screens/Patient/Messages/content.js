@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Typography
 } from "@material-ui/core";
-import PatientService from "../../../services/patient.service";
-import { setError, setSuccess } from "../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
 export default function MessagesContent(props) {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { data, reloadData } = props;
+  const { data, /* reloadData */ } = props;
 
   return (
     <>

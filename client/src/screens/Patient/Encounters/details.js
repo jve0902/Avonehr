@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -66,6 +66,10 @@ const EncountersDetails = (props) => {
   const { data, reloadData, toggleEncountersDialog } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    return () => dispatch(resetEncounter());
+  })
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;

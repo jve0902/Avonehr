@@ -55,7 +55,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const MedicalNotesDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, /* reloadData */ } = props;
   const classes = useStyles();
 
   return (
