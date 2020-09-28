@@ -589,13 +589,6 @@ export default function Patient() {
     setLayout([...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout]);
   }
 
-  const gridProps = {
-    className: "layout",
-    rowHeight: 40,
-    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
-  };
-
   const updateMinHeight = (key, newHeight) => {
     let calculatedHeight = newHeight / 40 + 0.5 //40 is the row height, 0.5 is the margin
      let newLayout = layout.map(item => item.i === key ? { ...item, h: calculatedHeight } : item);
@@ -907,15 +900,12 @@ export default function Patient() {
       />
 
       <ResponsiveGridLayout
-        {...gridProps}
+        className={"layout"}
+        rowHeight={40}
+        cols= {{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        breakpoints= {{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
-        // onBreakpointChange={this.onBreakpointChange}
-        // onLayoutChange={this.onLayoutChange}
-        // onDrop={this.onDrop}
-        // WidthProvider option
-        measureBeforeMount={false}
-        // I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
-        // and set `measureBeforeMount={true}`.
+        // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}

@@ -11,14 +11,14 @@ import "./index.css";
 const store = configureStore();
 NetworkService.setupInterceptors(store);
 ReactDOM.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
       <React.Fragment>
         <App />
         <CustomSnackbar />
       </React.Fragment>
-    </Provider>,
-  // </React.StrictMode>,
+    </Provider>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
