@@ -124,15 +124,15 @@ export default function AccountingSearch() {
     Accounting.searchType().then((res) => setTypes(res.data.data));
   }, []);
 
-  const handleChange = (event) => {
-    setSelectedType(event.target.value);
-  };
-  const handleDateChangeFrom = (date) => {
-    setDateFrom(date);
-  };
-  const handleDateChangeTo = (date) => {
-    setDateTo(date);
-  };
+  // const handleChange = (event) => {
+  //   setSelectedType(event.target.value);
+  // };
+  // const handleDateChangeFrom = (date) => {
+  //   setDateFrom(date);
+  // };
+  // const handleDateChangeTo = (date) => {
+  //   setDateTo(date);
+  // };
   return (
     <div className={classes.root}>
       <div className={classes.paper}>
