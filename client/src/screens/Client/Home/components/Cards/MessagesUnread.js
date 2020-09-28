@@ -74,7 +74,7 @@ const MessagesUnread = ({ appointmentRequests, messagesUnread }) => {
         <ul>
           {appointmentRequests.length > 0 ? (
             messagesUnread.map((msg) => (
-              <li key={msg.key}>
+              <li key={msg.id}>
                 {moment(msg.created).format("ll")}, {msg.name}, {msg.subject},{" "}
                 {msg.message}
                 <div className={classes.unreadMsgActions}>

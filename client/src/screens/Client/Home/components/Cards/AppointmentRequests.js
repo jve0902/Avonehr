@@ -117,7 +117,7 @@ const AppointmentRequests = ({ appointmentRequests, selectedProvider }) => {
         <ul>
           {appointmentRequests.length > 0 ? (
             appointmentRequests.map((appt) => (
-              <li>
+              <li key={appt.id}>
                 {moment(appt.created).format("ll")}, {appt.name}, requests
                 office visits{" "}
                 {moment
