@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -25,8 +26,21 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "12px",
     },
   },
+  overflowControl: {
+    maxWidth: "130px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
 }));
-
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0,0,0,0.87)",
+    boxShadow: theme.shadows[1],
+    fontSizw: 13,
+  },
+}))(Tooltip);
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.grey,
@@ -50,7 +64,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      height: "50px",
     },
   },
 }))(TableRow);
@@ -88,7 +102,17 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
                 {appointment.allow_patients_schedule ? "Yes" : "No"}
               </TableCell>
               <TableCell>{appointment.sort_order}</TableCell>
-              <TableCell align="center">{appointment.note || "-"}</TableCell>
+              {appointment.note && appointment.note.length > 0 ? (
+                <LightTooltip title={appointment.note}>
+                  <TableCell className={classes.overflowControl} align="center">
+                    {appointment.note}
+                  </TableCell>
+                </LightTooltip>
+              ) : (
+                <TableCell className={classes.overflowControl} align="center">
+                  {appointment.note || "-"}
+                </TableCell>
+              )}
               <TableCell>{appointment.active ? "Active" : "-"}</TableCell>
               <TableCell>{moment(appointment.created).format("lll")}</TableCell>
               <TableCell>{appointment.created_user}</TableCell>

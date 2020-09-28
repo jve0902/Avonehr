@@ -10,9 +10,9 @@ class DashboardHome {
       .get(API_URL + `/providers`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getProviderDetails(providerId) {
+  getProviderDetails() {
     return axios
-      .get(API_URL + `/providers/${providerId}`, { headers: authHeader() })
+      .get(API_URL + `/providers-details`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getPatientUnreadMessages(providerId) {

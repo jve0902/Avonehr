@@ -15,8 +15,8 @@ const getAll = async (req, res) => {
 
   try {
     const dbResponse = await db.query(
-      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
-        , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
+      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.title, uc.notes, uc.client_id
+        , p.firstname, p.lastname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
         from user_calendar uc
         left join patient p on p.id=uc.patient_id
         left join user u on u.id=uc.user_id
@@ -45,8 +45,8 @@ const getEventsByProvider = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.client_id
-        , p.firstname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
+      `select uc.id, uc.user_id, uc.patient_id, uc.start_dt, uc.end_dt, uc.status, uc.title, uc.notes, uc.client_id
+        , p.firstname, p.lastname, p.email, concat(u.firstname, ' ', u.lastname) provider_name
         from user_calendar uc
         left join patient p on p.id=uc.patient_id
         left join user u on u.id=uc.user_id
@@ -76,18 +76,26 @@ const createAppointment = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient, start_dt, end_dt, providerName } = req.body.data;
+  const {
+    title,
+    notes,
+    patient,
+    start_dt,
+    end_dt,
+    provider,
+    ApptStatus,
+  } = req.body.data;
 
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into user_calendar (client_id, user_id, patient_id, start_dt, end_dt, created, created_user_id) values (${
+      `insert into user_calendar (client_id, user_id, patient_id, start_dt, end_dt, status, title, notes, created, created_user_id) values (${
         req.client_id
-      }, ${req.user_id}, ${patient.id}, '${moment(start_dt).format(
+      }, ${provider.id}, ${patient.id}, '${moment(start_dt).format(
         "YYYY-MM-DD HH:mm:ss"
-      )}', '${moment(end_dt).format("YYYY-MM-DD HH:mm:ss")}', now(), ${
-        req.user_id
-      })`
+      )}', '${moment(end_dt).format(
+        "YYYY-MM-DD HH:mm:ss"
+      )}', '${ApptStatus}', '${title}', '${notes}', now(), ${req.user_id})`
     );
     if (!insertResponse.affectedRows) {
       errorMessage.error = "Insert not successful";
@@ -96,7 +104,7 @@ const createAppointment = async (req, res) => {
     const emailTemplate = newAppointmentTemplate(
       patient,
       moment(start_dt).format("YYYY-MM-DD HH:mm:ss"),
-      providerName
+      provider
     );
     if (process.env.NODE_ENV === "development") {
       let info = await transporter.sendMail(emailTemplate);
@@ -192,17 +200,22 @@ const updateAppointment = async (req, res) => {
   }
   const { id } = req.params;
   const {
+    title,
+    notes,
     patient,
-    oldAppointmentDate,
     providerName,
-    newAppointmentDate,
+    ApptStatus,
+    new_start_dt,
+    new_end_dt,
+    old_start_dt,
+    old_end_dt,
   } = req.body.data;
 
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
       `update user_calendar
-        set status='D', decline_dt=now()
+        set title='${title}', notes='${notes}', status='${ApptStatus}', start_dt='${new_start_dt}', end_dt='${new_end_dt}'
         where id=${id}`
     );
     if (!updateResponse.affectedRows) {
@@ -211,9 +224,9 @@ const updateAppointment = async (req, res) => {
     }
     const emailTemplate = updateAppointmentTemplate(
       patient,
-      moment(oldAppointmentDate).format("YYYY-MM-DD HH:mm:ss"),
+      moment(old_start_dt).format("YYYY-MM-DD HH:mm:ss"),
       providerName,
-      moment(newAppointmentDate).format("YYYY-MM-DD HH:mm:ss")
+      moment(new_start_dt).format("YYYY-MM-DD HH:mm:ss")
     );
     if (process.env.NODE_ENV === "development") {
       let info = await transporter.sendMail(emailTemplate);
@@ -252,7 +265,7 @@ const getAppointmentRequest = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
+      `select uc.id, uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
         from user_calendar uc
         join patient p on p.id=uc.patient_id
         where uc.client_id=${req.client_id}
@@ -283,7 +296,7 @@ const getUnreadMessages = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
+      `select m.id, m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
         from message m
         left join patient p on p.id=m.patient_id_to
         where m.client_id=${req.client_id}
