@@ -93,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     marginRight: theme.spacing(2),
+    fontSize: 14,
+    color: theme.palette.primary.contrastText,
+  },
+  date: {
+    fontSize: 14,
+    color: theme.palette.primary.contrastText,
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -321,12 +327,12 @@ const Topbar = (props) => {
           <div className={classes.grow} />
           <div className={classes.headerWithSearchBar}>
             <div className={classes.sectionDesktop}>
-              <div className={classes.name}>
+              <Typography className={classes.name}>
                 {user && `${user.firstname} ${user.lastname}`}
-              </div>
-              <div className={classes.date}>
+              </Typography>
+              <Typography className={classes.date}>
                 {moment().format("ddd, MMM Do")}
-              </div>
+              </Typography>
             </div>
 
             <div className={classes.search}>
