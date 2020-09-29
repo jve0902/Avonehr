@@ -474,7 +474,11 @@ export default function Patient() {
         )
       );
     } else if (value === "Medical Notes") {
-      return !!medicalNotes && <MedicalNotesCardContent data={medicalNotes} />;
+      return (
+        !!patientData && (
+          <MedicalNotesCardContent data={patientData.medical_note} />
+        )
+      );
     } else if (value === "Handouts") {
       return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
@@ -805,7 +809,8 @@ export default function Patient() {
         message={
           <MedicalNotesForm
             onClose={toggleMedicalNotesFormDialog}
-            reloadData={fetchMedicalNotes}
+            oldMedicalNote={patientData && patientData.medical_note}
+            reloadData={fetchPatientData}
           />
         }
         applyForm={() => toggleMedicalNotesFormDialog()}
