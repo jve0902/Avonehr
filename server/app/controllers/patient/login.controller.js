@@ -12,7 +12,7 @@ const {
   status,
 } = require("../../helpers/status");
 /**
- * This function let user to signin into the system.
+ * This function let patient to signin into the system.
  * @param {object} req
  * @param {object} res
  * @returns {object} response
@@ -22,58 +22,48 @@ exports.signin = async (req, res) => {
 
   const { client_id, email } = req.body;
   const rows = await db.query(
-    `select password, status from patient where client_id=${client_id} and email='${email}'`
+    `select id, password, status from patient where client_id=${client_id} and email='${email}'`
   );
 
-  const user = rows[0];
-  if (!user) {
-    errorMessage.message = "User not found";
-    errorMessage.user = user;
+  const patient = rows[0];
+  if (!patient) {
+    errorMessage.message = "Patient not found";
+    errorMessage.patient = patient;
     return res.status(status.notfound).send(errorMessage);
   }
-  const clientRows = await db.query(
-    "SELECT id, name FROM client WHERE id = ?",
-    [user.client_id]
-  );
 
-  if (!user.sign_dt) {
-    errorMessage.message =
-      "The password for this additional user can not be reset until user registration has first been completed.";
-    delete user.password; // delete password from response
-    user.client = clientRows[0];
-    errorMessage.user = user;
-    return res.status(status.unauthorized).send(errorMessage);
-  }
-  if (!user.email_confirm_dt) {
-    errorMessage.message =
-      "Login can not be done until the email address is confirmed.  Please see the request in your email inbox.";
-    delete user.password; // delete password from response
-    errorMessage.user = user;
-    return res.status(status.unauthorized).send(errorMessage);
-  }
-  const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+  const isPasswordValid = bcrypt.compareSync(
+    req.body.password,
+    patient.password
+  );
 
   if (!isPasswordValid) {
     errorMessage.message = "Wrong password!";
-    errorMessage.user = user;
+    errorMessage.patient = patient;
     return res.status(status.unauthorized).send(errorMessage);
   }
 
-  //update user login_dt
+  //TODO:: if password not correct, and more than 20 times, then lock for 5 minutes, and print message "Account locked for 5 minutes"
+  if (patient.status === "A") {
+    errorMessage.message = "Patient portal status is not active";
+    return res.status(status.error).send(errorMessage);
+  }
+
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const userUpdate = await db.query(
-    `UPDATE user SET login_dt='${now}' WHERE id =${user.id}`
+  const patientUpdate = await db.query(
+    `update patient set login_dt='${now}' where id=${patient.id}`
   );
+
   const token = jwt.sign(
-    { id: user.id, client_id: user.client_id },
+    { id: patient.id, client_id: patient.client_id },
     config.authSecret,
     {
       expiresIn: 86400, // 24 hours
       //expiresIn: 5 * 60, // 2minutes
     }
   );
-  user.accessToken = token;
-  delete user.password; // delete password from response
-  successMessage.data = user;
+  patient.accessToken = token;
+  delete patient.password; // delete password from response
+  successMessage.data = patient;
   res.status(status.success).send(successMessage);
 };

@@ -56,6 +56,7 @@ const PatientLogin = () => {
   const dispatch = useDispatch();
   const { clientCode } = useParams();
   const [email, setEmail] = React.useState("");
+  const [clientId, setClientId] = React.useState(null);
   const [password, setPassword] = React.useState("");
   const [isRedirect, setIsRedirect] = React.useState(false);
   const [errors, setErrors] = React.useState([]);
@@ -64,6 +65,7 @@ const PatientLogin = () => {
     AuthService.getClientCode(clientCode).then(
       (res) => {
         const { client_id } = res.data[0];
+        setClientId(client_id);
       },
       (error) => {
         console.log("getClientCode error:", error);
@@ -78,6 +80,7 @@ const PatientLogin = () => {
     }
 
     AuthService.login({
+      client_id: clientId,
       email: email.trim(),
       password: password.trim(),
     }).then(
