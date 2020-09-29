@@ -54,7 +54,7 @@ const SearchResults = ({ open, results, noContent }) => {
           {results &&
             results.map((result) => (
               <>
-                <ListItem component={RouterLink} to="/patient" button key={result.id} className={classes.listItem}>
+                <ListItem component={RouterLink} to={`/patient/${result.id}`} button key={result.id} className={classes.listItem}>
                   <ListItemAvatar>
                     <Avatar
                       alt={`${result.firstname} ${result.lastname}`}
