@@ -810,7 +810,10 @@ export default function Patient() {
           <MedicalNotesForm
             onClose={toggleMedicalNotesFormDialog}
             oldMedicalNote={patientData && patientData.medical_note}
-            reloadData={fetchPatientData}
+            reloadData={() => {
+              fetchPatientData();
+              fetchMedicalNotes();
+            }}
           />
         }
         applyForm={() => toggleMedicalNotesFormDialog()}
