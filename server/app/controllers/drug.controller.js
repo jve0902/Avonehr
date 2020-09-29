@@ -31,7 +31,6 @@ const search = async (req, res) => {
       return res.status(status.notfound).send(errorMessage);
     }
     successMessage.data = dbResponse;
-    console.log(successMessage);
     return res.status(status.created).send(successMessage);
   } catch (err) {
     errorMessage.error = "Select not successful";
