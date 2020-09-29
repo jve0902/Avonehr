@@ -293,7 +293,7 @@ class AppRouter extends Component {
             />
             <RouteWithLayout
               layout={PatientPortal}
-              path="/login"
+              path="/login/:clientCode"
               component={PatientLogin}
             />
             <Route path="*" component={NotFound} />

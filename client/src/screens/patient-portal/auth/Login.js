@@ -8,10 +8,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
-import AuthService from "./../../../services/auth.service";
+import Logo from "./../../../assets/client/c1_logo.png";
+import AuthService from "./../../../services/patient_portal/auth.service";
 
 import { AuthConsumer } from "./../../../providers/AuthProvider";
 import {
@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  Logo: {
+    backgroundColor: "grey",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -51,10 +54,22 @@ const PatientLogin = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const { clientCode } = useParams();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isRedirect, setIsRedirect] = React.useState(false);
   const [errors, setErrors] = React.useState([]);
+
+  useEffect(() => {
+    AuthService.getClientCode(clientCode).then(
+      (res) => {
+        const { client_id } = res.data[0];
+      },
+      (error) => {
+        console.log("getClientCode error:", error);
+      }
+    );
+  }, []);
 
   const onFormSubmit = (event, login) => {
     if (email !== "") {
@@ -108,6 +123,14 @@ const PatientLogin = () => {
         return (
           <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <div className={classes.Logo}>
+              <img
+                src={
+                  process.env.REACT_APP_SITE_URL + "assets/client/c1_logo.png"
+                }
+                alt="Client logo"
+              />
+            </div>
             <div className={classes.paper}>
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon className={classes.lockIcon} />
