@@ -23,11 +23,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Drugsform = ({
-  searchDrugs,
+  fetchSearchDrugs,
   textChangeHandler,
   checkBoxChangeHandler,
 }) => {
   const classes = useStyles();
+
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      fetchSearchDrugs();
+    }
+  };
 
   return (
     <div style={{ margin: "10px 0" }}>
@@ -38,6 +44,7 @@ const Drugsform = ({
             onChange={textChangeHandler}
             className={classes.textField}
             name="searchTerm"
+            onKeyUp={(event) => handleKeyUp(event)}
           />
         }
         label="Name"
@@ -51,6 +58,7 @@ const Drugsform = ({
             name="favorite"
             onChange={checkBoxChangeHandler}
             color="primary"
+            onKeyUp={(event) => handleKeyUp(event)}
           />
         }
         label="Favorites"
@@ -64,7 +72,7 @@ const Drugsform = ({
         variant="contained"
         color="primary"
         className={classes.submit}
-        onClick={searchDrugs}
+        onClick={fetchSearchDrugs}
       >
         Search
       </Button>

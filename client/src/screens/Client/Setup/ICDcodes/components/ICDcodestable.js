@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import {
   makeStyles,
@@ -75,11 +75,10 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
-const ICDcodestable = ({ user, result, searchIcdCodes }) => {
+const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  let [state, setState] = useState([]);
-  let [reload, setReload] = useState(1);
+  let [state, setState] = useState(result);
   const [errors, setErrors] = useState([]);
 
   const changeHandler = (event, icdcode_id) => {
@@ -89,38 +88,40 @@ const ICDcodestable = ({ user, result, searchIcdCodes }) => {
     let checked = event.target.checked;
     setState(
       result.map((item) => {
-        if (icdcode_id == item.id) {
+        if (icdcode_id === item.id) {
           item.favorite = checked;
         }
+        return state;
       })
     );
-    if (checked == true) {
+    if (checked === true) {
       icdcodesService.addFavorite(icdcode_id, user.id, payload).then(
         (response) => {
-          dispatch(setSuccess(`${response.data.message}`));
+          setTimeout(() => {
+            dispatch(setSuccess(`${response.data.message}`));
+          }, 300);
         },
         (error) => {
-          setErrors(error.response.error);
+          setTimeout(() => {
+            setErrors(error.response.error);
+          }, 300);
         }
       );
     } else {
       icdcodesService.deleteFavorite(icdcode_id).then(
         (response) => {
-          dispatch(setSuccess(`${response.data.message}`));
+          setTimeout(() => {
+            dispatch(setSuccess(`${response.data.message}`));
+          }, 300);
         },
         (error) => {
-          setErrors(error.response.error);
+          setTimeout(() => {
+            setErrors(error.response.error);
+          }, 300);
         }
       );
     }
-    setReload((reload += 1));
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      searchIcdCodes();
-    }, 300);
-  }, [reload]);
 
   return (
     <div>
@@ -153,7 +154,12 @@ const ICDcodestable = ({ user, result, searchIcdCodes }) => {
                     size="small"
                     checked={Boolean(code.favorite)}
                     name="switchBox"
-                    onChange={(e) => changeHandler(e, code.id)}
+                    onChange={(e) => {
+                      changeHandler(e, code.id);
+                      setTimeout(() => {
+                        fetchSearchIcdCodes();
+                      }, 200);
+                    }}
                   />
                 </TableCell>
                 <TableCell>

@@ -31,7 +31,7 @@ const ICDcodes = () => {
     searchTerm,
     checkBox: favorite,
   };
-  const searchIcdCodes = () => {
+  const fetchSearchIcdCodes = () => {
     icdcodesService.search(payload).then((res) => {
       setSearchResult(res.data.data);
     });
@@ -64,7 +64,7 @@ const ICDcodes = () => {
               <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                   <ICDcodesform
-                    searchIcdCodes={searchIcdCodes}
+                    fetchSearchIcdCodes={fetchSearchIcdCodes}
                     textChangeHandler={textChangeHandler}
                     checkBoxChangeHandler={checkBoxChangeHandler}
                   />
@@ -72,7 +72,7 @@ const ICDcodes = () => {
                     <ICDcodestable
                       user={user}
                       result={searchResult}
-                      searchIcdCodes={searchIcdCodes}
+                      fetchSearchIcdCodes={fetchSearchIcdCodes}
                     />
                   )}
                 </Grid>

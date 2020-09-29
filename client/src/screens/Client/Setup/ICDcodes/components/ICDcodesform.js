@@ -23,11 +23,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ICDcodesform = ({
-  searchIcdCodes,
+  fetchSearchIcdCodes,
   textChangeHandler,
   checkBoxChangeHandler,
 }) => {
   const classes = useStyles();
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      fetchSearchIcdCodes();
+    }
+  };
 
   return (
     <div style={{ margin: "10px 0" }}>
@@ -38,6 +43,7 @@ const ICDcodesform = ({
             onChange={textChangeHandler}
             className={classes.textField}
             name="searchTerm"
+            onKeyUp={(event) => handleKeyUp(event)}
           />
         }
         label="Name"
@@ -52,6 +58,7 @@ const ICDcodesform = ({
             name="favorite"
             onChange={checkBoxChangeHandler}
             color="primary"
+            onKeyUp={(event) => handleKeyUp(event)}
           />
         }
         label="Favorites"
@@ -65,7 +72,7 @@ const ICDcodesform = ({
         variant="contained"
         color="primary"
         className={classes.submit}
-        onClick={searchIcdCodes}
+        onClick={fetchSearchIcdCodes}
       >
         Search
       </Button>

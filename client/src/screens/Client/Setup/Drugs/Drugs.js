@@ -46,7 +46,7 @@ export default function Drugs() {
     checkBox: favorite,
   };
 
-  const searchDrugs = () => {
+  const fetchSearchDrugs = () => {
     DrugsService.search(payload).then((res) => {
       setSearchResult(res.data.data);
     });
@@ -79,7 +79,7 @@ export default function Drugs() {
                     This page is used to manage drugs information.
                   </Typography>
                   <Drugsform
-                    searchDrugs={searchDrugs}
+                    fetchSearchDrugs={fetchSearchDrugs}
                     textChangeHandler={textChangeHandler}
                     checkBoxChangeHandler={checkBoxChangeHandler}
                   />
@@ -87,7 +87,7 @@ export default function Drugs() {
                     <Drugstable
                       user={user}
                       result={searchResult}
-                      searchDrugs={searchDrugs}
+                      fetchSearchDrugs={fetchSearchDrugs}
                     />
                   )}
                 </Grid>

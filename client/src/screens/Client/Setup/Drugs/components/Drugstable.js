@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import {
   makeStyles,
@@ -75,11 +75,10 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
-const Drugstable = ({ user, result, searchDrugs }) => {
+const Drugstable = ({ user, result, fetchSearchDrugs }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  let [state, setState] = useState([]);
-  let [reload, setReload] = useState(1);
+  let [state, setState] = useState(result);
   let [errors, setErrors] = useState([]);
 
   const changeHandler = (event, drugId) => {
@@ -89,38 +88,40 @@ const Drugstable = ({ user, result, searchDrugs }) => {
     let checked = event.target.checked;
     setState(
       result.map((item) => {
-        if (drugId == item.id) {
+        if (drugId === item.id) {
           item.favorite = checked;
         }
+        return state;
       })
     );
-    if (checked == true) {
+    if (checked === true) {
       DrugsService.addFavorite(drugId, user.id, payload).then(
         (response) => {
-          dispatch(setSuccess(`${response.data.message}`));
+          setTimeout(() => {
+            dispatch(setSuccess(`${response.data.message}`));
+          }, 300);
         },
         (error) => {
-          setErrors(error.response.error);
+          setTimeout(() => {
+            setErrors(error.response.error);
+          }, 300);
         }
       );
     } else {
       DrugsService.deleteFavorite(drugId).then(
         (response) => {
-          dispatch(setSuccess(`${response.data.message}`));
+          setTimeout(() => {
+            dispatch(setSuccess(`${response.data.message}`));
+          }, 300);
         },
         (error) => {
-          setErrors(error.response.error);
+          setTimeout(() => {
+            setErrors(error.response.error);
+          }, 300);
         }
       );
     }
-    setReload((reload += 1));
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      searchDrugs();
-    }, 400);
-  }, [reload]);
 
   return (
     <div>
@@ -151,7 +152,12 @@ const Drugstable = ({ user, result, searchDrugs }) => {
                     size="small"
                     checked={Boolean(drug.favorite)}
                     name="switchBox"
-                    onChange={(e) => changeHandler(e, drug.id)}
+                    onChange={(e) => {
+                      changeHandler(e, drug.id);
+                      setTimeout(() => {
+                        fetchSearchDrugs();
+                      }, 200);
+                    }}
                   />
                 </TableCell>
                 <TableCell>
