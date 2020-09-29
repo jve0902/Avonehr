@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 650,
-  }
+  },
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -43,9 +43,11 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const AdminNotesHistory = (props) => {
-  const { data, /* reloadData */ } = props;
+  const { data, onLoad /* reloadData */ } = props;
   const classes = useStyles();
-
+  useEffect(() => {
+    onLoad();
+  }, []);
   return (
     <TableContainer className={classes.tableContainer}>
       <Table size="small" className={classes.table}>
@@ -77,4 +79,3 @@ const AdminNotesHistory = (props) => {
 };
 
 export default AdminNotesHistory;
-

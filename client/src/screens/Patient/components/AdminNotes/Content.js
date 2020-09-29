@@ -25,5 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text12: {
     fontSize: 12,
+    whiteSpace: "pre-line",
   },
 }));

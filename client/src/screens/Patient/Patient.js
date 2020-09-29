@@ -176,7 +176,7 @@ export default function Patient() {
 
   useEffect(() => {
     fetchPatientData();
-    fetchPatientHistory();
+    // fetchPatientHistory(); unnecessary to call now as these data is only required on a modal.
     fetchAllergies();
     fetchPatientHandouts();
     fetchForms();
@@ -196,7 +196,7 @@ export default function Patient() {
       setPatientData(res.data);
     });
   };
-  console.log("patientData", patientData);
+
   const fetchPatientHistory = () => {
     PatientService.getPatientHistory().then((res) => {
       setPatientHistory(res.data);
@@ -651,8 +651,9 @@ export default function Patient() {
         title={"Admin Notes Form"}
         message={
           <AdminNotes
+            oldAdminNote={patientData && patientData.admin_note}
             onClose={toggleAdminFormDialog}
-            reloadData={() => fetchPatientHistory()}
+            reloadData={() => fetchPatientData()}
           />
         }
         applyForm={() => toggleAdminFormDialog()}
@@ -667,6 +668,7 @@ export default function Patient() {
           <AdminNotesHistory
             onClose={toggleAdminHistoryDialog}
             data={patientHistory}
+            onLoad={() => fetchPatientHistory()}
           />
         }
         applyForm={() => toggleAdminHistoryDialog()}
