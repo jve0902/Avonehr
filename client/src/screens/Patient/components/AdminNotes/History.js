@@ -43,11 +43,9 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const AdminNotesHistory = (props) => {
-  const { data, onLoad /* reloadData */ } = props;
+  const { data /* reloadData */ } = props;
   const classes = useStyles();
-  useEffect(() => {
-    onLoad();
-  }, []);
+
   return (
     <TableContainer className={classes.tableContainer}>
       <Table size="small" className={classes.table}>
@@ -56,7 +54,6 @@ const AdminNotesHistory = (props) => {
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
             <StyledTableCell>Admin Note</StyledTableCell>
-            <StyledTableCell>Created User</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -69,7 +66,6 @@ const AdminNotesHistory = (props) => {
                 </TableCell>
                 <TableCell>{row.name || "-"}</TableCell>
                 <TableCell>{row.admin_note || "-"}</TableCell>
-                <TableCell>{row.created_user || "-"}</TableCell>
               </StyledTableRow>
             ))}
         </TableBody>

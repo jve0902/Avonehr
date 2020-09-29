@@ -156,6 +156,7 @@ export default function Patient() {
   //data states
   const [patientData, setPatientData] = useState(null);
   const [patientHistory, setPatientHistory] = useState([]);
+  const [adminNotesHistory, setAdminNotesHistory] = useState([]);
   const [patients, setPatients] = useState([]);
   const [allergies, setAllergies] = useState([]);
   const [handouts, setHandouts] = useState([]);
@@ -176,7 +177,8 @@ export default function Patient() {
 
   useEffect(() => {
     fetchPatientData();
-    // fetchPatientHistory(); unnecessary to call now as these data is only required on a modal.
+    fetchPatientHistory();
+    fetchAdminNotesHistory();
     fetchAllergies();
     fetchPatientHandouts();
     fetchForms();
@@ -200,6 +202,12 @@ export default function Patient() {
   const fetchPatientHistory = () => {
     PatientService.getPatientHistory().then((res) => {
       setPatientHistory(res.data);
+    });
+  };
+
+  const fetchAdminNotesHistory = () => {
+    PatientService.getAdminNotesHistory().then((res) => {
+      setAdminNotesHistory(res.data);
     });
   };
 
@@ -657,7 +665,10 @@ export default function Patient() {
           <AdminNotes
             oldAdminNote={patientData && patientData.admin_note}
             onClose={toggleAdminFormDialog}
-            reloadData={() => fetchPatientData()}
+            reloadData={() => {
+              fetchPatientData();
+              fetchAdminNotesHistory();
+            }}
           />
         }
         applyForm={() => toggleAdminFormDialog()}
@@ -671,8 +682,8 @@ export default function Patient() {
         message={
           <AdminNotesHistory
             onClose={toggleAdminHistoryDialog}
-            data={patientHistory}
-            onLoad={() => fetchPatientHistory()}
+            data={adminNotesHistory}
+            //onLoad={() => fetchPatientHistory()}
           />
         }
         applyForm={() => toggleAdminHistoryDialog()}
