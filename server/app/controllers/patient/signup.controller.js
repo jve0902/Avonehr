@@ -34,3 +34,26 @@ exports.getClientByCode = async (req, res) => {
     await db.close();
   }
 };
+
+exports.getClientForm = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { clientId } = req.params;
+  try {
+    const dbResponse = await db.query(
+      `select cf.id, cf.form from client_form cf where cf.client_id=${clientId} and type='S'`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
