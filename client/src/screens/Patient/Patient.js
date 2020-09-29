@@ -14,7 +14,11 @@ import {
 } from "./../../static/patient";
 
 // dialog components
-import { AdminNotes, AdminNotesHistory, AdminNotesCardContent } from "./components/AdminNotes";
+import {
+  AdminNotes,
+  AdminNotesHistory,
+  AdminNotesCardContent,
+} from "./components/AdminNotes";
 import {
   NewTransactionForm,
   PaymentForm,
@@ -43,7 +47,7 @@ import {
 import {
   HandoutsForm,
   HandoutsCardContent,
-  HandoutsDetails
+  HandoutsDetails,
 } from "./components/Handouts";
 import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
@@ -72,11 +76,11 @@ import { setError, setSuccess } from "./../../store/common/actions";
 import { useDispatch } from "react-redux";
 
 //react-grid-layout styles
-import "react-grid-layout/css/styles.css"
-import "react-resizable/css/styles.css"
-import "../../reactGridLayout.css"
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import "../../reactGridLayout.css";
 
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -100,9 +104,7 @@ export default function Patient() {
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
 
-  const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(
-    false
-  );
+  const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(false);
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
     false
   );
@@ -112,7 +114,9 @@ export default function Patient() {
   const [showAllergyExpandDialog, setShowAllergyExpandDialog] = useState(false);
 
   const [showHandoutsDialog, setShowHandoutsDialog] = useState(false);
-  const [showHandoutsExpandDialog, setShowHandoutsExpandDialog] = useState(false);
+  const [showHandoutsExpandDialog, setShowHandoutsExpandDialog] = useState(
+    false
+  );
 
   const [showEncountersDialog, setShowEncountersDialog] = useState(false);
   const [showEncountersExpandDialog, setShowEncountersExpandDialog] = useState(
@@ -168,7 +172,7 @@ export default function Patient() {
 
   useEffect(() => {
     generateLayout();
-  }, [])
+  }, []);
 
   useEffect(() => {
     fetchPatientData();
@@ -192,7 +196,7 @@ export default function Patient() {
       setPatientData(res.data);
     });
   };
-
+  console.log("patientData", patientData);
   const fetchPatientHistory = () => {
     PatientService.getPatientHistory().then((res) => {
       setPatientHistory(res.data);
@@ -287,7 +291,7 @@ export default function Patient() {
     };
     PatientService.searchPatient(reqBody).then((res) => {
       setPatients(res.data);
-      console.log("Patient's earch result: ", patients)
+      console.log("Patient's earch result: ", patients);
     });
   };
 
@@ -454,7 +458,7 @@ export default function Patient() {
       return !!patientData && <PatientCardContent data={patientData} />;
     } else if (value === "Admin Notes") {
       return (
-        !!patientHistory && <AdminNotesCardContent data={patientHistory} />
+        !!patientData && <AdminNotesCardContent data={patientData.admin_note} />
       );
     } else if (value === "Forms") {
       return !!forms && <FormCardContent data={forms} />;
@@ -493,7 +497,7 @@ export default function Patient() {
 
   const redirectToPatientPortal = () => {
     history.push("/manage/patient-search");
-  }
+  };
 
   const mapIconHandlers = (value) => {
     if (value === "Patient") {
@@ -536,12 +540,11 @@ export default function Patient() {
     console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
-    fd.append("patient_id", 1)
+    fd.append("patient_id", 1);
     createDocument(fd);
   };
 
   const generateLayout = () => {
-
     const y = 4;
     let firstlayout = FirstColumnPatientCards.map((item, i) => {
       return {
@@ -549,7 +552,7 @@ export default function Patient() {
         y: 0,
         w: 3,
         h: y,
-        i: item.title.toString()
+        i: item.title.toString(),
       };
     });
     let encounterslayout = {
@@ -557,7 +560,7 @@ export default function Patient() {
       y: 0,
       w: 3,
       h: y,
-      i: 'Encounters'
+      i: "Encounters",
     };
     let thirdlayout = ThirdColumnPatientCards.map((item, i) => {
       return {
@@ -565,7 +568,7 @@ export default function Patient() {
         y: y,
         w: 3,
         h: y,
-        i: item.title.toString()
+        i: item.title.toString(),
       };
     });
     let fourthlayout = FourthColumnPatientCards.map((item, i) => {
@@ -574,7 +577,7 @@ export default function Patient() {
         y: 0,
         w: 3,
         h: y,
-        i: item.title.toString()
+        i: item.title.toString(),
       };
     });
     let documentslayout = {
@@ -582,23 +585,32 @@ export default function Patient() {
       y: y,
       w: 6,
       h: 5,
-      i: 'Documents'
+      i: "Documents",
     };
     let testslayout = {
       x: 6,
       y: y,
       w: 6,
       h: 5,
-      i: 'All Tests'
+      i: "All Tests",
     };
-    setLayout([...firstlayout, encounterslayout, ...thirdlayout, ...fourthlayout, documentslayout, testslayout]);
-  }
+    setLayout([
+      ...firstlayout,
+      encounterslayout,
+      ...thirdlayout,
+      ...fourthlayout,
+      documentslayout,
+      testslayout,
+    ]);
+  };
 
   const updateMinHeight = (key, newHeight) => {
-    let calculatedHeight = newHeight / 40 + 0.5 //40 is the row height, 0.5 is the margin
-     let newLayout = layout.map(item => item.i === key ? { ...item, h: calculatedHeight } : item);
-     setLayout([...newLayout])
-  }
+    let calculatedHeight = newHeight / 40 + 0.5; //40 is the row height, 0.5 is the margin
+    let newLayout = layout.map((item) =>
+      item.i === key ? { ...item, h: calculatedHeight } : item
+    );
+    setLayout([...newLayout]);
+  };
 
   return (
     <>
@@ -683,7 +695,9 @@ export default function Patient() {
       <Dialog
         open={showBillingExpandDialog}
         title={" "}
-        message={<BillingDetails data={billings} onClose={toggleBillngExpandDialog} />}
+        message={
+          <BillingDetails data={billings} onClose={toggleBillngExpandDialog} />
+        }
         applyForm={() => toggleBillngExpandDialog()}
         cancelForm={() => toggleBillngExpandDialog()}
         hideActions={true}
@@ -724,7 +738,12 @@ export default function Patient() {
       <Dialog
         open={showHandoutsDialog}
         title={" "}
-        message={<HandoutsForm onClose={toggleHandoutsDialog} reloadData={fetchPatientHandouts} />}
+        message={
+          <HandoutsForm
+            onClose={toggleHandoutsDialog}
+            reloadData={fetchPatientHandouts}
+          />
+        }
         applyForm={() => toggleHandoutsDialog()}
         cancelForm={() => toggleHandoutsDialog()}
         hideActions={true}
@@ -921,8 +940,8 @@ export default function Patient() {
       <ResponsiveGridLayout
         className={"layout"}
         rowHeight={40}
-        cols= {{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-        breakpoints= {{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
         // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
         compactType={"vertical"}
@@ -951,7 +970,7 @@ export default function Patient() {
             </Grid>
           );
         })}
-        <Grid key={'Encounters'} className={classes.overflowAuto}>
+        <Grid key={"Encounters"} className={classes.overflowAuto}>
           <Card
             title="Encounters"
             data={!!encounters && <EncountersCardContent data={encounters} />}
@@ -1044,6 +1063,6 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   overflowAuto: {
-    overflowY: 'auto'
-  }
+    overflowY: "auto",
+  },
 }));
