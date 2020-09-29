@@ -84,11 +84,12 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export default function Patient() {
+export default function Patient(props) {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
+  const patientID = props.match.params.id;
 
   //grid layout states
   const [layout, setLayout] = useState([]);
@@ -732,7 +733,7 @@ export default function Patient() {
       <Dialog
         open={showAllergyDialog}
         title={" "}
-        message={<Allergies onClose={toggleAllergyDialog} />}
+        message={<Allergies onClose={toggleAllergyDialog} patientID={patientID} />}
         applyForm={() => toggleAllergyDialog()}
         cancelForm={() => toggleAllergyDialog()}
         hideActions={true}
@@ -757,6 +758,7 @@ export default function Patient() {
         title={" "}
         message={
           <HandoutsForm
+            patientID={patientID}
             onClose={toggleHandoutsDialog}
             reloadData={fetchPatientHandouts}
           />
@@ -771,6 +773,7 @@ export default function Patient() {
         title={" "}
         message={
           <HandoutsDetails
+            patientID={patientID}
             data={handouts}
             reloadData={fetchPatientHandouts}
             onClose={toggleHandoutsExpandDialog}
@@ -864,7 +867,7 @@ export default function Patient() {
       <Dialog
         open={showDiagnosesDialog}
         title={" "}
-        message={<DiagnosesForm onClose={toggleDiagnosesDialog} />}
+        message={<DiagnosesForm onClose={toggleDiagnosesDialog} patientID={patientID} />}
         applyForm={() => toggleDiagnosesDialog()}
         cancelForm={() => toggleDiagnosesDialog()}
         hideActions={true}

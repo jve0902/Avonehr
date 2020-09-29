@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 const HandoutsForm = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, reloadData } = props;
+  const { onClose, reloadData, patientID } = props;
   const [allHandouts, setAllHandouts] = useState([]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const HandoutsForm = (props) => {
   const createPatientHandoutHandler = () => {
     const reqBody = {
         data : {
-            "patient_id": 1,
+            "patient_id": patientID,
             "handout_id": 1,
             "admin_note": "admin_note",
             "old_admin_note": "old_admin_note"

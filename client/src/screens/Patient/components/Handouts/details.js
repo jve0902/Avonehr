@@ -61,13 +61,13 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const HandoutsDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientID } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
     const handoutId = selectedItem.id || 1;
-    const patientId = 1;
+    const patientId = patientID;
     PatientService.deleteHandout(patientId, handoutId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
