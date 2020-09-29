@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 650,
-  }
+  },
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -43,7 +43,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const AdminNotesHistory = (props) => {
-  const { data, /* reloadData */ } = props;
+  const { data /* reloadData */ } = props;
   const classes = useStyles();
 
   return (
@@ -54,7 +54,6 @@ const AdminNotesHistory = (props) => {
             <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
             <StyledTableCell>Admin Note</StyledTableCell>
-            <StyledTableCell>Created User</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -67,7 +66,6 @@ const AdminNotesHistory = (props) => {
                 </TableCell>
                 <TableCell>{row.name || "-"}</TableCell>
                 <TableCell>{row.admin_note || "-"}</TableCell>
-                <TableCell>{row.created_user || "-"}</TableCell>
               </StyledTableRow>
             ))}
         </TableBody>
@@ -77,4 +75,3 @@ const AdminNotesHistory = (props) => {
 };
 
 export default AdminNotesHistory;
-
