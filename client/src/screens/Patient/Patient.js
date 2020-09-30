@@ -733,7 +733,7 @@ export default function Patient(props) {
         open={showAllergyDialog}
         title={" "}
         message={
-          <Allergies onClose={toggleAllergyDialog} patientId={patientId} />
+          <Allergies onClose={toggleAllergyDialog} patientId={patient_id} />
         }
         applyForm={() => toggleAllergyDialog()}
         cancelForm={() => toggleAllergyDialog()}
@@ -759,7 +759,7 @@ export default function Patient(props) {
         title={" "}
         message={
           <HandoutsForm
-            patientId={patientId}
+            patientId={patient_id}
             onClose={toggleHandoutsDialog}
             reloadData={fetchPatientHandouts}
           />
@@ -774,7 +774,7 @@ export default function Patient(props) {
         title={" "}
         message={
           <HandoutsDetails
-            patientId={patientId}
+            patientId={patient_id}
             data={handouts}
             reloadData={fetchPatientHandouts}
             onClose={toggleHandoutsExpandDialog}
@@ -871,7 +871,7 @@ export default function Patient(props) {
         message={
           <DiagnosesForm
             onClose={toggleDiagnosesDialog}
-            patientId={patientId}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleDiagnosesDialog()}
