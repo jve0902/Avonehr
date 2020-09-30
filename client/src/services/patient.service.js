@@ -5,6 +5,11 @@ const API_URL =
   `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
 
 class Patient {
+  getCardsLayout(user_id) {
+    return axios
+      .get(API_URL + `/patient-layout/${user_id}`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getAllergies() {
     return axios
       .get(API_URL + `/patient/allergies`, { headers: authHeader() })
@@ -131,6 +136,12 @@ class Patient {
   }
 
   //update methods
+  updateCardsLayout(user_id, layout) {
+    return axios
+      .post(API_URL + `/patient-layout/${user_id}`, layout, { headers: authHeader() })
+      .then((res) => res.data);
+  }
+
   updateAdminNotes(data, noteId) {
     return axios.put(API_URL + `/patient/admin-note/${noteId}`, data, {
       headers: authHeader(),
