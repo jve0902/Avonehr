@@ -87,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
+    minHeight: 34
   },
   fullPadding: {
     padding: 8,
@@ -102,7 +103,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 13
   },
   button: {
-    fontSize: 13
+    fontSize: 13,
+    lineHeight: "14px",
   },
   cardContent: {
     padding: 8,
