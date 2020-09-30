@@ -127,22 +127,22 @@ router.get(
   Patient.getAllTests
 );
 router.get(
-  "/patient/diagnoses/:patient_id",
+  "/patient/:patient_id/diagnoses",
   [authJwt.verifyToken],
   Patient.getDiagnoses
 );
 router.put(
-  "/patient/diagnoses/:encounter_id/:icd_id",
+  "/diagnoses/:encounter_id/:icd_id",
   [authJwt.verifyToken],
   Patient.updateDiagnose
 );
 router.delete(
-  "/patient/diagnoses/:encounter_id/:icd_id",
+  "/diagnoses/:encounter_id/:icd_id",
   [authJwt.verifyToken],
   Patient.deleteDiagnose
 );
 router.post(
-  "/patient/diagnoses/",
+  "/patient/:patient_id/diagnoses",
   [authJwt.verifyToken],
   Patient.createDiagnoses
 );

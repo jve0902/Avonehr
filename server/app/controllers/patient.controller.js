@@ -1152,7 +1152,7 @@ const deleteDiagnose = async (req, res) => {
 };
 
 const createDiagnoses = async (req, res) => {
-  const { patient_id } = req.body.data;
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
