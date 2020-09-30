@@ -47,13 +47,15 @@ const upload = multer({
 
 const getPatient = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { id } = req.params;
   try {
     const dbResponse = await db.query(
       `select p.firstname, p.lastname, p.gender, p.dob, p.phone_home, p.phone_cell, p.email, concat(u.firstname, ' ', u.lastname) provider, p.client_id
         , p.admin_note, p.medical_note
         from patient p
         left join user u on u.id=p.user_id
-        where p.id=1
+        where p.client_id=${req.client_id}
+        and p.id=${id}
       `
     );
     const userLogResponse = await db.query(

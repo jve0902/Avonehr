@@ -6,7 +6,7 @@ const Patient = require("../controllers/patient.controller.js");
 const validation = require("./../helpers/validations/patient.js");
 const router = express.Router();
 
-router.get("/patient", [authJwt.verifyToken], Patient.getPatient);
+router.get("/patient/:id", [authJwt.verifyToken], Patient.getPatient);
 router.post(
   "/patient/search",
   [authJwt.verifyToken, validation.validate("search")],
