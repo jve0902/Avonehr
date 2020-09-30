@@ -504,6 +504,7 @@ const DeletePatientHandouts = async (req, res) => {
 
 const getBilling = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   let { limit } = req.query;
   if (typeof limit === "undefined") {
     limit = 100;
@@ -516,7 +517,7 @@ const getBilling = async (req, res) => {
         left join encounter e on e.id=t.encounter_id
         left join tran_type tt on tt.id=t.type_id
         left join payment_method pm on pm.id=t.payment_method_id
-        where t.patient_id=1
+        where t.patient_id=${patient_id}
         order by t.dt desc
         limit ${limit}
       `
@@ -539,14 +540,15 @@ const getBilling = async (req, res) => {
 };
 
 const getAllergies = async (req, res) => {
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select pa.created, pa.drug_id, d.name
         from patient_allergy pa
         left join drug d on d.id=pa.drug_id
-        where pa.client_id=1
-        and pa.patient_id=1
+        where pa.client_id=${req.client_id}
+        and pa.patient_id=${patient_id}
         order by d.name
         limit 100
       `
@@ -641,7 +643,8 @@ const createPatientAllergy = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient_id, drug_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { drug_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(

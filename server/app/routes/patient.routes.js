@@ -50,24 +50,32 @@ router.post(
   Patient.CreatePatientHandouts
 );
 router.delete(
-  "/patient/:patient_id/patient-handout//:handout_id",
+  "/patient/:patient_id/patient-handout/:handout_id",
   [authJwt.verifyToken, validation.validate("DeletePatientHandouts")],
   Patient.DeletePatientHandouts
 );
-router.get("/patient/billing", [authJwt.verifyToken], Patient.getBilling);
-router.get("/patient/allergies", [authJwt.verifyToken], Patient.getAllergies);
+router.get(
+  "/patient/:patient_id/billing",
+  [authJwt.verifyToken],
+  Patient.getBilling
+);
+router.get(
+  "/patient/:patient_id/allergies",
+  [authJwt.verifyToken],
+  Patient.getAllergies
+);
 router.delete(
-  "/patient/allergies/:patient_id/:drug_id",
+  "/patient/:patient_id/allergies/:drug_id",
   [authJwt.verifyToken, validation.validate("deleteAllergy")],
   Patient.deleteAllergy
 );
 router.post(
-  "/patient/allergies/search",
+  "/allergies/search",
   [authJwt.verifyToken, validation.validate("search")],
   Patient.searchAllergies
 );
 router.post(
-  "/patient/allergies",
+  "/patient/:patient_id/allergies",
   [authJwt.verifyToken, validation.validate("createPatientAllergy")],
   Patient.createPatientAllergy
 );
