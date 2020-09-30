@@ -89,7 +89,7 @@ export default function Patient(props) {
   const inputFile = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  const patientID = props.match.params.id;
+  const patientId = props.match.params.id;
 
   //grid layout states
   const [layout, setLayout] = useState([]);
@@ -195,7 +195,7 @@ export default function Patient(props) {
   }, []);
 
   const fetchPatientData = () => {
-    PatientService.getPatientDataById(patientID).then((res) => {
+    PatientService.getPatientDataById(patientId).then((res) => {
       setPatientData(res.data);
     });
   };
@@ -733,7 +733,7 @@ export default function Patient(props) {
       <Dialog
         open={showAllergyDialog}
         title={" "}
-        message={<Allergies onClose={toggleAllergyDialog} patientID={patientID} />}
+        message={<Allergies onClose={toggleAllergyDialog} patientId={patientId} />}
         applyForm={() => toggleAllergyDialog()}
         cancelForm={() => toggleAllergyDialog()}
         hideActions={true}
@@ -758,7 +758,7 @@ export default function Patient(props) {
         title={" "}
         message={
           <HandoutsForm
-            patientID={patientID}
+            patientId={patientId}
             onClose={toggleHandoutsDialog}
             reloadData={fetchPatientHandouts}
           />
@@ -773,7 +773,7 @@ export default function Patient(props) {
         title={" "}
         message={
           <HandoutsDetails
-            patientID={patientID}
+            patientId={patientId}
             data={handouts}
             reloadData={fetchPatientHandouts}
             onClose={toggleHandoutsExpandDialog}
@@ -867,7 +867,7 @@ export default function Patient(props) {
       <Dialog
         open={showDiagnosesDialog}
         title={" "}
-        message={<DiagnosesForm onClose={toggleDiagnosesDialog} patientID={patientID} />}
+        message={<DiagnosesForm onClose={toggleDiagnosesDialog} patientId={patientId} />}
         applyForm={() => toggleDiagnosesDialog()}
         cancelForm={() => toggleDiagnosesDialog()}
         hideActions={true}

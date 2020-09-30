@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 const Allergies = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, patientID } = props;
+  const { onClose, patientId } = props;
   const [allergies, setAllergies] = useState([]);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Allergies = (props) => {
   const createAllergy = () => {
     const reqBody = {
       data: {
-        patient_id: patientID,
+        patient_id: patientId,
         drug_id: "1",
       },
     };
