@@ -110,13 +110,17 @@ router.put(
   [authJwt.verifyToken],
   Patient.medicalNotesHistoryUpdate
 );
-router.get("/patient/messages", [authJwt.verifyToken], Patient.getMessages);
-router.post("/patient/messages", [authJwt.verifyToken], Patient.createMessage);
-router.delete(
-  "/patient/messages/:id",
+router.get(
+  "/patient/:patient_id/messages",
   [authJwt.verifyToken],
-  Patient.deleteMessage
+  Patient.getMessages
 );
+router.post(
+  "/patient/:patient_id/messages",
+  [authJwt.verifyToken],
+  Patient.createMessage
+);
+router.delete("/messages/:id", [authJwt.verifyToken], Patient.deleteMessage);
 router.get(
   "/patient/all-tests/:patient_id",
   [authJwt.verifyToken],

@@ -929,7 +929,7 @@ const medicalNotesHistoryUpdate = async (req, res) => {
 
 const getMessages = async (req, res) => {
   const db = makeDb(configuration, res);
-
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select m.id, m.created
@@ -939,7 +939,7 @@ const getMessages = async (req, res) => {
         from message m
         left join user u on u.id=m.user_id_from
         left join user u2 on u2.id=m.user_id_to
-        where (patient_id_from=1 or patient_id_to=1)
+        where (patient_id_from=${patient_id} or patient_id_to=${patient_id})
         order by m.created desc
         limit 50`
     );
@@ -961,12 +961,12 @@ const getMessages = async (req, res) => {
 
 const createMessage = async (req, res) => {
   const { subject, message, unread_notify_dt } = req.body.data;
-  //TODO:: patient_id_from hardcoded to display on get Query
-  const patient_id_from = 1;
+
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id_from})`
+      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id})`
     );
 
     if (!insertResponse.affectedRows) {
