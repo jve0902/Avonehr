@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -82,6 +82,9 @@ import "../../reactGridLayout.css";
 
 import { Responsive, WidthProvider } from "react-grid-layout";
 
+//providers
+import { AuthContext } from "../../providers/AuthProvider"
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export default function Patient(props) {
@@ -90,6 +93,7 @@ export default function Patient(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   let { patient_id } = useParams();
+  const user = useContext(AuthContext)?.user;
 
   //grid layout states
   const [layout, setLayout] = useState([]);
@@ -177,6 +181,7 @@ export default function Patient(props) {
   }, []);
 
   useEffect(() => {
+    fetchCardsLayout();
     fetchPatientData(patient_id);
     fetchPatientHistory(patient_id);
     fetchAdminNotesHistory();
@@ -193,6 +198,20 @@ export default function Patient(props) {
     fetchRequisitions();
     fetchTests();
   }, [patient_id]);
+
+  const fetchCardsLayout = () => {
+    const user_id = user.id;
+    PatientService.getCardsLayout(user_id).then((res) => {
+      setLayout(res.data);
+    });
+  };
+
+  const updateCardsLayout = (layout) => {
+    const user_id = user.id;
+    PatientService.updateCardsLayout(user_id, layout).then((res) => {
+      console.log("CARDS LAYOUT UPDATED!!!", res)
+    });
+  };
 
   const fetchPatientData = (patient_id) => {
     PatientService.getPatientData(patient_id).then((res) => {
@@ -973,7 +992,7 @@ export default function Patient(props) {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
-        // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
+        onLayoutChange={(val) => updateCardsLayout(val)} //TODO:: save the updated layouts in the DB
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
