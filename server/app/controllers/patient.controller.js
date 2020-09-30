@@ -248,17 +248,17 @@ const adminNoteupdate = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
   const { admin_note, old_admin_note } = req.body.data;
-  const { id } = req.params;
+  const { patient_id } = req.params;
 
   const db = makeDb(configuration, res);
   try {
     const patientHistory = await db.query(
-      `insert into patient_history (id, admin_note, created, created_user_id) values (${id}, '${old_admin_note}', now(), ${req.user_id})`
+      `insert into patient_history (id, admin_note, created, created_user_id) values (${patient_id}, '${old_admin_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
       `update patient
             set admin_note='${admin_note}'
-            where id=${id}
+            where id=${patient_id}
       `
     );
 

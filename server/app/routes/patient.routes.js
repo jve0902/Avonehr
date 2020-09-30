@@ -19,7 +19,7 @@ router.get(
   Patient.AdminNotehistory
 );
 router.put(
-  "/patient/admin-note/:id",
+  "/patient/:patient_id/admin-note/",
   [authJwt.verifyToken, validation.validate("adminNoteupdate")],
   Patient.adminNoteupdate
 );
