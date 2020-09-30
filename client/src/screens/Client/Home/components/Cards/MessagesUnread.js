@@ -12,6 +12,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
+    fontWeight: "600",
+    fontSize: "1em",
     "& h2": {
       color: "#fff",
     },
@@ -20,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 0 0 1em",
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 47,
-  },
-  title: {
-    fontWeight: "600",
-    fontSize: "1em",
   },
   messageToPatientsUnread: {
     marginTop: theme.spacing(8),
@@ -74,7 +72,7 @@ const MessagesUnread = ({ appointmentRequests, messagesUnread }) => {
         <ul>
           {appointmentRequests.length > 0 ? (
             messagesUnread.map((msg) => (
-              <li key={msg.key}>
+              <li key={msg.id}>
                 {moment(msg.created).format("ll")}, {msg.name}, {msg.subject},{" "}
                 {msg.message}
                 <div className={classes.unreadMsgActions}>
