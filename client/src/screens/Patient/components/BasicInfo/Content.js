@@ -33,7 +33,7 @@ export default function BasicInfoContent(props) {
           DOB:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {moment(data.dob).format("MMM DD YYYY")} (Age:&nbsp;
+          {moment(data.dob).format("MMM D YYYY")} (Age:&nbsp;
           {calculateAge(data.dob)})
         </Typography>
       </Grid>

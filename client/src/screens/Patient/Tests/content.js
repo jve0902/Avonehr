@@ -68,7 +68,6 @@ const TestsContent = (props) => {
       <Table size="small" className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Created</StyledTableCell>
             <StyledTableCell>Test</StyledTableCell>
             <StyledTableCell>Type</StyledTableCell>
             <StyledTableCell>Lab Date</StyledTableCell>
@@ -83,12 +82,9 @@ const TestsContent = (props) => {
         <TableBody>
           {data.map((row) => (
             <StyledTableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DDD, YYYY")}
-              </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.type}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, DDD, YYYY") : "-"}</TableCell>
+              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : "-"}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>

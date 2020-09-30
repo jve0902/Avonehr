@@ -16,7 +16,10 @@ export default function BillingContent(props) {
         data.map(item => (
           <Grid key={item.tran_type} container className={classes.inputRow}>
             <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
+              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM D YYYY")}</Typography>
+            </Grid>
+            <Grid item className={classes.block}>
+              <Typography component="span" className={classes.text12} color="textPrimary">$&nbsp;{item.amount}</Typography>
             </Grid>
             <Grid item className={classes.block}>
               <Typography component="span" className={classes.text12} color="textPrimary">{item.tran_type}</Typography>
