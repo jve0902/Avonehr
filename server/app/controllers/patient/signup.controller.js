@@ -19,11 +19,15 @@ exports.getClientByCode = async (req, res) => {
     const dbResponse = await db.query(
       `select id client_id from client where code='${c}'`
     );
+    console.log("dbResponse", dbResponse);
     if (!dbResponse) {
-      errorMessage.error = "None found";
+      errorMessage.message = "None found";
       return res.status(status.notfound).send(errorMessage);
     }
-
+    if (dbResponse.length === 0) {
+      errorMessage.message = "Something went wrong with your login URL!";
+      return res.status(status.bad).send(errorMessage);
+    }
     successMessage.data = dbResponse;
     return res.status(status.created).send(successMessage);
   } catch (err) {

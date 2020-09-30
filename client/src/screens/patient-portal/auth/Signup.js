@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 const PatientSignUp = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [errors, setErrors] = useState([]);
 
   return (
     <AuthConsumer>

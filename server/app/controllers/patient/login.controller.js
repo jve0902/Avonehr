@@ -3,7 +3,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { validationResult } = require("express-validator");
 const config = require("./../../../config");
 const { configuration, makeDb } = require("../../db/db.js");
 const {
@@ -22,7 +21,7 @@ exports.signin = async (req, res) => {
 
   const { client_id, email } = req.body;
   const rows = await db.query(
-    `select id, password, status from patient where client_id=${client_id} and email='${email}'`
+    `select id, client_id, firstname, lastname, password, status from patient where client_id=${client_id} and email='${email}'`
   );
 
   const patient = rows[0];
@@ -62,6 +61,7 @@ exports.signin = async (req, res) => {
       //expiresIn: 5 * 60, // 2minutes
     }
   );
+
   patient.accessToken = token;
   delete patient.password; // delete password from response
   successMessage.data = patient;

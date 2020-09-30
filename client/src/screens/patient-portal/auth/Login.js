@@ -3,21 +3,16 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Logo from "./../../../assets/client/c1_logo.png";
+import clsx from "clsx";
 import AuthService from "./../../../services/patient_portal/auth.service";
-
 import { AuthConsumer } from "./../../../providers/AuthProvider";
-import {
-  partialLoginComplete,
-  loginComplete,
-} from "./../../../store/auth/actions";
+import { loginComplete } from "./../../../store/auth/actions";
 import Error from "./../../../components/common/Error";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  withErrors: {
+    opacity: 0.9,
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -58,7 +56,6 @@ const PatientLogin = () => {
   const [email, setEmail] = React.useState("");
   const [clientId, setClientId] = React.useState(null);
   const [password, setPassword] = React.useState("");
-  const [isRedirect, setIsRedirect] = React.useState(false);
   const [errors, setErrors] = React.useState([]);
 
   useEffect(() => {
@@ -69,9 +66,23 @@ const PatientLogin = () => {
       },
       (error) => {
         console.log("getClientCode error:", error);
+        if (!error.response) {
+          return;
+        }
+        const { data, status } = error.response;
+
+        if (status === 400) {
+          setErrors([
+            {
+              msg: data.message,
+            },
+          ]);
+        } else {
+          setErrors([]);
+        }
       }
     );
-  }, []);
+  }, [clientCode]);
 
   const onFormSubmit = (event, login) => {
     if (email !== "") {
@@ -96,18 +107,13 @@ const PatientLogin = () => {
         const { data, status } = error.response;
 
         if (status === 400) {
-          setErrors(data.message);
+          setErrors([
+            {
+              msg: data.message,
+            },
+          ]);
         } else {
           setErrors([]);
-        }
-
-        if (data && data.user && data.user.sign_dt === null) {
-          setTimeout(function () {
-            setIsRedirect(true);
-          }, 3000);
-
-          //set user info to Redux to re-use on user_registration.png
-          dispatch(partialLoginComplete(error.response.data.user));
         }
       }
     );
@@ -123,12 +129,16 @@ const PatientLogin = () => {
   return (
     <AuthConsumer>
       {({ isAuth, login }) => {
+        if (isAuth) {
+          history.push(`/patient`);
+        }
         return (
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.Logo}>
               <img
                 src={
+                  //TODO:: Fix this LOGO url
                   process.env.REACT_APP_SITE_URL + "assets/client/c1_logo.png"
                 }
                 alt="Client logo"
@@ -145,10 +155,18 @@ const PatientLogin = () => {
               >
                 Patient Sign in
               </Typography>
+
               <Error errors={errors} />
 
-              <form className={classes.form} noValidate>
+              <form
+                className={clsx({
+                  [classes.form]: true, //always apply
+                  [classes.withErrors]: errors.length > 0, //only when isLoading === true
+                })}
+                noValidate
+              >
                 <TextField
+                  disabled={errors.length > 0}
                   value={email}
                   variant="outlined"
                   margin="normal"
@@ -162,6 +180,7 @@ const PatientLogin = () => {
                   onChange={(event) => setEmail(event.target.value)}
                 />
                 <TextField
+                  disabled={errors.length > 0}
                   value={password}
                   variant="outlined"
                   margin="normal"
@@ -175,7 +194,7 @@ const PatientLogin = () => {
                   onChange={(event) => setPassword(event.target.value)}
                 />
                 <Button
-                  disabled={!email || !password}
+                  disabled={!email || !password || errors.length > 0}
                   fullWidth
                   variant="contained"
                   color="primary"
