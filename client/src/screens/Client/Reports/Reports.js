@@ -1,8 +1,7 @@
 import * as React from "react";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
-import Video from "./../../../components/videos/Video";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,10 +14,16 @@ const useStyles = makeStyles((theme) => ({
   mainContent: {
     marginTop: theme.spacing(3),
   },
+  finance: {
+    cursor: "pointer",
+    color: "#3e82ef",
+  },
 }));
 
 const Reports = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   return (
     <div className={classes.root}>
       <Typography
@@ -33,7 +38,13 @@ const Reports = () => {
         This page is used to list reports
       </Typography>
       <div className={classes.mainContent}>
-        <Typography component="p" variant="body1" color="textPrimary">
+        <Typography
+          onClick={() => history.push("/setup/report-finance")}
+          component="p"
+          variant="body1"
+          color="textPrimary"
+          className={classes.finance}
+        >
           Finance Report
         </Typography>
       </div>
