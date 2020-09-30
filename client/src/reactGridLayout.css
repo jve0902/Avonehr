@@ -7,6 +7,10 @@
     height: 100%;
 }
 
+.react-grid-item > .react-resizable-handle {
+    bottom: 6px;
+}
+
 /* Just in the future we decide to hide the resize icon we can uncomment these lines */
 
 /* .react-grid-item > .react-resizable-handle {
