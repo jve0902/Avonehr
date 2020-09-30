@@ -7,6 +7,6 @@ const router = express.Router();
 router.get("/config", [authJwt.verifyToken], Config.getInit);
 router.get("/config/history", [authJwt.verifyToken], Config.getHistory);
 router.put("/config/logo/:userId", [authJwt.verifyToken], Config.logoUpdate);
-router.put("/config/:userId", [authJwt.verifyToken], Config.update);
+router.put("/config/:clientId", [authJwt.verifyToken], Config.update);
 
 module.exports = router;
