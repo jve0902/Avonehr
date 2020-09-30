@@ -112,7 +112,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Plain}
-              path="/patient/:id"
+              path="/patient/:patient_id"
               component={Patient}
               exact
             />

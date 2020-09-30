@@ -39,24 +39,28 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getPatientDataById(patientId) {
+  getPatientData(patient_id) {
     return axios
-      .get(API_URL + `/patient/${patientId}`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getPatientHistory() {
+  getPatientHistory(patient_id) {
     return axios
-      .get(API_URL + `/patient/history`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/history`, {
+        headers: authHeader(),
+      })
       .then((res) => res.data);
   }
-  searchPatient(data) {
+  searchPatient(patient_id, data) {
     return axios
-      .post(API_URL + `/patient/search`, data, { headers: authHeader() })
+      .post(API_URL + `/patient/${patient_id}/search`, data, {
+        headers: authHeader(),
+      })
       .then((res) => res.data);
   }
-  getEncounters(encounter_id) {
+  getEncounters(patient_id) {
     return axios
-      .get(API_URL + `/patient/encounters/${encounter_id}`, {
+      .get(API_URL + `/patient/${patient_id}/encounters`, {
         headers: authHeader(),
       })
       .then((res) => res.data);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -89,7 +89,7 @@ export default function Patient(props) {
   const inputFile = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  const patientId = props.match.params.id;
+  let { patient_id } = useParams();
 
   //grid layout states
   const [layout, setLayout] = useState([]);
@@ -177,8 +177,8 @@ export default function Patient(props) {
   }, []);
 
   useEffect(() => {
-    fetchPatientData();
-    fetchPatientHistory();
+    fetchPatientData(patient_id);
+    fetchPatientHistory(patient_id);
     fetchAdminNotesHistory();
     fetchAllergies();
     fetchPatientHandouts();
@@ -192,16 +192,16 @@ export default function Patient(props) {
     fetchMedications();
     fetchRequisitions();
     fetchTests();
-  }, []);
+  }, [patient_id]);
 
-  const fetchPatientData = () => {
-    PatientService.getPatientDataById(patientId).then((res) => {
+  const fetchPatientData = (patient_id) => {
+    PatientService.getPatientData(patient_id).then((res) => {
       setPatientData(res.data);
     });
   };
 
-  const fetchPatientHistory = () => {
-    PatientService.getPatientHistory().then((res) => {
+  const fetchPatientHistory = (patient_id) => {
+    PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
   };
@@ -245,9 +245,8 @@ export default function Patient(props) {
     });
   };
 
-  const fetchEncounters = () => {
-    let encounterId = "1";
-    PatientService.getEncounters(encounterId).then((res) => {
+  const fetchEncounters = (patient_id) => {
+    PatientService.getEncounters(patient_id).then((res) => {
       setEncounters(res.data);
     });
   };
@@ -298,7 +297,7 @@ export default function Patient(props) {
         text: searchText,
       },
     };
-    PatientService.searchPatient(reqBody).then((res) => {
+    PatientService.searchPatient(patient_id, reqBody).then((res) => {
       setPatients(res.data);
       console.log("Patient's earch result: ", patients);
     });
@@ -733,7 +732,9 @@ export default function Patient(props) {
       <Dialog
         open={showAllergyDialog}
         title={" "}
-        message={<Allergies onClose={toggleAllergyDialog} patientId={patientId} />}
+        message={
+          <Allergies onClose={toggleAllergyDialog} patientId={patientId} />
+        }
         applyForm={() => toggleAllergyDialog()}
         cancelForm={() => toggleAllergyDialog()}
         hideActions={true}
@@ -867,7 +868,12 @@ export default function Patient(props) {
       <Dialog
         open={showDiagnosesDialog}
         title={" "}
-        message={<DiagnosesForm onClose={toggleDiagnosesDialog} patientId={patientId} />}
+        message={
+          <DiagnosesForm
+            onClose={toggleDiagnosesDialog}
+            patientId={patientId}
+          />
+        }
         applyForm={() => toggleDiagnosesDialog()}
         cancelForm={() => toggleDiagnosesDialog()}
         hideActions={true}

@@ -47,7 +47,7 @@ const upload = multer({
 
 const getPatient = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { id } = req.params;
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select p.firstname, p.lastname, p.gender, p.dob, p.phone_home, p.phone_cell, p.email, concat(u.firstname, ' ', u.lastname) provider, p.client_id
@@ -55,7 +55,7 @@ const getPatient = async (req, res) => {
         from patient p
         left join user u on u.id=p.user_id
         where p.client_id=${req.client_id}
-        and p.id=${id}
+        and p.id=${patient_id}
       `
     );
     const userLogResponse = await db.query(
@@ -64,7 +64,7 @@ const getPatient = async (req, res) => {
     const functionalRange = await db.query(
       `select functional_range
         from client
-        where id=1`
+        where id=${req.client_id}`
     );
 
     if (!dbResponse) {
@@ -89,6 +89,7 @@ const search = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
+  const { patient_id } = req.params;
   const { text } = req.body.data;
 
   const db = makeDb(configuration, res);
@@ -96,32 +97,32 @@ const search = async (req, res) => {
     const dbResponse = await db.query(
       `select 'Encounter', id, dt, notes, client_id
         from encounter
-        where patient_id=1
+        where patient_id=${patient_id}
         and notes like '%${text}%'
         union
         select 'Message', id, created, message, client_id
         from message
-        where (patient_id_to=1 or patient_id_from=1)
+        where (patient_id_to=${patient_id} or patient_id_from=${patient_id})
         and message like '%${text}%'
         union
         select 'Admin Note', id, created, admin_note, client_id
         from patient
-        where id=1
+        where id=${patient_id}
         and admin_note like '%${text}%'
         union
         select 'Medical Note', id, created, medical_note, client_id
         from patient
-        where id=1
+        where id=${patient_id}
         and medical_note like '%${text}%'
         union
         select 'Lab Note', id, created, note, client_id
         from lab
-        where patient_id=1
+        where patient_id=${patient_id}
         and note like '%${text}%'
         union
         select 'Lab Assignment Note', id, created, note_assign, client_id
         from lab
-        where patient_id=1
+        where patient_id=${patient_id}
         and note_assign like '%${text}%'
         order by 1,2,3
       `
@@ -145,6 +146,7 @@ const search = async (req, res) => {
 
 const history = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select 
@@ -186,7 +188,7 @@ const history = async (req, res) => {
             from patient_history ph
             left join user u on u.id=ph.created_user_id
             left join user u2 on u2.id=ph.user_id
-            where ph.id=1
+            where ph.id=${patient_id}
             order by ph.created desc
             limit 50
       `
@@ -209,13 +211,14 @@ const history = async (req, res) => {
 };
 
 const AdminNotehistory = async (req, res) => {
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.admin_note, concat(u.firstname, ' ', u.lastname) name
         from patient_history ph
         left join user u on u.id=ph.created_user_id
-        where ph.id=1
+        where ph.id=${patient_id}
         and ph.admin_note is not null
         order by ph.created desc
         limit 50
@@ -245,17 +248,17 @@ const adminNoteupdate = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
   const { admin_note, old_admin_note } = req.body.data;
-  const { id } = req.params;
+  const { patient_id } = req.params;
 
   const db = makeDb(configuration, res);
   try {
     const patientHistory = await db.query(
-      `insert into patient_history (id, admin_note, created, created_user_id) values (${id}, '${old_admin_note}', now(), ${req.user_id})`
+      `insert into patient_history (id, admin_note, created, created_user_id) values (${patient_id}, '${old_admin_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
       `update patient
             set admin_note='${admin_note}'
-            where id=${id}
+            where id=${patient_id}
       `
     );
 
@@ -278,12 +281,13 @@ const adminNoteupdate = async (req, res) => {
 
 const getForms = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select pf.form_id, pf.created, cf.title, pf.form
         from patient_form pf
         left join client_form cf on cf.id=pf.form_id
-        where pf.patient_id=1
+        where pf.patient_id=${patient_id}
         order by pf.created
       `
     );
@@ -310,14 +314,14 @@ const getFormById = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { id } = req.params;
+  const { id, patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select pf.form_id, pf.created, cf.title, pf.form
         from patient_form pf
         left join client_form cf on cf.id=pf.form_id
-        where pf.patient_id=1 
+        where pf.patient_id=${patient_id} 
         and pf.form_id=${id}
       `
     );
@@ -340,13 +344,14 @@ const getFormById = async (req, res) => {
 
 const handouts = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.handout_id, h.filename
         from patient_handout ph
         left join handout h on h.id=ph.handout_id
-        where ph.client_id=1
-        and ph.patient_id=1
+        where ph.client_id=${req.client_id}
+        and ph.patient_id=${patient_id}
         order by h.filename
         limit 100
       `
@@ -374,13 +379,13 @@ const handoutDelete = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { id } = req.params;
+  const { id, patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const deleteResponse = await db.query(
       `delete 
         from patient_handout
-        where patient_id=1
+        where patient_id=${patient_id}
         and handout_id=${id}
       `
     );
@@ -408,7 +413,8 @@ const CreatePatientHandouts = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient_id, handout_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { handout_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
@@ -439,7 +445,7 @@ const patientHandouts = async (req, res) => {
         from handout h
         left join patient_handout ph on h.id=ph.handout_id
         left join user u on u.id=ph.created_user_id
-        where h.client_id=1
+        where h.client_id=${req.client_id}
         order by h.filename
         limit 100
       `
@@ -498,6 +504,7 @@ const DeletePatientHandouts = async (req, res) => {
 
 const getBilling = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   let { limit } = req.query;
   if (typeof limit === "undefined") {
     limit = 100;
@@ -510,7 +517,7 @@ const getBilling = async (req, res) => {
         left join encounter e on e.id=t.encounter_id
         left join tran_type tt on tt.id=t.type_id
         left join payment_method pm on pm.id=t.payment_method_id
-        where t.patient_id=1
+        where t.patient_id=${patient_id}
         order by t.dt desc
         limit ${limit}
       `
@@ -533,14 +540,15 @@ const getBilling = async (req, res) => {
 };
 
 const getAllergies = async (req, res) => {
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select pa.created, pa.drug_id, d.name
         from patient_allergy pa
         left join drug d on d.id=pa.drug_id
-        where pa.client_id=1
-        and pa.patient_id=1
+        where pa.client_id=${req.client_id}
+        and pa.patient_id=${patient_id}
         order by d.name
         limit 100
       `
@@ -635,7 +643,8 @@ const createPatientAllergy = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient_id, drug_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { drug_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
@@ -707,7 +716,7 @@ const getDocuments = async (req, res) => {
   }
 };
 
-const deleteDocuments = async (req, res) => {
+const updateDocuments = async (req, res) => {
   const { id } = req.params;
   const db = makeDb(configuration, res);
   try {
@@ -717,16 +726,16 @@ const deleteDocuments = async (req, res) => {
     );
 
     if (!updateResponse.affectedRows) {
-      errorMessage.error = "Delete not successful";
+      errorMessage.error = "Update not successful";
       return res.status(status.notfound).send(errorMessage);
     }
 
     successMessage.data = updateResponse;
-    successMessage.message = "Delete successful";
+    successMessage.message = "Update successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
     console.log("err", err);
-    errorMessage.error = "Delete not successful";
+    errorMessage.error = "Update not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
     await db.close();
@@ -772,7 +781,7 @@ const createDocuments = async (req, res) => {
       return res.status(status.error).send(errorMessage);
     }
 
-    const { patient_id } = req.body;
+    const { patient_id } = req.params;
     const uploadedFilename = req.file.originalname;
     const db = makeDb(configuration, res);
     try {
@@ -858,13 +867,13 @@ const getEncounters = async (req, res) => {
 
 const getMedicalNotesHistory = async (req, res) => {
   const db = makeDb(configuration, res);
-
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.medical_note, concat(u.firstname, ' ', u.lastname) name
         from patient_history ph
         left join user u on u.id=ph.created_user_id
-        where ph.id=1
+        where ph.id=${patient_id}
         and ph.medical_note is not null
         order by ph.created desc
         limit 50`
@@ -887,17 +896,17 @@ const getMedicalNotesHistory = async (req, res) => {
 
 const medicalNotesHistoryUpdate = async (req, res) => {
   const { medical_note, old_medical_note } = req.body.data;
-  const { id } = req.params;
+  const { patient_id } = req.params;
 
   const db = makeDb(configuration, res);
   try {
     const patientHistory = await db.query(
-      `insert into patient_history (id, medical_note, created, created_user_id) values (${id}, '${old_medical_note}', now(), ${req.user_id})`
+      `insert into patient_history (id, medical_note, created, created_user_id) values (${patient_id}, '${old_medical_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
       `update patient
             set medical_note='${medical_note}'
-            where id=${id}
+            where id=${patient_id}
       `
     );
 
@@ -920,7 +929,7 @@ const medicalNotesHistoryUpdate = async (req, res) => {
 
 const getMessages = async (req, res) => {
   const db = makeDb(configuration, res);
-
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select m.id, m.created
@@ -930,7 +939,7 @@ const getMessages = async (req, res) => {
         from message m
         left join user u on u.id=m.user_id_from
         left join user u2 on u2.id=m.user_id_to
-        where (patient_id_from=1 or patient_id_to=1)
+        where (patient_id_from=${patient_id} or patient_id_to=${patient_id})
         order by m.created desc
         limit 50`
     );
@@ -952,12 +961,12 @@ const getMessages = async (req, res) => {
 
 const createMessage = async (req, res) => {
   const { subject, message, unread_notify_dt } = req.body.data;
-  //TODO:: patient_id_from hardcoded to display on get Query
-  const patient_id_from = 1;
+
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id_from})`
+      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id})`
     );
 
     if (!insertResponse.affectedRows) {
@@ -1143,7 +1152,7 @@ const deleteDiagnose = async (req, res) => {
 };
 
 const createDiagnoses = async (req, res) => {
-  const { patient_id } = req.body.data;
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
@@ -1257,7 +1266,8 @@ const getRequisitions = async (req, res) => {
 };
 
 const createRequisitions = async (req, res) => {
-  const { cpt_id, patient_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { cpt_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
@@ -1327,7 +1337,7 @@ const appointmentTypes = {
   searchAllergies,
   createPatientAllergy,
   getDocuments,
-  deleteDocuments,
+  updateDocuments,
   checkDocument,
   createDocuments,
   getEncounters,
