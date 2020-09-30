@@ -8,7 +8,7 @@ import {
   Container,
   CssBaseline,
 } from "@material-ui/core";
-import Video from "./../../../../components/videos/Video";
+//simport Video from "./../../../../components/videos/Video";
 import Drugstable from "./components/Drugstable";
 import Drugsform from "./components/Drugsform";
 import DrugsService from "../../../../services/drugs.service";
@@ -91,6 +91,7 @@ export default function Drugs() {
                     />
                   )}
                 </Grid>
+                {/*}
                 <Grid item md={12} xs={12}>
                   <Card className={classes.card}>
                     <CardContent>
@@ -100,6 +101,7 @@ export default function Drugs() {
                     </CardContent>
                   </Card>
                 </Grid>
+                */}
               </Grid>
             </Container>
           </CssBaseline>
