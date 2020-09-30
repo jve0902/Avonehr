@@ -39,9 +39,9 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getPatientData() {
+  getPatientDataById(patientId) {
     return axios
-      .get(API_URL + `/patient`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patientId}`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getPatientHistory() {

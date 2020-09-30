@@ -195,7 +195,7 @@ export default function Patient(props) {
   }, []);
 
   const fetchPatientData = () => {
-    PatientService.getPatientData().then((res) => {
+    PatientService.getPatientDataById(patientID).then((res) => {
       setPatientData(res.data);
     });
   };
