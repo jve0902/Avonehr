@@ -89,6 +89,7 @@ const search = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
+  const { id } = req.params;
   const { text } = req.body.data;
 
   const db = makeDb(configuration, res);
@@ -96,32 +97,32 @@ const search = async (req, res) => {
     const dbResponse = await db.query(
       `select 'Encounter', id, dt, notes, client_id
         from encounter
-        where patient_id=1
+        where patient_id=${id}
         and notes like '%${text}%'
         union
         select 'Message', id, created, message, client_id
         from message
-        where (patient_id_to=1 or patient_id_from=1)
+        where (patient_id_to=${id} or patient_id_from=${id})
         and message like '%${text}%'
         union
         select 'Admin Note', id, created, admin_note, client_id
         from patient
-        where id=1
+        where id=${id}
         and admin_note like '%${text}%'
         union
         select 'Medical Note', id, created, medical_note, client_id
         from patient
-        where id=1
+        where id=${id}
         and medical_note like '%${text}%'
         union
         select 'Lab Note', id, created, note, client_id
         from lab
-        where patient_id=1
+        where patient_id=${id}
         and note like '%${text}%'
         union
         select 'Lab Assignment Note', id, created, note_assign, client_id
         from lab
-        where patient_id=1
+        where patient_id=${id}
         and note_assign like '%${text}%'
         order by 1,2,3
       `

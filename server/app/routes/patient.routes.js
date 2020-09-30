@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/patient/:id", [authJwt.verifyToken], Patient.getPatient);
 router.post(
-  "/patient/search",
+  "/patient/:id/search",
   [authJwt.verifyToken, validation.validate("search")],
   Patient.search
 );
