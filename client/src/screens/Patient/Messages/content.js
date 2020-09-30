@@ -3,7 +3,8 @@ import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
-  Typography
+  Typography,
+  Divider
 } from "@material-ui/core";
 
 export default function MessagesContent(props) {
@@ -13,12 +14,12 @@ export default function MessagesContent(props) {
   return (
     <>
       {
-        data.map(item => (
+        data.map((item, index) => (
           <Grid key={item.id}>
             <Grid container spacing={1}>
               <Grid item md={3}>
                 <Typography component="span" variant="body1" className={`${classes.text12} ${classes.label}`} color="textPrimary">Date: &nbsp;</Typography>
-                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM DD YYYY")}</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
               </Grid>
               <Grid item md={3}>
                 <Typography component="span" variant="body1" className={`${classes.text12} ${classes.label}`} color="textPrimary">From: &nbsp;</Typography>
@@ -36,6 +37,11 @@ export default function MessagesContent(props) {
             <Grid key={item.id}>
               <Typography variant="body1" className={classes.text12} color="textPrimary">{item.message}</Typography>
             </Grid>
+            {
+              data.length !== index + 1 && (
+                <Divider className={classes.divider} />
+              )
+            }
           </Grid>
         ))
       }
@@ -52,5 +58,8 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     fontWeight: 500
-  }
+  },
+  divider: {
+    margin: theme.spacing(1, 0)
+  },
 }));

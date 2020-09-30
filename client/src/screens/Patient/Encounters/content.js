@@ -18,7 +18,7 @@ export default function EncountersContent(props) {
           <Grid key={index}>
             <Grid key={index} container>
               <Grid item className={classes.block}>
-                <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM DD YYYY")}</Typography>
+                <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM D YYYY")}</Typography>
               </Grid>
 
               <Grid item className={classes.block}>

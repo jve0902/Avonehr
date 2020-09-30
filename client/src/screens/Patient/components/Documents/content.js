@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
   },
   actions: {
-    textAlign: "center",
     display: "flex",
+    justifyContent: "center",
     border: "none",
     "& button": {
       fontSize: "12px",

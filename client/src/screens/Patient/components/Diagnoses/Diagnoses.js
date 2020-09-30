@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 const Diagnoses = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose } = props;
+  const { onClose, patientId } = props;
   const [diagnosis, setDiagnosis] = useState([]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Diagnoses = (props) => {
     e.preventDefault();
     const reqBody = {
       data: {
-        patient_id: 1,
+        patient_id: patientId,
       },
     };
     PatientService.createDiagnoses(reqBody)
