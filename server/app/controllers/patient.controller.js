@@ -1318,6 +1318,259 @@ const deleteRequisitions = async (req, res) => {
   }
 };
 
+const getLayout = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { user_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select *
+      from user_grid
+      where user_id=${user_id}`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "No Layout found";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const saveLayout = async (req, res) => {
+  const { user_id } = req.body;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into user_grid 
+      (
+      user_id, 
+      patient_ul,
+      patient_ur,
+      patient_ll,
+      patient_lr,
+      admin_notes_ul,
+      admin_notes_ur,
+      admin_notes_ll,
+      admin_notes_lr,
+      forms_ul,
+      forms_ur,
+      forms_ll,
+      forms_lr,
+      handouts_ul,
+      handouts_ur,
+      handouts_ll,
+      handouts_lr,
+      billing_ul,
+      billing_ur,
+      billing_ll,
+      billing_lr,
+      allergies_ul,
+      allergies_ur,
+      allergies_ll,
+      allergies_lr,
+      documents_ul,
+      documents_ur,
+      documents_ll,
+      documents_lr,
+      encounters_ul,
+      encounters_ur,
+      encounters_ll,
+      encounters_lr,
+      medical_notes_ul,
+      medical_notes_ur,
+      medical_notes_ll,
+      medical_notes_lr,
+      nutrition_ul,
+      nutrition_ur,
+      nutrition_ll,
+      nutrition_lr,
+      insights_ul,
+      insights_ur,
+      insights_ll,
+      insights_lr,
+      messages_ul,
+      messages_ur,
+      messages_ll,
+      messages_lr,
+      diagnoses_ul,
+      diagnoses_ur,
+      diagnoses_ll,
+      diagnoses_lr,
+      medications_ul,
+      medications_ur,
+      medications_ll,
+      medications_lr,
+      requisitions_ul,
+      requisitions_ur,
+      requisitions_ll,
+      requisitions_lr,
+      tests_ul,
+      tests_ur,
+      tests_ll,
+      tests_lr,
+      created
+      )
+      values 
+      (
+      ${user_id}, 
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      now()
+      )
+      on duplicate key update 
+      patient_ul=1,
+      patient_ur=1,
+      patient_ll=1,
+      patient_lr=1,
+      admin_notes_ul=1,
+      admin_notes_ur=1,
+      admin_notes_ll=1,
+      admin_notes_lr=1,
+      forms_ul=1,
+      forms_ur=1,
+      forms_ll=1,
+      forms_lr=1,
+      handouts_ul=1,
+      handouts_ur=1,
+      handouts_ll=1,
+      handouts_lr=1,
+      billing_ul=1,
+      billing_ur=1,
+      billing_ll=1,
+      billing_lr=1,
+      allergies_ul=1,
+      allergies_ur=1,
+      allergies_ll=1,
+      allergies_lr=1,
+      documents_ul=1,
+      documents_ur=1,
+      documents_ll=1,
+      documents_lr=1,
+      encounters_ul=1,
+      encounters_ur=1,
+      encounters_ll=1,
+      encounters_lr=1,
+      medical_notes_ul=1,
+      medical_notes_ur=1,
+      medical_notes_ll=1,
+      medical_notes_lr=1,
+      nutrition_ul=1,
+      nutrition_ur=1,
+      nutrition_ll=1,
+      nutrition_lr=1,
+      insights_ul=1,
+      insights_ur=1,
+      insights_ll=1,
+      insights_lr=1,
+      messages_ul=1,
+      messages_ur=1,
+      messages_ll=1,
+      messages_lr=1,
+      diagnoses_ul=1,
+      diagnoses_ur=1,
+      diagnoses_ll=1,
+      diagnoses_lr=1,
+      medications_ul=1,
+      medications_ur=1,
+      medications_ll=1,
+      medications_lr=1,
+      requisitions_ul=1,
+      requisitions_ur=1,
+      requisitions_ll=1,
+      requisitions_lr=1,
+      tests_ul=1,
+      tests_ur=1,
+      tests_ll=1,
+      tests_lr=1,
+      updated=now()`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1356,6 +1609,8 @@ const appointmentTypes = {
   createRequisitions,
   getRequisitions,
   deleteRequisitions,
+  getLayout,
+  saveLayout,
 };
 
 module.exports = appointmentTypes;
