@@ -312,7 +312,7 @@ const NewOrEditEvent = ({
                   setCalEvent({
                     ...calEvent,
                     [property]: date,
-                  })
+                  });
                 }}
                 minDate={new Date()}
                 onError={console.log}
@@ -334,7 +334,7 @@ const NewOrEditEvent = ({
                   setCalEvent({
                     ...calEvent,
                     [property]: date,
-                  })
+                  });
                 }}
                 minDate={new Date()}
                 onError={console.log}
