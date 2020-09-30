@@ -177,13 +177,13 @@ router.delete(
 );
 
 router.get(
-  "/patient/layout",
+  "/patient-layout/:user_id",
   [authJwt.verifyToken],
   Patient.getLayout
 );
 
 router.post(
-  "/patient/layout",
+  "/patient-layout/:user_id",
   [authJwt.verifyToken],
   Patient.saveLayout
 );

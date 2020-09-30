@@ -1,5 +1,6 @@
 "use strict";
 const multer = require("multer");
+const moment = require("moment");
 const fs = require("fs");
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
@@ -1345,9 +1346,10 @@ const getLayout = async (req, res) => {
 };
 
 const saveLayout = async (req, res) => {
-  const { user_id } = req.body;
+  const { user_id } = req.params;
   const db = makeDb(configuration, res);
   try {
+    const now = moment().format("YYYY-MM-DD HH:mm:ss");
     const insertResponse = await db.query(
       `insert into user_grid 
       (
@@ -1552,7 +1554,7 @@ const saveLayout = async (req, res) => {
       tests_ur=1,
       tests_ll=1,
       tests_lr=1,
-      updated=now()`
+      updated='${now}'`
     );
 
     if (!insertResponse.affectedRows) {
