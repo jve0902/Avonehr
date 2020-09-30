@@ -96,17 +96,17 @@ router.post(
   Patient.createDocuments
 );
 router.get(
-  "/patient/encounters/:patient_id",
+  "/patient/:patient_id/encounters",
   [authJwt.verifyToken],
   Patient.getEncounters
 );
 router.get(
-  "/patient/medical-notes/history",
+  "/patient/:patient_id/medical-notes/history",
   [authJwt.verifyToken],
   Patient.getMedicalNotesHistory
 );
 router.put(
-  "/patient/medical-notes/history/:id",
+  "/patient/:patient_id/medical-notes/history/",
   [authJwt.verifyToken],
   Patient.medicalNotesHistoryUpdate
 );

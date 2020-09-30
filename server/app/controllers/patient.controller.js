@@ -867,13 +867,13 @@ const getEncounters = async (req, res) => {
 
 const getMedicalNotesHistory = async (req, res) => {
   const db = makeDb(configuration, res);
-
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.medical_note, concat(u.firstname, ' ', u.lastname) name
         from patient_history ph
         left join user u on u.id=ph.created_user_id
-        where ph.id=1
+        where ph.id=${patient_id}
         and ph.medical_note is not null
         order by ph.created desc
         limit 50`
@@ -896,17 +896,17 @@ const getMedicalNotesHistory = async (req, res) => {
 
 const medicalNotesHistoryUpdate = async (req, res) => {
   const { medical_note, old_medical_note } = req.body.data;
-  const { id } = req.params;
+  const { patient_id } = req.params;
 
   const db = makeDb(configuration, res);
   try {
     const patientHistory = await db.query(
-      `insert into patient_history (id, medical_note, created, created_user_id) values (${id}, '${old_medical_note}', now(), ${req.user_id})`
+      `insert into patient_history (id, medical_note, created, created_user_id) values (${patient_id}, '${old_medical_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
       `update patient
             set medical_note='${medical_note}'
-            where id=${id}
+            where id=${patient_id}
       `
     );
 
