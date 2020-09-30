@@ -12,9 +12,9 @@ router.post(
   [authJwt.verifyToken, validation.validate("search")],
   Patient.search
 );
-router.get("/patient/history", [authJwt.verifyToken], Patient.history);
+router.get("/patient/:id/history", [authJwt.verifyToken], Patient.history);
 router.get(
-  "/patient/admin-note/history",
+  "/patient/:id/admin-note/history",
   [authJwt.verifyToken],
   Patient.AdminNotehistory
 );

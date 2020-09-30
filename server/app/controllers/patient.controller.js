@@ -146,6 +146,7 @@ const search = async (req, res) => {
 
 const history = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { id } = req.params;
   try {
     const dbResponse = await db.query(
       `select 
@@ -187,7 +188,7 @@ const history = async (req, res) => {
             from patient_history ph
             left join user u on u.id=ph.created_user_id
             left join user u2 on u2.id=ph.user_id
-            where ph.id=1
+            where ph.id=${id}
             order by ph.created desc
             limit 50
       `
@@ -210,13 +211,14 @@ const history = async (req, res) => {
 };
 
 const AdminNotehistory = async (req, res) => {
+  const { id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.admin_note, concat(u.firstname, ' ', u.lastname) name
         from patient_history ph
         left join user u on u.id=ph.created_user_id
-        where ph.id=1
+        where ph.id=${id}
         and ph.admin_note is not null
         order by ph.created desc
         limit 50
