@@ -80,22 +80,18 @@ router.post(
   Patient.createPatientAllergy
 );
 router.get(
-  "/patient/documents/:patient_id",
+  "/patient/:patient_id/documents/",
   [authJwt.verifyToken],
   Patient.getDocuments
 );
-router.delete(
-  "/patient/documents/:id",
-  [authJwt.verifyToken],
-  Patient.deleteDocuments
-);
+router.put("/documents/:id", [authJwt.verifyToken], Patient.updateDocuments);
 router.get(
-  "/patient/documents/:patient_id/check",
+  "/patient/:patient_id/documents/check",
   [authJwt.verifyToken],
   Patient.checkDocument
 );
 router.post(
-  "/patient/documents",
+  "/patient/:patient_id/documents",
   [authJwt.verifyToken],
   Patient.createDocuments
 );

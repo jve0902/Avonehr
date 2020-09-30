@@ -716,7 +716,7 @@ const getDocuments = async (req, res) => {
   }
 };
 
-const deleteDocuments = async (req, res) => {
+const updateDocuments = async (req, res) => {
   const { id } = req.params;
   const db = makeDb(configuration, res);
   try {
@@ -726,16 +726,16 @@ const deleteDocuments = async (req, res) => {
     );
 
     if (!updateResponse.affectedRows) {
-      errorMessage.error = "Delete not successful";
+      errorMessage.error = "Update not successful";
       return res.status(status.notfound).send(errorMessage);
     }
 
     successMessage.data = updateResponse;
-    successMessage.message = "Delete successful";
+    successMessage.message = "Update successful";
     return res.status(status.created).send(successMessage);
   } catch (err) {
     console.log("err", err);
-    errorMessage.error = "Delete not successful";
+    errorMessage.error = "Update not successful";
     return res.status(status.error).send(errorMessage);
   } finally {
     await db.close();
@@ -781,7 +781,7 @@ const createDocuments = async (req, res) => {
       return res.status(status.error).send(errorMessage);
     }
 
-    const { patient_id } = req.body;
+    const { patient_id } = req.params;
     const uploadedFilename = req.file.originalname;
     const db = makeDb(configuration, res);
     try {
@@ -1336,7 +1336,7 @@ const appointmentTypes = {
   searchAllergies,
   createPatientAllergy,
   getDocuments,
-  deleteDocuments,
+  updateDocuments,
   checkDocument,
   createDocuments,
   getEncounters,
