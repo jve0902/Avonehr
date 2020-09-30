@@ -47,7 +47,7 @@ const upload = multer({
 
 const getPatient = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { id } = req.params;
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select p.firstname, p.lastname, p.gender, p.dob, p.phone_home, p.phone_cell, p.email, concat(u.firstname, ' ', u.lastname) provider, p.client_id
@@ -55,7 +55,7 @@ const getPatient = async (req, res) => {
         from patient p
         left join user u on u.id=p.user_id
         where p.client_id=${req.client_id}
-        and p.id=${id}
+        and p.id=${patient_id}
       `
     );
     const userLogResponse = await db.query(
@@ -64,7 +64,7 @@ const getPatient = async (req, res) => {
     const functionalRange = await db.query(
       `select functional_range
         from client
-        where id=1`
+        where id=${req.client_id}`
     );
 
     if (!dbResponse) {
@@ -89,7 +89,7 @@ const search = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { id } = req.params;
+  const { patient_id } = req.params;
   const { text } = req.body.data;
 
   const db = makeDb(configuration, res);
@@ -97,32 +97,32 @@ const search = async (req, res) => {
     const dbResponse = await db.query(
       `select 'Encounter', id, dt, notes, client_id
         from encounter
-        where patient_id=${id}
+        where patient_id=${patient_id}
         and notes like '%${text}%'
         union
         select 'Message', id, created, message, client_id
         from message
-        where (patient_id_to=${id} or patient_id_from=${id})
+        where (patient_id_to=${patient_id} or patient_id_from=${patient_id})
         and message like '%${text}%'
         union
         select 'Admin Note', id, created, admin_note, client_id
         from patient
-        where id=${id}
+        where id=${patient_id}
         and admin_note like '%${text}%'
         union
         select 'Medical Note', id, created, medical_note, client_id
         from patient
-        where id=${id}
+        where id=${patient_id}
         and medical_note like '%${text}%'
         union
         select 'Lab Note', id, created, note, client_id
         from lab
-        where patient_id=${id}
+        where patient_id=${patient_id}
         and note like '%${text}%'
         union
         select 'Lab Assignment Note', id, created, note_assign, client_id
         from lab
-        where patient_id=${id}
+        where patient_id=${patient_id}
         and note_assign like '%${text}%'
         order by 1,2,3
       `
@@ -146,7 +146,7 @@ const search = async (req, res) => {
 
 const history = async (req, res) => {
   const db = makeDb(configuration, res);
-  const { id } = req.params;
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select 
@@ -188,7 +188,7 @@ const history = async (req, res) => {
             from patient_history ph
             left join user u on u.id=ph.created_user_id
             left join user u2 on u2.id=ph.user_id
-            where ph.id=${id}
+            where ph.id=${patient_id}
             order by ph.created desc
             limit 50
       `
@@ -211,14 +211,14 @@ const history = async (req, res) => {
 };
 
 const AdminNotehistory = async (req, res) => {
-  const { id } = req.params;
+  const { patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.admin_note, concat(u.firstname, ' ', u.lastname) name
         from patient_history ph
         left join user u on u.id=ph.created_user_id
-        where ph.id=${id}
+        where ph.id=${patient_id}
         and ph.admin_note is not null
         order by ph.created desc
         limit 50

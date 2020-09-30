@@ -6,15 +6,19 @@ const Patient = require("../controllers/patient.controller.js");
 const validation = require("./../helpers/validations/patient.js");
 const router = express.Router();
 
-router.get("/patient/:id", [authJwt.verifyToken], Patient.getPatient);
+router.get("/patient/:patient_id", [authJwt.verifyToken], Patient.getPatient);
 router.post(
-  "/patient/:id/search",
+  "/patient/:patient_id/search",
   [authJwt.verifyToken, validation.validate("search")],
   Patient.search
 );
-router.get("/patient/:id/history", [authJwt.verifyToken], Patient.history);
 router.get(
-  "/patient/:id/admin-note/history",
+  "/patient/:patient_id/history",
+  [authJwt.verifyToken],
+  Patient.history
+);
+router.get(
+  "/patient/:patient_id/admin-note/history",
   [authJwt.verifyToken],
   Patient.AdminNotehistory
 );
