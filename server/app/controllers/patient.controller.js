@@ -1266,7 +1266,8 @@ const getRequisitions = async (req, res) => {
 };
 
 const createRequisitions = async (req, res) => {
-  const { cpt_id, patient_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { cpt_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(

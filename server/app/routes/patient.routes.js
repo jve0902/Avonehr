@@ -157,17 +157,17 @@ router.delete(
   Patient.deleteMedications
 );
 router.get(
-  "/patient/requisitions/:encounter_id",
+  "/requisitions/:encounter_id",
   [authJwt.verifyToken],
   Patient.getRequisitions
 );
 router.post(
-  "/patient/requisitions",
+  "/patient/:patient_id/requisitions",
   [authJwt.verifyToken],
   Patient.createRequisitions
 );
 router.delete(
-  "/patient/requisitions/:encounter_id/:cpt_id",
+  "/requisitions/:encounter_id/:cpt_id",
   [authJwt.verifyToken],
   Patient.deleteRequisitions
 );
