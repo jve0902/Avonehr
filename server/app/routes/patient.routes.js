@@ -23,30 +23,34 @@ router.put(
   [authJwt.verifyToken, validation.validate("adminNoteupdate")],
   Patient.adminNoteupdate
 );
-router.get("/patient/forms", [authJwt.verifyToken], Patient.getForms);
 router.get(
-  "/patient/forms/:id",
+  "/patient/:patient_id/forms",
+  [authJwt.verifyToken],
+  Patient.getForms
+);
+router.get(
+  "/patient/:patient_id/forms/:id",
   [authJwt.verifyToken, validation.validate("singleForm")],
   Patient.getFormById
 );
-router.get("/patient/handouts", [authJwt.verifyToken], Patient.handouts);
+router.get(
+  "/patient/:patient_id/handouts",
+  [authJwt.verifyToken],
+  Patient.handouts
+);
 router.delete(
-  "/patient/handouts/:id",
+  "/patient/:patient_id/handouts/:id",
   [authJwt.verifyToken, validation.validate("handoutDelete")],
   Patient.handoutDelete
 );
-router.get(
-  "/patient/patient-handout",
-  [authJwt.verifyToken],
-  Patient.patientHandouts
-);
+router.get("/patient-handout", [authJwt.verifyToken], Patient.patientHandouts);
 router.post(
-  "/patient/patient-handout",
+  "/patient/:patient_id/patient-handout",
   [authJwt.verifyToken, validation.validate("CreatePatientHandouts")],
   Patient.CreatePatientHandouts
 );
 router.delete(
-  "/patient/patient-handout/:patient_id/:handout_id",
+  "/patient/:patient_id/patient-handout//:handout_id",
   [authJwt.verifyToken, validation.validate("DeletePatientHandouts")],
   Patient.DeletePatientHandouts
 );

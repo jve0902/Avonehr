@@ -281,12 +281,13 @@ const adminNoteupdate = async (req, res) => {
 
 const getForms = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select pf.form_id, pf.created, cf.title, pf.form
         from patient_form pf
         left join client_form cf on cf.id=pf.form_id
-        where pf.patient_id=1
+        where pf.patient_id=${patient_id}
         order by pf.created
       `
     );
@@ -313,14 +314,14 @@ const getFormById = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { id } = req.params;
+  const { id, patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
       `select pf.form_id, pf.created, cf.title, pf.form
         from patient_form pf
         left join client_form cf on cf.id=pf.form_id
-        where pf.patient_id=1 
+        where pf.patient_id=${patient_id} 
         and pf.form_id=${id}
       `
     );
@@ -343,13 +344,14 @@ const getFormById = async (req, res) => {
 
 const handouts = async (req, res) => {
   const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
       `select ph.created, ph.handout_id, h.filename
         from patient_handout ph
         left join handout h on h.id=ph.handout_id
-        where ph.client_id=1
-        and ph.patient_id=1
+        where ph.client_id=${req.client_id}
+        and ph.patient_id=${patient_id}
         order by h.filename
         limit 100
       `
@@ -377,13 +379,13 @@ const handoutDelete = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { id } = req.params;
+  const { id, patient_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const deleteResponse = await db.query(
       `delete 
         from patient_handout
-        where patient_id=1
+        where patient_id=${patient_id}
         and handout_id=${id}
       `
     );
@@ -411,7 +413,8 @@ const CreatePatientHandouts = async (req, res) => {
     errorMessage.message = errors.array();
     return res.status(status.bad).send(errorMessage);
   }
-  const { patient_id, handout_id } = req.body.data;
+  const { patient_id } = req.params;
+  const { handout_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
@@ -442,7 +445,7 @@ const patientHandouts = async (req, res) => {
         from handout h
         left join patient_handout ph on h.id=ph.handout_id
         left join user u on u.id=ph.created_user_id
-        where h.client_id=1
+        where h.client_id=${req.client_id}
         order by h.filename
         limit 100
       `
