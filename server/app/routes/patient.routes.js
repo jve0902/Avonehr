@@ -147,12 +147,12 @@ router.post(
   Patient.createDiagnoses
 );
 router.get(
-  "/patient/medications/:patient_id",
+  "/patient/:patient_id/medications",
   [authJwt.verifyToken],
   Patient.getMedications
 );
 router.delete(
-  "/patient/medications/:encounter_id/:drug_id/:drug_strength_id",
+  "/medications/:encounter_id/:drug_id/:drug_strength_id",
   [authJwt.verifyToken],
   Patient.deleteMedications
 );
