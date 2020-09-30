@@ -122,7 +122,7 @@ router.post(
 );
 router.delete("/messages/:id", [authJwt.verifyToken], Patient.deleteMessage);
 router.get(
-  "/patient/all-tests/:patient_id",
+  "/patient/:patient_id/all-tests",
   [authJwt.verifyToken],
   Patient.getAllTests
 );
