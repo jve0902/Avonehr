@@ -37,12 +37,16 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
+  const [selectedMsg, setSelectedMsg] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isNewEvent, setIsNewEvent] = useState(true);
+  const [isNewMessage, setIsNewMessage] = useState(true);
 
-  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(true);
+  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
+
+  console.log("selectedMsg:", selectedMsg);
 
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
@@ -133,7 +137,7 @@ export default function Home() {
   const handleEventClick = (calEvent) => {
     setIsNewEvent(false);
     const eventClicked = events.filter(
-      (event) => event.id === calEvent.event.id
+      (event) => event.id === parseInt(calEvent.event.id)
     );
     setSelectedEvent(eventClicked[0]);
     setIsOpen(true);
@@ -169,6 +173,16 @@ export default function Home() {
     );
   };
 
+  const handleMessageClick = () => {
+    setIsMessageToPatientOpen(true);
+    setIsNewMessage(true);
+  };
+
+  const handleMessageEditClick = (_, msg) => {
+    setIsMessageToPatientOpen(true);
+    setIsNewMessage(false);
+    setSelectedMsg(msg);
+  };
   return (
     <div className={classes.root}>
       <Typography
@@ -201,10 +215,12 @@ export default function Home() {
               <MessagesUnread
                 appointmentRequests={appointmentRequests}
                 messagesUnread={messagesUnread}
+                onMessageEdit={handleMessageEditClick}
               />
               <AppointmentRequests
                 selectedProvider={selectedProvider}
                 appointmentRequests={appointmentRequests}
+                onMessageClick={handleMessageClick}
               />
             </React.Fragment>
           )}
@@ -213,7 +229,7 @@ export default function Home() {
       <NewOrEditEvent
         isLoading={isLoading}
         isNewEvent={isNewEvent}
-        event={selectedEvent}
+        event={selectedEvent && selectedEvent}
         selectedDate={selectedDate}
         selectedProvider={selectedProvider}
         isOpen={isOpen}
@@ -226,7 +242,8 @@ export default function Home() {
       />
       <MessageToPatient
         isLoading={isLoading}
-        isNewMessage={true}
+        msg={selectedMsg}
+        isNewMessage={isNewMessage}
         isOpen={isMessageToPatientOpen}
         onClose={() => setIsMessageToPatientOpen(false)}
       />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import _ from "lodash";
 import Button from "@material-ui/core/Button";
@@ -36,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     fontSize: "18px",
-    minWidth: "480px",
+    minWidth: "580px",
+  },
+  subject: {
+    width: "280px",
   },
   textArea: {
     height: "100px !important",
@@ -99,6 +102,26 @@ const MessageToPatient = ({
   const classes = useStyles();
   const [selectedDate, handleDateChange] = useState(new Date());
   const [errors, setErrors] = useState([]);
+  const [message, setMessage] = useState("");
+
+  console.log("props.msg", props.msg);
+
+  useEffect(() => {
+    if (isNewMessage) {
+      setMessage("");
+    } else {
+      setMessage(props.msg);
+    }
+  }, [isNewMessage, props.msg]);
+
+  const handleOnChange = (event) => {
+    setMessage({
+      ...message,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  console.log("message:", message);
   return (
     <Dialog
       open={isOpen}
@@ -146,7 +169,8 @@ const MessageToPatient = ({
           <div className={classes.root}>
             <FormControl component="div" className={classes.formControl}>
               <TextField
-                value={"subject"}
+                value={message.subject}
+                className={classes.subject}
                 variant="outlined"
                 margin="normal"
                 size="small"
@@ -157,7 +181,7 @@ const MessageToPatient = ({
                 name="subject"
                 autoComplete="subject"
                 autoFocus
-                onChange={(event) => alert("subject")}
+                onChange={(event) => handleOnChange(event)}
               />
             </FormControl>
             <Typography component="p" variant="body2" color="textPrimary">
@@ -168,8 +192,8 @@ const MessageToPatient = ({
               aria-label="minimum height"
               placeholder="Message..."
               name="message"
-              value={""}
-              onChange={(event) => alert(event)}
+              value={message.message}
+              onChange={(event) => handleOnChange(event)}
             />
           </div>
           <div className={classes.NotifyInfo}>

@@ -96,7 +96,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppointmentRequests = ({ appointmentRequests, selectedProvider }) => {
+const AppointmentRequests = ({
+  appointmentRequests,
+  selectedProvider,
+  onMessageClick,
+}) => {
   const classes = useStyles();
 
   return (
@@ -127,7 +131,7 @@ const AppointmentRequests = ({ appointmentRequests, selectedProvider }) => {
                 <div className={classes.unreadMsgActions}>
                   <Button>Accept</Button>
                   <Button>Reject</Button>
-                  <Button>Message</Button>
+                  <Button onClick={() => onMessageClick()}>Message</Button>
                 </div>
               </li>
             ))
