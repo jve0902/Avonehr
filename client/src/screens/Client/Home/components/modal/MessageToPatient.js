@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -59,6 +60,23 @@ const useStyles = makeStyles((theme) => ({
   },
   NotifyInfo: {
     display: "flex",
+    marginTop: theme.spacing(1),
+  },
+  datePicker: {
+    lineHeight: "21px",
+    border: "none !important",
+    "& > div": {
+      "&:before": {
+        display: "none",
+      },
+    },
+
+    "& input": {
+      display: "none",
+    },
+    "& button": {
+      paddingBottom: 0,
+    },
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -155,8 +173,11 @@ const MessageToPatient = ({
             />
           </div>
           <div className={classes.NotifyInfo}>
-            <p>Notify me if not read by: </p>
+            <Typography component="p" variant="body2" color="textPrimary">
+              Notify me if not read by: {moment(selectedDate).format("ll")}
+            </Typography>
             <KeyboardDatePicker
+              className={classes.datePicker}
               clearable
               variant="outlined"
               id="start-date-picker-inline"
