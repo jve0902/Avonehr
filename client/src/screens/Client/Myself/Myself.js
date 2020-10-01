@@ -12,7 +12,21 @@ import { MyActivityHistory, MyLogins, MyProfile } from "./components";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "30px 0px",
+    padding: "10px 0px",
+  },
+  tabs: {
+    height: "25px",
+    minHeight: "25px",
+  },
+  tabItem: {
+    padding: 0,
+    minHeight: "20px",
+    fontSize: "12px",
+    paddingTop: "5px",
+    textTransform: "none",
+    "& span": {
+      textColor: "white",
+    },
   },
 }));
 
@@ -28,7 +42,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={0}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -52,19 +66,20 @@ const Myself = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container justify="center" spacing={8}>
-        <Grid item md={6} xs={12}>
-          <AppBar position="static">
+      <Grid container justify="center" spacing={0}>
+        <Grid item md={12} xs={12}>
+          <div>
             <Tabs
+              className={classes.tabs}
               value={value}
               onChange={handleChange}
               aria-label="simple tabs example"
             >
-              <Tab label="My Activity History" />
-              <Tab label="My Profile" />
-              <Tab label="My Logins" />
+              <Tab className={classes.tabItem} label="My Activity History" />
+              <Tab className={classes.tabItem} label="My Profile" />
+              <Tab className={classes.tabItem} label="My Logins" />
             </Tabs>
-          </AppBar>
+          </div>
           <TabPanel value={value} index={0}>
             <MyActivityHistory />
           </TabPanel>
@@ -75,7 +90,6 @@ const Myself = () => {
             <MyLogins />
           </TabPanel>
         </Grid>
-        <Grid item md={6} xs={12}></Grid>
       </Grid>
     </div>
   );

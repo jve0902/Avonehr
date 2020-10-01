@@ -98,7 +98,6 @@ export default function MyActivityHistory(props) {
       MySelfService.getActivityHistory(userId).then(
         (res) => {
           setActivityHistory(res.data);
-          dispatch(setSuccess(res.data.message));
         },
         (error) => {
           dispatch(setError(error));

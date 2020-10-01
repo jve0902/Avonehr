@@ -161,6 +161,9 @@ export default function MyProfile() {
               className={classes.formElment}
               onChange={(event) => setName(event.target.value)}
               size="small"
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <TextField
               variant="outlined"
@@ -169,6 +172,9 @@ export default function MyProfile() {
               className={classes.formElment}
               onChange={(event) => setEmail(event.target.value)}
               size="small"
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <TextField
               variant="outlined"
@@ -177,6 +183,9 @@ export default function MyProfile() {
               className={classes.formElment}
               onChange={(event) => setTitle(event.target.value)}
               size="small"
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <TextField
               variant="outlined"
@@ -187,6 +196,9 @@ export default function MyProfile() {
               onChange={(event) => setCreated(event.target.value)}
               type="date"
               size="small"
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <FormControl
               variant="outlined"
