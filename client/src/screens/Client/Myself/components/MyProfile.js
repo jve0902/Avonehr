@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  paper: {
+    padding: "5px",
+  },
   title: {
     paddingBottom: theme.spacing(1),
   },
