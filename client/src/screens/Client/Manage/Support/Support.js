@@ -42,8 +42,10 @@ const useStyles = makeStyles((theme) => ({
   },
   customSelect: {
     width: "185px",
+    margin: theme.spacing(2, 0, 0, 0),
   },
   submit: {
+    margin: theme.spacing(2, 0, 2),
     width: "185px",
   },
   overFlowControl: {
@@ -117,7 +119,7 @@ export default function Support() {
   }, []);
   return (
     <div className={classes.root}>
-      <Grid container direction="column" spacing={3}>
+      <Grid container direction="column">
         <Grid item xs={12} sm={3}>
           <Typography
             component="h1"
