@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     fontSize: "18px",
-    minWidth: "580px",
+    minWidth: "600px",
   },
   subject: {
     width: "280px",
@@ -81,6 +81,16 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: 0,
     },
   },
+  ListOfButtons: {
+    display: "flex",
+    alignItems: "baseline",
+    marginTop: "-4px",
+    "& button": {
+      padding: "5px",
+      fontSize: "11px",
+      minWidth: "48px",
+    },
+  },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
     display: "flex",
@@ -97,6 +107,7 @@ const MessageToPatient = ({
   onClose,
   isLoading,
   isNewMessage,
+  onSubmit,
   ...props
 }) => {
   const classes = useStyles();
@@ -130,7 +141,7 @@ const MessageToPatient = ({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title" className={classes.title}>
-        {isNewMessage ? `New message` : "Edit message"}
+        {isNewMessage ? `New Message` : "Edit Message"}
         {onClose ? (
           <IconButton
             aria-label="Close"
@@ -198,24 +209,85 @@ const MessageToPatient = ({
           </div>
           <div className={classes.NotifyInfo}>
             <Typography component="p" variant="body2" color="textPrimary">
-              Notify me if not read by: {moment(selectedDate).format("ll")}
+              Notify me if not read by:{" "}
+              <b>
+                {(message.unread_notify_dt &&
+                  moment(message.unread_notify_dt).format("ll")) ||
+                  null}
+              </b>
             </Typography>
             <KeyboardDatePicker
               className={classes.datePicker}
               clearable
               variant="outlined"
               id="start-date-picker-inline"
-              value={selectedDate}
+              value={message.unread_notify_dt || null}
               placeholder="2020/10/10"
-              minDate={new Date()}
+              name="unread_notify_dt"
               onError={console.log}
-              disablePast
               format="MM/dd/yyyy"
-              onChange={(date) => handleDateChange(date)}
+              onChange={(date) =>
+                setMessage({
+                  ...message,
+                  unread_notify_dt: date,
+                })
+              }
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
             />
+            <div className={classes.ListOfButtons}>
+              <Button
+                onClick={() =>
+                  setMessage({
+                    ...message,
+                    ["unread_notify_dt"]: null,
+                  })
+                }
+              >
+                clear
+              </Button>
+              <Button
+                onClick={() =>
+                  setMessage({
+                    ...message,
+                    ["unread_notify_dt"]: moment().add(7, "days"),
+                  })
+                }
+              >
+                1 week
+              </Button>
+              <Button
+                onClick={() =>
+                  setMessage({
+                    ...message,
+                    ["unread_notify_dt"]: moment().add(14, "days"),
+                  })
+                }
+              >
+                2 weeks
+              </Button>
+              <Button
+                onClick={() =>
+                  setMessage({
+                    ...message,
+                    ["unread_notify_dt"]: moment().add(21, "days"),
+                  })
+                }
+              >
+                3 weeks
+              </Button>
+              <Button
+                onClick={() =>
+                  setMessage({
+                    ...message,
+                    ["unread_notify_dt"]: moment().add(28, "days"),
+                  })
+                }
+              >
+                4 weeks
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
@@ -224,7 +296,7 @@ const MessageToPatient = ({
           variant="outlined"
           color="primary"
           size="small"
-          onClick={() => alert("save/update")}
+          onClick={(_) => onSubmit(_, message, isNewMessage)}
         >
           {isNewMessage ? "Save" : "Update"}
         </Button>

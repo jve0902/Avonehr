@@ -44,7 +44,7 @@ export default function Home() {
   const [isNewEvent, setIsNewEvent] = useState(true);
   const [isNewMessage, setIsNewMessage] = useState(true);
 
-  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
+  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(true);
 
   console.log("selectedMsg:", selectedMsg);
 
@@ -183,6 +183,15 @@ export default function Home() {
     setIsNewMessage(false);
     setSelectedMsg(msg);
   };
+
+  const handleMessageToPatientFormSubmit = () => {
+    if (isNewMessage) {
+      //Create new message
+    } else {
+      //Update message
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Typography
@@ -245,6 +254,7 @@ export default function Home() {
         msg={selectedMsg}
         isNewMessage={isNewMessage}
         isOpen={isMessageToPatientOpen}
+        onSubmit={handleMessageToPatientFormSubmit}
         onClose={() => setIsMessageToPatientOpen(false)}
       />
     </div>
