@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   patientLink: {
-    color: "#2979FF",
+    color: theme.palette.text.link,
     cursor: "pointer",
   },
   placeholderText: {
