@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Video from "./../../../../components/videos/Video";
+//import Video from "./../../../../components/videos/Video";
 import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({

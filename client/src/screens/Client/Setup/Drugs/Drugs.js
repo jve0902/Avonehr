@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {
-  makeStyles,
-  Card,
-  CardContent,
-  Container,
-  CssBaseline,
-} from "@material-ui/core";
+import { makeStyles, Container, CssBaseline } from "@material-ui/core";
 //simport Video from "./../../../../components/videos/Video";
 import Drugstable from "./components/Drugstable";
 import Drugsform from "./components/Drugsform";
