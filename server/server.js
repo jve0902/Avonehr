@@ -52,6 +52,8 @@ app.use(baseAPIPath, require("./app/routes/icd.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/login.routes"));
 
+app.use(baseAPIPath, require("./app/routes/myself.routes"));
+
 app.listen(config.port).on("listening", () => {
   console.log(`API is live on ${config.port}`);
 });
