@@ -571,7 +571,7 @@ export default function Patient(props) {
     console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
-    fd.append("patient_id", 1);
+    fd.append("patient_id", patient_id);
     createDocument(fd);
   };
 
