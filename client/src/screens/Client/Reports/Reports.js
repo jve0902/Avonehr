@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   finance: {
     cursor: "pointer",
-    color: "#3e82ef",
+    color: theme.palette.text.link,
   },
 }));
 
@@ -48,12 +48,6 @@ const Reports = () => {
           Finance Report
         </Typography>
       </div>
-      {/* <Grid container justify="center" spacing={8}>
-        <Grid item md={6} xs={12}></Grid>
-        <Grid item md={6} xs={12}>
-          <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
-        </Grid>
-      </Grid> */}
     </div>
   );
 };
