@@ -72,18 +72,12 @@ export default function PatientSearch() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [patientId, setPatientId] = useState("");
-  const [createdFrom, setCreatedFrom] = useState(
-    moment().subtract(7, "days").format("YYYY-MM-DD")
-  );
-  const [createdTo, setCreatedTo] = useState(moment().format("YYYY-MM-DD"));
-  const [appointmentFrom, setAppointmentFrom] = useState(
-    moment().subtract(7, "days").format("YYYY-MM-DD")
-  );
-  const [appointmentTo, setAppointmentTO] = useState(
-    moment().format("YYYY-MM-DD")
-  );
-  const [paymentFrom, setPaymentFrom] = useState("-100");
-  const [paymentTo, setPaymnetTo] = useState("100");
+  const [createdFrom, setCreatedFrom] = useState(null);
+  const [createdTo, setCreatedTo] = useState(null);
+  const [appointmentFrom, setAppointmentFrom] = useState(null);
+  const [appointmentTo, setAppointmentTO] = useState(null);
+  const [paymentFrom, setPaymentFrom] = useState("");
+  const [paymentTo, setPaymentTo] = useState("");
 
   const [searchResults, setSearchResults] = useState([]);
   const [selectStatus, setSelectedStatus] = useState("");
@@ -101,10 +95,16 @@ export default function PatientSearch() {
         lastname: lastName,
         phone,
         email,
-        createdFrom: moment(createdFrom).format("YYYY-MM-DD"),
-        createdTo: moment(createdTo).format("YYYY-MM-DD"),
-        appointmentFrom: moment(appointmentFrom).format("YYYY-MM-DD"),
-        appointmentTo: moment(appointmentTo).format("YYYY-MM-DD"),
+        createdFrom: createdFrom
+          ? moment(createdFrom).format("YYYY-MM-DD")
+          : null,
+        createdTo: createdTo ? moment(createdTo).format("YYYY-MM-DD") : null,
+        appointmentFrom: appointmentFrom
+          ? moment(appointmentFrom).format("YYYY-MM-DD")
+          : null,
+        appointmentTo: appointmentTo
+          ? moment(appointmentTo).format("YYYY-MM-DD")
+          : null,
         paymentFrom,
         paymentTo,
         id: patientId,
@@ -176,18 +176,20 @@ export default function PatientSearch() {
                     inputVariant="outlined"
                     id="createdFrom"
                     label="Created From"
-                    value={createdFrom}
+                    value={createdFrom ? moment(createdFrom) : null}
                     className={classes.textField}
                     onChange={(date) => setCreatedFrom(date)}
                     // type="date"
                     size="small"
                     margin="normal"
+                    autoOk
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <KeyboardDatePicker
                     clearable
                     // disablePast
+                    autoOk
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
@@ -196,7 +198,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     id="createdTo"
                     label="Created To"
-                    value={createdTo}
+                    value={createdTo ? moment(createdTo) : null}
                     className={classes.textField}
                     onChange={(date) => setCreatedTo(date)}
                     size="small"
@@ -237,13 +239,14 @@ export default function PatientSearch() {
                   <KeyboardDatePicker
                     clearable
                     // disablePast
+                    autoOk
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
                     className={classes.textField}
-                    value={appointmentFrom}
+                    value={appointmentFrom ? moment(appointmentFrom) : null}
                     variant="outlined"
                     margin="normal"
                     name="appointmentFrom"
@@ -261,10 +264,11 @@ export default function PatientSearch() {
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
+                    autoOk
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
                     className={classes.textField}
-                    value={appointmentTo}
+                    value={appointmentTo ? moment(appointmentFrom) : null}
                     variant="outlined"
                     margin="normal"
                     name="appointmentTO"
@@ -347,12 +351,12 @@ export default function PatientSearch() {
                     value={paymentTo}
                     variant="outlined"
                     margin="normal"
-                    name="paymnetTo"
-                    label="Paymnet To"
-                    type="paymnetTo"
-                    id="paymnetTo"
-                    autoComplete="paymnetTo"
-                    onChange={(event) => setPaymnetTo(event.target.value)}
+                    name="paymentTo"
+                    label="Payment To"
+                    type="paymentTo"
+                    id="paymentTo"
+                    autoComplete="paymentTo"
+                    onChange={(event) => setPaymentTo(event.target.value)}
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
