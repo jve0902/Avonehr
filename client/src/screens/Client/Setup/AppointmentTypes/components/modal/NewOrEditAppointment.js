@@ -9,15 +9,28 @@ import Switch from "@material-ui/core/Switch";
 import Alert from "@material-ui/lab/Alert";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import { colors } from "@material-ui/core";
+import { colors, withStyles } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setSuccess } from "./../../../../../../store/common/actions";
 import { removeEmpty } from "./../../../../../../utils/helpers";
 import AppointmentService from "./../../../../../../services/appointmentType.service";
+import { green } from "@material-ui/core/colors";
 
+const GreenSwitch = withStyles({
+  switchBase: {
+    color: green[400],
+    "&$checked": {
+      color: green[500],
+    },
+    "&$checked + $track": {
+      backgroundColor: green[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
@@ -33,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     color: theme.palette.text.secondary,
     "& .MuiSelect-select": {
@@ -46,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     width: "220px",
   },
   formHelperText: {
-    width: "220px",
+    // width: "230px",
     fontSize: "12px",
     paddingLeft: "16px",
   },
@@ -61,6 +74,18 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
+  },
+  formFieldLarge: {
+    maxWidth: "270px",
+    flex: 1,
+    width: "300px",
+  },
+  formFieldSmall: {
+    maxWidth: "100px",
+    flex: 1,
+  },
+  textArea: {
+    marginTop: "12px",
   },
 }));
 
@@ -163,61 +188,63 @@ const NewOrEditAppointment = ({
             ))}
           <div className={classes.root}>
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Appointment Type
-              </FormLabel>
               <TextField
                 autoFocus
-                className={classes.formField}
+                className={classes.formFieldLarge}
                 variant="outlined"
-                margin="dense"
+                label="Appointment Type"
+                margin="normal"
                 fullWidth
                 name="appointment_type"
                 id="appointment_type"
                 autoComplete="appointment_type"
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.appointment_type}
+                size="small"
               />
+              <p className={classes.formHelperText}>
+                The name of the appointment type
+              </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Appointment Name Portal
-              </FormLabel>
               <TextField
-                className={classes.formField}
+                className={classes.formFieldLarge}
                 variant="outlined"
-                margin="dense"
+                label="Portal Name"
+                margin="normal"
                 fullWidth
                 name="appointment_name_portal"
                 id="appointment_name_portal"
                 autoComplete="appointment_name_portal"
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.appointment_name_portal}
+                size="small"
               />
+              <p className={classes.formHelperText}>
+                The name shown in the patient portal
+              </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Minutes
-              </FormLabel>
               <TextField
-                className={classes.formField}
+                className={classes.formFieldSmall}
                 variant="outlined"
-                margin="dense"
+                label="Minutes"
+                margin="normal"
                 name="length"
                 id="length"
+                type="number"
                 autoComplete="length"
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.length}
+                size="small"
               />
               <p className={classes.formHelperText}>
                 Number of minutes for the appointment
               </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Allow Patient Schedule
-              </FormLabel>
-              <Switch
+              <GreenSwitch
+                size="small"
                 checked={appointment.allow_patients_schedule}
                 onChange={(event) =>
                   setAppointment({
@@ -233,26 +260,27 @@ const NewOrEditAppointment = ({
               </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Sort Order
-              </FormLabel>
               <TextField
-                className={classes.formField}
+                className={classes.formFieldSmall}
                 variant="outlined"
-                margin="dense"
+                label="Sort Order"
+                margin="normal"
                 name="sort_order"
                 id="sort_order"
                 autoComplete="sort_order"
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.sort_order}
+                size="small"
+                type="number"
               />
-              <p className={classes.formHelperText}></p>
+              <p className={classes.formHelperText}>
+                The order in which this is shown
+              </p>
             </FormControl>
+
             <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
-                Status
-              </FormLabel>
-              <Switch
+              <GreenSwitch
+                size="small"
                 checked={appointment.active}
                 onChange={(event) =>
                   setAppointment({
@@ -263,15 +291,21 @@ const NewOrEditAppointment = ({
                 name="active"
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
-              <p className={classes.formHelperText}></p>
+              <p className={classes.formHelperText}>
+                Status can be active or inactive
+              </p>
             </FormControl>
-            <FormControl component="div" className={classes.formControl}>
-              <FormLabel component="p" className={classes.formLabel}>
+            <FormControl
+              component="div"
+              className={`${classes.formControl} ${classes.textArea}`}
+            >
+              {/* <FormLabel component="p" className={classes.formLabel}>
                 Note
-              </FormLabel>
+              </FormLabel> */}
               <TextField
                 fullWidth
                 variant="outlined"
+                label="Note"
                 multiline
                 name="note"
                 InputProps={{

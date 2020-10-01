@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {
-  makeStyles,
-  Card,
-  CardContent,
-  Container,
-  CssBaseline,
-} from "@material-ui/core";
-import Video from "./../../../../components/videos/Video";
+import { makeStyles, Container, CssBaseline } from "@material-ui/core";
+//simport Video from "./../../../../components/videos/Video";
 import Drugstable from "./components/Drugstable";
 import Drugsform from "./components/Drugsform";
 import DrugsService from "../../../../services/drugs.service";
@@ -91,6 +85,7 @@ export default function Drugs() {
                     />
                   )}
                 </Grid>
+                {/*}
                 <Grid item md={12} xs={12}>
                   <Card className={classes.card}>
                     <CardContent>
@@ -100,6 +95,7 @@ export default function Drugs() {
                     </CardContent>
                   </Card>
                 </Grid>
+                */}
               </Grid>
             </Container>
           </CssBaseline>

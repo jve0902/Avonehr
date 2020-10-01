@@ -5,15 +5,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import { Appointments } from "./components";
 import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
 import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
 import AppointmentService from "./../../../../services/appointmentType.service";
 import { AuthConsumer } from "./../../../../providers/AuthProvider";
-import Video from "./../../../../components/videos/Video";
+//import Video from "./../../../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,6 +119,7 @@ export default function AppointmentTypes(props) {
                   onDelete={handleDeleteButton}
                 />
               </Grid>
+              {/*}
               <Grid item md={12} xs={12}>
                 <Card className={classes.card}>
                   <CardContent>
@@ -130,6 +129,7 @@ export default function AppointmentTypes(props) {
                   </CardContent>
                 </Card>
               </Grid>
+            */}
             </Grid>
             <NewOrEditAppointment
               appointment={selectedappointment}

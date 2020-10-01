@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { Card, CardContent, CssBaseline, makeStyles } from "@material-ui/core";
-import Video from "./../../../../components/videos/Video";
+import { CssBaseline, makeStyles } from "@material-ui/core";
+//simport Video from "./../../../../components/videos/Video";
 import ICDcodestable from "./components/ICDcodestable";
 import ICDcodesform from "./components/ICDcodesform";
 import { AuthConsumer } from "../../../../providers/AuthProvider";
@@ -76,6 +76,7 @@ const ICDcodes = () => {
                     />
                   )}
                 </Grid>
+                {/*}
                 <Grid item md={12} xs={12}>
                   <Card className={classes.card}>
                     <CardContent>
@@ -85,6 +86,7 @@ const ICDcodes = () => {
                     </CardContent>
                   </Card>
                 </Grid>
+                  */}
               </Grid>
             </div>
           </CssBaseline>

@@ -1,18 +1,29 @@
 import * as React from "react";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
-import Video from "./../../../components/videos/Video";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: "40px 0px",
   },
+  title: {
+    paddingBottom: theme.spacing(1),
+  },
+  mainContent: {
+    marginTop: theme.spacing(3),
+  },
+  finance: {
+    cursor: "pointer",
+    color: theme.palette.text.link,
+  },
 }));
 
 const Reports = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   return (
     <div className={classes.root}>
       <Typography
@@ -23,12 +34,20 @@ const Reports = () => {
       >
         Reports
       </Typography>
-      <Grid container justify="center" spacing={8}>
-        <Grid item md={6} xs={12}></Grid>
-        <Grid item md={6} xs={12}>
-          <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
-        </Grid>
-      </Grid>
+      <Typography component="p" variant="body2" color="textPrimary">
+        This page is used to list reports
+      </Typography>
+      <div className={classes.mainContent}>
+        <Typography
+          onClick={() => history.push("/setup/report-finance")}
+          component="p"
+          variant="body1"
+          color="textPrimary"
+          className={classes.finance}
+        >
+          Finance Report
+        </Typography>
+      </div>
     </div>
   );
 };
