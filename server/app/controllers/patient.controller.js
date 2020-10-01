@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
     const dest = process.env.LAB_UPLOAD_DIR;
-    fs.access(dest, function (error) {
+    fs.access(dest, function(error) {
       if (error) {
         console.log("Directory does not exist.");
         return fs.mkdir(dest, (error) => cb(error, dest));
@@ -1240,7 +1240,7 @@ const getRequisitions = async (req, res) => {
 
   try {
     const dbResponse = await db.query(
-      `select pc.created, c.name, c.id, lc.name
+      `select pc.created, c.name cpt_name, c.id, lc.name lab_name
         from patient_cpt pc
         left join cpt c on c.id=pc.cpt_id
         left join lab_company lc on lc.id=c.lab_company_id
