@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
+  },
+  patientLink: {
+    color: theme.palette.text.link,
+    cursor: "pointer",
   },
 }));
 
@@ -59,6 +64,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function PatientSearchResults(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <div className={classes.root}>
@@ -84,12 +90,36 @@ export default function PatientSearchResults(props) {
           <TableBody>
             {props.result.map((result, index) => (
               <StyledTableRow key={index}>
-                <TableCell align="center" component="th" scope="row">
+                <TableCell
+                  className={classes.patientLink}
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                  align="center"
+                  component="th"
+                  scope="row"
+                >
                   {result.id}
                 </TableCell>
-                <TableCell align="center">{result.firstname}</TableCell>
-                <TableCell align="center">{result.middlename}</TableCell>
-                <TableCell align="center">{result.lastname}</TableCell>
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.firstname}
+                </TableCell>
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.middlename}
+                </TableCell>
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.lastname}
+                </TableCell>
                 <TableCell align="center">{result.city}</TableCell>
                 <TableCell align="center">{result.state}</TableCell>
                 <TableCell align="center">{result.postal}</TableCell>
