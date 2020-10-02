@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Grid, Typography } from "@material-ui/core";
+import { TextField, IconButton, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
+
+import SaveIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
@@ -66,16 +69,10 @@ const AdminNotes = (props) => {
 
   return (
     <>
-      <Typography variant="h3" color="textSecondary">
+      {/* <Typography variant="h3" color="textSecondary">
         Edit Notes
-      </Typography>
+      </Typography> */}
       <form onSubmit={onFormSubmit}>
-        <Grid className={classes.inputRow}>
-          <Grid item lg={2}>
-            <Typography gutterBottom variant="body1" color="textPrimary">
-              Notes
-            </Typography>
-          </Grid>
           <Grid className={classes.formInput} item md={12}>
             <TextField
               variant="outlined"
@@ -86,9 +83,8 @@ const AdminNotes = (props) => {
               fullWidth
               onChange={(e) => handleInputChange(e)}
               multiline={true}
-              rows={5}
+              rows={3}
             />
-          </Grid>
         </Grid>
 
         <Grid
@@ -96,12 +92,12 @@ const AdminNotes = (props) => {
           container
           justify="space-between"
         >
-          <Button variant="outlined" type="submit">
-            Save
-          </Button>
-          <Button variant="outlined" onClick={() => onClose()}>
-            Cancel
-          </Button>
+          <IconButton variant="outlined" type="submit" size="small">
+            <SaveIcon />
+          </IconButton>
+          <IconButton variant="outlined" onClick={() => onClose()} size="small">
+            <CancelIcon />
+          </IconButton>
         </Grid>
       </form>
     </>
@@ -113,10 +109,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0),
   },
   formInput: {
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(1),
   },
   actionContainer: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(1),
   },
 }));
 
