@@ -10,9 +10,9 @@ class Patient {
       .get(API_URL + `/patient-layout/${user_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getAllergies() {
+  getAllergies(patient_id) {
     return axios
-      .get(API_URL + `/patient/allergies`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getAllHandouts() {
@@ -20,26 +20,26 @@ class Patient {
       .get(API_URL + `/patient/handouts`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getPatientHandouts() {
+  getPatientHandouts(patient_id) {
     return axios
-      .get(API_URL + `/patient/patient-handout`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/handouts`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getForms() {
+  getForms(patient_id) {
     return axios
-      .get(API_URL + `/patient/forms`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/forms`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getBillings(limit) {
+  getBillings(patient_id, limit) {
     return axios
-      .get(API_URL + `/patient/billing/?limit=${limit}`, {
+      .get(API_URL + `/patient/${patient_id}/billing/?limit=${limit}`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getDocuments(encounter_id, tab) {
+  getDocuments(patient_id, tab) {
     return axios
-      .get(API_URL + `/patient/documents/${encounter_id}/?tab="${tab}"`, {
+      .get(API_URL + `/patient/${patient_id}/documents/?tab="${tab}"`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
@@ -70,49 +70,49 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getMedicalNotes() {
+  getMedicalNotes(patient_id) {
     return axios
-      .get(API_URL + `/patient/medical-notes/history`, {
+      .get(API_URL + `/patient/${patient_id}/medical-notes/history`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getAdminNotesHistory() {
+  getAdminNotesHistory(patient_id) {
     return axios
-      .get(API_URL + `/patient/admin-note/history`, {
+      .get(API_URL + `/patient/${patient_id}/admin-note/history`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getMessages() {
+  getMessages(patient_id) {
     return axios
-      .get(API_URL + `/patient/messages`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/messages`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getDiagnoses(encounter_id) {
+  getDiagnoses(patient_id) {
     return axios
-      .get(API_URL + `/patient/diagnoses/${encounter_id}/?active=true`, {
+      .get(API_URL + `/patient/${patient_id}/diagnoses/?active=true`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getMedications(encounter_id) {
+  getMedications(patient_id) {
     return axios
-      .get(API_URL + `/patient/medications/${encounter_id}`, {
+      .get(API_URL + `/patient/${patient_id}/medications`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getRequisitions(encounter_id) {
+  getRequisitions(patient_id) {
     return axios
-      .get(API_URL + `/patient/requisitions/${encounter_id}`, {
+      .get(API_URL + `/requisitions/${patient_id}`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
   }
-  getTests(encounter_id) {
+  getTests(patient_id) {
     return axios
-      .get(API_URL + `/patient/all-tests/${encounter_id}`, {
+      .get(API_URL + `/patient/${patient_id}/all-tests`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
@@ -142,15 +142,15 @@ class Patient {
       .then((res) => res.data);
   }
 
-  updateAdminNotes(data, noteId) {
-    return axios.put(API_URL + `/patient/admin-note/${noteId}`, data, {
+  updateAdminNotes(patient_id, data, noteId) {
+    return axios.put(API_URL + `/patient/${patient_id}/admin-note/${noteId}`, data, {
       headers: authHeader(),
     });
   }
-
-  updateMedicalNotes(data, noteId) {
+  // /patient/1/medical-notes/history
+  updateMedicalNotes(patient_id, data) {
     return axios.put(
-      API_URL + `/patient/medical-notes/history/${noteId}`,
+      API_URL + `/patient/${patient_id}/medical-notes/history`,
       data,
       {
         headers: authHeader(),
