@@ -15,7 +15,7 @@ import {
 
 // dialog components
 import {
-  AdminNotes,
+  AdminNotesForm,
   AdminNotesHistory,
   AdminNotesCardContent,
 } from "./components/AdminNotes";
@@ -479,9 +479,23 @@ export default function Patient(props) {
     if (value === "Patient") {
       return !!patientData && <PatientCardContent data={patientData} />;
     } else if (value === "Admin Notes") {
-      return (
-        !!patientData && <AdminNotesCardContent data={patientData.admin_note} />
-      );
+      if(!!patientData) {
+        return (
+          showAdminFormDialog
+          ?
+          <AdminNotesForm
+            patientId={patient_id}
+            oldAdminNote={patientData && patientData.admin_note}
+            onClose={toggleAdminFormDialog}
+            reloadData={() => {
+              fetchPatientData();
+              fetchAdminNotesHistory();
+            }}
+          />
+          :
+          <AdminNotesCardContent data={patientData.admin_note} />
+        );
+      }
     } else if (value === "Forms") {
       return !!forms && <FormCardContent data={forms} />;
     } else if (value === "Billing") {
@@ -496,11 +510,23 @@ export default function Patient(props) {
         )
       );
     } else if (value === "Medical Notes") {
-      return (
-        !!patientData && (
+      if(!!patientData) {
+        return (
+          showMedicalNotesFormDialog
+          ?
+          <MedicalNotesForm
+            patientId={patient_id}
+            onClose={toggleMedicalNotesFormDialog}
+            oldMedicalNote={patientData && patientData.medical_note}
+            reloadData={() => {
+              fetchPatientData();
+              fetchMedicalNotes();
+            }}
+          />
+          :
           <MedicalNotesCardContent data={patientData.medical_note} />
         )
-      );
+      }
     } else if (value === "Handouts") {
       return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
@@ -672,11 +698,11 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showAdminFormDialog}
         title={"Admin Notes Form"}
         message={
-          <AdminNotes
+          <AdminNotesForm
             patientId={patient_id}
             oldAdminNote={patientData && patientData.admin_note}
             onClose={toggleAdminFormDialog}
@@ -690,7 +716,7 @@ export default function Patient(props) {
         cancelForm={() => toggleAdminFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
@@ -833,7 +859,7 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showMedicalNotesFormDialog}
         title={" "}
         message={
@@ -851,7 +877,7 @@ export default function Patient(props) {
         cancelForm={() => toggleMedicalNotesFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showMessageDialog}
         title={"New Message"}
