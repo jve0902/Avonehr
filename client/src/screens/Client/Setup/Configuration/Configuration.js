@@ -140,9 +140,17 @@ export default function Configuration(props) {
         phone: data.phone,
         fax: data.fax,
       });
-      console.log(moment(data.calendar_start_time).format("LTS"));
-      setCalendarStartTime(moment(data.calendar_start_time).format(new Date()));
-      setCalendarEndTime(moment(data.calendar_end_time).format(new Date()));
+      console.log(
+        moment(data.calendar_start_time, "HH:mm:ss").format("hh:mm A")
+      );
+      setCalendarStartTime(
+        moment(data.calendar_start_time, "HH:mm:ss").format(
+          "YYYY-MM-DDTHH:mm:ss"
+        )
+      );
+      setCalendarEndTime(
+        moment(data.calendar_end_time, "HH:mm:ss").format("YYYY-MM-DDTHH:mm:ss")
+      );
     } catch (e) {
       console.log(e);
     }
@@ -172,8 +180,8 @@ export default function Configuration(props) {
         state: formParams.state,
         website: formParams.clientWebsite,
         country: formParams.country,
-        calendar_start_time: moment(calendarStartTime).format("H:M:S"),
-        calendar_end_time: moment(calendarEndTime).format("H:M:S"),
+        calendar_start_time: moment(calendarStartTime).format("HH:mm:ss"),
+        calendar_end_time: moment(calendarEndTime).format("HH:mm:ss"),
         email: formParams.email,
         ein: formParams.ein,
         npi: formParams.npi,
@@ -573,6 +581,7 @@ export default function Configuration(props) {
                 size="small"
                 autoOk
                 mask="__:__ _M"
+                keyboardIcon
               />
             </Grid>
 
