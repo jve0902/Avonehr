@@ -88,10 +88,12 @@ NumberFormatCustom.propTypes = {
 
 export default function AccountingSearch() {
   const classes = useStyles();
-  const [amountFrom, setAmountFrom] = useState("-100");
+  const [amountFrom, setAmountFrom] = useState("0");
   const [amountTo, setAmountTo] = useState("100");
   const [dateFrom, setDateFrom] = useState(
-    moment().subtract(7, "days").format("YYYY-MM-DD")
+    moment()
+      .subtract(7, "days")
+      .format("YYYY-MM-DD")
   );
   const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [types, setTypes] = useState([]);
