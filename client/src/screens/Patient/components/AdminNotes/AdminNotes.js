@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { onClose, reloadData } = props;
+  const { onClose, reloadData, patientId } = props;
   const [oldAdminNote, setOldAdminNote] = useState("");
   const [formFields, setFormFields] = useState({
     notes: "",
@@ -41,7 +41,7 @@ const AdminNotes = (props) => {
     };
     // TODO:: static for the time being - discussion required
     let noteId = 1;
-    PatientService.updateAdminNotes(reqBody, noteId)
+    PatientService.updateAdminNotes(patientId, reqBody, noteId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
