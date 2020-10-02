@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 const MedicalNotes = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, reloadData } = props;
+  const { onClose, reloadData, patientId } = props;
   const [oldMedicalNote, setOldMedicalNote] = useState("");
   const [medicalNote, setMedicalNote] = useState("");
 
@@ -27,7 +27,7 @@ const MedicalNotes = (props) => {
         medical_note: medicalNote,
       },
     };
-    PatientService.updateMedicalNotes(reqBody, noteId)
+    PatientService.updateMedicalNotes(patientId, reqBody, noteId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
