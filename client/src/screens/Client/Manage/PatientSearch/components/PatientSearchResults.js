@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import PropTypes from "prop-types";
-import Tooltip from "@material-ui/core/Tooltip";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 650,
     marginTop: theme.spacing(2),
-    maxWidth: "880px",
   },
   overFlowControl: {
     maxWidth: "130px",
@@ -30,16 +29,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     whiteSpace: "nowrap",
   },
-}));
-
-const LightTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 13,
+  patientLink: {
+    color: theme.palette.text.link,
+    cursor: "pointer",
   },
-}))(Tooltip);
+}));
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -70,6 +64,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function PatientSearchResults(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <div className={classes.root}>
@@ -77,44 +72,65 @@ export default function PatientSearchResults(props) {
         <Table className={classes.table} aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Encounter</StyledTableCell>
-              <StyledTableCell>Client ID</StyledTableCell>
-              <StyledTableCell>Note</StyledTableCell>
+              <StyledTableCell align="center">Patient ID</StyledTableCell>
+              <StyledTableCell align="center">First Name</StyledTableCell>
+              <StyledTableCell align="center">Middle Name</StyledTableCell>
+              <StyledTableCell align="center">Last Name</StyledTableCell>
+              <StyledTableCell align="center">City</StyledTableCell>
+              <StyledTableCell align="center">State</StyledTableCell>
+              <StyledTableCell align="center">Postal Code</StyledTableCell>
+              <StyledTableCell align="center">Country</StyledTableCell>
+              <StyledTableCell align="center">Phone</StyledTableCell>
+              <StyledTableCell align="center">Phone Home</StyledTableCell>
+              <StyledTableCell align="center">Email</StyledTableCell>
+              <StyledTableCell align="center">Gender</StyledTableCell>
+              <StyledTableCell align="center">Created</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.result.map((result, index) => (
               <StyledTableRow key={index}>
-                <TableCell component="th" scope="row">
-                  {moment(result.dt).format("lll")}
+                <TableCell
+                  className={classes.patientLink}
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                  align="center"
+                  component="th"
+                  scope="row"
+                >
+                  {result.id}
                 </TableCell>
-                {result.encounter_title.length > 40 ? (
-                  <LightTooltip title={result.encounter_title}>
-                    <TableCell className={classes.overFlowControl}>
-                      {result.encounter_title}
-                    </TableCell>
-                  </LightTooltip>
-                ) : (
-                  <TableCell className={classes.overFlowControl}>
-                    {result.encounter_title}
-                  </TableCell>
-                )}
-                <TableCell>{result.client_id}</TableCell>
-                {result.notes && result.notes.length > 40 ? (
-                  <LightTooltip title={result.notes}>
-                    <TableCell
-                      align="center"
-                      className={classes.overFlowControl}
-                    >
-                      {result.notes || "-"}
-                    </TableCell>
-                  </LightTooltip>
-                ) : (
-                  <TableCell align="center" className={classes.overFlowControl}>
-                    {result.notes || "-"}
-                  </TableCell>
-                )}
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.firstname}
+                </TableCell>
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.middlename}
+                </TableCell>
+                <TableCell
+                  className={classes.patientLink}
+                  align="center"
+                  onClick={() => history.push(`/patient/${result.id}`)}
+                >
+                  {result.lastname}
+                </TableCell>
+                <TableCell align="center">{result.city}</TableCell>
+                <TableCell align="center">{result.state}</TableCell>
+                <TableCell align="center">{result.postal}</TableCell>
+                <TableCell align="center">{result.country}</TableCell>
+                <TableCell align="center">{result.phone_cell}</TableCell>
+                <TableCell align="center">{result.phone_home}</TableCell>
+                <TableCell align="center">{result.email}</TableCell>
+                <TableCell align="center">{result.gender}</TableCell>
+                <TableCell align="center">
+                  {moment(result.created).format("lll")}
+                </TableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -127,10 +143,19 @@ export default function PatientSearchResults(props) {
 PatientSearchResults.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      client_id: PropTypes.string.isRequired,
-      dt: PropTypes.string.isRequired,
-      Encounter: PropTypes.string.isRequired,
-      notes: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      firstname: PropTypes.string.isRequired,
+      lastname: PropTypes.string.isRequired,
+      middlename: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+      state: PropTypes.string.isRequired,
+      postal: PropTypes.string.isRequired,
+      country: PropTypes.string.isRequired,
+      phone_cell: PropTypes.string.isRequired,
+      phone_home: PropTypes.email,
+      email: PropTypes.string.isRequired,
+      gender: PropTypes.string.isRequired,
+      created: PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
 };
