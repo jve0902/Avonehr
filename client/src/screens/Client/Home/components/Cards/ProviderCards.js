@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   title: {
-    backgroundColor: theme.palette.primary.light,
     fontWeight: "600",
     fontSize: "1em",
     "& h2": {

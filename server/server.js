@@ -47,6 +47,7 @@ app.use(baseAPIPath, require("./app/routes/process-lab.routes"));
 app.use(baseAPIPath, require("./app/routes/setup.routes"));
 app.use(baseAPIPath, require("./app/routes/search.routes"));
 app.use(baseAPIPath, require("./app/routes/icd.routes"));
+app.use(baseAPIPath, require("./app/routes/message-to-patient.routes"));
 
 //Patient Portal
 app.use(baseAPIPath, require("./app/routes/patient/signup.routes"));
