@@ -61,13 +61,13 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const MessagesDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const messageId = selectedItem.id || 1;
-    PatientService.deleteMessages(messageId)
+    const messageId = selectedItem.id;
+    PatientService.deleteMessages(patientId, messageId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

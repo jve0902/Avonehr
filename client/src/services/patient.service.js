@@ -200,8 +200,8 @@ class Patient {
   }
 
   //delete methods
-  deleteMessages(id) {
-    return axios.delete(API_URL + `/patient/messages/${id}`, {
+  deleteMessages(patient_id, id) {
+    return axios.delete(API_URL + `/patient/${patient_id}/messages/${id}`, {
       headers: authHeader(),
     });
   }
@@ -224,8 +224,8 @@ class Patient {
     );
   }
 
-  deleteHandout(handoutId) {
-    return axios.delete(API_URL + `/patient/handouts/${handoutId}`, {
+  deleteHandout(patient_id, handoutId) {
+    return axios.delete(API_URL + `/patient/${patient_id}/handouts/${handoutId}`, {
       headers: authHeader(),
     });
   }
