@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Calendar,
   NewOrEditEvent,
+  MessageToPatient,
   ProviderCards,
   ProviderDetailsCard,
   MessagesUnread,
@@ -13,6 +14,7 @@ import {
 } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
+import Messages from "../../../services/message-to-patient.service";
 import { setSuccess } from "./../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +38,18 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
+  const [selectedMsg, setSelectedMsg] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isNewEvent, setIsNewEvent] = useState(true);
+  const [isNewMessage, setIsNewMessage] = useState(true);
+  const [patient_id_to, setPatient_id_to] = useState(null);
+
+  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
+
+  console.log("selectedMsg:", selectedMsg);
+
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -129,7 +139,7 @@ export default function Home() {
   const handleEventClick = (calEvent) => {
     setIsNewEvent(false);
     const eventClicked = events.filter(
-      (event) => event.id === calEvent.event.id
+      (event) => event.id === parseInt(calEvent.event.id)
     );
     setSelectedEvent(eventClicked[0]);
     setIsOpen(true);
@@ -165,6 +175,76 @@ export default function Home() {
     );
   };
 
+  const handleMessageClick = (_, patient_id_to) => {
+    setPatient_id_to(patient_id_to);
+    setIsMessageToPatientOpen(true);
+    setIsNewMessage(true);
+  };
+
+  const handleMessageEditClick = (_, msg) => {
+    setIsMessageToPatientOpen(true);
+    setIsNewMessage(false);
+    setSelectedMsg(msg);
+  };
+
+  const fetchSingleMessage = () => {
+    !isNewMessage &&
+      Messages.getMessageByID(selectedMsg.id).then(
+        (response) => {
+          const { data } = response;
+          setSelectedMsg(data[0]);
+        },
+        (error) => {
+          if (error.response) {
+            setErrors(error.response.data);
+          }
+        }
+      );
+  };
+
+  const handleMessageToPatientFormSubmit = (_, message, isNewMessage) => {
+    setIsLoading(true);
+    const payload = {
+      data: {
+        ...message,
+        user_id_from: selectedProvider.id,
+        patient_id_to: patient_id_to,
+      },
+    };
+    if (isNewMessage) {
+      //Create new message
+      Messages.create(payload).then(
+        (response) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          fetchUnreadPatientMessages(selectedProvider.id);
+          console.log("msg create:", response);
+        },
+        (errors) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          console.log("msg errors:", errors);
+        }
+      );
+    } else {
+      //Update message
+      Messages.update(payload).then(
+        (response) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          fetchUnreadPatientMessages(selectedProvider.id);
+          console.log("msg create:", response);
+        },
+        (errors) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          console.log("msg errors:", errors);
+        }
+      );
+    }
+  };
+  console.log("isOpen:", isOpen);
+
   return (
     <div className={classes.root}>
       <Typography
@@ -197,10 +277,12 @@ export default function Home() {
               <MessagesUnread
                 appointmentRequests={appointmentRequests}
                 messagesUnread={messagesUnread}
+                onMessageEdit={handleMessageEditClick}
               />
               <AppointmentRequests
                 selectedProvider={selectedProvider}
                 appointmentRequests={appointmentRequests}
+                onMessageClick={handleMessageClick}
               />
             </React.Fragment>
           )}
@@ -209,7 +291,7 @@ export default function Home() {
       <NewOrEditEvent
         isLoading={isLoading}
         isNewEvent={isNewEvent}
-        event={selectedEvent}
+        event={selectedEvent && selectedEvent}
         selectedDate={selectedDate}
         selectedProvider={selectedProvider}
         isOpen={isOpen}
@@ -219,6 +301,15 @@ export default function Home() {
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
         errors={errors}
+      />
+      <MessageToPatient
+        isLoading={isLoading}
+        msg={selectedMsg}
+        isNewMessage={isNewMessage}
+        onModalEnter={fetchSingleMessage}
+        isOpen={isMessageToPatientOpen}
+        onSubmit={handleMessageToPatientFormSubmit}
+        onClose={() => setIsMessageToPatientOpen(false)}
       />
     </div>
   );
