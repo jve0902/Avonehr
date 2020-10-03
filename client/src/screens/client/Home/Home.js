@@ -14,6 +14,7 @@ import {
 } from "./components";
 import Appointments from "./../../../services/appointments.service";
 import DashboardHome from "../../../services/DashboardHome.service";
+import Messages from "../../../services/message-to-patient.service";
 import { setSuccess } from "./../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +45,7 @@ export default function Home() {
   const [isNewEvent, setIsNewEvent] = useState(true);
   const [isNewMessage, setIsNewMessage] = useState(true);
 
-  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(true);
+  const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
 
   console.log("selectedMsg:", selectedMsg);
 
@@ -184,11 +185,34 @@ export default function Home() {
     setSelectedMsg(msg);
   };
 
-  const handleMessageToPatientFormSubmit = () => {
+  const fetchSingleMessage = () => {
+    Messages.getMessageByID(selectedMsg.id).then(
+      (response) => {
+        const { data } = response;
+        setSelectedMsg(data[0]);
+      },
+      (error) => {
+        if (error.response) {
+          setErrors(error.response.data);
+        }
+      }
+    );
+  };
+
+  const handleMessageToPatientFormSubmit = (_, payload) => {
+    console.log("handleMessageToPatientFormSubmit", payload);
     if (isNewMessage) {
       //Create new message
+      Messages.create(payload).then(
+        (res) => {},
+        (errors) => {}
+      );
     } else {
       //Update message
+      Messages.update(payload).then(
+        (res) => {},
+        (errors) => {}
+      );
     }
   };
 
@@ -253,6 +277,7 @@ export default function Home() {
         isLoading={isLoading}
         msg={selectedMsg}
         isNewMessage={isNewMessage}
+        onModalEnter={fetchSingleMessage}
         isOpen={isMessageToPatientOpen}
         onSubmit={handleMessageToPatientFormSubmit}
         onClose={() => setIsMessageToPatientOpen(false)}

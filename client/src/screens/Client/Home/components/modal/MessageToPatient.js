@@ -18,6 +18,7 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
+import Messages from "./../../../../../services/message-to-patient.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -115,8 +116,6 @@ const MessageToPatient = ({
   const [errors, setErrors] = useState([]);
   const [message, setMessage] = useState("");
 
-  console.log("props.msg", props.msg);
-
   useEffect(() => {
     if (isNewMessage) {
       setMessage("");
@@ -132,11 +131,11 @@ const MessageToPatient = ({
     });
   };
 
-  console.log("message:", message);
   return (
     <Dialog
       open={isOpen}
       onClose={onClose}
+      onEnter={props.onModalEnter}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
