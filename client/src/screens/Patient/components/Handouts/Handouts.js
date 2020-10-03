@@ -27,7 +27,7 @@ const HandoutsForm = (props) => {
   },[])
 
   const fetchAllHandouts = () => {
-    PatientService.getAllHandouts().then((res) => {
+    PatientService.getAllHandouts(patientId).then((res) => {
         setAllHandouts(res.data);
       });
   }
@@ -37,13 +37,11 @@ const HandoutsForm = (props) => {
         data : {
             "patient_id": patientId,
             "handout_id": 1,
-            "admin_note": "admin_note",
-            "old_admin_note": "old_admin_note"
         }
       };
       // TODO:: static for the time being - discussion required
 
-    PatientService.createPatientHandout(reqBody)
+    PatientService.createPatientHandout(patientId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

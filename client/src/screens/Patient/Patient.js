@@ -565,7 +565,7 @@ export default function Patient(props) {
   };
 
   const createDocument = (reqBody) => {
-    PatientService.createDocuments(reqBody)
+    PatientService.createDocuments(patient_id, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         fetchDocuments();
@@ -885,6 +885,7 @@ export default function Patient(props) {
           <NewMessageForm
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageDialog()}
