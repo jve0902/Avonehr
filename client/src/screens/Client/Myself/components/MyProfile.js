@@ -209,7 +209,7 @@ export default function MyProfile() {
               size="small"
             >
               <InputLabel htmlFor="age-native-simple">
-                Forwarded Email
+                Forward Email
               </InputLabel>
               <Select
                 native
@@ -218,10 +218,10 @@ export default function MyProfile() {
                   setSelectedForwardEmail(event.target.value);
                 }}
                 inputProps={{
-                  name: "Forwarded Email",
+                  name: "Forward Email",
                   id: "age-native-simple",
                 }}
-                label="Forwarded Email"
+                label="Forward Email"
               >
                 <option value={-1}>Select User</option>
                 {forwardEmails.map((item) => (
