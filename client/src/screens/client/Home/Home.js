@@ -199,19 +199,40 @@ export default function Home() {
     );
   };
 
-  const handleMessageToPatientFormSubmit = (_, payload) => {
-    console.log("handleMessageToPatientFormSubmit", payload);
+  const handleMessageToPatientFormSubmit = (_, message, isNewMessage) => {
+    setIsLoading(true);
+    const payload = {
+      data: message,
+    };
     if (isNewMessage) {
       //Create new message
       Messages.create(payload).then(
-        (res) => {},
-        (errors) => {}
+        (response) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          fetchUnreadPatientMessages(selectedProvider.id);
+          console.log("msg create:", response);
+        },
+        (errors) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          console.log("msg errors:", errors);
+        }
       );
     } else {
       //Update message
       Messages.update(payload).then(
-        (res) => {},
-        (errors) => {}
+        (response) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          fetchUnreadPatientMessages(selectedProvider.id);
+          console.log("msg create:", response);
+        },
+        (errors) => {
+          setIsLoading(false);
+          setIsMessageToPatientOpen(false);
+          console.log("msg errors:", errors);
+        }
       );
     }
   };
