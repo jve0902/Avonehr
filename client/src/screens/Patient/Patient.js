@@ -901,6 +901,7 @@ export default function Patient(props) {
             data={messages}
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageExpandDialog()}

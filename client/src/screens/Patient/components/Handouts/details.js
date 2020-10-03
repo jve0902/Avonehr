@@ -67,7 +67,6 @@ const HandoutsDetails = (props) => {
 
   const onItemDelete = (selectedItem) => {
     const handoutId = selectedItem.id || 1;
-    const patientId = patientId;
     PatientService.deleteHandout(patientId, handoutId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
