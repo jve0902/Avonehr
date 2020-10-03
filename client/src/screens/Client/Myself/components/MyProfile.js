@@ -10,7 +10,7 @@ import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSuccess, setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
 
@@ -164,17 +164,7 @@ export default function MyProfile() {
               className={classes.formElment}
               onChange={(event) => setName(event.target.value)}
               size="small"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Email"
-              value={email}
-              className={classes.formElment}
-              onChange={(event) => setEmail(event.target.value)}
-              size="small"
+              disabled={true}
               InputProps={{
                 readOnly: true,
               }}
@@ -186,6 +176,19 @@ export default function MyProfile() {
               className={classes.formElment}
               onChange={(event) => setTitle(event.target.value)}
               size="small"
+              disabled={true}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <TextField
+              variant="outlined"
+              label="Email"
+              value={email}
+              className={classes.formElment}
+              onChange={(event) => setEmail(event.target.value)}
+              size="small"
+              disabled={true}
               InputProps={{
                 readOnly: true,
               }}
@@ -199,6 +202,7 @@ export default function MyProfile() {
               onChange={(event) => setCreated(event.target.value)}
               type="date"
               size="small"
+              disabled={true}
               InputProps={{
                 readOnly: true,
               }}
@@ -208,9 +212,7 @@ export default function MyProfile() {
               className={classes.formElment}
               size="small"
             >
-              <InputLabel htmlFor="age-native-simple">
-                Forwarded Email
-              </InputLabel>
+              <InputLabel htmlFor="age-native-simple">Forward Email</InputLabel>
               <Select
                 native
                 value={selectedForwardEmail}
@@ -218,10 +220,10 @@ export default function MyProfile() {
                   setSelectedForwardEmail(event.target.value);
                 }}
                 inputProps={{
-                  name: "Forwarded Email",
+                  name: "Forward Email",
                   id: "age-native-simple",
                 }}
-                label="Forwarded Email"
+                label="Forward Email"
               >
                 <option value={-1}>Select User</option>
                 {forwardEmails.map((item) => (

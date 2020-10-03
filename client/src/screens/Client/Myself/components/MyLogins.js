@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -10,9 +10,8 @@ import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { setSuccess, setError } from "../../../../store/common/actions";
+import { useDispatch } from "react-redux";
+import { setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,15 +46,6 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
 }));
-
-const LightTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 13,
-  },
-}))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -116,7 +106,7 @@ export default function MyActivityHistory(props) {
             color="textPrimary"
             className={classes.title}
           >
-            My Logins
+            My Login History
           </Typography>
           <Typography component="p" variant="body2" color="textPrimary">
             This page shows a user's logins
@@ -126,7 +116,7 @@ export default function MyActivityHistory(props) {
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Time</StyledTableCell>
-                  <StyledTableCell>IP address</StyledTableCell>
+                  <StyledTableCell>IP Address</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

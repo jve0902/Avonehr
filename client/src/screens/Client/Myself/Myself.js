@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
@@ -76,18 +75,18 @@ const Myself = () => {
               aria-label="simple tabs example"
             >
               <Tab className={classes.tabItem} label="My Activity History" />
+              <Tab className={classes.tabItem} label="My Login History" />
               <Tab className={classes.tabItem} label="My Profile" />
-              <Tab className={classes.tabItem} label="My Logins" />
             </Tabs>
           </div>
           <TabPanel value={value} index={0}>
             <MyActivityHistory />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <MyProfile />
+            <MyLogins />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <MyLogins />
+            <MyProfile />
           </TabPanel>
         </Grid>
       </Grid>
