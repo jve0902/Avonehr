@@ -88,7 +88,11 @@ router.get(
   [authJwt.verifyToken],
   Patient.getDocuments
 );
-router.put("/documents/:id", [authJwt.verifyToken], Patient.updateDocuments);
+router.put(
+  "/patient/:id/documents/:id",
+  [authJwt.verifyToken],
+  Patient.updateDocuments
+);
 router.get(
   "/patient/:patient_id/documents/check",
   [authJwt.verifyToken],
