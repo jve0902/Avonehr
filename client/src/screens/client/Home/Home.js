@@ -44,6 +44,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isNewEvent, setIsNewEvent] = useState(true);
   const [isNewMessage, setIsNewMessage] = useState(true);
+  const [patient_id_to, setPatient_id_to] = useState(null);
 
   const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
 
@@ -174,7 +175,8 @@ export default function Home() {
     );
   };
 
-  const handleMessageClick = () => {
+  const handleMessageClick = (_, patient_id_to) => {
+    setPatient_id_to(patient_id_to);
     setIsMessageToPatientOpen(true);
     setIsNewMessage(true);
   };
@@ -186,23 +188,28 @@ export default function Home() {
   };
 
   const fetchSingleMessage = () => {
-    Messages.getMessageByID(selectedMsg.id).then(
-      (response) => {
-        const { data } = response;
-        setSelectedMsg(data[0]);
-      },
-      (error) => {
-        if (error.response) {
-          setErrors(error.response.data);
+    !isNewMessage &&
+      Messages.getMessageByID(selectedMsg.id).then(
+        (response) => {
+          const { data } = response;
+          setSelectedMsg(data[0]);
+        },
+        (error) => {
+          if (error.response) {
+            setErrors(error.response.data);
+          }
         }
-      }
-    );
+      );
   };
 
   const handleMessageToPatientFormSubmit = (_, message, isNewMessage) => {
     setIsLoading(true);
     const payload = {
-      data: message,
+      data: {
+        ...message,
+        user_id_from: selectedProvider.id,
+        patient_id_to: patient_id_to,
+      },
     };
     if (isNewMessage) {
       //Create new message
@@ -236,6 +243,7 @@ export default function Home() {
       );
     }
   };
+  console.log("isOpen:", isOpen);
 
   return (
     <div className={classes.root}>

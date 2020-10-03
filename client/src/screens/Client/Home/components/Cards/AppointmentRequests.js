@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    backgroundColor: theme.palette.primary.light,
     fontWeight: "600",
     fontSize: "1em",
     "& h2": {
@@ -131,7 +130,9 @@ const AppointmentRequests = ({
                 <div className={classes.unreadMsgActions}>
                   <Button>Accept</Button>
                   <Button>Reject</Button>
-                  <Button onClick={() => onMessageClick()}>Message</Button>
+                  <Button onClick={(_) => onMessageClick(_, appt.patient_id)}>
+                    Message
+                  </Button>
                 </div>
               </li>
             ))

@@ -265,7 +265,7 @@ const getAppointmentRequest = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select uc.id, uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
+      `select uc.id, uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name, p.id patient_id
         from user_calendar uc
         join patient p on p.id=uc.patient_id
         where uc.client_id=${req.client_id}

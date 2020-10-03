@@ -31,7 +31,7 @@ const getMessageById = async (req, res) => {
 const createMessage = async (req, res) => {
   const {
     user_id_from,
-    patient_id,
+    patient_id_to,
     subject,
     message,
     unread_notify_dt,
@@ -39,7 +39,7 @@ const createMessage = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into message (client_id, user_id_from, patient_id_to, subject, message, unread_notify_dt, created, created_user_id) values (${req.client_id}, ${user_id_from}, ${patient_id}, '${subject}', '${message}', '${unread_notify_dt}', now(), ${req.user_id})`
+      `insert into message (client_id, user_id_from, patient_id_to, subject, message, unread_notify_dt, created, created_user_id) values (${req.client_id}, ${user_id_from}, ${patient_id_to}, '${subject}', '${message}', '${unread_notify_dt}', now(), ${req.user_id})`
     );
 
     if (!insertResponse.affectedRows) {
