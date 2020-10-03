@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 const NewMessage = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, reloadData } = props;
+  const { onClose, reloadData, patientId } = props;
 
   const [formFields, setFormFields] = useState({
     subject: '',
@@ -32,7 +32,7 @@ const NewMessage = (props) => {
         "unread_notify_dt": "2020-10-10"
       }
     }
-    PatientService.createMessage(reqBody)
+    PatientService.createMessage(patientId, reqBody)
     .then((response) => {
       dispatch(setSuccess(`${response.data.message}`));
       reloadData();
