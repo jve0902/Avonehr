@@ -10,7 +10,7 @@ import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSuccess, setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
 
@@ -171,10 +171,10 @@ export default function MyProfile() {
             />
             <TextField
               variant="outlined"
-              label="Email"
-              value={email}
+              label="Title"
+              value={title}
               className={classes.formElment}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => setTitle(event.target.value)}
               size="small"
               disabled={true}
               InputProps={{
@@ -183,10 +183,10 @@ export default function MyProfile() {
             />
             <TextField
               variant="outlined"
-              label="Title"
-              value={title}
+              label="Email"
+              value={email}
               className={classes.formElment}
-              onChange={(event) => setTitle(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               size="small"
               disabled={true}
               InputProps={{
