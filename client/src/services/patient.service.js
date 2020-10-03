@@ -15,9 +15,9 @@ class Patient {
       .get(API_URL + `/patient/${patient_id}/allergies`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getAllHandouts() {
+  getAllHandouts(patient_id) {
     return axios
-      .get(API_URL + `/patient/handouts`, { headers: authHeader() })
+      .get(API_URL + `/patient/${patient_id}/handouts`, { headers: authHeader() })
       .then((res) => res.data);
   }
   getPatientHandouts(patient_id) {
@@ -169,14 +169,14 @@ class Patient {
   }
 
   //create methods
-  createPatientHandout(data) {
-    return axios.post(API_URL + `/patient/patient-handout`, data, {
+  createPatientHandout(patient_id, data) {
+    return axios.post(API_URL + `/patient/${patient_id}/patient-handout`, data, {
       headers: authHeader(),
     });
   }
 
-  createDocuments(data) {
-    return axios.post(API_URL + `/patient/documents/`, data, {
+  createDocuments(patient_id, data) {
+    return axios.post(API_URL + `/patient/${patient_id}/documents/`, data, {
       headers: authHeader(),
     });
   }
@@ -193,8 +193,8 @@ class Patient {
     });
   }
 
-  createMessage(data) {
-    return axios.post(API_URL + `/patient/messages`, data, {
+  createMessage(patient_id, data) {
+    return axios.post(API_URL + `/patient/${patient_id}/messages`, data, {
       headers: authHeader(),
     });
   }
