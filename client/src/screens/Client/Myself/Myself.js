@@ -75,18 +75,18 @@ const Myself = () => {
               aria-label="simple tabs example"
             >
               <Tab className={classes.tabItem} label="My Activity History" />
+              <Tab className={classes.tabItem} label="My Login History" />
               <Tab className={classes.tabItem} label="My Profile" />
-              <Tab className={classes.tabItem} label="My Logins" />
             </Tabs>
           </div>
           <TabPanel value={value} index={0}>
             <MyActivityHistory />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <MyProfile />
+            <MyLogins />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <MyLogins />
+            <MyProfile />
           </TabPanel>
         </Grid>
       </Grid>

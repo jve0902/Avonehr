@@ -125,7 +125,7 @@ const getActivityHistory = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
-      `select ul.dt, concat(p.firstname, ' ', p.lastname) patient, ul.action
+      `select ul.dt, concat(p.firstname, ' ', p.lastname) patient, p.id patient_id, ul.action
       from user_log ul
       left join patient p on p.id=ul.patient_id
       where ul.user_id=${req.params.userId}

@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { useDispatch } from "react-redux";
 import { setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   patientLink: {
-    color: "#2979FF",
+    color: theme.palette.text.link,
     cursor: "pointer",
   },
   placeholderText: {
@@ -77,7 +78,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function MyActivityHistory(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const [activityHistory, setActivityHistory] = useState([]);
 
   useEffect(() => {
@@ -126,10 +127,15 @@ export default function MyActivityHistory(props) {
                     <TableCell component="th" scope="row">
                       {moment(row.dt).format("lll")}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell 
+                    component="th" 
+                    scope="row" 
+                    className={classes.patientLink}
+                    onClick={() => history.push(`/patient/${row.patient_id}`)}
+                    >
                       {row.patient}
                     </TableCell>
-                    <TableCell className={classes.patientLink}>
+                    <TableCell>
                       {row.action}
                     </TableCell>
                   </StyledTableRow>

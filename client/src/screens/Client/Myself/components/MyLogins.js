@@ -106,7 +106,7 @@ export default function MyActivityHistory(props) {
             color="textPrimary"
             className={classes.title}
           >
-            My Logins
+            My Login History
           </Typography>
           <Typography component="p" variant="body2" color="textPrimary">
             This page shows a user's logins
