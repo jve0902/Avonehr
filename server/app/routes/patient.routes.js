@@ -124,7 +124,11 @@ router.post(
   [authJwt.verifyToken],
   Patient.createMessage
 );
-router.delete("/messages/:id", [authJwt.verifyToken], Patient.deleteMessage);
+router.delete(
+  "/patient/:patient_id/messages/:id",
+  [authJwt.verifyToken],
+  Patient.deleteMessage
+);
 router.get(
   "/patient/:patient_id/all-tests",
   [authJwt.verifyToken],
