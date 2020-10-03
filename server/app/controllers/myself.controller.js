@@ -75,7 +75,8 @@ const getForwardEmail = async (req, res) => {
     const dbResponse = await db.query(
       `select u.id, concat(u.firstname, ' ', u.lastname) name
       from user u 
-      where u.client_id=${req.params.userId}
+      where u.client_id=${req.client_id}
+      and u.id<>${req.params.userId}
       order by name
       limit 100
       `
