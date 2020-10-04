@@ -143,7 +143,7 @@ class Patient {
   }
 
   updateAdminNotes(patient_id, data, noteId) {
-    return axios.put(API_URL + `/patient/${patient_id}/admin-note/${noteId}`, data, {
+    return axios.put(API_URL + `/patient/${patient_id}/admin-note`, data, {
       headers: authHeader(),
     });
   }
