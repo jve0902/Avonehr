@@ -17,7 +17,6 @@ exports.validate = (method) => {
         check("data.old_admin_note")
           .exists()
           .withMessage("old_admin_note can not empty!"),
-        param("id").isInt().withMessage("Must be an integer!"),
       ];
     }
     case "singleForm": {

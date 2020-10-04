@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -10,10 +10,10 @@ import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-// import Tooltip from "@material-ui/core/Tooltip";
 import { useDispatch } from "react-redux";
 import { setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   patientLink: {
-    color: "#2979FF",
+    color: theme.palette.text.link,
     cursor: "pointer",
   },
   placeholderText: {
@@ -44,15 +44,6 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
 }));
-
-// const LightTooltip = withStyles((theme) => ({
-//   tooltip: {
-//     backgroundColor: theme.palette.common.white,
-//     color: "rgba(0, 0, 0, 0.87)",
-//     boxShadow: theme.shadows[1],
-//     fontSize: 13,
-//   },
-// }))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -84,7 +75,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function MyActivityHistory(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const [activityHistory, setActivityHistory] = useState([]);
 
   useEffect(() => {
@@ -133,12 +124,15 @@ export default function MyActivityHistory(props) {
                     <TableCell component="th" scope="row">
                       {moment(row.dt).format("lll")}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className={classes.patientLink}
+                      onClick={() => history.push(`/patient/${row.patient_id}`)}
+                    >
                       {row.patient}
                     </TableCell>
-                    <TableCell className={classes.patientLink}>
-                      {row.action}
-                    </TableCell>
+                    <TableCell>{row.action}</TableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>

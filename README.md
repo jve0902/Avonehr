@@ -47,14 +47,20 @@ To run:
 1. In Visual Studio Code install the Prettier extension.
 2. Go to Code -> Settings -> Preferences, search for `editor.formatOnSave`, set to True.
 
-## App
+## Doctor Login
 
-1. Login page for clients/doctors http://localhost:3000/login_client
+1. Login page for doctors/clients http://localhost:3000/login_client
 2. Use email test@test.com password 12345678
-3. Use these credentials so you will see the demo data for this client.
+3. Use these credentials so you will see the correct demo data.
 
 If you get an error "Client does not support authentication protocol requested by server" then
     `alter user 'root'@'localhost' identified with mysql_native_password by '12345678'`
+    
+## Patient Login
+
+1. Login page for patients http://localhost:3000/login/ultrawellness
+2. Use email test@test.com password 12345678
+3. Use these credentials so you will see the correct demo data.
 
 ## Email
 

@@ -9,7 +9,7 @@ const getProfile = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
-      `select firstname, lastname, email, title, created, email_forward_user_id, phone
+      `select firstname, lastname, email, title, created, email_forward_user_id, phone, status
       from user 
       where id=${req.params.userId}
       `
@@ -75,7 +75,8 @@ const getForwardEmail = async (req, res) => {
     const dbResponse = await db.query(
       `select u.id, concat(u.firstname, ' ', u.lastname) name
       from user u 
-      where u.client_id=${req.params.userId}
+      where u.client_id=${req.client_id}
+      and u.id<>${req.params.userId}
       order by name
       limit 100
       `
@@ -125,7 +126,7 @@ const getActivityHistory = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
-      `select ul.dt, concat(p.firstname, ' ', p.lastname) patient, ul.action
+      `select ul.dt, concat(p.firstname, ' ', p.lastname) patient, p.id patient_id, ul.action
       from user_log ul
       left join patient p on p.id=ul.patient_id
       where ul.user_id=${req.params.userId}

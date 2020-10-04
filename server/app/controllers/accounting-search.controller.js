@@ -43,10 +43,10 @@ const search = async (req, res) => {
       left join encounter e on e.id=t.encounter_id
       where t.client_id=${req.client_id} \n`;
     if (amount1) {
-      $sql = $sql + `and t.amount >= ${amount1} \n`;
+      $sql = $sql + `and abs(t.amount) >= ${amount1} \n`;
     }
     if (amount2) {
-      $sql = $sql + `and t.amount <= ${amount2} \n`;
+      $sql = $sql + `and abs(t.amount) <= ${amount2} \n`;
     }
     if (dateFrom) {
       $sql = $sql + `and t.dt >= '${dateFrom}' \n`;
