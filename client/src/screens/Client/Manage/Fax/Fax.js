@@ -1,66 +1,65 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: '40px 0px',
+    padding: "40px 0px",
   },
   title: {
     paddingBottom: theme.spacing(1),
   },
   status: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   subject: {
-    width: '50%',
+    width: "50%",
   },
   fields: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   },
   texArea: {
-    height: '250px !important',
-    width: '75%',
-    padding: '5px',
+    width: "75%",
   },
   next: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: '100px',
+    maxWidth: "100px",
+    width: "100px",
   },
   historyTop: {
-    marginTop: '15px',
+    marginTop: "15px",
   },
   history: {
-    marginTop: '5px',
-    display: 'flex',
-    border: 'black solid 1px',
-    padding: '5px',
-    height: '300px',
-    flexDirection: 'row',
-    '& div': {
-      width: '16%',
-      margin: '5px',
+    marginTop: "5px",
+    display: "flex",
+    border: "black solid 1px",
+    padding: "5px",
+    height: "300px",
+    flexDirection: "row",
+    "& div": {
+      width: "16%",
+      margin: "5px",
     },
   },
   fileUpload: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   fileItems: {
-    marginRight: '5px',
+    marginRight: "5px",
   },
 }));
 
 export default function Fax() {
   const classes = useStyles();
-  const [faxNumber, setFaxNumber] = React.useState('');
-  const [cover, setCover] = React.useState('');
+  const [faxNumber, setFaxNumber] = React.useState("");
+  const [cover, setCover] = React.useState("");
   const [file, setFile] = React.useState(null);
 
   return (
@@ -72,6 +71,9 @@ export default function Fax() {
         className={classes.title}
       >
         Send Fax
+      </Typography>
+      <Typography component="p" variant="body2" color="textPrimary">
+        This page is used to send fax
       </Typography>
 
       <div className={classes.fields}>
@@ -86,15 +88,23 @@ export default function Fax() {
           autoComplete="faxNumber"
           autoFocus
           onChange={(event) => setFaxNumber(event.target.value)}
+          size="small"
         />
-        <Typography component="p" variant="body2" color="textPrimary">
-          Cover Sheet
-        </Typography>
-        <TextareaAutosize
+        <TextField
           className={classes.texArea}
-          aria-label="minimum height"
-          placeholder="Your message starts here..."
-          onChange={(event) => setCover(event.target.value)}
+          fullWidth
+          variant="outlined"
+          label="Cover Sheet"
+          multiline
+          name="note"
+          InputProps={{
+            classes: classes.normalOutline,
+            inputComponent: TextareaAutosize,
+            rows: 8,
+          }}
+          value={cover}
+          onChange={(event) => setCover(event)}
+          size="small"
         />
         <div className={classes.fileUpload}>
           <Button
@@ -103,9 +113,10 @@ export default function Fax() {
             color="primary"
             className={`${classes.next} ${classes.fileItems}`}
             onChange={(event) => setFile(event.target.files[0].name)}
+            size="small"
           >
             Add File
-            <input type="file" style={{ display: 'none' }} />
+            <input type="file" style={{ display: "none" }} />
           </Button>
           <Typography
             className={classes.fileItems}
@@ -121,6 +132,7 @@ export default function Fax() {
               color="secondary"
               className={classes.next}
               onClick={() => setFile(null)}
+              size="small"
             >
               Remove
             </Button>
@@ -131,6 +143,7 @@ export default function Fax() {
           variant="contained"
           color="primary"
           className={classes.next}
+          size="small"
         >
           Send
         </Button>

@@ -194,6 +194,7 @@ export default function AccountingSearch() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <KeyboardDatePicker
+                  autoOk
                   variant="outlined"
                   id="date"
                   label="Date From"
@@ -201,7 +202,6 @@ export default function AccountingSearch() {
                   className={classes.textField}
                   onChange={(date) => setDateFrom(date)}
                   clearable
-                  // disablePast
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
@@ -212,8 +212,8 @@ export default function AccountingSearch() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <KeyboardDatePicker
+                  autoOk
                   clearable
-                  // disablePast
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}

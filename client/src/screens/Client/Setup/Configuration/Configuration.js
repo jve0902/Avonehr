@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     maxWidth: "450px",
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     "& h1": {
       [theme.breakpoints.up("md")]: {
         marginRight: theme.spacing(4),
@@ -140,9 +140,6 @@ export default function Configuration(props) {
         phone: data.phone,
         fax: data.fax,
       });
-      console.log(
-        moment(data.calendar_start_time, "HH:mm:ss").format("hh:mm A")
-      );
       setCalendarStartTime(
         moment(data.calendar_start_time, "HH:mm:ss").format(
           "YYYY-MM-DDTHH:mm:ss"
@@ -261,7 +258,6 @@ export default function Configuration(props) {
   return (
     <div className={classes.root}>
       <div className={classes.paper}>
-        {console.log(calendarStartTime)}
         <div className={classes.uploadButtons} style={{ paddingRight: "12px" }}>
           <Typography component="h1" variant="h2" color="textPrimary">
             Configuration
