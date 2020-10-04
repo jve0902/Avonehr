@@ -7,6 +7,7 @@ const getAll = async (req, res) => {
   try {
     const dbResponse = await db.query(
       `select year(dt) year, month(dt) month
+      , sum(amount) Total
       , sum(case when type_id=1 then amount end) Service
       , sum(case when type_id=2 then amount end) Credit
       , sum(case when type_id=3 then amount end) Payment
@@ -33,7 +34,6 @@ const getAll = async (req, res) => {
     await db.close();
   }
 };
-
 
 const reportFinance = {
   getAll,
