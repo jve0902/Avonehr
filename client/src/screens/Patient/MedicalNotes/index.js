@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IconButton, Grid, Typography, TextField } from "@material-ui/core";
+import { IconButton, Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";

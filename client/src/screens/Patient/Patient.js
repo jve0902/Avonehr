@@ -197,6 +197,7 @@ export default function Patient(props) {
     fetchMedications();
     fetchRequisitions();
     fetchTests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
 
   const fetchCardsLayout = () => {

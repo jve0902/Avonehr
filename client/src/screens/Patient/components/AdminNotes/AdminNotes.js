@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, IconButton, Grid, Typography } from "@material-ui/core";
+import { TextField, IconButton, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
@@ -32,6 +32,7 @@ const AdminNotes = (props) => {
       ...formFields,
       [fieldName]: props.oldAdminNote,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.oldAdminNote]);
 
   const onFormSubmit = (e) => {
