@@ -69,9 +69,6 @@ const AdminNotes = (props) => {
 
   return (
     <>
-      {/* <Typography variant="h3" color="textSecondary">
-        Edit Notes
-      </Typography> */}
       <form onSubmit={onFormSubmit}>
           <Grid className={classes.formInput} item md={12}>
             <TextField

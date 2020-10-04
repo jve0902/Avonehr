@@ -55,20 +55,12 @@ const MedicalNotes = (props) => {
 
   return (
     <>
-      {/* <Typography variant="h3" color="textSecondary">
-        Medical Notes Form
-      </Typography> */}
       <form onSubmit={onFormSubmit}>
         <Grid
           className={classes.actionContainer}
           container
           justify="space-between"
         >
-          {/* <Grid item lg={2}>
-            <Typography gutterBottom variant="body1" color="textPrimary">
-              Notes
-            </Typography>
-          </Grid> */}
           <Grid className={classes.formInput} item md={12}>
             <TextField
               required
@@ -89,12 +81,6 @@ const MedicalNotes = (props) => {
           <IconButton variant="outlined" onClick={() => onClose()} size="small">
             <CancelIcon />
           </IconButton>
-          {/* <Button variant="outlined" type="submit">
-            Save
-          </Button>
-          <Button variant="outlined" onClick={() => onClose()}>
-            Cancel
-          </Button> */}
         </Grid>
       </form>
     </>
