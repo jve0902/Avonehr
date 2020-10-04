@@ -202,12 +202,18 @@ export default function Patient(props) {
   const fetchCardsLayout = () => {
     const user_id = user.id;
     PatientService.getCardsLayout(user_id).then((res) => {
-      // setLayout(res.data);
+      let layout = res.data.length && res.data[0].layout ? JSON.parse(res.data[0].layout) : null;
+      if(!!layout) {
+        setLayout(layout);
+      }
     });
   };
 
-  const updateCardsLayout = (layout) => {
+  const updateCardsLayout = (gridLayout) => {
     const user_id = user.id;
+    let layout = {
+      "layout": JSON.stringify(gridLayout)
+    }
     PatientService.updateCardsLayout(user_id, layout).then((res) => {
       console.log("CARDS LAYOUT UPDATED!!!", res)
     });
@@ -976,6 +982,7 @@ export default function Patient(props) {
           <RequisitionsDetails
             data={requisitions}
             onClose={toggleRequisitionExpandDialog}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleRequisitionExpandDialog()}
