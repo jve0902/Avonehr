@@ -68,7 +68,7 @@ const Reports = ({ reports, ...props }) => {
           <TableRow>
             <StyledTableCell>Year</StyledTableCell>
             <StyledTableCell>Month</StyledTableCell>
-            <StyledTableCell>Total Revenue</StyledTableCell>
+            <StyledTableCell>Total</StyledTableCell>
             <StyledTableCell>Service</StyledTableCell>
             <StyledTableCell>Credit</StyledTableCell>
             <StyledTableCell>Payment</StyledTableCell>
