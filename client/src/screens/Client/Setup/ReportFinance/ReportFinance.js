@@ -94,7 +94,7 @@ export default function ReportFinance(props) {
           <div className={classes.paper}>
             <CssBaseline />
             <Container maxWidth={false} className={classes.root}>
-              <div className={classes.header}>
+              <div className={classes.title}>
                 <Typography component="h1" variant="h2" color="textPrimary">
                   Report Finance
                 </Typography>
