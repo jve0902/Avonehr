@@ -163,10 +163,10 @@ const Login = () => {
                   autoComplete="email"
                   autoFocus
                   onChange={(event) => setEmail(event.target.value)}
-                  inputProps={{ maxLength: 320 }}
+                  inputProps={{ maxLength: 255 }}
                   helperText={`${
-                    email.length >= 320
-                      ? "Enter an email between 40 charecter"
+                    email.length >= 255
+                      ? "Enter an email between 255 charecter"
                       : ""
                   }`}
                 />
@@ -184,8 +184,8 @@ const Login = () => {
                   onChange={(event) => setPassword(event.target.value)}
                   inputProps={{ maxLength: 128 }}
                   helperText={`${
-                    email.length >= 128
-                      ? "Enter an email between 40 charecter"
+                    password.length >= 128
+                      ? "Enter a password between 128 charecter"
                       : ""
                   }`}
                 />

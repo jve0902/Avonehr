@@ -153,10 +153,10 @@ const ForgetPassword = () => {
                 autoComplete="email"
                 autoFocus
                 onChange={(event) => setEmail(event.target.value)}
-                inputProps={{ maxLength: 320 }}
+                inputProps={{ maxLength: 255 }}
                 helperText={`${
-                  email.length >= 320
-                    ? "Enter an email between 40 charecter"
+                  email.length >= 255
+                    ? "Enter an email between 255 charecter"
                     : ""
                 }`}
               />
