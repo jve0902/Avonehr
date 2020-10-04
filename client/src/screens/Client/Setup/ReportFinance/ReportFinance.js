@@ -109,7 +109,7 @@ export default function ReportFinance(props) {
                 </Typography>
               </div>
               <Typography component="p" variant="body2" color="textPrimary">
-                This page is used to creat a monthly finance report
+                This page is used to create a finance report by month
               </Typography>
               <Grid container direction="column" justify="center">
                 <div className={classes.datePicker}>
