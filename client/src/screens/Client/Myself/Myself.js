@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
+// import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import { MyActivityHistory, MyLogins, MyProfile } from "./components";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
     "& span": {
       textColor: "white",
     },
+  },
+  tabItems: {
+    marginTop: "5px",
+    marginBottom: "10px",
+  },
+  paper: {
+    width: "500px",
   },
 }));
 
@@ -68,17 +76,19 @@ const Myself = () => {
     <div className={classes.root}>
       <Grid container justify="center" spacing={0}>
         <Grid item md={12} xs={12}>
-          <div>
-            <Tabs
-              className={classes.tabs}
-              value={value}
-              onChange={handleChange}
-              aria-label="simple tabs example"
-            >
-              <Tab className={classes.tabItem} label="My Activity History" />
-              <Tab className={classes.tabItem} label="My Profile" />
-              <Tab className={classes.tabItem} label="My Logins" />
-            </Tabs>
+          <div className={classes.tabItems}>
+            <Paper square className={classes.paper}>
+              <Tabs
+                className={classes.tabs}
+                value={value}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+              >
+                <Tab className={classes.tabItem} label="My Activity History" />
+                <Tab className={classes.tabItem} label="My Profile" />
+                <Tab className={classes.tabItem} label="My Logins" />
+              </Tabs>
+            </Paper>
           </div>
           <TabPanel value={value} index={0}>
             <MyActivityHistory />

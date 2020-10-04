@@ -242,18 +242,18 @@ export default function Configuration(props) {
       [e.target.name]: e.target.value,
     });
   };
-  const _onTimeChangeStart = (date) => {
-    setFormParams({
-      ...formParams,
-      calendarStartTime: date,
-    });
-  };
-  const _onTimeChangeEnd = (date) => {
-    setFormParams({
-      ...formParams,
-      calendarEndTime: date,
-    });
-  };
+  // const _onTimeChangeStart = (date) => {
+  //   setFormParams({
+  //     ...formParams,
+  //     calendarStartTime: date,
+  //   });
+  // };
+  // const _onTimeChangeEnd = (date) => {
+  //   setFormParams({
+  //     ...formParams,
+  //     calendarEndTime: date,
+  //   });
+  // };
 
   return (
     <div className={classes.root}>

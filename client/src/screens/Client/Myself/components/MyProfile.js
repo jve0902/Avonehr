@@ -10,16 +10,13 @@ import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSuccess, setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  paper: {
-    padding: "5px",
   },
   title: {
     paddingBottom: theme.spacing(1),

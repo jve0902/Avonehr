@@ -10,9 +10,9 @@ import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { setSuccess, setError } from "../../../../store/common/actions";
+// import Tooltip from "@material-ui/core/Tooltip";
+import { useDispatch } from "react-redux";
+import { setError } from "../../../../store/common/actions";
 import MySelfService from "../../../../services/myself.service";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingBottom: theme.spacing(1),
-  },
-  paper: {
-    padding: "5px",
   },
   tableContainer: {
     width: 500,
@@ -48,14 +45,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LightTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 13,
-  },
-}))(Tooltip);
+// const LightTooltip = withStyles((theme) => ({
+//   tooltip: {
+//     backgroundColor: theme.palette.common.white,
+//     color: "rgba(0, 0, 0, 0.87)",
+//     boxShadow: theme.shadows[1],
+//     fontSize: 13,
+//   },
+// }))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
