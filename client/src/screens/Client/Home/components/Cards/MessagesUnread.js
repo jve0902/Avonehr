@@ -52,7 +52,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MessagesUnread = ({ appointmentRequests, messagesUnread }) => {
+const MessagesUnread = ({
+  appointmentRequests,
+  messagesUnread,
+  onMessageEdit,
+}) => {
   const classes = useStyles();
 
   return (
@@ -75,8 +79,10 @@ const MessagesUnread = ({ appointmentRequests, messagesUnread }) => {
                 {moment(msg.created).format("ll")}, {msg.name}, {msg.subject},{" "}
                 {msg.message}
                 <div className={classes.unreadMsgActions}>
-                  <Link to="/patient">Patient</Link>
-                  <Button>Edit Message</Button>
+                  <Link to={`/patient/${msg.patient_id}`}>Patient</Link>
+                  <Button onClick={(_) => onMessageEdit(_, msg)}>
+                    Edit Message
+                  </Button>
                 </div>
               </li>
             ))

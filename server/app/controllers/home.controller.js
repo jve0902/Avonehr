@@ -265,7 +265,7 @@ const getAppointmentRequest = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select uc.id, uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name
+      `select uc.id, uc.client_id, uc.start_dt, uc.end_dt, concat(p.firstname, ' ', p.lastname) name, p.id patient_id
         from user_calendar uc
         join patient p on p.id=uc.patient_id
         where uc.client_id=${req.client_id}
@@ -296,7 +296,7 @@ const getUnreadMessages = async (req, res) => {
   const { providerId } = req.params;
   try {
     const dbResponse = await db.query(
-      `select m.id, m.created, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
+      `select m.id, m.created, m.unread_notify_dt, p.id patient_id, concat(p.firstname, ' ', p.lastname) name, m.subject, m.message
         from message m
         left join patient p on p.id=m.patient_id_to
         where m.client_id=${req.client_id}
