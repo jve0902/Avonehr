@@ -88,7 +88,11 @@ router.get(
   [authJwt.verifyToken],
   Patient.getDocuments
 );
-router.put("/documents/:id", [authJwt.verifyToken], Patient.updateDocuments);
+router.put(
+  "/patient/:id/documents/:id",
+  [authJwt.verifyToken],
+  Patient.updateDocuments
+);
 router.get(
   "/patient/:patient_id/documents/check",
   [authJwt.verifyToken],
@@ -124,7 +128,11 @@ router.post(
   [authJwt.verifyToken],
   Patient.createMessage
 );
-router.delete("/messages/:id", [authJwt.verifyToken], Patient.deleteMessage);
+router.delete(
+  "/patient/:patient_id/messages/:id",
+  [authJwt.verifyToken],
+  Patient.deleteMessage
+);
 router.get(
   "/patient/:patient_id/all-tests",
   [authJwt.verifyToken],

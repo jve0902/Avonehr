@@ -9,10 +9,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import NumberFormat from "react-number-format";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
-    minWidth: 650,
+    minWidth: 1000,
     marginTop: theme.spacing(2),
   },
   actions: {
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     "& button": {
       fontSize: "12px",
     },
+  },
+  detailLink: {
+    color: theme.palette.text.link,
+    cursor: "pointer",
   },
 }));
 
@@ -48,13 +53,14 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px"
+      height: "50px",
     },
   },
 }))(TableRow);
 
 const Reports = ({ reports, ...props }) => {
   const classes = useStyles();
+  const history = useHistory();
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
       <Table className={classes.table} aria-label="a dense table">
@@ -62,10 +68,12 @@ const Reports = ({ reports, ...props }) => {
           <TableRow>
             <StyledTableCell>Year</StyledTableCell>
             <StyledTableCell>Month</StyledTableCell>
+            <StyledTableCell>Total</StyledTableCell>
             <StyledTableCell>Service</StyledTableCell>
             <StyledTableCell>Credit</StyledTableCell>
             <StyledTableCell>Payment</StyledTableCell>
             <StyledTableCell>Refund</StyledTableCell>
+            <StyledTableCell>Detail</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,7 +82,14 @@ const Reports = ({ reports, ...props }) => {
               <TableCell component="th" scope="row">
                 {report.year}
               </TableCell>
-          <TableCell>{moment(report.month, 'M').format('MMM')}</TableCell>
+              <TableCell>{moment(report.month, "M").format("MMM")}</TableCell>
+              <TableCell>
+                <NumberFormat
+                  prefix="$"
+                  displayType="text"
+                  value={report.Total}
+                />
+              </TableCell>
               <TableCell>
                 <NumberFormat
                   prefix="$"
@@ -102,6 +117,16 @@ const Reports = ({ reports, ...props }) => {
                   displayType="text"
                   value={report.Refund}
                 />
+              </TableCell>
+              <TableCell
+                className={classes.detailLink}
+                onClick={() =>
+                  history.push(
+                    `/reports/report-finance-detail/${report.year}/${report.month}`
+                  )
+                }
+              >
+                Detail
               </TableCell>
             </StyledTableRow>
           ))}
