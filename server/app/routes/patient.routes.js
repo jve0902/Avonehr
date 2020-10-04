@@ -184,4 +184,16 @@ router.delete(
   Patient.deleteRequisitions
 );
 
+router.get(
+  "/patient-layout/:user_id",
+  [authJwt.verifyToken],
+  Patient.getLayout
+);
+
+router.post(
+  "/patient-layout/:user_id",
+  [authJwt.verifyToken],
+  Patient.saveLayout
+);
+
 module.exports = router;

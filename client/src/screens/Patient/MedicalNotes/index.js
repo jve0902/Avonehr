@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Button, Grid, Typography, TextField } from "@material-ui/core";
+import { IconButton, Grid, Typography, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
+import SaveIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+
 const MedicalNotes = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, reloadData } = props;
+  const { onClose, reloadData, patientId } = props;
   const [oldMedicalNote, setOldMedicalNote] = useState("");
   const [medicalNote, setMedicalNote] = useState("");
 
@@ -27,7 +30,7 @@ const MedicalNotes = (props) => {
         medical_note: medicalNote,
       },
     };
-    PatientService.updateMedicalNotes(reqBody, noteId)
+    PatientService.updateMedicalNotes(patientId, reqBody, noteId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -52,20 +55,12 @@ const MedicalNotes = (props) => {
 
   return (
     <>
-      <Typography variant="h3" color="textSecondary">
-        Medical Notes Form
-      </Typography>
       <form onSubmit={onFormSubmit}>
         <Grid
           className={classes.actionContainer}
           container
           justify="space-between"
         >
-          <Grid item lg={2}>
-            <Typography gutterBottom variant="body1" color="textPrimary">
-              Notes
-            </Typography>
-          </Grid>
           <Grid className={classes.formInput} item md={12}>
             <TextField
               required
@@ -77,15 +72,15 @@ const MedicalNotes = (props) => {
               fullWidth
               onChange={(e) => setMedicalNote(e.target.value)}
               multiline={true}
-              rows={5}
+              rows={3}
             />
           </Grid>
-          <Button variant="outlined" type="submit">
-            Save
-          </Button>
-          <Button variant="outlined" onClick={() => onClose()}>
-            Cancel
-          </Button>
+          <IconButton variant="outlined" type="submit" size="small">
+            <SaveIcon />
+          </IconButton>
+          <IconButton variant="outlined" onClick={() => onClose()} size="small">
+            <CancelIcon />
+          </IconButton>
         </Grid>
       </form>
     </>
@@ -97,10 +92,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0),
   },
   formInput: {
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(1),
   },
   actionContainer: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(1),
   },
 }));
 

@@ -21,6 +21,9 @@ export default function RequisitionsContent(props) {
             <Grid item className={classes.block}>
               <Typography component="span" className={classes.text12} color="textPrimary">{item.id}</Typography>
             </Grid>
+            <Grid item className={classes.block}>
+              <Typography component="span" className={classes.text12} color="textPrimary">{item.cpt_name}</Typography>
+            </Grid>
           </Grid>
         ))
         }

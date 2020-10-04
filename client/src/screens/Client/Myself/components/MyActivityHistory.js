@@ -117,7 +117,8 @@ export default function MyActivityHistory(props) {
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Time</StyledTableCell>
-                  <StyledTableCell>Patient</StyledTableCell>
+                  <StyledTableCell>Patient ID</StyledTableCell>
+                  <StyledTableCell>Patient Name</StyledTableCell>
                   <StyledTableCell>Action</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -127,17 +128,23 @@ export default function MyActivityHistory(props) {
                     <TableCell component="th" scope="row">
                       {moment(row.dt).format("lll")}
                     </TableCell>
-                    <TableCell 
-                    component="th" 
-                    scope="row" 
-                    className={classes.patientLink}
-                    onClick={() => history.push(`/patient/${row.patient_id}`)}
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className={classes.patientLink}
+                      onClick={() => history.push(`/patient/${row.patient_id}`)}
+                    >
+                      {row.patient_id}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className={classes.patientLink}
+                      onClick={() => history.push(`/patient/${row.patient_id}`)}
                     >
                       {row.patient}
                     </TableCell>
-                    <TableCell>
-                      {row.action}
-                    </TableCell>
+                    <TableCell>{row.action}</TableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>

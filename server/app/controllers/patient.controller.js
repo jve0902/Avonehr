@@ -1,5 +1,6 @@
 "use strict";
 const multer = require("multer");
+const moment = require("moment");
 const fs = require("fs");
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
@@ -1318,6 +1319,72 @@ const deleteRequisitions = async (req, res) => {
   }
 };
 
+const getLayout = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { user_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `select *
+      from user_grid
+      where user_id=${user_id}`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "No Layout found";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const saveLayout = async (req, res) => {
+  const { user_id } = req.params;
+  const { layout } =  req.body;
+  const db = makeDb(configuration, res);
+  try {
+    const now = moment().format("YYYY-MM-DD HH:mm:ss");
+    const insertResponse = await db.query(
+      `insert into user_grid
+      (
+        user_id,
+        layout,
+        created
+      ) values
+      (
+        ${user_id},
+        '${layout}',
+        '${now}'
+      )
+        on duplicate key update 
+        layout='${layout}',
+        updated='${now}'
+      `
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1356,6 +1423,8 @@ const appointmentTypes = {
   createRequisitions,
   getRequisitions,
   deleteRequisitions,
+  getLayout,
+  saveLayout,
 };
 
 module.exports = appointmentTypes;

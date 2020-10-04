@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ import {
 
 // dialog components
 import {
-  AdminNotes,
+  AdminNotesForm,
   AdminNotesHistory,
   AdminNotesCardContent,
 } from "./components/AdminNotes";
@@ -82,6 +82,9 @@ import "../../reactGridLayout.css";
 
 import { Responsive, WidthProvider } from "react-grid-layout";
 
+//providers
+import { AuthContext } from "../../providers/AuthProvider"
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export default function Patient(props) {
@@ -90,6 +93,7 @@ export default function Patient(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   let { patient_id } = useParams();
+  const user = useContext(AuthContext)?.user;
 
   //grid layout states
   const [layout, setLayout] = useState([]);
@@ -177,7 +181,8 @@ export default function Patient(props) {
   }, []);
 
   useEffect(() => {
-    fetchPatientData(patient_id);
+    fetchCardsLayout();
+    fetchPatientData();
     fetchPatientHistory(patient_id);
     fetchAdminNotesHistory();
     fetchAllergies();
@@ -194,7 +199,27 @@ export default function Patient(props) {
     fetchTests();
   }, [patient_id]);
 
-  const fetchPatientData = (patient_id) => {
+  const fetchCardsLayout = () => {
+    const user_id = user.id;
+    PatientService.getCardsLayout(user_id).then((res) => {
+      let layout = res.data.length && res.data[0].layout ? JSON.parse(res.data[0].layout) : null;
+      if(!!layout) {
+        setLayout(layout);
+      }
+    });
+  };
+
+  const updateCardsLayout = (gridLayout) => {
+    const user_id = user.id;
+    let layout = {
+      "layout": JSON.stringify(gridLayout)
+    }
+    PatientService.updateCardsLayout(user_id, layout).then((res) => {
+      console.log("CARDS LAYOUT UPDATED!!!", res)
+    });
+  };
+
+  const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
       setPatientData(res.data);
     });
@@ -207,86 +232,81 @@ export default function Patient(props) {
   };
 
   const fetchAdminNotesHistory = () => {
-    PatientService.getAdminNotesHistory().then((res) => {
+    PatientService.getAdminNotesHistory(patient_id).then((res) => {
       setAdminNotesHistory(res.data);
     });
   };
 
   const fetchAllergies = () => {
-    PatientService.getAllergies().then((res) => {
+    PatientService.getAllergies(patient_id).then((res) => {
       setAllergies(res.data);
     });
   };
 
   const fetchPatientHandouts = () => {
-    PatientService.getPatientHandouts().then((res) => {
+    PatientService.getPatientHandouts(patient_id).then((res) => {
       setHandouts(res.data);
     });
   };
 
   const fetchForms = () => {
-    PatientService.getForms().then((res) => {
+    PatientService.getForms(patient_id).then((res) => {
       setForms(res.data);
     });
   };
 
   const fetchBillings = () => {
     let limit = 3;
-    PatientService.getBillings(limit).then((res) => {
+    PatientService.getBillings(patient_id, limit).then((res) => {
       setBillings(res.data);
     });
   };
 
   const fetchDocuments = () => {
-    let encounterId = "1";
     let tab = "Labs";
-    PatientService.getDocuments(encounterId, tab).then((res) => {
+    PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });
   };
 
-  const fetchEncounters = (patient_id) => {
+  const fetchEncounters = () => {
     PatientService.getEncounters(patient_id).then((res) => {
       setEncounters(res.data);
     });
   };
 
   const fetchMedicalNotes = () => {
-    PatientService.getMedicalNotes().then((res) => {
+    PatientService.getMedicalNotes(patient_id).then((res) => {
       setMedicalNotes(res.data);
     });
   };
 
   const fetchMessages = () => {
-    PatientService.getMessages().then((res) => {
+    PatientService.getMessages(patient_id).then((res) => {
       setMessages(res.data);
     });
   };
 
   const fetchDiagnoses = () => {
-    let encounterId = "1";
-    PatientService.getDiagnoses(encounterId).then((res) => {
+    PatientService.getDiagnoses(patient_id).then((res) => {
       setDiagnoses(res.data);
     });
   };
 
   const fetchMedications = () => {
-    let encounterId = "1";
-    PatientService.getMedications(encounterId).then((res) => {
+    PatientService.getMedications(patient_id).then((res) => {
       setMedications(res.data);
     });
   };
 
   const fetchRequisitions = () => {
-    let encounterId = "1";
-    PatientService.getRequisitions(encounterId).then((res) => {
+    PatientService.getRequisitions(patient_id).then((res) => {
       setRequisitions(res.data);
     });
   };
 
   const fetchTests = () => {
-    let encounterId = "1";
-    PatientService.getTests(encounterId).then((res) => {
+    PatientService.getTests(patient_id).then((res) => {
       setTests(res.data);
     });
   };
@@ -465,9 +485,23 @@ export default function Patient(props) {
     if (value === "Patient") {
       return !!patientData && <PatientCardContent data={patientData} />;
     } else if (value === "Admin Notes") {
-      return (
-        !!patientData && <AdminNotesCardContent data={patientData.admin_note} />
-      );
+      if(!!patientData) {
+        return (
+          showAdminFormDialog
+          ?
+          <AdminNotesForm
+            patientId={patient_id}
+            oldAdminNote={patientData && patientData.admin_note}
+            onClose={toggleAdminFormDialog}
+            reloadData={() => {
+              fetchPatientData();
+              fetchAdminNotesHistory();
+            }}
+          />
+          :
+          <AdminNotesCardContent data={patientData.admin_note} />
+        );
+      }
     } else if (value === "Forms") {
       return !!forms && <FormCardContent data={forms} />;
     } else if (value === "Billing") {
@@ -482,11 +516,23 @@ export default function Patient(props) {
         )
       );
     } else if (value === "Medical Notes") {
-      return (
-        !!patientData && (
+      if(!!patientData) {
+        return (
+          showMedicalNotesFormDialog
+          ?
+          <MedicalNotesForm
+            patientId={patient_id}
+            onClose={toggleMedicalNotesFormDialog}
+            oldMedicalNote={patientData && patientData.medical_note}
+            reloadData={() => {
+              fetchPatientData();
+              fetchMedicalNotes();
+            }}
+          />
+          :
           <MedicalNotesCardContent data={patientData.medical_note} />
         )
-      );
+      }
     } else if (value === "Handouts") {
       return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
@@ -525,7 +571,7 @@ export default function Patient(props) {
   };
 
   const createDocument = (reqBody) => {
-    PatientService.createDocuments(reqBody)
+    PatientService.createDocuments(patient_id, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         fetchDocuments();
@@ -552,7 +598,7 @@ export default function Patient(props) {
     console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
-    fd.append("patient_id", 1);
+    fd.append("patient_id", patient_id);
     createDocument(fd);
   };
 
@@ -658,11 +704,12 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showAdminFormDialog}
         title={"Admin Notes Form"}
         message={
-          <AdminNotes
+          <AdminNotesForm
+            patientId={patient_id}
             oldAdminNote={patientData && patientData.admin_note}
             onClose={toggleAdminFormDialog}
             reloadData={() => {
@@ -675,7 +722,7 @@ export default function Patient(props) {
         cancelForm={() => toggleAdminFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
@@ -818,11 +865,12 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showMedicalNotesFormDialog}
         title={" "}
         message={
           <MedicalNotesForm
+            patientId={patient_id}
             onClose={toggleMedicalNotesFormDialog}
             oldMedicalNote={patientData && patientData.medical_note}
             reloadData={() => {
@@ -835,7 +883,7 @@ export default function Patient(props) {
         cancelForm={() => toggleMedicalNotesFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showMessageDialog}
         title={"New Message"}
@@ -843,6 +891,7 @@ export default function Patient(props) {
           <NewMessageForm
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageDialog()}
@@ -858,6 +907,7 @@ export default function Patient(props) {
             data={messages}
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageExpandDialog()}
@@ -932,6 +982,7 @@ export default function Patient(props) {
           <RequisitionsDetails
             data={requisitions}
             onClose={toggleRequisitionExpandDialog}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleRequisitionExpandDialog()}
@@ -973,7 +1024,10 @@ export default function Patient(props) {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
-        // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
+        onDragStop={(val) => updateCardsLayout(val)}
+        onResizeStop={(val) => updateCardsLayout(val)}
+        //onLayoutChange is called always on first render so it fails in our scenario, using above two props for our use case
+        // onLayoutChange={(val) => updateCardsLayout(val)} //TODO:: save the updated layouts in the DB
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
