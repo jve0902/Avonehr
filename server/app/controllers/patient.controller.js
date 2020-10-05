@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
     const dest = process.env.LAB_UPLOAD_DIR;
-    fs.access(dest, function (error) {
+    fs.access(dest, function(error) {
       if (error) {
         console.log("Directory does not exist.");
         return fs.mkdir(dest, (error) => cb(error, dest));
@@ -696,7 +696,7 @@ const getDocuments = async (req, res) => {
     }
     $sql =
       $sql +
-      `group by l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
+      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
         order by l.created desc
         limit 200`;
 
@@ -1347,7 +1347,7 @@ const getLayout = async (req, res) => {
 
 const saveLayout = async (req, res) => {
   const { user_id } = req.params;
-  const { layout } =  req.body;
+  const { layout } = req.body;
   const db = makeDb(configuration, res);
   try {
     const now = moment().format("YYYY-MM-DD HH:mm:ss");

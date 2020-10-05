@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: "#ffffff",
-    padding: "10px 15px",
+    padding: "10px 10px",
     textDecoration: "none",
   },
   search: {
