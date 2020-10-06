@@ -72,7 +72,7 @@ const MedicalNotesDetails = (props) => {
           {data.map((row, index) => (
             <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.medical_note}</TableCell>

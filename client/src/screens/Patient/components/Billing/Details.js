@@ -61,7 +61,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const BillingDetails = (props) => {
-  const { reloadData } = props;
+  const { reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [billings, setBillings] = useState([]);
@@ -72,7 +72,7 @@ const BillingDetails = (props) => {
 
   const fetchAllBillings = () => {
     let limit = 100;
-    PatientService.getBillings(limit).then((res) => {
+    PatientService.getBillings(patientId, limit).then((res) => {
       setBillings(res.data);
     });
   }
@@ -117,11 +117,11 @@ const BillingDetails = (props) => {
           {billings.length && billings.map((row, index) => (
             <StyledTableRow key={`${row.dt}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.dt).format("MMM, DD, YYYY")}
+                {moment(row.dt).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.tran_type}</TableCell>
               <TableCell>{row.encounter_title}</TableCell>
-              <TableCell>{row.cpt_procedure || "-"}</TableCell>
+              <TableCell>{row.cpt_procedure || ""}</TableCell>
               
 
               <TableCell className={classes.actions}>

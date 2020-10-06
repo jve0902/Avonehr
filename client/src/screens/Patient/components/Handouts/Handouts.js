@@ -24,6 +24,7 @@ const HandoutsForm = (props) => {
 
   useEffect(() => {
     fetchAllHandouts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const fetchAllHandouts = () => {
@@ -80,7 +81,7 @@ const HandoutsForm = (props) => {
                 />
                 </TableCell>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.filename}</TableCell>
             </TableRow>

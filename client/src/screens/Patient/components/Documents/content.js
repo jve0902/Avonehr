@@ -114,12 +114,12 @@ const DocumentsContent = (props) => {
           {data.map((row, index) => (
             <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.filename}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>
-                {row.lab_dt ? moment(row.lab_dt).format("MMM, DD, YYYY") : "-"}
+                {row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : ""}
               </TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -62,10 +62,10 @@ const AdminNotesHistory = (props) => {
             data.map((row, index) => (
               <StyledTableRow key={`${row.created}_${index}`}>
                 <TableCell component="th" scope="row">
-                  {moment(row.created).format("MMM, DD, YYYY")}
+                  {moment(row.created).format("MMM, D, YYYY")}
                 </TableCell>
-                <TableCell>{row.name || "-"}</TableCell>
-                <TableCell>{row.admin_note || "-"}</TableCell>
+                <TableCell>{row.name || ""}</TableCell>
+                <TableCell>{row.admin_note || ""}</TableCell>
               </StyledTableRow>
             ))}
         </TableBody>

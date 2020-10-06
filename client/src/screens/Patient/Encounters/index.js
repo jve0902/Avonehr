@@ -145,7 +145,7 @@ const Form = (props) => {
             <Button variant="outlined" onClick={() => onClose()}>Save</Button>
             <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
           </Grid>
-          <Typography gutterBottom>Created {moment().format("MMM, DD, YYYY")}</Typography>
+          <Typography gutterBottom>Created {moment().format("MMM, D, YYYY")}</Typography>
           <Typography gutterBottom>Created By {!!encounter && encounter.name}</Typography>
         </Grid>
       </Grid>

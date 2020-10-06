@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { TextField, IconButton, Grid, Typography } from "@material-ui/core";
+import { TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
+import { setEditorText, resetEditorText } from "./../../../../store/patient/actions";
 import { useDispatch } from "react-redux";
-
-import SaveIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
 
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +21,7 @@ const AdminNotes = (props) => {
       ...formFields,
       [name]: value,
     });
+    dispatch(setEditorText(value));
   };
 
   useEffect(() => {
@@ -32,6 +31,8 @@ const AdminNotes = (props) => {
       ...formFields,
       [fieldName]: props.oldAdminNote,
     });
+    dispatch(setEditorText(props.oldAdminNote));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.oldAdminNote]);
 
   const onFormSubmit = (e) => {
@@ -80,21 +81,15 @@ const AdminNotes = (props) => {
               fullWidth
               onChange={(e) => handleInputChange(e)}
               multiline={true}
-              rows={3}
+              rows={8}
+              autoFocus={true}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                   !!onClose && onClose();
+                   dispatch(resetEditorText());
+                }
+             }}
             />
-        </Grid>
-
-        <Grid
-          className={classes.actionContainer}
-          container
-          justify="space-between"
-        >
-          <IconButton variant="outlined" type="submit" size="small">
-            <SaveIcon />
-          </IconButton>
-          <IconButton variant="outlined" onClick={() => onClose()} size="small">
-            <CancelIcon />
-          </IconButton>
         </Grid>
       </form>
     </>
@@ -107,6 +102,11 @@ const useStyles = makeStyles((theme) => ({
   },
   formInput: {
     marginBottom: theme.spacing(1),
+    
+    "& .MuiOutlinedInput-multiline": {
+      padding: 5,
+      fontSize: 12
+    }
   },
   actionContainer: {
     marginTop: theme.spacing(1),

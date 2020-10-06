@@ -84,7 +84,7 @@ const TestsContent = (props) => {
             <StyledTableRow key={row.name}>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.type}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : "-"}</TableCell>
+              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : ""}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
