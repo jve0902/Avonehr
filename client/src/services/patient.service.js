@@ -238,7 +238,7 @@ class Patient {
 
   deleteHandout(patient_id, handoutId) {
     return axios.delete(
-      API_URL + `/patient/${patient_id}/handouts/${handoutId}`,
+      API_BASE + `/patient/${patient_id}/handouts/${handoutId}`,
       {
         headers: authHeader(),
       }
