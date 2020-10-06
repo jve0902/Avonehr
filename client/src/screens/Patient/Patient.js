@@ -865,7 +865,7 @@ export default function Patient(props) {
         open={showBillingExpandDialog}
         title={" "}
         message={
-          <BillingDetails data={billings} onClose={toggleBillngExpandDialog} />
+          <BillingDetails data={billings} onClose={toggleBillngExpandDialog} patientId={patient_id} />
         }
         applyForm={() => toggleBillngExpandDialog()}
         cancelForm={() => toggleBillngExpandDialog()}

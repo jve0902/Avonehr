@@ -61,7 +61,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const BillingDetails = (props) => {
-  const { reloadData } = props;
+  const { reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [billings, setBillings] = useState([]);
@@ -72,7 +72,7 @@ const BillingDetails = (props) => {
 
   const fetchAllBillings = () => {
     let limit = 100;
-    PatientService.getBillings(limit).then((res) => {
+    PatientService.getBillings(patientId, limit).then((res) => {
       setBillings(res.data);
     });
   }
