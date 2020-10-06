@@ -16,6 +16,7 @@ const MedicalNotes = (props) => {
   useEffect(() => {
     setOldMedicalNote(props.oldMedicalNote);
     setMedicalNote(props.oldMedicalNote);
+    dispatch(setEditorText(props.oldMedicalNote));
   }, [props.oldMedicalNote]);
 
   const onFormSubmit = (e) => {

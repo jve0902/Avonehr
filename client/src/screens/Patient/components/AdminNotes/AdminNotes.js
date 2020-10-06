@@ -31,6 +31,7 @@ const AdminNotes = (props) => {
       ...formFields,
       [fieldName]: props.oldAdminNote,
     });
+    dispatch(setEditorText(props.oldAdminNote));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.oldAdminNote]);
 
