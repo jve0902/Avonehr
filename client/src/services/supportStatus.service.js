@@ -1,8 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-
-const API_BASE =
-  `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
+import { API_BASE } from "./../utils/API_BASE";
 
 class SupportAPI {
   getStatus = () => {

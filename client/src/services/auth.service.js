@@ -1,12 +1,9 @@
 import axios from "axios";
-
-const API_URL =
-  `${process.env.REACT_APP_API_URL}api/v1/auth/` ||
-  "http://localhost:5000/api/v1/auth/";
+import { API_BASE } from "./../utils/API_BASE";
 
 class AuthService {
   async login(user) {
-    const loginResponse = await axios.post(API_URL + "login", {
+    const loginResponse = await axios.post(API_BASE + "/auth/login", {
       email: user.email,
       password: user.password,
     });
@@ -22,16 +19,16 @@ class AuthService {
     localStorage.removeItem("user");
   }
   passwordChangeRequest(email) {
-    return axios.post(API_URL + `reset_password/user/${email}`);
+    return axios.post(API_BASE + `/auth/reset_password/user/${email}`);
   }
   resetPassword(userId, token, password) {
-    return axios.post(API_URL + `reset/${userId}/${token}`, {
+    return axios.post(API_BASE + `/auth/reset/${userId}/${token}`, {
       password: password,
     });
   }
 
   register(user) {
-    return axios.post(API_URL + "signup", user);
+    return axios.post(API_BASE + "/auth/signup", user);
   }
 
   getCurrentUser() {
@@ -49,7 +46,7 @@ class AuthService {
   }
 
   validate(data) {
-    return axios.post(API_URL + `field/validate`, data);
+    return axios.post(API_BASE + `/auth/field/validate`, data);
   }
 }
 

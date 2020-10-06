@@ -1,12 +1,9 @@
 import axios from "axios";
-
-const API_URL =
-  `${process.env.REACT_APP_API_URL}api/v1/auth/` ||
-  "http://localhost:5000/api/v1/auth/";
+import { API_BASE } from "./../../utils/API_BASE";
 
 class AuthService {
   async login(user) {
-    const loginResponse = await axios.post(API_URL + "patient/login", {
+    const loginResponse = await axios.post(API_BASE + "/patient/login", {
       client_id: user.client_id,
       email: user.email,
       password: user.password,
@@ -21,7 +18,7 @@ class AuthService {
 
   getClientCode(clientCode) {
     return axios
-      .get(API_URL + `patient/client/?c=${clientCode}`)
+      .get(API_BASE + `/patient/client/?c=${clientCode}`)
       .then((res) => res.data);
   }
 }

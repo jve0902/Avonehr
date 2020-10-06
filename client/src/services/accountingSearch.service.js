@@ -1,17 +1,15 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-
-const API_URL =
-  `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
+import { API_BASE } from "./../utils/API_BASE";
 
 class Accounting {
   search(data) {
-    return axios.post(API_URL + `/client/accounting/search`, data, {
+    return axios.post(API_BASE + `/client/accounting/search`, data, {
       headers: authHeader(),
     });
   }
   searchType() {
-    return axios.get(`${API_URL}/client/accounting`, {
+    return axios.get(`${API_BASE}/client/accounting`, {
       headers: authHeader(),
     });
   }

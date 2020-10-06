@@ -1,22 +1,20 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-
-const API_URL =
-  `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
+import { API_BASE } from "./../utils/API_BASE";
 
 class Configuration {
   getConfig(data) {
-    return axios.get(API_URL + `/config`, {
+    return axios.get(API_BASE + `/config`, {
       headers: authHeader(),
     });
   }
   getConfigHistory(data) {
-    return axios.get(API_URL + `/config/history`, {
+    return axios.get(API_BASE + `/config/history`, {
       headers: authHeader(),
     });
   }
   updateConfig(id, data) {
-    return axios.put(`${API_URL}/config/${id}`, data, {
+    return axios.put(`${API_BASE}/config/${id}`, data, {
       headers: authHeader(),
     });
   }

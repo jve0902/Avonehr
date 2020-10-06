@@ -1,18 +1,15 @@
 import axios from "axios";
-
-const API_URL =
-  `${process.env.REACT_APP_API_URL}api/v1/email` ||
-  "http://localhost:5000/api/v1/email";
+import { API_BASE } from "./../utils/API_BASE";
 
 class EmailService {
   sendEmailVerification(user) {
-    return axios.post(API_URL + `/send/verification/`, user);
+    return axios.post(API_BASE + `/email/send/verification/`, user);
   }
   resendEmailVerification(user) {
-    return axios.post(API_URL + `/resend/verification/`, user);
+    return axios.post(API_BASE + `/email/resend/verification/`, user);
   }
   emailVerify(userId, token) {
-    return axios.get(API_URL + `/confirmation/${userId}/${token}`);
+    return axios.get(API_BASE + `/email/confirmation/${userId}/${token}`);
   }
 }
 
