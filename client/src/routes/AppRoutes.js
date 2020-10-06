@@ -173,7 +173,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/setup/report-finance"
+              path="/reports/report-finance"
               component={ReportFinance}
               exact
             />

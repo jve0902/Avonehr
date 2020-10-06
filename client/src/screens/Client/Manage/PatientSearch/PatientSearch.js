@@ -53,9 +53,9 @@ function NumberFormatCustom(props) {
           },
         });
       }}
-      thousandSeparator
+      // thousandSeparator
       isNumericString
-      prefix="$"
+      // prefix="$"
     />
   );
 }
@@ -286,6 +286,18 @@ export default function PatientSearch() {
                     type="patientId"
                     id="patientId"
                     autoComplete="patientId"
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                    inputProps={{
+                      maxLength: 16,
+                    }}
+                    error={patientId.length >= 13}
+                    helperText={
+                      patientId &&
+                      patientId.length >= 13 &&
+                      "Enter between 12 digit"
+                    }
                     onChange={(event) => setPatientId(event.target.value)}
                   />
                 </Grid>

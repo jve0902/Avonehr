@@ -39,7 +39,7 @@ const Reports = () => {
       </Typography>
       <div className={classes.mainContent}>
         <Typography
-          onClick={() => history.push("/setup/report-finance")}
+          onClick={() => history.push("/reports/report-finance")}
           component="p"
           variant="body1"
           color="textPrimary"
