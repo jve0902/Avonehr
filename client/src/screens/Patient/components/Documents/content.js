@@ -119,7 +119,7 @@ const DocumentsContent = (props) => {
               <TableCell>{row.filename}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>
-                {row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : "-"}
+                {row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : ""}
               </TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>

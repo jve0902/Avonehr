@@ -121,7 +121,7 @@ const BillingDetails = (props) => {
               </TableCell>
               <TableCell>{row.tran_type}</TableCell>
               <TableCell>{row.encounter_title}</TableCell>
-              <TableCell>{row.cpt_procedure || "-"}</TableCell>
+              <TableCell>{row.cpt_procedure || ""}</TableCell>
               
 
               <TableCell className={classes.actions}>

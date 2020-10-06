@@ -64,8 +64,8 @@ const AdminNotesHistory = (props) => {
                 <TableCell component="th" scope="row">
                   {moment(row.created).format("MMM, D, YYYY")}
                 </TableCell>
-                <TableCell>{row.name || "-"}</TableCell>
-                <TableCell>{row.admin_note || "-"}</TableCell>
+                <TableCell>{row.name || ""}</TableCell>
+                <TableCell>{row.admin_note || ""}</TableCell>
               </StyledTableRow>
             ))}
         </TableBody>

@@ -23,11 +23,11 @@ export default function MessagesContent(props) {
               </Grid>
               <Grid item md={3}>
                 <Typography component="span" variant="body1" className={`${classes.text12} ${classes.label}`} color="textPrimary">From: &nbsp;</Typography>
-                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_from || "-"}</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_from || ""}</Typography>
               </Grid>
               <Grid item md={3}>
                 <Typography component="span" variant="body1" className={`${classes.text12} ${classes.label}`} color="textPrimary">To: &nbsp;</Typography>
-                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_name || "-"}</Typography>
+                <Typography component="span" variant="body1" className={classes.text12} color="textPrimary">{item.user_to_name || ""}</Typography>
               </Grid>
               <Grid item md={3}>
                 <Typography component="span" variant="body1" className={`${classes.text12} ${classes.label}`} color="textPrimary">Subject: &nbsp;</Typography>

@@ -108,8 +108,8 @@ const MessagesDetails = (props) => {
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.subject}</TableCell>
               <TableCell>{row.message}</TableCell>
-              <TableCell>{row.user_to_from || "-"}</TableCell>
-              <TableCell>{row.user_to_name || "-"}</TableCell>
+              <TableCell>{row.user_to_from || ""}</TableCell>
+              <TableCell>{row.user_to_name || ""}</TableCell>
 
               <TableCell className={classes.actions}>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>

@@ -104,7 +104,7 @@ const RequisitionsDetails = (props) => {
                 {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.id}</TableCell>
-              <TableCell>{row.name || "-"}</TableCell>
+              <TableCell>{row.name || ""}</TableCell>
 
               <TableCell className={classes.actions}>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>

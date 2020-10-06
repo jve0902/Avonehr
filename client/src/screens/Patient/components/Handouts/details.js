@@ -102,7 +102,7 @@ const HandoutsDetails = (props) => {
               <TableCell component="th" scope="row">
                 {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
-              <TableCell>{row.name || "-"}</TableCell>
+              <TableCell>{row.name || ""}</TableCell>
               <TableCell>{row.filename}</TableCell>
 
               <TableCell className={classes.actions}>

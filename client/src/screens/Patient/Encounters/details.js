@@ -115,8 +115,8 @@ const EncountersDetails = (props) => {
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.encounter_type}</TableCell>
-              <TableCell>{row.notes || "-"}</TableCell>
-              <TableCell>{row.paymentPlan || "-"}</TableCell>
+              <TableCell>{row.notes || ""}</TableCell>
+              <TableCell>{row.paymentPlan || ""}</TableCell>
 
               <TableCell className={classes.actions}>
                 <IconButton className={classes.button} onClick={() => onItemEdit(row)}>
