@@ -65,7 +65,7 @@ export default function BasicInfoContent(props) {
         </Typography>
       </Grid>
 
-      <Grid>
+      <Grid container className={classes.inputRow}>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Next Appointment:&nbsp;
         </Typography>
