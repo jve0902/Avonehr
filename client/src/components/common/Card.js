@@ -8,6 +8,7 @@ import DesktopIcon from '@material-ui/icons/DesktopMac';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import SaveIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import SaveLayoutIcon from '@material-ui/icons/Save';
 
 const PatientCard = (props) => {
   const classes = useStyles();
@@ -26,7 +27,8 @@ const PatientCard = (props) => {
     searchHandler,
     cardInfo,
     editorSaveHandler,
-    editorCancelHandler
+    editorCancelHandler,
+    updateLayoutHandler
   } = props;
   
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
@@ -38,6 +40,14 @@ const PatientCard = (props) => {
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
+          {
+            title === "Patient" && (
+              <SaveLayoutIcon
+                className={classes.icon}
+                onClick={() => updateLayoutHandler()}
+              />
+            )
+          }
           {
             !!icon && (
               React.createElement(menuIcons[icon], {
@@ -185,7 +195,8 @@ PatientCard.defaultProps = {
   iconHandler: () => {},
   searchHandler: () => {},
   editorSaveHandler: () => {},
-  editorCancelHandler: () => {}
+  editorCancelHandler: () => {},
+  updateLayoutHandler: () => {},
 };
 
 PatientCard.propTypes = {
@@ -204,6 +215,7 @@ PatientCard.propTypes = {
   searchHandler: PropTypes.func,
   editorSaveHandler: PropTypes.func,
   editorCancelHandler: PropTypes.func,
+  updateLayoutHandler: PropTypes.func,
 };
 
 

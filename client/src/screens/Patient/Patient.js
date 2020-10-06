@@ -98,6 +98,7 @@ export default function Patient(props) {
 
   //grid layout states
   const [layout, setLayout] = useState([]);
+  const [layoutToSave, setLayoutToSave] = useState([]);
   const [firstCardsSequence, setFirstCardsSequence] = useState([...FirstColumnPatientCards])
   const [thirdCardsSequence, setThirdCardsSequence] = useState([...ThirdColumnPatientCards])
   
@@ -206,21 +207,29 @@ export default function Patient(props) {
   const fetchCardsLayout = () => {
     const user_id = user.id;
     PatientService.getCardsLayout(user_id).then((res) => {
-      let layout = res.data.length && res.data[0].layout ? JSON.parse(res.data[0].layout) : null;
+      let layout = res.data.length && res.data[0].layout && res.data[0].layout !== "undefined" ? JSON.parse(res.data[0].layout) : null;
       if(!!layout) {
         setLayout(layout);
+        let _layout = {
+          "layout": JSON.stringify(layout)
+        }
+        setLayoutToSave(_layout);
       }
     });
   };
 
-  const updateCardsLayout = (gridLayout) => {
+  const updateCardsLayout = () => {
     const user_id = user.id;
+    PatientService.updateCardsLayout(user_id, layoutToSave).then((res) => {
+      dispatch(setSuccess(`Layout updated successfully`));
+    });
+  };
+
+  const updateLayoutState = (gridLayout) => {
     let layout = {
       "layout": JSON.stringify(gridLayout)
     }
-    PatientService.updateCardsLayout(user_id, layout).then((res) => {
-      console.log("CARDS LAYOUT UPDATED!!!", res)
-    });
+    setLayoutToSave(layout);
   };
 
   const fetchPatientData = () => {
@@ -1129,10 +1138,9 @@ export default function Patient(props) {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
-        onDragStop={(val) => updateCardsLayout(val)}
-        onResizeStop={(val) => updateCardsLayout(val)}
+        onDragStop={(val) => updateLayoutState(val)}
+        onResizeStop={(val) => updateLayoutState(val)}
         //onLayoutChange is called always on first render so it fails in our scenario, using above two props for our use case
-        // onLayoutChange={(val) => updateCardsLayout(val)} //TODO:: save the updated layouts in the DB
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
@@ -1157,6 +1165,7 @@ export default function Patient(props) {
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
                 cardInfo={item.cardInfo}
+                updateLayoutHandler={() => updateCardsLayout()}
                 updateMinHeight={updateMinHeight}
               />
             </Grid>
