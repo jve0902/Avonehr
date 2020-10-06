@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     padding: theme.spacing(0, 0.5, 0, 0),
+  },
+  text12: {
+    fontSize: 12
   }
 }));
 
