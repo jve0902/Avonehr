@@ -1,15 +1,33 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, Button, TextField } from '@material-ui/core';
+import { Card, Typography, Grid, Button, TextField, IconButton } from '@material-ui/core';
 import Colors from '../../theme/colors';
 import CardIcon from '@material-ui/icons/CreditCard';
 import DesktopIcon from '@material-ui/icons/DesktopMac';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
+import SaveIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const PatientCard = (props) => {
   const classes = useStyles();
-  const { data, title, showActions, primaryButtonText, secondaryButtonText, icon, showSearch, primaryButtonHandler, secondaryButtonHandler, iconHandler, searchHandler, cardInfo } = props;
+  const {
+    data,
+    title,
+    showActions,
+    showEditorActions,
+    primaryButtonText,
+    secondaryButtonText,
+    icon,
+    showSearch,
+    primaryButtonHandler,
+    secondaryButtonHandler,
+    iconHandler,
+    searchHandler,
+    cardInfo,
+    editorSaveHandler,
+    editorCancelHandler
+  } = props;
   
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
@@ -26,6 +44,18 @@ const PatientCard = (props) => {
                 onClick: iconHandler,
                 className: classes.icon
               })
+            )
+          }
+          {
+            showEditorActions && (
+            <Grid>
+              <IconButton variant="outlined" onClick={editorCancelHandler} size="small">
+                <CancelIcon />
+              </IconButton>
+              <IconButton variant="outlined" type="submit" size="small" onClick={editorSaveHandler}>
+                <SaveIcon />
+              </IconButton>
+            </Grid>
             )
           }
           {
@@ -143,6 +173,7 @@ const useStyles = makeStyles((theme) => ({
 PatientCard.defaultProps = {
   title: 'Title',
   showActions: false,
+  showEditorActions: false,
   showSearch: false,
   data: <div />,
   primaryButtonText: 'History',
@@ -153,11 +184,14 @@ PatientCard.defaultProps = {
   secondaryButtonHandler: () => {},
   iconHandler: () => {},
   searchHandler: () => {},
+  editorSaveHandler: () => {},
+  editorCancelHandler: () => {}
 };
 
 PatientCard.propTypes = {
   title: PropTypes.string,
   showActions: PropTypes.bool.isRequired,
+  showEditorActions: PropTypes.bool,
   showSearch: PropTypes.bool.isRequired,
   data: PropTypes.node.isRequired,
   primaryButtonText: PropTypes.string,
@@ -168,6 +202,8 @@ PatientCard.propTypes = {
   secondaryButtonHandler: PropTypes.func,
   iconHandler: PropTypes.func,
   searchHandler: PropTypes.func,
+  editorSaveHandler: PropTypes.func,
+  editorCancelHandler: PropTypes.func,
 };
 
 
