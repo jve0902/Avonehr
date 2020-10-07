@@ -183,10 +183,6 @@ export default function Patient(props) {
   const [requisitions, setRequisitions] = useState([]);
   const [tests, setTests] = useState([]);
 
-  // useEffect(() => {
-    
-  // }, []);
-
   useEffect(() => {
     generateLayout();
     fetchCardsLayout();
