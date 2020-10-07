@@ -80,7 +80,7 @@ export default function BasicInfoContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: 0,
+    marginBottom: theme.spacing(0.5),
   },
   text12: {
     fontSize: 12
