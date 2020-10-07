@@ -54,7 +54,7 @@ const search = async (req, res) => {
         left join client cl on cl.id=c.client_id
         where 1 \n`;
     if (cptId) {
-      $sql = $sql + `and c.id = '${cptId}' \n`;
+      $sql = $sql + `and c.id like '%${cptId}%' \n`;
     }
     if (cptDescription) {
       $sql = $sql + `and c.name like '%${cptDescription}%' \n`;
