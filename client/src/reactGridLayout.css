@@ -11,6 +11,18 @@
     bottom: 6px;
 }
 
+.react-grid-item.react-grid-placeholder {
+    background: #2979FF;
+    opacity: 0.5;
+    transition-duration: 100ms;
+    z-index: 2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+
 /* Just in the future we decide to hide the resize icon we can uncomment these lines */
 
 /* .react-grid-item > .react-resizable-handle {
