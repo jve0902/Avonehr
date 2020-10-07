@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import { useDispatch } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Calendar,
-  NewOrEditEvent,
-  MessageToPatient,
-  ProviderCards,
-  ProviderDetailsCard,
-  MessagesUnread,
-  AppointmentRequests
-} from './components';
-import Appointments from './../../../services/appointments.service';
+import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import DashboardHome from '../../../services/DashboardHome.service';
 import Messages from '../../../services/message-to-patient.service';
+import Appointments from './../../../services/appointments.service';
 import { setSuccess } from './../../../store/common/actions';
+import {
+  AppointmentRequests,
+  Calendar,
+  MessagesUnread,
+  MessageToPatient,
+  NewOrEditEvent,
+  ProviderCards,
+  ProviderDetailsCard
+} from './components';
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
