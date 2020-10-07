@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { useDispatch } from "react-redux";
 
-import DashboardHome from '../../../services/DashboardHome.service';
-import Messages from '../../../services/message-to-patient.service';
-import Appointments from './../../../services/appointments.service';
-import { setSuccess } from './../../../store/common/actions';
+import DashboardHome from "../../../services/DashboardHome.service";
+import Messages from "../../../services/message-to-patient.service";
+import Appointments from "./../../../services/appointments.service";
+import { setSuccess } from "./../../../store/common/actions";
 import {
   AppointmentRequests,
   Calendar,
@@ -16,7 +16,7 @@ import {
   NewOrEditEvent,
   ProviderCards,
   ProviderDetailsCard
-} from './components';
+} from "./components";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     flexGrow: 1,
-    padding: '40px 0px'
+    padding: "40px 0px"
   }
 }));
 
@@ -32,14 +32,14 @@ export default function Home() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
-  const [selectedProvider, setSelectedProvider] = useState('');
-  const [providerDetails, setProviderDetails] = useState('');
+  const [selectedProvider, setSelectedProvider] = useState("");
+  const [providerDetails, setProviderDetails] = useState("");
   const [messagesUnread, setMessagesUnread] = useState([]);
   const [appointmentRequests, setAppointmentRequests] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState('');
-  const [selectedMsg, setSelectedMsg] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState("");
+  const [selectedMsg, setSelectedMsg] = useState("");
   const [providers, setProviders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +59,7 @@ export default function Home() {
           start: item.start_dt,
           end: item.end_dt,
           backgroundColor:
-            item.status && item.status === 'D' ? '#ffab40' : '#2196f3'
+            item.status && item.status === "D" ? "#ffab40" : "#2196f3"
         }
       ];
     }, []);
@@ -216,12 +216,12 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log('msg create: >', response);
+          console.log("msg create: >", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log('msg errors:', errors);
+          console.log("msg errors:", errors);
         }
       );
     } else {
@@ -231,17 +231,17 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log('msg create:', response);
+          console.log("msg create:", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log('msg errors:', errors);
+          console.log("msg errors:", errors);
         }
       );
     }
   };
-  console.log('isOpen:', isOpen);
+  console.log("isOpen:", isOpen);
 
   return (
     <div className={classes.root}>

@@ -27,6 +27,13 @@
   },
   "rules": {
     "import/no-duplicates": "error",
+    "quotes": [
+      "error",
+      "double",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
     "no-console": 1
   }
 }

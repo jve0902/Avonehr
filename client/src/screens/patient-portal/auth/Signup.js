@@ -1,14 +1,13 @@
-import React from 'react';
-import { Link , useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
 
-
-import { AuthConsumer } from './../../../providers/AuthProvider';
+import { AuthConsumer } from "./../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
@@ -16,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     color: theme.palette.text.secondary
   },
   lockIcon: {
-    fontSize: '40px'
+    fontSize: "40px"
   }
 }));
 
@@ -38,7 +37,7 @@ const PatientSignUp = () => {
     <AuthConsumer>
       {({ isAuth }) => {
         if (isAuth) {
-          history.push('/');
+          history.push("/");
         }
         return (
           <Container component="main" maxWidth="sm">
@@ -52,7 +51,7 @@ const PatientSignUp = () => {
                 variant="h2"
                 className={classes.pageTitle}
               >
-                Register with {'client.name'}
+                Register with {"client.name"}
               </Typography>
               <Typography variant="body2" gutterBottom>
                 To register as a new patient, please enter your infromation in
