@@ -48,8 +48,6 @@ export default function Home() {
 
   const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
 
-  console.log('selectedMsg:', selectedMsg);
-
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
