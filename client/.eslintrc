@@ -26,24 +26,7 @@
     }
   },
   "rules": {
-    "simple-import-sort/sort": "error",
-    "sort-imports": "off",
-    "import/first": "error",
-    "import/newline-after-import": "error",
     "import/no-duplicates": "error",
-    "comma-dangle": "off",
-    "import/no-unresolved": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/control-has-associated-label": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "no-console": 1,
-    "no-plusplus": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "react/forbid-prop-types": "off",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": "off",
-    "mdx/no-unused-expressions": "off"
+    "no-console": 1
   }
 }

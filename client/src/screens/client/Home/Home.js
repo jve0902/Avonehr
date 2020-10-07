@@ -1,7 +1,7 @@
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { useDispatch } from 'react-redux';
 
 import DashboardHome from '../../../services/DashboardHome.service';
@@ -186,20 +186,19 @@ export default function Home() {
     setSelectedMsg(msg);
   };
 
-  const fetchSingleMessage = () => {
+  const fetchSingleMessage = () =>
     !isNewMessage &&
-      Messages.getMessageByID(selectedMsg.id).then(
-        (response) => {
-          const { data } = response;
-          setSelectedMsg(data[0]);
-        },
-        (error) => {
-          if (error.response) {
-            setErrors(error.response.data);
-          }
+    Messages.getMessageByID(selectedMsg.id).then(
+      (response) => {
+        const { data } = response;
+        setSelectedMsg(data[0]);
+      },
+      (error) => {
+        if (error.response) {
+          setErrors(error.response.data);
         }
-      );
-  };
+      }
+    );
 
   const handleMessageToPatientFormSubmit = (_, message, isNewMessage) => {
     setIsLoading(true);
