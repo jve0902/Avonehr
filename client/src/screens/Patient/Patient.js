@@ -96,6 +96,9 @@ export default function Patient(props) {
   let { patient_id } = useParams();
   const user = useContext(AuthContext)?.user;
 
+  //patient ID authenticity
+  const [hasPatientIderror, setHasPatientIderror] = useState(true);
+
   //grid layout states
   const [layout, setLayout] = useState([]);
   const [layoutToSave, setLayoutToSave] = useState([]);
@@ -180,29 +183,36 @@ export default function Patient(props) {
   const [requisitions, setRequisitions] = useState([]);
   const [tests, setTests] = useState([]);
 
-  useEffect(() => {
-    generateLayout();
-  }, []);
+  // useEffect(() => {
+    
+  // }, []);
 
   useEffect(() => {
+    generateLayout();
     fetchCardsLayout();
     fetchPatientData();
-    fetchPatientHistory(patient_id);
-    fetchAdminNotesHistory();
-    fetchAllergies();
-    fetchPatientHandouts();
-    fetchForms();
-    fetchBillings();
-    fetchDocuments();
-    fetchEncounters();
-    fetchMedicalNotes();
-    fetchMessages();
-    fetchDiagnoses();
-    fetchMedications();
-    fetchRequisitions();
-    fetchTests();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
+
+  useEffect(() => {
+    if(!hasPatientIderror) {
+      fetchPatientHistory();
+      fetchAdminNotesHistory();
+      fetchAllergies();
+      fetchPatientHandouts();
+      fetchForms();
+      fetchBillings();
+      fetchDocuments();
+      fetchEncounters();
+      fetchMedicalNotes();
+      fetchMessages();
+      fetchDiagnoses();
+      fetchMedications();
+      fetchRequisitions();
+      fetchTests();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [hasPatientIderror])
 
   const fetchCardsLayout = () => {
     const user_id = user.id;
@@ -239,11 +249,23 @@ export default function Patient(props) {
 
   const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
-      setPatientData(res.data);
+      console.log("res", res)
+      if(!!res.data && res.data.client_id) {
+        setPatientData(res.data);
+        setHasPatientIderror(false)
+      } else {
+        dispatch(
+          setError({
+            severity: 'error',
+            message: 'Patient not found',
+          })
+        );
+      }
     });
+    
   };
 
-  const fetchPatientHistory = (patient_id) => {
+  const fetchPatientHistory = () => {
     PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
