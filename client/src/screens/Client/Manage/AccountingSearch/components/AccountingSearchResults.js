@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -78,83 +78,145 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+const TotalTableRow = withStyles((theme) => ({
+  root: {
+    fontSize: 14,
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "& th": {
+      fontSize: 14,
+    },
+    "& td": {
+      fontSize: 14,
+      fontWeight: "bold",
+    },
+  },
+}))(TableRow);
+
 export default function AccountingSearchResults(props) {
   const classes = useStyles();
   const history = useHistory();
-
+  const [totalAmount, setTotalAmount] = useState(0);
+  // const addAmount = (amount) => {
+  //   let add = 0
+  //   add = add+amount
+  // }
+  const amount = props.result.reduce((a, b) => a + b.amount, 0);
   return (
     <div className={classes.root}>
+      {console.log(amount)}
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Type</StyledTableCell>
-              <StyledTableCell>Amount</StyledTableCell>
-              <StyledTableCell>Encounter</StyledTableCell>
-              <StyledTableCell>CPT ID</StyledTableCell>
-              <StyledTableCell>CPT Name</StyledTableCell>
-              <StyledTableCell align="center">Note</StyledTableCell>
-              <StyledTableCell>Patient</StyledTableCell>
-              <StyledTableCell>Created</StyledTableCell>
+              <StyledTableCell padding="checkbox">Date</StyledTableCell>
+              <StyledTableCell padding="checkbox">Type</StyledTableCell>
+              <StyledTableCell padding="checkbox">Amount</StyledTableCell>
+              <StyledTableCell padding="checkbox">Encounter</StyledTableCell>
+              <StyledTableCell padding="checkbox">CPT ID</StyledTableCell>
+              <StyledTableCell padding="checkbox">CPT Name</StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Note
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox">Patient</StyledTableCell>
+              <StyledTableCell padding="checkbox">Created</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.result.map((result, index) => (
               <StyledTableRow key={index}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {moment(result.dt).format("lll")}
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {result.name}
                 </TableCell>
-                <TableCell>{`$ ${result.amount}`}</TableCell>
+                <TableCell padding="checkbox">{`$\u00A0\u00A0${result.amount}`}</TableCell>
                 {result.encounter_title.length > 40 ? (
                   <LightTooltip title={result.encounter_title}>
-                    <TableCell className={classes.overFlowControl}>
+                    <TableCell
+                      padding="checkbox"
+                      className={classes.overFlowControl}
+                    >
                       {result.encounter_title}
                     </TableCell>
                   </LightTooltip>
                 ) : (
-                  <TableCell className={classes.overFlowControl}>
+                  <TableCell
+                    padding="checkbox"
+                    className={classes.overFlowControl}
+                  >
                     {result.encounter_title}
                   </TableCell>
                 )}
-                <TableCell>{result.cpt_id ? result.cpt_id : "N/A"}</TableCell>
+                <TableCell align="center" padding="checkbox">
+                  {result.cpt_id ? result.cpt_id : "N/A"}
+                </TableCell>
                 {result.cpt_name && result.cpt_name.length > 40 ? (
                   <LightTooltip title={result.cpt_name ? result.cpt_name : ""}>
-                    <TableCell className={classes.overFlowControl}>
+                    <TableCell
+                      padding="checkbox"
+                      className={classes.overFlowControl}
+                    >
                       {result.cpt_name ? result.cpt_name : "N/A"}
                     </TableCell>
                   </LightTooltip>
                 ) : (
-                  <TableCell className={classes.overFlowControl}>
+                  <TableCell
+                    padding="checkbox"
+                    className={classes.overFlowControl}
+                  >
                     {result.cpt_name ? result.cpt_name : "N/A"}
                   </TableCell>
                 )}
                 {result.note && result.note.length > 40 ? (
                   <LightTooltip title={result.note}>
                     <TableCell
+                      padding="checkbox"
                       align="center"
                       className={classes.overFlowControl}
                     >
-                      {result.note || "-"}
+                      {result.note || ""}
                     </TableCell>
                   </LightTooltip>
                 ) : (
-                  <TableCell align="center" className={classes.overFlowControl}>
-                    {result.note || "-"}
+                  <TableCell
+                    padding="checkbox"
+                    align="center"
+                    className={classes.overFlowControl}
+                  >
+                    {result.note || ""}
                   </TableCell>
                 )}
                 <TableCell
+                  padding="checkbox"
                   onClick={() => history.push(`/patient/${result.patient_id}`)}
                   className={classes.patientLink}
                 >
                   {result.patient_name}
                 </TableCell>
-                <TableCell>{moment(result.created).format("lll")}</TableCell>
+                <TableCell padding="checkbox">
+                  {moment(result.created).format("lll")}
+                </TableCell>
               </StyledTableRow>
             ))}
+            <TotalTableRow>
+              <TableCell padding="checkbox" colSpan={2} align="right">
+                Total
+              </TableCell>
+              <TableCell
+                padding="checkbox"
+                // colSpan={1}
+                // align="left"
+              >
+                {`$\u00A0${amount}`}
+              </TableCell>
+            </TotalTableRow>
           </TableBody>
         </Table>
       </TableContainer>

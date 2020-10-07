@@ -16,6 +16,8 @@ import StateData from "./data/state";
 import { useDispatch } from "react-redux";
 import ConfigModal from "./modal";
 import { setSuccess } from "./../../../../store/common/actions";
+import { KeyboardTimePicker } from "@material-ui/pickers";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     maxWidth: "450px",
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     "& h1": {
       [theme.breakpoints.up("md")]: {
         marginRight: theme.spacing(4),
@@ -105,14 +107,14 @@ export default function Configuration(props) {
     state: "",
     npi: "",
     zipcode: "",
-    calendarStartTime: "12000",
-    calendarEndTime: "22000",
     country: "",
     phone: "",
     fax: "",
   };
 
   const [formParams, setFormParams] = useState(initFormParams);
+  const [calendarStartTime, setCalendarStartTime] = useState(moment("12000"));
+  const [calendarEndTime, setCalendarEndTime] = useState(moment("22000"));
 
   const _fetchConfig = async () => {
     try {
@@ -133,12 +135,19 @@ export default function Configuration(props) {
         state: data.state,
         npi: data.npi,
         zipcode: data.postal,
-        calendarStartTime: data.calendar_start_time,
-        calendarEndTime: data.calendar_end_time,
+
         country: data.country,
         phone: data.phone,
         fax: data.fax,
       });
+      setCalendarStartTime(
+        moment(data.calendar_start_time, "HH:mm:ss").format(
+          "YYYY-MM-DDTHH:mm:ss"
+        )
+      );
+      setCalendarEndTime(
+        moment(data.calendar_end_time, "HH:mm:ss").format("YYYY-MM-DDTHH:mm:ss")
+      );
     } catch (e) {
       console.log(e);
     }
@@ -168,8 +177,8 @@ export default function Configuration(props) {
         state: formParams.state,
         website: formParams.clientWebsite,
         country: formParams.country,
-        calendar_start_time: formParams.calendarStartTime,
-        calendar_end_time: formParams.calendarEndTime,
+        calendar_start_time: moment(calendarStartTime).format("HH:mm:ss"),
+        calendar_end_time: moment(calendarEndTime).format("HH:mm:ss"),
         email: formParams.email,
         ein: formParams.ein,
         npi: formParams.npi,
@@ -233,6 +242,18 @@ export default function Configuration(props) {
       [e.target.name]: e.target.value,
     });
   };
+  // const _onTimeChangeStart = (date) => {
+  //   setFormParams({
+  //     ...formParams,
+  //     calendarStartTime: date,
+  //   });
+  // };
+  // const _onTimeChangeEnd = (date) => {
+  //   setFormParams({
+  //     ...formParams,
+  //     calendarEndTime: date,
+  //   });
+  // };
 
   return (
     <div className={classes.root}>
@@ -542,19 +563,21 @@ export default function Configuration(props) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                onKeyPress={(e) => {
-                  return onKeyPress(e);
+              <KeyboardTimePicker
+                inputVariant="outlined"
+                KeyboardButtonProps={{
+                  "aria-label": "change time",
                 }}
                 id="calendarStartTime"
                 name={`calendarStartTime`}
                 label="Calendar Start Time"
-                value={formParams.calendarStartTime}
+                value={calendarStartTime}
                 className={classes.textField}
-                onChange={(e) => _onChangeInput(e)}
-                type="time"
+                onChange={(date) => setCalendarStartTime(date)}
                 size="small"
+                autoOk
+                mask="__:__ _M"
+                keyboardIcon
               />
             </Grid>
 
@@ -586,19 +609,20 @@ export default function Configuration(props) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                onKeyPress={(e) => {
-                  return onKeyPress(e);
+              <KeyboardTimePicker
+                inputVariant="outlined"
+                KeyboardButtonProps={{
+                  "aria-label": "change time",
                 }}
                 id="calendarEndTime"
                 name={`calendarEndTime`}
                 label="Calendar End Time"
-                value={formParams.calendarEndTime}
+                value={calendarEndTime}
                 className={classes.textField}
-                onChange={(e) => _onChangeInput(e)}
-                type="time"
+                onChange={(date) => setCalendarEndTime(date)}
                 size="small"
+                autoOk
+                mask="__:__ _M"
               />
             </Grid>
 

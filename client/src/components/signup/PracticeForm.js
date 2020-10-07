@@ -189,6 +189,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setName(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "name")}
+        inputProps={{ maxLength: 35 }}
+        helperText={`${
+          name.length >= 35 ? "Enter a name between 35 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="code"
@@ -197,6 +201,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setClientCode(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "code")}
+        inputProps={{ maxLength: 35 }}
+        // helperText={`${
+        //   clientCode.length >= 35 ? "Enter a code between 35 charecter" : ""
+        // }`}
       />
       <TextField
         variant="outlined"
@@ -208,6 +216,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         autoComplete="current-address"
         onChange={(event) => setAddress(event.target.value)}
         value={address}
+        inputProps={{ maxLength: 90 }}
+        helperText={`${
+          address.length >= 90 ? "Enter a adress between 90 charecter" : ""
+        }`}
       />
       <TextField
         variant="outlined"
@@ -219,6 +231,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         autoComplete="current-address2"
         onChange={(event) => setAddress2(event.target.value)}
         value={address2}
+        inputProps={{ maxLength: 90 }}
+        helperText={`${
+          address2.length >= 90 ? "Enter a adress between 90 charecter" : ""
+        }`}
       />
       <TextField
         value={city}
@@ -230,6 +246,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         name="city"
         autoComplete="city"
         onChange={(event) => setCity(event.target.value)}
+        inputProps={{ maxLength: 45 }}
+        helperText={`${
+          city.length >= 45 ? "Enter a city between 45 charecter" : ""
+        }`}
       />
       <TextField
         value={state}
@@ -241,6 +261,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         name="state"
         autoComplete="state"
         onChange={(event) => setState(event.target.value)}
+        inputProps={{ maxLength: 45 }}
+        helperText={`${
+          state.length >= 45 ? "Enter a state between 45 charecter" : ""
+        }`}
       />
       <TextField
         value={zipCode}
@@ -252,6 +276,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         name="zipcode"
         autoComplete="zipcode"
         onChange={(event) => setZipCode(event.target.value)}
+        inputProps={{ maxLength: 20 }}
+        helperText={`${
+          zipCode.length >= 20 ? "Enter a zip between 20 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="phone"
@@ -260,6 +288,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setPhone(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "phone")}
+        inputProps={{ maxLength: 15 }}
+        helperText={`${
+          phone.length >= 15 ? "Enter a number between 15 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="fax"
@@ -268,6 +300,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setFax(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "fax")}
+        inputProps={{ maxLength: 15 }}
+        helperText={`${
+          fax.length >= 15 ? "Enter a number between 15 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="website"
@@ -276,6 +312,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setUrl(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "website")}
+        inputProps={{ maxLength: 1000 }}
+        helperText={`${
+          url.length >= 1000 ? "Enter an url between 1000 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="email"
@@ -284,6 +324,12 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setPracticeEmail(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "email")}
+        inputProps={{ maxLength: 255 }}
+        helperText={`${
+          practiceEmail.length >= 255
+            ? "Enter an email between 255 charecter"
+            : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="ein"
@@ -292,6 +338,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setEin(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "ein")}
+        inputProps={{ maxLength: 15 }}
+        helperText={`${
+          ein.length >= 15 ? "Enter a number between 15 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="npi"
@@ -300,6 +350,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setNpi(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event)}
         errors={getFieldError("client", "npi")}
+        inputProps={{ maxLength: 15 }}
+        helperText={`${
+          npi.length >= 15 ? "Enter a number between 15 charecter" : ""
+        }`}
       />
       <Typography
         component="h3"
@@ -325,6 +379,12 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         name="firstName"
         autoComplete="firstName"
         onChange={(event) => setFirstName(event.target.value)}
+        inputProps={{ maxLength: 35 }}
+        helperText={`${
+          firstName.length >= 35
+            ? "Enter a first name between 35 charecter"
+            : ""
+        }`}
       />
       <TextField
         value={lastName}
@@ -336,6 +396,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         name="lastName"
         autoComplete="lastName"
         onChange={(event) => setLastName(event.target.value)}
+        inputProps={{ maxLength: 35 }}
+        helperText={`${
+          lastName.length >= 35 ? "Enter a last name between 35 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         id="userEmail"
@@ -345,6 +409,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setEmail(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event, "user")}
         errors={getFieldError("user", "email")}
+        inputProps={{ maxLength: 255 }}
+        helperText={`${
+          email.length >= 255 ? "Enter an email between 255 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         id="userNPI"
@@ -354,6 +422,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setPersonalNPI(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event, "user")}
         errors={getFieldError("user", "npi")}
+        inputProps={{ maxLength: 15 }}
+        helperText={`${
+          personalNPI.length >= 15 ? "Enter a number between 15 charecter" : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="medical_license"
@@ -362,6 +434,12 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setMedicalLicenseNumber(event.target.value)}
         handleOnBlur={(event) => handleAjaxValidation(event, "user")}
         errors={getFieldError("user", "medical_license")}
+        inputProps={{ maxLength: 35 }}
+        helperText={`${
+          medicalLicenseNumber.length >= 35
+            ? "Enter a numbner between 35 charecter"
+            : ""
+        }`}
       />
       <TextFieldWithError
         fieldName="password"
@@ -371,6 +449,10 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         handleOnChange={(event) => setPassword(event.target.value)}
         handleOnBlur={(event) => validatePasswod(event)}
         errors={getFieldError("user", "password")}
+        inputProps={{ maxLength: 90 }}
+        helperText={`${
+          password.length >= 90 ? "Enter a password between 90 charecter" : ""
+        }`}
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}

@@ -53,7 +53,22 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      height: "50px",
+      // height: "50px",
+    },
+  },
+}))(TableRow);
+const TotalTableRow = withStyles((theme) => ({
+  root: {
+    fontSize: 14,
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "& th": {
+      fontSize: 14,
+    },
+    "& td": {
+      fontSize: 14,
+      fontWeight: "bold",
     },
   },
 }))(TableRow);
@@ -63,57 +78,57 @@ const Reports = ({ reports, ...props }) => {
   const history = useHistory();
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} aria-label="a dense table">
+      <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Year</StyledTableCell>
-            <StyledTableCell>Month</StyledTableCell>
-            <StyledTableCell>Total</StyledTableCell>
-            <StyledTableCell>Service</StyledTableCell>
-            <StyledTableCell>Credit</StyledTableCell>
-            <StyledTableCell>Payment</StyledTableCell>
-            <StyledTableCell>Refund</StyledTableCell>
-            <StyledTableCell>Detail</StyledTableCell>
+            <StyledTableCell padding="checkbox">Year</StyledTableCell>
+            <StyledTableCell padding="checkbox">Month</StyledTableCell>
+            <StyledTableCell padding="checkbox">Total</StyledTableCell>
+            <StyledTableCell padding="checkbox">Service</StyledTableCell>
+            <StyledTableCell padding="checkbox">Credit</StyledTableCell>
+            <StyledTableCell padding="checkbox">Payment</StyledTableCell>
+            <StyledTableCell padding="checkbox">Refund</StyledTableCell>
+            <StyledTableCell padding="checkbox">Detail</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {reports.map((report) => (
             <StyledTableRow key={report.id}>
-              <TableCell component="th" scope="row">
+              <TableCell padding="checkbox" component="th" scope="row">
                 {report.year}
               </TableCell>
               <TableCell>{moment(report.month, "M").format("MMM")}</TableCell>
-              <TableCell>
+              <TableCell padding="checkbox">
                 <NumberFormat
-                  prefix="$"
+                  prefix="$ "
                   displayType="text"
                   value={report.Total}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell padding="checkbox">
                 <NumberFormat
-                  prefix="$"
+                  prefix="$ "
                   displayType="text"
                   value={report.Service}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell padding="checkbox">
                 <NumberFormat
-                  prefix="$"
+                  prefix="$ "
                   displayType="text"
                   value={report.Credit}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell padding="checkbox">
                 <NumberFormat
-                  prefix="$"
+                  prefix="$ "
                   displayType="text"
                   value={report.Payment}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell padding="checkbox">
                 <NumberFormat
-                  prefix="$"
+                  prefix="$ "
                   displayType="text"
                   value={report.Refund}
                 />
@@ -125,11 +140,32 @@ const Reports = ({ reports, ...props }) => {
                     `/reports/report-finance-detail/${report.year}/${report.month}`
                   )
                 }
+                padding="checkbox"
               >
                 Detail
               </TableCell>
             </StyledTableRow>
           ))}
+          <TotalTableRow>
+            <TableCell padding="checkbox" colSpan={2} align="right">
+              Total
+            </TableCell>
+            <TableCell padding="checkbox" colSpan={1} align="left">
+              {`$ \u00A0${reports.reduce((a, b) => a + b.Total, 0)}`}
+            </TableCell>
+            <TableCell padding="checkbox" colSpan={1} align="left">
+              {`$ \u00A0${reports.reduce((a, b) => a + b.Service, 0)}`}
+            </TableCell>
+            <TableCell padding="checkbox" colSpan={1} align="left">
+              {`$ \u00A0${reports.reduce((a, b) => a + b.Credit, 0)}`}
+            </TableCell>
+            <TableCell padding="checkbox" colSpan={1} align="left">
+              {`$ \u00A0${reports.reduce((a, b) => a + b.Payment, 0)}`}
+            </TableCell>
+            <TableCell padding="checkbox" colSpan={1} align="left">
+              {`$ \u00A0${reports.reduce((a, b) => a + b.Refund, 0)}`}
+            </TableCell>
+          </TotalTableRow>
         </TableBody>
       </Table>
     </TableContainer>

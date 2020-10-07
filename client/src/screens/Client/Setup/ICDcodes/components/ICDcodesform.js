@@ -8,17 +8,23 @@ import {
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "10px 0",
+  },
   controlLabel: {
     marginLeft: "0px",
     marginRight: "0px",
   },
   textField: {
-    marginLeft: "30px",
     width: "250px",
   },
   submit: {
+    marginTop: theme.spacing(1),
     padding: "4px 30px",
     fontSize: "1rem",
+    maxWidth: "100px",
   },
 }));
 
@@ -35,37 +41,30 @@ const ICDcodesform = ({
   };
 
   return (
-    <div style={{ margin: "10px 0" }}>
-      <FormControlLabel
-        control={
-          <TextField
-            autoFocus={true}
-            onChange={textChangeHandler}
-            className={classes.textField}
-            name="searchTerm"
-            onKeyUp={(event) => handleKeyUp(event)}
-          />
-        }
+    <div className={classes.root}>
+      <TextField
+        size="small"
+        variant="outlined"
+        autoFocus
+        onChange={textChangeHandler}
+        className={classes.textField}
+        name="searchTerm"
         label="Name"
-        labelPlacement="start"
-        className={classes.controlLabel}
+        onKeyUp={(event) => handleKeyUp(event)}
       />
-      <br />
       <FormControlLabel
-        value="favorites"
         control={
           <Checkbox
-            name="favorite"
             onChange={checkBoxChangeHandler}
             color="primary"
             onKeyUp={(event) => handleKeyUp(event)}
+            name="favorite"
+            size="small"
           />
         }
-        label="Favorites"
-        labelPlacement="start"
-        className={classes.controlLabel}
+        label="Favorite"
       />
-      <br />
+
       <Button
         size="small"
         type="submit"

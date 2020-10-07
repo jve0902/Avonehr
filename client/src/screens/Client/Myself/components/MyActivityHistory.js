@@ -22,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(1),
   },
-  paper: {
-    padding: "5px",
-  },
   tableContainer: {
     width: 500,
     marginTop: theme.spacing(1),

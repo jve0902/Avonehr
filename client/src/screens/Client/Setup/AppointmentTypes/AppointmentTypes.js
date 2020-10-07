@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     maxWidth: "450px",
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     "& h1": {
       [theme.breakpoints.up("md")]: {
         marginRight: theme.spacing(4),

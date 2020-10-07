@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  title: {
+    paddingBottom: theme.spacing(1),
+  },
 }));
 
 const ICDcodes = () => {

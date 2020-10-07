@@ -39,6 +39,9 @@ export default function DeletePatient() {
           >
             Patient Delete
           </Typography>
+          <Typography component="p" variant="body2" color="textPrimary">
+            This page is used to delete patient
+          </Typography>
           <div className={classes.deleteFields}>
             <TextField
               value={patientId}
@@ -50,6 +53,7 @@ export default function DeletePatient() {
               autoComplete="patientId"
               autoFocus
               onChange={(event) => setPatientId(event.target.value)}
+              size="small"
             />
             <Button
               disabled={!patientId}
@@ -57,17 +61,13 @@ export default function DeletePatient() {
               variant="contained"
               color="primary"
               className={classes.delete}
+              size="small"
               // onClick={(event) => onFormSubmit(event, login)}
             >
               Delete
             </Button>
           </div>
         </Grid>
-        {/*
-        <Grid item xs={12} sm={3}>
-          <Video url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
-        </Grid>
-        */}
       </Grid>
     </div>
   );

@@ -10,6 +10,7 @@ import moment from "moment";
 import { Reports } from "./components";
 import ReportFinanceService from "./../../../../services/reportFinance.service";
 import { AuthConsumer } from "../../../../providers/AuthProvider";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,9 +65,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ReportFinance(props) {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(
-    moment()
-      .subtract(3, "months")
-      .format("YYYY-MM-DD")
+    moment().subtract(3, "months").format("YYYY-MM-DD")
   );
   const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [reports, setReports] = useState([]);
@@ -82,14 +81,6 @@ export default function ReportFinance(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDateChangeFrom = (event) => {
-    setDateFrom(event.target.value);
-  };
-
-  const handleDateChangeTo = (event) => {
-    setDateTo(event.target.value);
-  };
-
   const handleOnEnterClick = () => {
     ReportFinanceService.getAll(dateFrom, dateTo).then((res) => {
       setReports(res.data);
@@ -103,7 +94,7 @@ export default function ReportFinance(props) {
           <div className={classes.paper}>
             <CssBaseline />
             <Container maxWidth={false} className={classes.root}>
-              <div className={classes.header}>
+              <div className={classes.title}>
                 <Typography component="h1" variant="h2" color="textPrimary">
                   Report Finance
                 </Typography>
@@ -115,27 +106,37 @@ export default function ReportFinance(props) {
                 <div className={classes.datePicker}>
                   <Grid container>
                     <Grid item xs={12} sm={6} spacing={2}>
-                      <TextField
-                        variant="outlined"
+                      <KeyboardDatePicker
+                        clearable
+                        KeyboardButtonProps={{
+                          "aria-label": "change date",
+                        }}
+                        format="dd/MM/yyyy"
+                        inputVariant="outlined"
                         id="date"
                         label="Date From"
                         value={dateFrom}
                         className={classes.textField}
-                        onChange={handleDateChangeFrom}
-                        type="date"
+                        onChange={(date) => setDateFrom(date)}
                         size="small"
+                        autoOk
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        variant="outlined"
+                      <KeyboardDatePicker
+                        clearable
+                        KeyboardButtonProps={{
+                          "aria-label": "change date",
+                        }}
+                        format="dd/MM/yyyy"
+                        inputVariant="outlined"
                         id="date"
                         label="Date To"
-                        type="date"
                         value={dateTo}
                         className={classes.textField}
-                        onChange={handleDateChangeTo}
+                        onChange={(date) => setDateTo(date)}
                         size="small"
+                        autoOk
                       />
                     </Grid>
                   </Grid>

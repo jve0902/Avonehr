@@ -110,7 +110,7 @@ const Appointments = ({ appointments, onEdit, onDelete, ...props }) => {
                 </LightTooltip>
               ) : (
                 <TableCell className={classes.overflowControl} align="center">
-                  {appointment.note || "-"}
+                  {appointment.note || ""}
                 </TableCell>
               )}
               <TableCell>{appointment.active ? "Active" : "-"}</TableCell>
