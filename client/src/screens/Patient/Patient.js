@@ -96,6 +96,9 @@ export default function Patient(props) {
   let { patient_id } = useParams();
   const user = useContext(AuthContext)?.user;
 
+  //patient ID authenticity
+  const [hasPatientIderror, setHasPatientIderror] = useState(true);
+
   //grid layout states
   const [layout, setLayout] = useState([]);
   const [layoutToSave, setLayoutToSave] = useState([]);
@@ -182,27 +185,30 @@ export default function Patient(props) {
 
   useEffect(() => {
     generateLayout();
-  }, []);
-
-  useEffect(() => {
     fetchCardsLayout();
     fetchPatientData();
-    fetchPatientHistory(patient_id);
-    fetchAdminNotesHistory();
-    fetchAllergies();
-    fetchPatientHandouts();
-    fetchForms();
-    fetchBillings();
-    fetchDocuments();
-    fetchEncounters();
-    fetchMedicalNotes();
-    fetchMessages();
-    fetchDiagnoses();
-    fetchMedications();
-    fetchRequisitions();
-    fetchTests();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
+
+  useEffect(() => {
+    if(!hasPatientIderror) {
+      fetchPatientHistory();
+      fetchAdminNotesHistory();
+      fetchAllergies();
+      fetchPatientHandouts();
+      fetchForms();
+      fetchBillings();
+      fetchDocuments();
+      fetchEncounters();
+      fetchMedicalNotes();
+      fetchMessages();
+      fetchDiagnoses();
+      fetchMedications();
+      fetchRequisitions();
+      fetchTests();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [hasPatientIderror])
 
   const fetchCardsLayout = () => {
     const user_id = user.id;
@@ -226,19 +232,35 @@ export default function Patient(props) {
   };
 
   const updateLayoutState = (gridLayout) => {
+    const propsToRemove = ['isBounded', 'isDraggable', 'isResizable', 'resizeHandles', 'maxH', 'minH', 'maxW', 'minW', 'moved', 'static']
+    let updatedLayout = gridLayout.map(obj => {
+      let result = _.omit(obj, [...propsToRemove]);
+      return result;
+    })
     let layout = {
-      "layout": JSON.stringify(gridLayout)
+      "layout": JSON.stringify(updatedLayout)
     }
     setLayoutToSave(layout);
   };
 
   const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
-      setPatientData(res.data);
+      if(!!res.data && res.data.client_id) {
+        setPatientData(res.data);
+        setHasPatientIderror(false)
+      } else {
+        dispatch(
+          setError({
+            severity: 'error',
+            message: 'Patient not found',
+          })
+        );
+      }
     });
+    
   };
 
-  const fetchPatientHistory = (patient_id) => {
+  const fetchPatientHistory = () => {
     PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
