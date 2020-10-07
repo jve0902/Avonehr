@@ -9,7 +9,7 @@ import Switch from "@material-ui/core/Switch";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { colors, Grid } from "@material-ui/core";
+import { colors, FormControlLabel, FormGroup, Grid } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiSelect-select": {
       minWidth: 120,
     },
+  },
+  root: {
+    paddingLeft: "5px",
   },
   formLabel: {
     fontSize: "14px",
@@ -74,6 +77,7 @@ const GreenSwitch = withStyles({
       backgroundColor: green[500],
     },
   },
+
   checked: {},
   track: {},
 })(Switch);
@@ -154,27 +158,36 @@ const EditCptCodeModal = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  placeholder="$"
                   onChange={handleChangeFee}
                 />
               </Grid>
             </FormControl>
-            <FormControl component="div" className={classes.formControl}>
-              <GreenSwitch
-                checked={Boolean(cpt_favorite)}
-                size="small"
-                name="switchBox"
-                onChange={handleChangeFavorite}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <GreenSwitch
+                    checked={Boolean(cpt_favorite)}
+                    size="small"
+                    name="switchBox"
+                    onChange={handleChangeFavorite}
+                  />
+                }
+                label="Favorite"
+                className={classes.root}
               />
-            </FormControl>
-            <FormControl component="div" className={classes.formControl}>
-              <GreenSwitch
-                checked={Boolean(cpt_billable)}
-                size="small"
-                name="switchBox"
-                onChange={handleChangeBillable}
+              <FormControlLabel
+                control={
+                  <GreenSwitch
+                    checked={Boolean(cpt_billable)}
+                    size="small"
+                    name="switchBox"
+                    onChange={handleChangeBillable}
+                  />
+                }
+                label="Billable"
+                className={classes.root}
               />
-            </FormControl>
+            </FormGroup>
             <FormControl component="div" className={classes.formControl}>
               <TextField
                 className={classes.noteMargin}

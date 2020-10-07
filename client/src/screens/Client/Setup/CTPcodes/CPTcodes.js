@@ -47,8 +47,7 @@ export default function CTPcodes() {
     fetchLabCompanyList();
   }, []);
 
-  const handleFormSubmition = (e) => {
-    e.preventDefault();
+  const fetchCptCodeSearch = () => {
     CPTCodesService.search(payload).then((res) => {
       setSearchResult(res.data.data);
     });
@@ -95,7 +94,7 @@ export default function CTPcodes() {
             </Typography>
             <CPTform
               lebCompanyList={lebCompanyList}
-              handleFormSubmition={handleFormSubmition}
+              fetchCptCodeSearch={fetchCptCodeSearch}
               handleChangeOfCptId={handleChangeOfCptId}
               handleChangeOfCptDescription={handleChangeOfCptDescription}
               handleChangeOfLabCompanyId={handleChangeOfLabCompanyId}
@@ -109,7 +108,7 @@ export default function CTPcodes() {
               <CPTtable
                 searchResult={searchResult}
                 user={user}
-                handleFormSubmition={handleFormSubmition}
+                fetchCptCodeSearch={fetchCptCodeSearch}
               />
             )}
           </div>

@@ -73,19 +73,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const CptGroupMembersModal = ({
-  isOpen,
-  hendleOnClose,
-  cptId,
-  cptDescription,
-  labCompany,
-}) => {
+const CptGroupMembersModal = ({ isOpen, hendleOnClose, groups }) => {
   const classes = useStyles();
   return (
     <div>
       <Dialog
         fullWidth={true}
-        maxWidth="md"
+        maxWidth="lg"
         open={isOpen}
         onClose={hendleOnClose}
         aria-labelledby="alert-dialog-title"
@@ -105,13 +99,15 @@ const CptGroupMembersModal = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                <StyledTableRow>
-                  <TableCell component="th" scope="row">
-                    {cptId}
-                  </TableCell>
-                  <TableCell>{cptDescription}</TableCell>
-                  <TableCell>{labCompany}</TableCell>
-                </StyledTableRow>
+                {groups.map((item) => (
+                  <StyledTableRow key={item.id}>
+                    <TableCell component="th" scope="row">
+                      {item.id}
+                    </TableCell>
+                    <TableCell>{item.description}</TableCell>
+                    <TableCell>{item.leb}</TableCell>
+                  </StyledTableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

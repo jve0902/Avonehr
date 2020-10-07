@@ -85,9 +85,3 @@ export const formatDate = (date) => {
 
   return [year, month, day].join("-");
 };
-
-export const formatCurrency = (number, currency, lang = undefined) => {
-  return Intl.NumberFormat(lang, { style: "currency", currency }).format(
-    number
-  );
-};

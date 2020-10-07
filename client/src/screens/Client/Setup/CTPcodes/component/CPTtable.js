@@ -19,7 +19,6 @@ import CPTCodesService from "../../../../../services/cpt.service";
 import { setSuccess } from "../../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
-import { formatCurrency } from "../../../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -57,15 +56,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const CPTtable = ({ searchResult, user, handleFormSubmition }) => {
+const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [groupIsOpen, setGroupIsOpen] = useState(false);
-  const [cptId, setCptId] = useState("");
-  const [labCompany, setLabCompany] = useState("");
-  const [cptDescription, setCptDescription] = useState("");
+  const [groups, setGroups] = useState([]);
 
   const [cpt_id, set_cpt_id] = useState("");
   const [cpt_description, set_cpt_description] = useState("");
@@ -102,10 +99,24 @@ const CPTtable = ({ searchResult, user, handleFormSubmition }) => {
     setGroupIsOpen(false);
   };
 
-  const handleGroupIsOpen = (cpt_id, cpt_desc, lab_company) => {
-    setCptId(cpt_id);
-    setCptDescription(cpt_desc);
-    setLabCompany(lab_company);
+  const handleGroupIsOpen = (group) => {
+    let getListOfGroup = String(group).split(";");
+    let data = [];
+    getListOfGroup.map((g) => {
+      searchResult.filter((c) => {
+        if (String(c.cpt) === g.trim()) {
+          let list = {
+            id: c.id,
+            description: c.cpt,
+            lab: c.lab_company,
+          };
+          data.push(list);
+        }
+        return c;
+      });
+      return g;
+    });
+    setGroups(data);
     setGroupIsOpen(true);
   };
 
@@ -123,17 +134,23 @@ const CPTtable = ({ searchResult, user, handleFormSubmition }) => {
     set_cpt_notes(e.target.value);
   };
 
-  const handleEditCptCode = (e) => {
+  const handleEditCptCode = () => {
     CPTCodesService.updateClientCpt(cpt_id, user.id, payload).then(
       (response) => {
-        dispatch(setSuccess(`${response.data.message}`));
+        setTimeout(() => {
+          dispatch(setSuccess(`${response.data.message}`));
+        }, 300);
       },
       (error) => {
-        setErrors(error.response.error);
+        setTimeout(() => {
+          setErrors(error.response.error);
+        }, 300);
       }
     );
     setIsOpen(false);
-    handleFormSubmition(e);
+    setTimeout(() => {
+      fetchCptCodeSearch();
+    }, 200);
   };
 
   return (
@@ -171,17 +188,17 @@ const CPTtable = ({ searchResult, user, handleFormSubmition }) => {
                 <TableCell>{result.lab_company}</TableCell>
                 <TableCell>{result.favorite ? "Yes" : "No"}</TableCell>
                 <TableCell>{result.billable ? "Yes" : "No"}</TableCell>
-                <TableCell>
-                  {result.fee ? formatCurrency(result.fee, "USD") : ""}
-                </TableCell>
+                <TableCell>{result.fee ? `$${result.fee}` : ""}</TableCell>
                 <TableCell>{result.client_name}</TableCell>
                 <TableCell
                   style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    handleGroupIsOpen(result.id, result.cpt, result.lab_company)
-                  }
+                  onClick={() => handleGroupIsOpen(result.cpt_group)}
                 >
-                  {result.cpt_group}
+                  {result.cpt_group
+                    ? String(result.cpt_group).length > 22
+                      ? `${String(result.cpt_group).slice(0, 22)}...`
+                      : String(result.cpt_group)
+                    : ""}
                 </TableCell>
                 <TableCell>
                   {result.updated ? moment(result.updated).format("lll") : ""}
@@ -226,9 +243,7 @@ const CPTtable = ({ searchResult, user, handleFormSubmition }) => {
       <CptGroupMembersModal
         isOpen={groupIsOpen}
         hendleOnClose={hendleGroupOnClose}
-        cptId={cptId}
-        cptDescription={cptDescription}
-        labCompany={labCompany}
+        groups={groups}
       />
     </div>
   );
