@@ -61,13 +61,13 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const MessagesDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const messageId = selectedItem.id || 1;
-    PatientService.deleteMessages(messageId)
+    const messageId = selectedItem.id;
+    PatientService.deleteMessages(patientId, messageId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -103,13 +103,13 @@ const MessagesDetails = (props) => {
           {data.map((row, index) => (
             <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.subject}</TableCell>
               <TableCell>{row.message}</TableCell>
-              <TableCell>{row.user_to_from || "-"}</TableCell>
-              <TableCell>{row.user_to_name || "-"}</TableCell>
+              <TableCell>{row.user_to_from || ""}</TableCell>
+              <TableCell>{row.user_to_name || ""}</TableCell>
 
               <TableCell className={classes.actions}>
                 <IconButton className={classes.button} onClick={() => onItemDelete(row)}>

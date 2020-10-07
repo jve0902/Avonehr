@@ -92,6 +92,7 @@ export default function MyActivityHistory(props) {
         }
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -114,7 +115,8 @@ export default function MyActivityHistory(props) {
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Time</StyledTableCell>
-                  <StyledTableCell>Patient</StyledTableCell>
+                  <StyledTableCell>Patient ID</StyledTableCell>
+                  <StyledTableCell>Patient Name</StyledTableCell>
                   <StyledTableCell>Action</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -123,6 +125,14 @@ export default function MyActivityHistory(props) {
                   <StyledTableRow key={index}>
                     <TableCell component="th" scope="row">
                       {moment(row.dt).format("lll")}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className={classes.patientLink}
+                      onClick={() => history.push(`/patient/${row.patient_id}`)}
+                    >
+                      {row.patient_id}
                     </TableCell>
                     <TableCell
                       component="th"

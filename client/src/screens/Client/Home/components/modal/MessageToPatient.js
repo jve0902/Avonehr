@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import _ from "lodash";
+// import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -18,7 +18,7 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-import Messages from "./../../../../../services/message-to-patient.service";
+// import Messages from "./../../../../../services/message-to-patient.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -112,7 +112,7 @@ const MessageToPatient = ({
   ...props
 }) => {
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = useState(new Date());
+  // const [selectedDate, handleDateChange] = useState(new Date());
   const [errors, setErrors] = useState([]);
   const [message, setMessage] = useState("");
 

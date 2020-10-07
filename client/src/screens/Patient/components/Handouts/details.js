@@ -67,7 +67,6 @@ const HandoutsDetails = (props) => {
 
   const onItemDelete = (selectedItem) => {
     const handoutId = selectedItem.id || 1;
-    const patientId = patientId;
     PatientService.deleteHandout(patientId, handoutId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
@@ -101,9 +100,9 @@ const HandoutsDetails = (props) => {
           {data.map((row, index) => (
             <StyledTableRow key={`${row.created}_${index}`}>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
-              <TableCell>{row.name || "-"}</TableCell>
+              <TableCell>{row.name || ""}</TableCell>
               <TableCell>{row.filename}</TableCell>
 
               <TableCell className={classes.actions}>

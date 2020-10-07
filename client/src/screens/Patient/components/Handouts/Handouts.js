@@ -24,10 +24,11 @@ const HandoutsForm = (props) => {
 
   useEffect(() => {
     fetchAllHandouts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const fetchAllHandouts = () => {
-    PatientService.getAllHandouts().then((res) => {
+    PatientService.getAllHandouts(patientId).then((res) => {
         setAllHandouts(res.data);
       });
   }
@@ -37,13 +38,11 @@ const HandoutsForm = (props) => {
         data : {
             "patient_id": patientId,
             "handout_id": 1,
-            "admin_note": "admin_note",
-            "old_admin_note": "old_admin_note"
         }
       };
       // TODO:: static for the time being - discussion required
 
-    PatientService.createPatientHandout(reqBody)
+    PatientService.createPatientHandout(patientId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -82,7 +81,7 @@ const HandoutsForm = (props) => {
                 />
                 </TableCell>
               <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, DD, YYYY")}
+                {moment(row.created).format("MMM, D, YYYY")}
               </TableCell>
               <TableCell>{row.filename}</TableCell>
             </TableRow>

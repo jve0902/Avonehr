@@ -1,19 +1,17 @@
 import axios from "axios";
 import authHeader from "./../services/auth-header";
-
-const api =
-  `${process.env.REACT_APP_API_URL}api/v1` || "http://localhost:5000/api/v1";
+import { API_BASE } from "./../utils/API_BASE";
 
 export const fetchClientAgreement = () =>
   axios
-    .get(`${api}/client/agreement`, {
+    .get(`${API_BASE}/client/agreement`, {
       headers: authHeader(),
     })
     .then((res) => res.data);
 
 export const search = (searchTerm) =>
   axios
-    .get(`${api}/search/?query=${searchTerm}`, {
+    .get(`${API_BASE}/search/?query=${searchTerm}`, {
       headers: authHeader(),
     })
     .then((res) => res.data);

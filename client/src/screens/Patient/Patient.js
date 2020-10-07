@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ import {
 
 // dialog components
 import {
-  AdminNotes,
+  AdminNotesForm,
   AdminNotesHistory,
   AdminNotesCardContent,
 } from "./components/AdminNotes";
@@ -73,7 +73,8 @@ import RequisitionsDetails from "./Requisitions/details";
 //service
 import PatientService from "./../../services/patient.service";
 import { setError, setSuccess } from "./../../store/common/actions";
-import { useDispatch } from "react-redux";
+import { resetEditorText } from "./../../store/patient/actions";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 //react-grid-layout styles
 import "react-grid-layout/css/styles.css";
@@ -81,6 +82,9 @@ import "react-resizable/css/styles.css";
 import "../../reactGridLayout.css";
 
 import { Responsive, WidthProvider } from "react-grid-layout";
+
+//providers
+import { AuthContext } from "../../providers/AuthProvider"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -90,10 +94,14 @@ export default function Patient(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   let { patient_id } = useParams();
+  const user = useContext(AuthContext)?.user;
 
   //grid layout states
   const [layout, setLayout] = useState([]);
-
+  const [layoutToSave, setLayoutToSave] = useState([]);
+  const [firstCardsSequence, setFirstCardsSequence] = useState([...FirstColumnPatientCards])
+  const [thirdCardsSequence, setThirdCardsSequence] = useState([...ThirdColumnPatientCards])
+  
   //dialog states
   const [showPatientInfoDialog, setShowPatientInfoDialog] = useState(false);
   const [showPatientHistoryDialog, setShowPatientHistoryDialog] = useState(
@@ -177,7 +185,8 @@ export default function Patient(props) {
   }, []);
 
   useEffect(() => {
-    fetchPatientData(patient_id);
+    fetchCardsLayout();
+    fetchPatientData();
     fetchPatientHistory(patient_id);
     fetchAdminNotesHistory();
     fetchAllergies();
@@ -192,9 +201,38 @@ export default function Patient(props) {
     fetchMedications();
     fetchRequisitions();
     fetchTests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
 
-  const fetchPatientData = (patient_id) => {
+  const fetchCardsLayout = () => {
+    const user_id = user.id;
+    PatientService.getCardsLayout(user_id).then((res) => {
+      let layout = res.data.length && res.data[0].layout && res.data[0].layout !== "undefined" ? JSON.parse(res.data[0].layout) : null;
+      if(!!layout) {
+        setLayout(layout);
+        let _layout = {
+          "layout": JSON.stringify(layout)
+        }
+        setLayoutToSave(_layout);
+      }
+    });
+  };
+
+  const updateCardsLayout = () => {
+    const user_id = user.id;
+    PatientService.updateCardsLayout(user_id, layoutToSave).then((res) => {
+      dispatch(setSuccess(`Layout updated successfully`));
+    });
+  };
+
+  const updateLayoutState = (gridLayout) => {
+    let layout = {
+      "layout": JSON.stringify(gridLayout)
+    }
+    setLayoutToSave(layout);
+  };
+
+  const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
       setPatientData(res.data);
     });
@@ -207,86 +245,81 @@ export default function Patient(props) {
   };
 
   const fetchAdminNotesHistory = () => {
-    PatientService.getAdminNotesHistory().then((res) => {
+    PatientService.getAdminNotesHistory(patient_id).then((res) => {
       setAdminNotesHistory(res.data);
     });
   };
 
   const fetchAllergies = () => {
-    PatientService.getAllergies().then((res) => {
+    PatientService.getAllergies(patient_id).then((res) => {
       setAllergies(res.data);
     });
   };
 
   const fetchPatientHandouts = () => {
-    PatientService.getPatientHandouts().then((res) => {
+    PatientService.getPatientHandouts(patient_id).then((res) => {
       setHandouts(res.data);
     });
   };
 
   const fetchForms = () => {
-    PatientService.getForms().then((res) => {
+    PatientService.getForms(patient_id).then((res) => {
       setForms(res.data);
     });
   };
 
   const fetchBillings = () => {
     let limit = 3;
-    PatientService.getBillings(limit).then((res) => {
+    PatientService.getBillings(patient_id, limit).then((res) => {
       setBillings(res.data);
     });
   };
 
   const fetchDocuments = () => {
-    let encounterId = "1";
     let tab = "Labs";
-    PatientService.getDocuments(encounterId, tab).then((res) => {
+    PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });
   };
 
-  const fetchEncounters = (patient_id) => {
+  const fetchEncounters = () => {
     PatientService.getEncounters(patient_id).then((res) => {
       setEncounters(res.data);
     });
   };
 
   const fetchMedicalNotes = () => {
-    PatientService.getMedicalNotes().then((res) => {
+    PatientService.getMedicalNotes(patient_id).then((res) => {
       setMedicalNotes(res.data);
     });
   };
 
   const fetchMessages = () => {
-    PatientService.getMessages().then((res) => {
+    PatientService.getMessages(patient_id).then((res) => {
       setMessages(res.data);
     });
   };
 
   const fetchDiagnoses = () => {
-    let encounterId = "1";
-    PatientService.getDiagnoses(encounterId).then((res) => {
+    PatientService.getDiagnoses(patient_id).then((res) => {
       setDiagnoses(res.data);
     });
   };
 
   const fetchMedications = () => {
-    let encounterId = "1";
-    PatientService.getMedications(encounterId).then((res) => {
+    PatientService.getMedications(patient_id).then((res) => {
       setMedications(res.data);
     });
   };
 
   const fetchRequisitions = () => {
-    let encounterId = "1";
-    PatientService.getRequisitions(encounterId).then((res) => {
+    PatientService.getRequisitions(patient_id).then((res) => {
       setRequisitions(res.data);
     });
   };
 
   const fetchTests = () => {
-    let encounterId = "1";
-    PatientService.getTests(encounterId).then((res) => {
+    PatientService.getTests(patient_id).then((res) => {
       setTests(res.data);
     });
   };
@@ -316,6 +349,10 @@ export default function Patient(props) {
   };
 
   const toggleAdminFormDialog = () => {
+    firstCardsSequence[1].showEditorActions = !firstCardsSequence[1].showEditorActions;
+    setFirstCardsSequence([
+      ...firstCardsSequence,
+    ])
     setShowAdminFormDialog((prevState) => !prevState);
   };
 
@@ -368,6 +405,10 @@ export default function Patient(props) {
   };
 
   const toggleMedicalNotesFormDialog = () => {
+    thirdCardsSequence[0].showEditorActions = !thirdCardsSequence[0].showEditorActions;
+    setThirdCardsSequence([
+      ...thirdCardsSequence,
+    ])
     setShowMedicalNotesFormDialog((prevState) => !prevState);
   };
 
@@ -410,6 +451,22 @@ export default function Patient(props) {
   const toggleTestsExpandDialog = () => {
     setShowTestsExpandDialog((prevState) => !prevState);
   };
+
+  const mapEditorCancelHandler = (value) => {
+    if(value === "Admin Notes") {
+      toggleAdminFormDialog()
+    } else if(value === "Medical Notes") {
+      toggleMedicalNotesFormDialog()
+    }
+  }
+
+  const mapEditorSaveHandler = (value) => {
+    if(value === "Admin Notes") {
+      updateAdminNotes();
+    } else if(value === "Medical Notes") {
+      updateMedicalNotes();
+    }
+  }
 
   const mapPrimaryButtonHandlers = (value) => {
     if (value === "Patient") {
@@ -465,9 +522,23 @@ export default function Patient(props) {
     if (value === "Patient") {
       return !!patientData && <PatientCardContent data={patientData} />;
     } else if (value === "Admin Notes") {
-      return (
-        !!patientData && <AdminNotesCardContent data={patientData.admin_note} />
-      );
+      if(!!patientData) {
+        return (
+          showAdminFormDialog
+          ?
+          <AdminNotesForm
+            patientId={patient_id}
+            oldAdminNote={patientData && patientData.admin_note}
+            onClose={toggleAdminFormDialog}
+            reloadData={() => {
+              fetchPatientData();
+              fetchAdminNotesHistory();
+            }}
+          />
+          :
+          <AdminNotesCardContent data={patientData.admin_note} />
+        );
+      }
     } else if (value === "Forms") {
       return !!forms && <FormCardContent data={forms} />;
     } else if (value === "Billing") {
@@ -482,11 +553,23 @@ export default function Patient(props) {
         )
       );
     } else if (value === "Medical Notes") {
-      return (
-        !!patientData && (
+      if(!!patientData) {
+        return (
+          showMedicalNotesFormDialog
+          ?
+          <MedicalNotesForm
+            patientId={patient_id}
+            onClose={toggleMedicalNotesFormDialog}
+            oldMedicalNote={patientData && patientData.medical_note}
+            reloadData={() => {
+              fetchPatientData();
+              fetchMedicalNotes();
+            }}
+          />
+          :
           <MedicalNotesCardContent data={patientData.medical_note} />
         )
-      );
+      }
     } else if (value === "Handouts") {
       return !!medicalNotes && <HandoutsCardContent data={handouts} />;
     } else if (value === "Messages") {
@@ -525,7 +608,7 @@ export default function Patient(props) {
   };
 
   const createDocument = (reqBody) => {
-    PatientService.createDocuments(reqBody)
+    PatientService.createDocuments(patient_id, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         fetchDocuments();
@@ -552,9 +635,86 @@ export default function Patient(props) {
     console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
-    fd.append("patient_id", 1);
+    fd.append("patient_id", patient_id);
     createDocument(fd);
   };
+
+  const editorText = useSelector((state) => state.patient.editorText, shallowEqual);
+  const updateAdminNotes = () => {
+    if(editorText !== patientData.admin_note) {
+      const reqBody = {
+        data: {
+          admin_note: editorText, //needs to be updated
+          old_admin_note: patientData && patientData.admin_note,
+        },
+      };
+      // TODO:: static for the time being - discussion required
+      let noteId = 1;
+      PatientService.updateAdminNotes(patient_id, reqBody, noteId)
+        .then((response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+          dispatch(resetEditorText());
+          fetchPatientData();
+          fetchAdminNotesHistory();
+          toggleAdminFormDialog();
+        })
+        .catch((error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message[0].msg) ||
+            error.message ||
+            error.toString();
+          let severity = "error";
+          dispatch(
+            setError({
+              severity: severity,
+              message: resMessage,
+            })
+          );
+        });
+      } else {
+        toggleAdminFormDialog();
+      }
+    };
+
+    const updateMedicalNotes = () => {
+      if(editorText !== patientData.medical_note) {
+      // TODO:: static for the time being - discussion required
+      let noteId = 1;
+      const reqBody = {
+        data: {
+          old_medical_note: patientData && patientData.medical_note,
+          medical_note: editorText,
+        },
+      };
+      PatientService.updateMedicalNotes(patient_id, reqBody, noteId)
+        .then((response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+          dispatch(resetEditorText());
+          fetchPatientData();
+          fetchMedicalNotes();
+          toggleMedicalNotesFormDialog();
+        })
+        .catch((error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          let severity = "error";
+          dispatch(
+            setError({
+              severity: severity,
+              message: resMessage,
+            })
+          );
+        });
+      } else {
+        toggleMedicalNotesFormDialog();
+      }
+    };
 
   const generateLayout = () => {
     const y = 4;
@@ -658,11 +818,12 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showAdminFormDialog}
         title={"Admin Notes Form"}
         message={
-          <AdminNotes
+          <AdminNotesForm
+            patientId={patient_id}
             oldAdminNote={patientData && patientData.admin_note}
             onClose={toggleAdminFormDialog}
             reloadData={() => {
@@ -675,7 +836,7 @@ export default function Patient(props) {
         cancelForm={() => toggleAdminFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showAdminHistoryDialog}
         title={"Admin Notes History"}
@@ -713,7 +874,7 @@ export default function Patient(props) {
         open={showBillingExpandDialog}
         title={" "}
         message={
-          <BillingDetails data={billings} onClose={toggleBillngExpandDialog} />
+          <BillingDetails data={billings} onClose={toggleBillngExpandDialog} patientId={patient_id} />
         }
         applyForm={() => toggleBillngExpandDialog()}
         cancelForm={() => toggleBillngExpandDialog()}
@@ -818,11 +979,12 @@ export default function Patient(props) {
         hideActions={true}
         size={"md"}
       />
-      <Dialog
+      {/* <Dialog
         open={showMedicalNotesFormDialog}
         title={" "}
         message={
           <MedicalNotesForm
+            patientId={patient_id}
             onClose={toggleMedicalNotesFormDialog}
             oldMedicalNote={patientData && patientData.medical_note}
             reloadData={() => {
@@ -835,7 +997,7 @@ export default function Patient(props) {
         cancelForm={() => toggleMedicalNotesFormDialog()}
         hideActions={true}
         size={"md"}
-      />
+      /> */}
       <Dialog
         open={showMessageDialog}
         title={"New Message"}
@@ -843,6 +1005,7 @@ export default function Patient(props) {
           <NewMessageForm
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageDialog()}
@@ -858,6 +1021,7 @@ export default function Patient(props) {
             data={messages}
             onClose={toggleMessageDialog}
             reloadData={fetchMessages}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleMessageExpandDialog()}
@@ -932,6 +1096,7 @@ export default function Patient(props) {
           <RequisitionsDetails
             data={requisitions}
             onClose={toggleRequisitionExpandDialog}
+            patientId={patient_id}
           />
         }
         applyForm={() => toggleRequisitionExpandDialog()}
@@ -973,7 +1138,9 @@ export default function Patient(props) {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         layouts={{ lg: layout }}
-        // onLayoutChange={(val) => console.log(val)} //TODO:: save the updated layouts in the DB
+        onDragStop={(val) => updateLayoutState(val)}
+        onResizeStop={(val) => updateLayoutState(val)}
+        //onLayoutChange is called always on first render so it fails in our scenario, using above two props for our use case
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
@@ -986,6 +1153,9 @@ export default function Patient(props) {
                 title={item.title}
                 data={mapCardContentDataHandlers(item.title)}
                 showActions={item.showActions}
+                showEditorActions={item.showEditorActions}
+                editorSaveHandler={() => mapEditorSaveHandler(item.title)}
+                editorCancelHandler={() => mapEditorCancelHandler(item.title)}
                 showSearch={item.showSearch}
                 icon={item.icon}
                 primaryButtonText={item.primaryButtonText}
@@ -995,6 +1165,7 @@ export default function Patient(props) {
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
                 cardInfo={item.cardInfo}
+                updateLayoutHandler={() => updateCardsLayout()}
                 updateMinHeight={updateMinHeight}
               />
             </Grid>
@@ -1020,6 +1191,9 @@ export default function Patient(props) {
                 key={index}
                 title={item.title}
                 data={mapCardContentDataHandlers(item.title)}
+                showEditorActions={item.showEditorActions}
+                editorSaveHandler={() => mapEditorSaveHandler(item.title)}
+                editorCancelHandler={() => mapEditorCancelHandler(item.title)}
                 showActions={item.showActions}
                 showSearch={item.showSearch}
                 icon={item.icon}

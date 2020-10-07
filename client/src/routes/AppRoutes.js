@@ -11,7 +11,7 @@ import Login from "../screens/Auth/Login";
 import NotFound from "../screens/NotFound";
 import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
-import UserSignUp from "../screens/Auth/UserSignUp";
+// import UserSignUp from "../screens/Auth/UserSignUp";
 import { DoctorHome } from "../screens/Client/Home";
 import Patient from "../screens/Patient";
 import { Reports, Myself } from "../screens/Client";
@@ -285,7 +285,7 @@ class AppRouter extends Component {
               component={ProcessMessage}
               exact
             />
-            // Patient_portal
+            {/* Patient_portal */}
             <RouteWithLayout
               layout={PatientPortal}
               path="/signup"

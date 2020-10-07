@@ -1,20 +1,20 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-import { API_URL } from "./../utils/API_URL";
+import { API_BASE } from "./../utils/API_BASE";
 
 class Messages {
   getMessageByID(id) {
     return axios
-      .get(API_URL + `/message/${id}`, { headers: authHeader() })
+      .get(API_BASE + `/message/${id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
   create(payload) {
-    return axios.post(API_URL + `/message`, payload, {
+    return axios.post(API_BASE + `/message`, payload, {
       headers: authHeader(),
     });
   }
   update(payload) {
-    return axios.put(API_URL + `/message/${payload.data.id}`, payload, {
+    return axios.put(API_BASE + `/message/${payload.data.id}`, payload, {
       headers: authHeader(),
     });
   }
