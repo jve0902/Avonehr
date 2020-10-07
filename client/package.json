@@ -42,12 +42,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "plugin:prettier/recommended"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -56,11 +50,9 @@
   "lint-staged": {
     "*.+(js|jsx)": [
       "eslint --fix"
-      
     ],
     "*.+(json|css|md)": [
       "prettier --write"
-      
     ]
   },
   "browserslist": {
