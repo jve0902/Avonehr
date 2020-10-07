@@ -14,7 +14,6 @@ export const removeEmpty = (obj) => {
   return obj;
 };
 
-
 function getFullDate(x) {
   switch (x) {
     case 0:
@@ -64,16 +63,16 @@ export const calculateAge = (date) => {
   }
 
   return year > 0 ? year + " yrs" : month + " mo";
-}
+};
 
 export const formatPhoneNumber = (phoneNumber) => {
-  let cleaned = ('' + phoneNumber).replace(/\D/g, '')
-  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  let cleaned = ("" + phoneNumber).replace(/\D/g, "");
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
-    return match[1] + ' ' + match[2] + ' ' + match[3]
+    return match[1] + " " + match[2] + " " + match[3];
   }
-  return null
-}
+  return null;
+};
 
 export const formatDate = (date) => {
   var d = new Date(date),
@@ -85,4 +84,4 @@ export const formatDate = (date) => {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
-}
+};
