@@ -49,10 +49,12 @@
   },
   "lint-staged": {
     "*.+(js|jsx)": [
-      "eslint --fix"
+      "eslint --fix",
+      "git add"
     ],
     "*.+(json|css|md)": [
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ]
   },
   "browserslist": {
