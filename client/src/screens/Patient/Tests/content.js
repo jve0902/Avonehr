@@ -69,33 +69,30 @@ const TestsContent = (props) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Test</StyledTableCell>
-            <StyledTableCell>Type</StyledTableCell>
-            <StyledTableCell>Lab Date</StyledTableCell>
-            <StyledTableCell>Physician</StyledTableCell>
+            <StyledTableCell>Last Date</StyledTableCell>
+            <StyledTableCell>Last Result</StyledTableCell>
+            <StyledTableCell align="center">Conventional Range</StyledTableCell>
             <StyledTableCell align="center">Conventional Flag</StyledTableCell>
+            <StyledTableCell>Functional Range</StyledTableCell>
             <StyledTableCell>Functional Flag</StyledTableCell>
-            <StyledTableCell>Error</StyledTableCell>
-            <StyledTableCell>Notes</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
+            <StyledTableCell>Units</StyledTableCell>
+            <StyledTableCell>Count</StyledTableCell>
+            <StyledTableCell>Detail</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
             <StyledTableRow key={row.name}>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.type}</TableCell>
               <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : ""}</TableCell>
+              <TableCell>{row.value}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
-              <TableCell>{row.upload_error}</TableCell>
-              <TableCell>{row.note}</TableCell>
-
-              <TableCell className={classes.actions}>
-                <IconButton className={classes.button}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+              <TableCell>{row.physician}</TableCell>
+              <TableCell>{row.unit}</TableCell>
+              <TableCell>{row.count}</TableCell>
+              <TableCell>{row.detail}</TableCell>
             </StyledTableRow>
           ))}
         </TableBody>
