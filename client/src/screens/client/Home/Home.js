@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Calendar,
-  NewOrEditEvent,
-  MessageToPatient,
-  ProviderCards,
-  ProviderDetailsCard,
-  MessagesUnread,
-  AppointmentRequests,
-} from "./components";
-import Appointments from "./../../../services/appointments.service";
+import { useDispatch } from "react-redux";
+
 import DashboardHome from "../../../services/DashboardHome.service";
 import Messages from "../../../services/message-to-patient.service";
+import Appointments from "./../../../services/appointments.service";
 import { setSuccess } from "./../../../store/common/actions";
+import {
+  AppointmentRequests,
+  Calendar,
+  MessagesUnread,
+  MessageToPatient,
+  NewOrEditEvent,
+  ProviderCards,
+  ProviderDetailsCard
+} from "./components";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
-  },
+    padding: "40px 0px"
+  }
 }));
 
 export default function Home() {
@@ -48,8 +49,6 @@ export default function Home() {
 
   const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
 
-  console.log("selectedMsg:", selectedMsg);
-
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
       return [
@@ -60,8 +59,8 @@ export default function Home() {
           start: item.start_dt,
           end: item.end_dt,
           backgroundColor:
-            item.status && item.status === "D" ? "#ffab40" : "#2196f3",
-        },
+            item.status && item.status === "D" ? "#ffab40" : "#2196f3"
+        }
       ];
     }, []);
 
@@ -187,20 +186,19 @@ export default function Home() {
     setSelectedMsg(msg);
   };
 
-  const fetchSingleMessage = () => {
+  const fetchSingleMessage = () =>
     !isNewMessage &&
-      Messages.getMessageByID(selectedMsg.id).then(
-        (response) => {
-          const { data } = response;
-          setSelectedMsg(data[0]);
-        },
-        (error) => {
-          if (error.response) {
-            setErrors(error.response.data);
-          }
+    Messages.getMessageByID(selectedMsg.id).then(
+      (response) => {
+        const { data } = response;
+        setSelectedMsg(data[0]);
+      },
+      (error) => {
+        if (error.response) {
+          setErrors(error.response.data);
         }
-      );
-  };
+      }
+    );
 
   const handleMessageToPatientFormSubmit = (_, message, isNewMessage) => {
     setIsLoading(true);
@@ -208,8 +206,8 @@ export default function Home() {
       data: {
         ...message,
         user_id_from: selectedProvider.id,
-        patient_id_to: patient_id_to,
-      },
+        patient_id_to: patient_id_to
+      }
     };
     if (isNewMessage) {
       //Create new message
@@ -218,7 +216,7 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log("msg create:", response);
+          console.log("msg create: >", response);
         },
         (errors) => {
           setIsLoading(false);
