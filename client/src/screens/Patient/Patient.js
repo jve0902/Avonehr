@@ -245,7 +245,6 @@ export default function Patient(props) {
 
   const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
-      console.log("res", res)
       if(!!res.data && res.data.client_id) {
         setPatientData(res.data);
         setHasPatientIderror(false)
