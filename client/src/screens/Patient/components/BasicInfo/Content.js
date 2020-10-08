@@ -8,6 +8,18 @@ export default function BasicInfoContent(props) {
   const classes = useStyles();
   const { data } = props;
 
+  const mapGender = (value) => {
+    let genderString = "";
+    if(value === "M") {
+      genderString = "Male";
+    } else if(value === "F") {
+      genderString = "Female";
+    } else {
+      genderString = "Not Specified";
+    }
+    return genderString;
+  }
+
   return (
     <>
       <Grid container className={classes.inputRow}>
@@ -24,7 +36,7 @@ export default function BasicInfoContent(props) {
           Gender:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {data.gender === "M" ? "Male" : "Female"}
+          {mapGender(data.gender)}
         </Typography>
       </Grid>
 
