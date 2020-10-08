@@ -310,6 +310,7 @@ export default function Home() {
         isOpen={isMessageToPatientOpen}
         onSubmit={handleMessageToPatientFormSubmit}
         onClose={() => setIsMessageToPatientOpen(false)}
+        errors={errors}
       />
     </div>
   );

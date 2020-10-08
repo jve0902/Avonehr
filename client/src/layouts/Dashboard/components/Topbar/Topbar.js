@@ -256,11 +256,8 @@ const Topbar = (props) => {
   const [results, setResults] = useState([]);
   const handleClose = (event) => {
     setOpen(false);
-  };
-
-  const handleSearchClose = () => {
     setSearchTerm('');
-  }
+  };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   useEffect(
@@ -355,7 +352,7 @@ const Topbar = (props) => {
               {!!searchTerm && (
                 <SearchResults
                   open={open}
-                  handleClose={handleSearchClose}
+                  handleClose={handleClose}
                   results={results}
                   noContent={
                     !!searchTerm && results.length < 1 && "Nothing found!"
