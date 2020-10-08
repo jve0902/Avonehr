@@ -37,59 +37,59 @@ const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1 / 2),
     top: theme.spacing(1 / 2),
-    color: "#ffffff",
+    color: "#ffffff"
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontSize: "18px",
+    fontSize: "18px"
   },
   formControl: {
     width: "100%",
     color: theme.palette.text.secondary,
     "& .MuiSelect-select": {
-      minWidth: 220,
-    },
+      minWidth: 220
+    }
   },
   datePickers: {
     display: "flex",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   startdatePicker: {
-    marginRight: theme.spacing(4),
+    marginRight: theme.spacing(4)
   },
   statuses: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   statusList: {
-    flexDirection: "row",
+    flexDirection: "row"
   },
   textArea: {
     height: "100px !important",
     width: "100%",
-    padding: "5px",
+    padding: "5px"
   },
   patientListCard: {
     position: "absolute",
     width: "100%",
-    top: "54px",
+    top: "54px"
   },
   contentWithLoading: {
-    opacity: "0.5",
+    opacity: "0.5"
   },
   patientListContent: {
     padding: 0,
     "&:last-child": {
-      padding: 0,
-    },
+      padding: 0
+    }
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -98,8 +98,8 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
+    paddingRight: theme.spacing(3)
+  }
 }));
 
 const NewOrEditEvent = ({
@@ -139,7 +139,7 @@ const NewOrEditEvent = ({
   const handleOnChange = (event) => {
     setCalEvent({
       ...calEvent,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
@@ -189,8 +189,8 @@ const NewOrEditEvent = ({
           ApptStatus: calEvent.status,
           notes: calEvent.notes,
           start_dt: calEvent.start_dt,
-          end_dt: calEvent.start_dt,
-        },
+          end_dt: calEvent.start_dt
+        }
       };
       onSave(payload);
     } else {
@@ -205,15 +205,15 @@ const NewOrEditEvent = ({
             : {
                 id: props.event.patient_id,
                 firstname: props.event.firstname,
-                email: props.event.email,
+                email: props.event.email
               },
           ApptStatus: calEvent.status,
           notes: calEvent.notes,
           old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
           old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
           new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
-          new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm"),
-        },
+          new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
+        }
       };
       onEventUpdate(payload);
     }
@@ -227,10 +227,10 @@ const NewOrEditEvent = ({
         patient: {
           id: props.event.patient_id,
           firstname: props.event.firstname,
-          email: props.event.email,
+          email: props.event.email
         },
-        appointmentDate: moment(props.event.start).format("YYYY-MM-DD HH:mm"),
-      },
+        appointmentDate: moment(props.event.start).format("YYYY-MM-DD HH:mm")
+      }
     };
     onCancel(payload);
   };
@@ -260,7 +260,7 @@ const NewOrEditEvent = ({
         {isLoading && (
           <div
             style={{
-              textAlign: "center",
+              textAlign: "center"
             }}
           >
             <CircularProgress />
@@ -269,7 +269,7 @@ const NewOrEditEvent = ({
         <div
           className={clsx({
             [classes.modalConentBelow]: true, //always apply
-            [classes.contentWithLoading]: isLoading, //only when isLoading === true
+            [classes.contentWithLoading]: isLoading //only when isLoading === true
           })}
         >
           <DialogContentText id="alert-dialog-description">
@@ -311,7 +311,7 @@ const NewOrEditEvent = ({
                   let property = "start_dt";
                   setCalEvent({
                     ...calEvent,
-                    [property]: date,
+                    [property]: date
                   });
                 }}
                 minDate={new Date()}
@@ -319,7 +319,7 @@ const NewOrEditEvent = ({
                 disablePast
                 format="yyyy/MM/dd HH:mm"
                 KeyboardButtonProps={{
-                  "aria-label": "change date",
+                  "aria-label": "change date"
                 }}
               />
               <KeyboardDateTimePicker
@@ -333,7 +333,7 @@ const NewOrEditEvent = ({
                   let property = "end_dt";
                   setCalEvent({
                     ...calEvent,
-                    [property]: date,
+                    [property]: date
                   });
                 }}
                 minDate={new Date()}
@@ -341,7 +341,7 @@ const NewOrEditEvent = ({
                 disablePast
                 format="yyyy/MM/dd HH:mm"
                 KeyboardButtonProps={{
-                  "aria-label": "change date",
+                  "aria-label": "change date"
                 }}
               />
             </div>
@@ -459,7 +459,7 @@ const NewOrEditEvent = ({
               style={{
                 borderColor: colors.orange[600],
                 color: colors.orange[600],
-                marginRight: "16px",
+                marginRight: "16px"
               }}
             >
               Cancel this appointment

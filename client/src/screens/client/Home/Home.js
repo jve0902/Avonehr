@@ -216,12 +216,10 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log("msg create: >", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log("msg errors:", errors);
         }
       );
     } else {
@@ -231,17 +229,18 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log("msg create:", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log("msg errors:", errors);
         }
       );
     }
   };
-  console.log("isOpen:", isOpen);
+
+  const handleRejectCall = (_, payload) => {
+    console.log("handleRejectCall:", payload);
+  };
 
   return (
     <div className={classes.root}>
@@ -281,6 +280,8 @@ export default function Home() {
                 selectedProvider={selectedProvider}
                 appointmentRequests={appointmentRequests}
                 onMessageClick={handleMessageClick}
+                onAccept={() => alert("onAccept Click")}
+                onReject={handleRejectCall}
               />
             </React.Fragment>
           )}
