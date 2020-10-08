@@ -11,6 +11,8 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { colors, FormControlLabel, FormGroup, Grid } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
+import NumberFormat from "react-number-format";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   gridMargin: {
@@ -33,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     color: theme.palette.text.secondary,
     "& .MuiSelect-select": {
@@ -42,19 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     paddingLeft: "5px",
-  },
-  formLabel: {
-    fontSize: "14px",
-    fontWeight: "600",
-    width: "220px",
+    "& .MuiTypography-root": {
+      marginLeft: "5px",
+    },
   },
   formHelperText: {
     width: "220px",
     fontSize: "12px",
-    paddingLeft: "16px",
-  },
-  formField: {
-    flex: 1,
+    paddingLeft: "10px",
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -82,6 +78,33 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+}
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 const EditCptCodeModal = ({
   isOpen,
   hendleOnClose,
@@ -98,6 +121,11 @@ const EditCptCodeModal = ({
   handleEditCptCode,
 }) => {
   const classes = useStyles();
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      handleEditCptCode();
+    }
+  };
 
   return (
     <div>
@@ -131,6 +159,7 @@ const EditCptCodeModal = ({
                   disabled={true}
                 />
               </Grid>
+              <p className={classes.formHelperText}>The name of the appointm</p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
               <Grid item xs={6} md={9} className={classes.gridMargin}>
@@ -146,21 +175,30 @@ const EditCptCodeModal = ({
                   disabled={true}
                 />
               </Grid>
+              <p className={classes.formHelperText}>
+                The name shown in the Appointment
+              </p>
             </FormControl>
             <FormControl component="div" className={classes.formControl}>
               <Grid item md={2} className={classes.gridMargin}>
                 <TextField
                   fullWidth={true}
+                  autoFocus={true}
                   label="Fee"
                   value={cpt_fee ? cpt_fee : ""}
                   variant="outlined"
                   size="small"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   onChange={handleChangeFee}
+                  onKeyUp={handleKeyUp}
                 />
               </Grid>
+              <p className={classes.formHelperText}>Edit fee here</p>
             </FormControl>
             <FormGroup>
               <FormControlLabel
@@ -170,6 +208,7 @@ const EditCptCodeModal = ({
                     size="small"
                     name="switchBox"
                     onChange={handleChangeFavorite}
+                    onKeyUp={handleKeyUp}
                   />
                 }
                 label="Favorite"
@@ -182,6 +221,7 @@ const EditCptCodeModal = ({
                     size="small"
                     name="switchBox"
                     onChange={handleChangeBillable}
+                    onKeyUp={handleKeyUp}
                   />
                 }
                 label="Billable"
@@ -204,6 +244,7 @@ const EditCptCodeModal = ({
                 }}
                 value={cpt_notes}
                 onChange={handleChangeNotes}
+                onKeyUp={handleKeyUp}
               />
             </FormControl>
           </div>

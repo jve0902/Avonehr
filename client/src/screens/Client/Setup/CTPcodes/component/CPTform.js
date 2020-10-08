@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   Grid,
   makeStyles,
-  MenuItem,
   TextField,
 } from "@material-ui/core";
 import React from "react";
@@ -15,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   controlLabel: {
     marginLeft: "0px",
+    marginRight: "15px",
   },
   input: {
     padding: "10.5px",
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     paddingLeft: "30px",
     paddingRight: "30px",
+    // fontSize: "1rem",
     marginTop: "8px",
   },
 }));
@@ -56,7 +57,7 @@ const CPTform = ({
   return (
     <div style={{ marginTop: "15px" }}>
       <Grid className={classes.formStyle}>
-        <Grid item xs={12} md={2} className={classes.gridMargin}>
+        <Grid item xs={12} md={1} className={classes.gridMargin}>
           <TextField
             fullWidth={true}
             autoFocus={true}
@@ -70,7 +71,7 @@ const CPTform = ({
             onKeyUp={handleKeyUp}
           />
         </Grid>
-        <Grid item xs={12} md={4} className={classes.gridMargin}>
+        <Grid item xs={12} md={3} className={classes.gridMargin}>
           <TextField
             fullWidth={true}
             label="CPT Description"
@@ -96,11 +97,15 @@ const CPTform = ({
             InputLabelProps={{
               shrink: true,
             }}
+            SelectProps={{
+              native: true,
+            }}
           >
+            <option aria-label="None" value="" />
             {lebCompanyList.map((lab) => (
-              <MenuItem key={lab.id} value={lab.id}>
+              <option key={lab.id} value={lab.id}>
                 {lab.name}
-              </MenuItem>
+              </option>
             ))}
           </TextField>
         </Grid>
@@ -131,6 +136,7 @@ const CPTform = ({
         }
         label="Billable"
         labelPlacement="start"
+        className={classes.controlLabel}
       />
       <FormControlLabel
         control={
@@ -144,6 +150,7 @@ const CPTform = ({
         }
         label="Self"
         labelPlacement="start"
+        className={classes.controlLabel}
       />
       <FormControlLabel
         control={
@@ -157,6 +164,7 @@ const CPTform = ({
         }
         label="Group"
         labelPlacement="start"
+        className={classes.controlLabel}
       />
       <br />
       <Button

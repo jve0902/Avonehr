@@ -19,6 +19,7 @@ import CPTCodesService from "../../../../../services/cpt.service";
 import { setSuccess } from "../../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
+import NumberFormat from "react-number-format";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -75,7 +76,7 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
     cptId: cpt_id,
     favorite: cpt_favorite,
     billable: cpt_billable,
-    fee: cpt_fee,
+    fee: String(cpt_fee).slice(1),
     notes: cpt_notes,
     updatedFavorite: cpt_favorite,
     updatedBillable: cpt_billable,
@@ -188,7 +189,14 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
                 <TableCell>{result.lab_company}</TableCell>
                 <TableCell>{result.favorite ? "Yes" : "No"}</TableCell>
                 <TableCell>{result.billable ? "Yes" : "No"}</TableCell>
-                <TableCell>{result.fee ? `$${result.fee}` : ""}</TableCell>
+                <TableCell>
+                  <NumberFormat
+                    value={result.fee}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"$"}
+                  />
+                </TableCell>
                 <TableCell>{result.client_name}</TableCell>
                 <TableCell
                   style={{ cursor: "pointer" }}
