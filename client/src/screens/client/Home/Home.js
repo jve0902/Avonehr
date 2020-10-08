@@ -8,6 +8,7 @@ import DashboardHome from "../../../services/DashboardHome.service";
 import Messages from "../../../services/message-to-patient.service";
 import Appointments from "./../../../services/appointments.service";
 import { setSuccess } from "./../../../store/common/actions";
+import { statusToColorCode } from "./../../../utils/helpers";
 import {
   AppointmentRequests,
   Calendar,
@@ -51,6 +52,10 @@ export default function Home() {
 
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
+      console.log(
+        " statusToColorCode(item.status)",
+        statusToColorCode(item.status)
+      );
       return [
         ...acc,
         {
@@ -58,8 +63,7 @@ export default function Home() {
           title: item.title ? item.title : item.firstname,
           start: item.start_dt,
           end: item.end_dt,
-          backgroundColor:
-            item.status && item.status === "D" ? "#ffab40" : "#2196f3"
+          backgroundColor: statusToColorCode(item.status)
         }
       ];
     }, []);

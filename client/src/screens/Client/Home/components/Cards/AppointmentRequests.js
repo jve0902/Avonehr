@@ -129,7 +129,7 @@ const AppointmentRequests = ({
           firstname: appt.name,
           email: appt.patient_email
         },
-        ApptStatus: "R",
+        ApptStatus: "A",
         start_dt: appt.start_dt,
         end_dt: appt.end_dt
       }
