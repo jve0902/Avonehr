@@ -52,10 +52,6 @@ export default function Home() {
 
   const getMapFromArray = (data) => {
     const formedData = data.reduce((acc, item) => {
-      console.log(
-        " statusToColorCode(item.status)",
-        statusToColorCode(item.status)
-      );
       return [
         ...acc,
         {
@@ -130,6 +126,7 @@ export default function Home() {
       (response) => {
         setIsLoading(false);
         fetchEventsByProvider(selectedProvider);
+        fetchPatientApptRequests(selectedProvider.id);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -154,6 +151,7 @@ export default function Home() {
       (response) => {
         setIsLoading(false);
         fetchEventsByProvider(selectedProvider);
+        fetchPatientApptRequests(selectedProvider.id);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -296,7 +294,6 @@ export default function Home() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
-        onCancel={(payload) => handleEventCancellation(payload)}
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
         errors={errors}

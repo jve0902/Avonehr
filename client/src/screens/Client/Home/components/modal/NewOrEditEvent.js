@@ -29,7 +29,6 @@ import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-import { colors } from "@material-ui/core";
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
 
@@ -108,7 +107,6 @@ const NewOrEditEvent = ({
   selectedDate,
   selectedProvider,
   user,
-  onCancel,
   onEventUpdate,
   onSave,
   isNewEvent,
@@ -217,22 +215,6 @@ const NewOrEditEvent = ({
       };
       onEventUpdate(payload);
     }
-  };
-
-  const handleEventCancel = () => {
-    const payload = {
-      data: {
-        id: props.event.id,
-        providerName: props.event.provider_name,
-        patient: {
-          id: props.event.patient_id,
-          firstname: props.event.firstname,
-          email: props.event.email
-        },
-        appointmentDate: moment(props.event.start).format("YYYY-MM-DD HH:mm")
-      }
-    };
-    onCancel(payload);
   };
 
   return (
@@ -451,21 +433,6 @@ const NewOrEditEvent = ({
           close
         </Button>
         <div>
-          {!isNewEvent && (
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => handleEventCancel()}
-              style={{
-                borderColor: colors.orange[600],
-                color: colors.orange[600],
-                marginRight: "16px"
-              }}
-            >
-              Cancel this appointment
-            </Button>
-          )}
-
           <Button
             disabled={!calEvent}
             variant="outlined"

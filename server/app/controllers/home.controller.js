@@ -222,12 +222,22 @@ const updateAppointment = async (req, res) => {
       errorMessage.error = "Update not successful";
       return res.status(status.notfound).send(errorMessage);
     }
-    const emailTemplate = updateAppointmentTemplate(
-      patient,
-      moment(old_start_dt).format("YYYY-MM-DD HH:mm:ss"),
-      providerName,
-      moment(new_start_dt).format("YYYY-MM-DD HH:mm:ss")
-    );
+    let emailTemplate;
+    if (ApptStatus === "D") {
+      emailTemplate = cancelAppointmentTemplate(
+        patient,
+        moment(old_start_dt).format("YYYY-MM-DD HH:mm:ss"),
+        providerName
+      );
+    } else {
+      emailTemplate = updateAppointmentTemplate(
+        patient,
+        moment(old_start_dt).format("YYYY-MM-DD HH:mm:ss"),
+        providerName,
+        moment(new_start_dt).format("YYYY-MM-DD HH:mm:ss")
+      );
+    }
+
     if (process.env.NODE_ENV === "development") {
       let info = await transporter.sendMail(emailTemplate);
       console.info("Email for update appointment has bees sent!", info);
