@@ -276,7 +276,7 @@ export default function Home() {
                 selectedProvider={selectedProvider}
                 appointmentRequests={appointmentRequests}
                 onMessageClick={handleMessageClick}
-                onAccept={() => alert("onAccept Click")}
+                onAccept={(payload) => handleEventCreation(payload)}
                 onReject={(payload) => handleEventCancellation(payload)}
               />
             </React.Fragment>

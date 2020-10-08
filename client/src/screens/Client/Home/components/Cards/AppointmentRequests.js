@@ -118,6 +118,25 @@ const AppointmentRequests = ({
     };
     onReject(payload);
   };
+
+  const handleAccept = (_, appt) => {
+    const payload = {
+      data: {
+        title: "",
+        provider: selectedProvider,
+        patient: {
+          id: appt.patient_id,
+          firstname: appt.name,
+          email: appt.patient_email
+        },
+        ApptStatus: "R",
+        start_dt: appt.start_dt,
+        end_dt: appt.end_dt
+      }
+    };
+    onAccept(payload);
+  };
+
   return (
     <Card className={classes.PatientsApptRequest} variant="outlined">
       <Grid
@@ -144,7 +163,7 @@ const AppointmentRequests = ({
                 {moment(appt.start_dt).format("ll, h:mm")} -{" "}
                 {moment(appt.end_dt).format("h:mm")}
                 <div className={classes.unreadMsgActions}>
-                  <Button onClick={() => onAccept()}>Accept</Button>
+                  <Button onClick={(_) => handleAccept(_, appt)}>Accept</Button>
                   <Button onClick={(_) => handleRejectCall(_, appt)}>
                     Reject
                   </Button>

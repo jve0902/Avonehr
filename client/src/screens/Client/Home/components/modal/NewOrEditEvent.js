@@ -189,7 +189,7 @@ const NewOrEditEvent = ({
           ApptStatus: calEvent.status,
           notes: calEvent.notes,
           start_dt: calEvent.start_dt,
-          end_dt: calEvent.start_dt
+          end_dt: calEvent.end_dt
         }
       };
       onSave(payload);
