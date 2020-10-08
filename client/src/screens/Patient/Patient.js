@@ -245,7 +245,9 @@ export default function Patient(props) {
 
   const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
-      if(!!res.data && res.data.client_id) {
+      //check if patient exists in the database
+      //check if patient's client_id is equal to the signed user's client_id
+      if(!!res.data && res.data.client_id && (res.data.client_id === user.client_id)) {
         setPatientData(res.data);
         setHasPatientIderror(false)
       } else {
@@ -257,7 +259,6 @@ export default function Patient(props) {
         );
       }
     });
-    
   };
 
   const fetchPatientHistory = () => {
