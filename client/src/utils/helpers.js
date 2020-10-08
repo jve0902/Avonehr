@@ -85,3 +85,14 @@ export const formatDate = (date) => {
 
   return [year, month, day].join("-");
 };
+
+export const statusToColorCode = (status) => {
+  switch (status) {
+    case "D":
+      return "#ffab40";
+    case "A":
+      return "#008B00";
+    default:
+      return "#2196f3";
+  }
+};

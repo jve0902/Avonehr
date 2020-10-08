@@ -16,7 +16,7 @@ class Appointments {
   }
   create(payload) {
     return axios.post(API_BASE + `/appointments`, payload, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
   update(payload) {
@@ -24,7 +24,7 @@ class Appointments {
       API_BASE + `/appointments/update/${payload.data.id}`,
       payload,
       {
-        headers: authHeader(),
+        headers: authHeader()
       }
     );
   }
@@ -33,7 +33,7 @@ class Appointments {
       API_BASE + `/appointments/cancel/${payload.data.id}`,
       payload,
       {
-        headers: authHeader(),
+        headers: authHeader()
       }
     );
   }

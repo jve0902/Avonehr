@@ -8,6 +8,7 @@ import DashboardHome from "../../../services/DashboardHome.service";
 import Messages from "../../../services/message-to-patient.service";
 import Appointments from "./../../../services/appointments.service";
 import { setSuccess } from "./../../../store/common/actions";
+import { statusToColorCode } from "./../../../utils/helpers";
 import {
   AppointmentRequests,
   Calendar,
@@ -58,8 +59,7 @@ export default function Home() {
           title: item.title ? item.title : item.firstname,
           start: item.start_dt,
           end: item.end_dt,
-          backgroundColor:
-            item.status && item.status === "D" ? "#ffab40" : "#2196f3"
+          backgroundColor: statusToColorCode(item.status)
         }
       ];
     }, []);
@@ -126,6 +126,7 @@ export default function Home() {
       (response) => {
         setIsLoading(false);
         fetchEventsByProvider(selectedProvider);
+        fetchPatientApptRequests(selectedProvider.id);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -150,6 +151,7 @@ export default function Home() {
       (response) => {
         setIsLoading(false);
         fetchEventsByProvider(selectedProvider);
+        fetchPatientApptRequests(selectedProvider.id);
         dispatch(setSuccess(`${response.data.message}`));
         setIsOpen(false);
       },
@@ -216,12 +218,10 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log("msg create: >", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log("msg errors:", errors);
         }
       );
     } else {
@@ -231,17 +231,14 @@ export default function Home() {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
           fetchUnreadPatientMessages(selectedProvider.id);
-          console.log("msg create:", response);
         },
         (errors) => {
           setIsLoading(false);
           setIsMessageToPatientOpen(false);
-          console.log("msg errors:", errors);
         }
       );
     }
   };
-  console.log("isOpen:", isOpen);
 
   return (
     <div className={classes.root}>
@@ -281,6 +278,8 @@ export default function Home() {
                 selectedProvider={selectedProvider}
                 appointmentRequests={appointmentRequests}
                 onMessageClick={handleMessageClick}
+                onAccept={(payload) => handleEventCreation(payload)}
+                onReject={(payload) => handleEventCancellation(payload)}
               />
             </React.Fragment>
           )}
@@ -295,7 +294,6 @@ export default function Home() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         providers={providers}
-        onCancel={(payload) => handleEventCancellation(payload)}
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
         errors={errors}
