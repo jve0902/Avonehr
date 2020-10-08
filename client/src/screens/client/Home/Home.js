@@ -238,10 +238,6 @@ export default function Home() {
     }
   };
 
-  const handleRejectCall = (_, payload) => {
-    console.log("handleRejectCall:", payload);
-  };
-
   return (
     <div className={classes.root}>
       <Typography
@@ -281,7 +277,7 @@ export default function Home() {
                 appointmentRequests={appointmentRequests}
                 onMessageClick={handleMessageClick}
                 onAccept={() => alert("onAccept Click")}
-                onReject={handleRejectCall}
+                onReject={(payload) => handleEventCancellation(payload)}
               />
             </React.Fragment>
           )}

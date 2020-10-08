@@ -103,7 +103,21 @@ const AppointmentRequests = ({
   onAccept
 }) => {
   const classes = useStyles();
-
+  const handleRejectCall = (_, appt) => {
+    const payload = {
+      data: {
+        id: appt.id,
+        providerName: selectedProvider.name,
+        patient: {
+          id: appt.patient_id,
+          firstname: appt.name,
+          email: appt.patient_email
+        },
+        appointmentDate: moment(appt.start_dt).format("YYYY-MM-DD HH:mm")
+      }
+    };
+    onReject(payload);
+  };
   return (
     <Card className={classes.PatientsApptRequest} variant="outlined">
       <Grid
@@ -131,7 +145,9 @@ const AppointmentRequests = ({
                 {moment(appt.end_dt).format("h:mm")}
                 <div className={classes.unreadMsgActions}>
                   <Button onClick={() => onAccept()}>Accept</Button>
-                  <Button onClick={(_) => onReject(_, appt)}>Reject</Button>
+                  <Button onClick={(_) => handleRejectCall(_, appt)}>
+                    Reject
+                  </Button>
                   <Button onClick={(_) => onMessageClick(_, appt.patient_id)}>
                     Message
                   </Button>
