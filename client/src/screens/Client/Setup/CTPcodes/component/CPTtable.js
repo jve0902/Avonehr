@@ -76,7 +76,7 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
     cptId: cpt_id,
     favorite: cpt_favorite,
     billable: cpt_billable,
-    fee: String(cpt_fee).slice(1),
+    fee: cpt_fee,
     notes: cpt_notes,
     updatedFavorite: cpt_favorite,
     updatedBillable: cpt_billable,
