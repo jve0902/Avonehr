@@ -1167,6 +1167,7 @@ export default function Patient(props) {
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
+        measureBeforeMount={true}
       >
         {FirstColumnPatientCards.map((item, index) => {
           return (
