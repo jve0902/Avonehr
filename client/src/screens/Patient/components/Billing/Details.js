@@ -66,16 +66,15 @@ const BillingDetails = (props) => {
   const classes = useStyles();
   const [billings, setBillings] = useState([]);
 
-  const fetchAllBillings = useCallback(() => {
-    let limit = 100;
-    PatientService.getBillings(patientId, limit).then((res) => {
+  const fetchBillings = useCallback(() => {
+    PatientService.getBillings(patientId).then((res) => {
       setBillings(res.data);
     });
   }, [patientId])
 
   useEffect(() => {
-    fetchAllBillings();
-  }, [fetchAllBillings])
+    fetchBillings();
+  }, [fetchBillings])
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;

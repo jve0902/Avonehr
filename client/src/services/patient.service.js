@@ -34,9 +34,9 @@ class Patient {
       .get(API_BASE + `/patient/${patient_id}/forms`, { headers: authHeader() })
       .then((res) => res.data);
   }
-  getBillings(patient_id, limit) {
+  getBillings(patient_id) {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/billing/?limit=${limit}`, {
+      .get(API_BASE + `/patient/${patient_id}/billing`, {
         headers: authHeader(),
       })
       .then((res) => res.data);
@@ -58,6 +58,11 @@ class Patient {
       .get(API_BASE + `/patient/${patient_id}/history`, {
         headers: authHeader(),
       })
+      .then((res) => res.data);
+  }
+  getPatientBalance(patient_id) {
+    return axios
+      .get(API_BASE + `/patient/${patient_id}/balance`, { headers: authHeader() })
       .then((res) => res.data);
   }
   searchPatient(patient_id, data) {
