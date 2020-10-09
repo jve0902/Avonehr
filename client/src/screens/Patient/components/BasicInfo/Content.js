@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { calculateAge, formatPhoneNumber } from "./../../../../utils/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
+//service
+import PatientService from "../../../../services/patient.service";
+
 export default function BasicInfoContent(props) {
   const classes = useStyles();
-  const { data } = props;
+  const { data, patientId } = props;
+  const [nextAppointment, setNextAppointment] = useState(null);
+
+  useEffect(() => {
+    const fetchNextAppointment = () => {
+      PatientService.getNextAppointment(patientId).then((res) => {
+        setNextAppointment(res.data && res.data.length ? res.data[0].start_dt : '');
+      });
+    };
+    fetchNextAppointment();
+  }, [patientId])
+
+  
 
   const mapGender = (value) => {
     let genderString = "";
@@ -82,8 +97,7 @@ export default function BasicInfoContent(props) {
           Next Appointment:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {data.firstname}&nbsp;
-          {data.lastname}
+          {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''}
         </Typography>
       </Grid>
     </>
