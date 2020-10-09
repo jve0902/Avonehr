@@ -53,6 +53,11 @@ class Patient {
       .get(API_BASE + `/patient/${patient_id}`, { headers: authHeader() })
       .then((res) => res.data);
   }
+  getNextAppointment(patient_id) {
+    return axios
+      .get(API_BASE + `/patient/${patient_id}/next-appointment`, { headers: authHeader() })
+      .then((res) => res.data);
+  }
   getPatientHistory(patient_id) {
     return axios
       .get(API_BASE + `/patient/${patient_id}/history`, {

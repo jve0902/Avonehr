@@ -183,6 +183,7 @@ export default function Patient(props) {
   const [medications, setMedications] = useState([]);
   const [requisitions, setRequisitions] = useState([]);
   const [tests, setTests] = useState([]);
+  const [nextAppointment, setNextAppointment] = useState('');
 
   useEffect(() => {
     generateLayout();
@@ -193,6 +194,7 @@ export default function Patient(props) {
 
   useEffect(() => {
     if(!hasPatientIderror) {
+      fetchNextAppointment();
       fetchPatientHistory();
       fetchPatientBalance();
       fetchAdminNotesHistory();
@@ -296,6 +298,12 @@ export default function Patient(props) {
   const fetchBillings = () => {
     PatientService.getBillings(patient_id).then((res) => {
       setBillings(res.data);
+    });
+  };
+
+  const fetchNextAppointment = () => {
+    PatientService.getNextAppointment(patient_id).then((res) => {
+      setNextAppointment(res.data && res.data.length ? res.data[0].amount : '');
     });
   };
 
@@ -529,6 +537,8 @@ export default function Patient(props) {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
       return toggleAdminFormDialog;
+    } else if (value === "Forms") {
+      return toggleFormsExpandDialog;
     } else if (value === "Handouts") {
       return toggleHandoutsExpandDialog;
     } else if (value === "Billing") {
