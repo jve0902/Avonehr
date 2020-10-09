@@ -132,22 +132,26 @@ const Drugstable = ({ user, result, fetchSearchDrugs }) => {
           </Alert>
         ))}
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Favorites</StyledTableCell>
-              <StyledTableCell>Updated</StyledTableCell>
-              <StyledTableCell>Updated By</StyledTableCell>
+              <StyledTableCell padding="checkbox">Name</StyledTableCell>
+              <StyledTableCell padding="checkbox">Favorites</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated By</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {result.map((drug) => (
               <StyledTableRow key={drug.id}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {drug.name}
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   <GreenSwitch
                     size="small"
                     checked={Boolean(drug.favorite)}
@@ -160,10 +164,10 @@ const Drugstable = ({ user, result, fetchSearchDrugs }) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   {drug.updated ? moment(drug.updated).format("lll") : ""}
                 </TableCell>
-                <TableCell>{drug.updated_name}</TableCell>
+                <TableCell padding="checkbox">{drug.updated_name}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

@@ -53,7 +53,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& td": {
       fontSize: 12,
-      // height: "50px",
     },
   },
 }))(TableRow);

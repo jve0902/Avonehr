@@ -173,25 +173,29 @@ export default function Support() {
 
       {searchResults.length > 0 ? (
         <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table className={classes.table} aria-label="a dense table">
+          <Table
+            size="small"
+            className={classes.table}
+            aria-label="a dense table"
+          >
             <TableHead>
               <TableRow>
-                <StyledTableCell>Case ID</StyledTableCell>
-                <StyledTableCell>Client</StyledTableCell>
-                <StyledTableCell>Subject</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>Created</StyledTableCell>
-                <StyledTableCell>Created By</StyledTableCell>
-                <StyledTableCell>Updated</StyledTableCell>
+                <StyledTableCell padding="default">Case ID</StyledTableCell>
+                <StyledTableCell padding="default">Client</StyledTableCell>
+                <StyledTableCell padding="default">Subject</StyledTableCell>
+                <StyledTableCell padding="default">Status</StyledTableCell>
+                <StyledTableCell padding="default">Created</StyledTableCell>
+                <StyledTableCell padding="default">Created By</StyledTableCell>
+                <StyledTableCell padding="default">Updated</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {searchResults.map((result) => (
                 <StyledTableRow key={result.id}>
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {result.id}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {result.client_name}
                   </TableCell>
                   {result.subject.length > 40 ? (
@@ -199,12 +203,13 @@ export default function Support() {
                       className={classes.overFlowControl}
                       title={result.subject}
                     >
-                      <TableCell component="th" scope="row">
+                      <TableCell padding="default" component="th" scope="row">
                         {result.subject}
                       </TableCell>
                     </LightTooltip>
                   ) : (
                     <TableCell
+                      padding="default"
                       className={classes.overFlowControl}
                       component="th"
                       scope="row"
@@ -212,16 +217,16 @@ export default function Support() {
                       {result.subject}
                     </TableCell>
                   )}
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {result.case_status}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {moment(result.created).format("lll")}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {result.created_user}
                   </TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell padding="default" component="th" scope="row">
                     {moment(result.updated).format("lll")}
                   </TableCell>
                 </StyledTableRow>

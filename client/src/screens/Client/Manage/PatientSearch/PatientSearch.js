@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   customSelect: {
     width: "200px",
-    marginTop: "16px",
   },
 }));
 
@@ -53,9 +52,7 @@ function NumberFormatCustom(props) {
           },
         });
       }}
-      // thousandSeparator
       isNumericString
-      // prefix="$"
     />
   );
 }
@@ -133,13 +130,13 @@ export default function PatientSearch() {
               This page is to search for patients
             </Typography>
             <div>
-              <Grid container spacing={1}>
+              <Grid container spacing={0}>
                 <Grid item xs={12} sm={3}>
                   <TextField
                     className={classes.textField}
                     value={firstName}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     autoFocus
                     name="firstName"
                     label="First Name"
@@ -155,7 +152,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={lastName}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     size="small"
                     name="lastName"
                     label="Last Name"
@@ -179,7 +176,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     onChange={(date) => setCreatedFrom(date)}
                     size="small"
-                    margin="normal"
+                    margin="dense"
                     autoOk
                   />
                 </Grid>
@@ -199,7 +196,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     onChange={(date) => setCreatedTo(date)}
                     size="small"
-                    margin="normal"
+                    margin="dense"
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -207,7 +204,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={phone}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="phone"
                     label="Phone"
                     size="small"
@@ -222,7 +219,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={email}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="email"
                     size="small"
                     label="Email"
@@ -244,7 +241,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={appointmentFrom ? moment(appointmentFrom) : null}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="appointmentFrom"
                     size="small"
                     label="Appointment From"
@@ -265,7 +262,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={appointmentTo ? moment(appointmentFrom) : null}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="appointmentTO"
                     size="small"
                     label="Appointment To"
@@ -279,7 +276,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={patientId}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="patientId"
                     size="small"
                     label="Patient ID"
@@ -306,6 +303,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     className={classes.customSelect}
                     size="small"
+                    margin="dense"
                   >
                     <InputLabel htmlFor="age-native-simple">Status</InputLabel>
                     <Select
@@ -330,7 +328,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={paymentFrom}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="paymentFrom"
                     label="Payment From"
                     id="paymentFrom"
@@ -356,7 +354,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={paymentTo}
                     variant="outlined"
-                    margin="normal"
+                    margin="dense"
                     name="paymentTo"
                     label="Payment To"
                     type="paymentTo"
