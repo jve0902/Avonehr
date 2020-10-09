@@ -23,6 +23,11 @@ router.get(
   Patient.balance
 );
 router.get(
+  "/patient/:patient_id/next-appointment",
+  [authJwt.verifyToken],
+  Patient.nextAppointment
+);
+router.get(
   "/patient/:patient_id/admin-note/history",
   [authJwt.verifyToken],
   Patient.AdminNotehistory

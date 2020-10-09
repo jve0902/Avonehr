@@ -211,6 +211,36 @@ const history = async (req, res) => {
   }
 };
 
+const nextAppointment = async(req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+  const now = moment().format("YYYY-MM-DD HH:mm:ss");
+  try {
+    const dbResponse = await db.query(
+      `select 
+        min(start_dt) start_dt
+        from user_calendar
+        where patient_id=${patient_id}
+        and start_dt>'${now}'
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+}
+
 const balance = async (req, res) => {
   const db = makeDb(configuration, res);
   const { patient_id } = req.params;
@@ -1418,6 +1448,7 @@ const appointmentTypes = {
   search,
   history,
   balance,
+  nextAppointment,
   AdminNotehistory,
   adminNoteupdate,
   getForms,
