@@ -109,12 +109,13 @@ const MessageToPatient = ({
   isLoading,
   isNewMessage,
   onSubmit,
+  errors,
   ...props
 }) => {
   const classes = useStyles();
   // const [selectedDate, handleDateChange] = useState(new Date());
-  const [errors, setErrors] = useState([]);
   const [message, setMessage] = useState("");
+  const unread_notify_dt = "unread_notify_dt"
 
   useEffect(() => {
     if (isNewMessage) {
@@ -240,7 +241,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    ["unread_notify_dt"]: null,
+                    [unread_notify_dt]: null,
                   })
                 }
               >
@@ -250,7 +251,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    ["unread_notify_dt"]: moment().add(7, "days"),
+                    [unread_notify_dt]: moment().add(7, "days"),
                   })
                 }
               >
@@ -260,7 +261,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    ["unread_notify_dt"]: moment().add(14, "days"),
+                    [unread_notify_dt]: moment().add(14, "days"),
                   })
                 }
               >
@@ -270,7 +271,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    ["unread_notify_dt"]: moment().add(21, "days"),
+                    [unread_notify_dt]: moment().add(21, "days"),
                   })
                 }
               >
@@ -280,7 +281,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    ["unread_notify_dt"]: moment().add(28, "days"),
+                    [unread_notify_dt]: moment().add(28, "days"),
                   })
                 }
               >

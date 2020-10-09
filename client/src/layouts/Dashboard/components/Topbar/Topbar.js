@@ -256,6 +256,7 @@ const Topbar = (props) => {
   const [results, setResults] = useState([]);
   const handleClose = (event) => {
     setOpen(false);
+    setSearchTerm('');
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);

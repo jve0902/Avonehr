@@ -1,12 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { calculateAge, formatPhoneNumber } from "./../../../../utils/helpers";
+import { calculateAge, formatPhoneNumber, DateDiff } from "./../../../../utils/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
+//service
+import PatientService from "../../../../services/patient.service";
+
 export default function BasicInfoContent(props) {
   const classes = useStyles();
-  const { data } = props;
+  const { data, patientId } = props;
+  const [nextAppointment, setNextAppointment] = useState(null);
+
+  useEffect(() => {
+    const fetchNextAppointment = () => {
+      PatientService.getNextAppointment(patientId).then((res) => {
+        setNextAppointment(res.data && res.data.length ? res.data[0].start_dt : '');
+      });
+    };
+    fetchNextAppointment();
+  }, [patientId])
+
+  const calculateDateDifference = () => {
+
+    var d1 = new Date();
+    var d2 = new Date(nextAppointment);
+
+    let daysDiff = DateDiff.inDays(d1, d2);
+    let monthsDiff = DateDiff.inMonths(d1, d2);
+    let yearsDiff = DateDiff.inYears(d1, d2);
+
+    if(yearsDiff > 0) {
+      return yearsDiff > 1 ? `${yearsDiff} years` : `${yearsDiff} year`;
+    } else if (monthsDiff > 0) {
+      return monthsDiff > 1 ? `${monthsDiff} months` : `${monthsDiff} month`;
+    } else {
+      return daysDiff > 1 ? `${daysDiff} days` : `${daysDiff} day`;
+    }
+  }
+
+  const mapGender = (value) => {
+    let genderString = "";
+    if(value === "M") {
+      genderString = "Male";
+    } else if(value === "F") {
+      genderString = "Female";
+    } else {
+      genderString = "Not Specified";
+    }
+    return genderString;
+  }
 
   return (
     <>
@@ -24,7 +67,7 @@ export default function BasicInfoContent(props) {
           Gender:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {data.gender === "M" ? "Male" : "Female"}
+          {mapGender(data.gender)}
         </Typography>
       </Grid>
 
@@ -70,8 +113,7 @@ export default function BasicInfoContent(props) {
           Next Appointment:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {data.firstname}&nbsp;
-          {data.lastname}
+          {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''} {!!nextAppointment && `(In ${calculateDateDifference()})`}
         </Typography>
       </Grid>
     </>
@@ -80,7 +122,7 @@ export default function BasicInfoContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: 0,
+    marginBottom: theme.spacing(0.5),
   },
   text12: {
     fontSize: 12
