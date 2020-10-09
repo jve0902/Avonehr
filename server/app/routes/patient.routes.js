@@ -18,6 +18,11 @@ router.get(
   Patient.history
 );
 router.get(
+  "/patient/:patient_id/balance",
+  [authJwt.verifyToken],
+  Patient.balance
+);
+router.get(
   "/patient/:patient_id/admin-note/history",
   [authJwt.verifyToken],
   Patient.AdminNotehistory
