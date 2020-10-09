@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { calculateAge, formatPhoneNumber } from "./../../../../utils/helpers";
+import { calculateAge, formatPhoneNumber, DateDiff } from "./../../../../utils/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
@@ -21,7 +21,23 @@ export default function BasicInfoContent(props) {
     fetchNextAppointment();
   }, [patientId])
 
-  
+  const calculateDateDifference = () => {
+
+    var d1 = new Date();
+    var d2 = new Date(nextAppointment);
+
+    let daysDiff = DateDiff.inDays(d1, d2);
+    let monthsDiff = DateDiff.inMonths(d1, d2);
+    let yearsDiff = DateDiff.inYears(d1, d2);
+
+    if(yearsDiff > 0) {
+      return yearsDiff > 1 ? `${yearsDiff} years` : `${yearsDiff} year`;
+    } else if (monthsDiff > 0) {
+      return monthsDiff > 1 ? `${monthsDiff} months` : `${monthsDiff} month`;
+    } else {
+      return daysDiff > 1 ? `${daysDiff} days` : `${daysDiff} day`;
+    }
+  }
 
   const mapGender = (value) => {
     let genderString = "";
@@ -97,7 +113,7 @@ export default function BasicInfoContent(props) {
           Next Appointment:&nbsp;
         </Typography>
         <Typography variant="body1" className={classes.text12} color="textPrimary">
-          {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''}
+          {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''} {!!nextAppointment && `(In ${calculateDateDifference()})`}
         </Typography>
       </Grid>
     </>
