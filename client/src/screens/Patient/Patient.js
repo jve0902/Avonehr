@@ -64,6 +64,7 @@ import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
 
 //expand detail components
+import FormDetails from "./Form/details";
 import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
 import MessagesDetails from "./Messages/details";
@@ -115,6 +116,7 @@ export default function Patient(props) {
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
+  const [showFormsViewDialog, setShowFormsViewDialog] = useState(false);
 
   const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(false);
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
@@ -402,6 +404,10 @@ export default function Patient(props) {
     setShowFormsExpandDialog((prevState) => !prevState);
   };
 
+  const toggleFormsViewDialog = () => {
+    setShowFormsViewDialog((prevState) => !prevState);
+  };
+
   const toggleNewTransactionDialog = () => {
     setShowNewTransactionDialog((prevState) => !prevState);
   };
@@ -512,7 +518,7 @@ export default function Patient(props) {
     } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
     } else if (value === "Forms") {
-      return toggleFormsExpandDialog;
+      return toggleFormsViewDialog;
     } else if (value === "Handouts") {
       return toggleHandoutsDialog;
     } else if (value === "Billing") {
@@ -895,9 +901,18 @@ export default function Patient(props) {
       <Dialog
         open={showFormsExpandDialog}
         title={" "}
-        message={<Form onClose={toggleFormsExpandDialog} />}
+        message={<FormDetails data={forms} onClose={toggleFormsExpandDialog} />}
         applyForm={() => toggleFormsExpandDialog()}
         cancelForm={() => toggleFormsExpandDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
+      <Dialog
+        open={showFormsViewDialog}
+        title={" "}
+        message={<Form onClose={toggleFormsViewDialog} />}
+        applyForm={() => toggleFormsViewDialog()}
+        cancelForm={() => toggleFormsViewDialog()}
         hideActions={true}
         size={"lg"}
       />
