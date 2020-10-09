@@ -53,9 +53,9 @@ function NumberFormatCustom(props) {
           },
         });
       }}
-      thousandSeparator
+      // thousandSeparator
       isNumericString
-      prefix="$"
+      // prefix="$"
     />
   );
 }
@@ -168,7 +168,6 @@ export default function PatientSearch() {
                 <Grid item xs={12} sm={3}>
                   <KeyboardDatePicker
                     clearable
-                    // disablePast
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
@@ -179,7 +178,6 @@ export default function PatientSearch() {
                     value={createdFrom ? moment(createdFrom) : null}
                     className={classes.textField}
                     onChange={(date) => setCreatedFrom(date)}
-                    // type="date"
                     size="small"
                     margin="normal"
                     autoOk
@@ -188,7 +186,6 @@ export default function PatientSearch() {
                 <Grid item xs={12} sm={3}>
                   <KeyboardDatePicker
                     clearable
-                    // disablePast
                     autoOk
                     KeyboardButtonProps={{
                       "aria-label": "change date",
@@ -238,7 +235,6 @@ export default function PatientSearch() {
                 <Grid item xs={12} sm={3}>
                   <KeyboardDatePicker
                     clearable
-                    // disablePast
                     autoOk
                     KeyboardButtonProps={{
                       "aria-label": "change date",
@@ -260,7 +256,6 @@ export default function PatientSearch() {
                 <Grid item xs={12} sm={3}>
                   <KeyboardDatePicker
                     clearable
-                    // disablePast
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
@@ -291,6 +286,18 @@ export default function PatientSearch() {
                     type="patientId"
                     id="patientId"
                     autoComplete="patientId"
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                    inputProps={{
+                      maxLength: 16,
+                    }}
+                    error={patientId.length >= 13}
+                    helperText={
+                      patientId &&
+                      patientId.length >= 13 &&
+                      "Enter between 12 digit"
+                    }
                     onChange={(event) => setPatientId(event.target.value)}
                   />
                 </Grid>
@@ -342,7 +349,6 @@ export default function PatientSearch() {
                       "Enter between 12 digit"
                     }
                   />
-                  {console.log(paymentFrom.length)}
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <TextField

@@ -14,7 +14,6 @@ export const removeEmpty = (obj) => {
   return obj;
 };
 
-
 function getFullDate(x) {
   switch (x) {
     case 0:
@@ -64,16 +63,16 @@ export const calculateAge = (date) => {
   }
 
   return year > 0 ? year + " yrs" : month + " mo";
-}
+};
 
 export const formatPhoneNumber = (phoneNumber) => {
-  let cleaned = ('' + phoneNumber).replace(/\D/g, '')
-  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  let cleaned = ("" + phoneNumber).replace(/\D/g, "");
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
-    return match[1] + ' ' + match[2] + ' ' + match[3]
+    return match[1] + " " + match[2] + " " + match[3];
   }
-  return null
-}
+  return null;
+};
 
 export const formatDate = (date) => {
   var d = new Date(date),
@@ -115,4 +114,15 @@ export const DateDiff = {
   inYears: function(d1, d2) {
       return d2.getFullYear()-d1.getFullYear();
   }
-}
+};
+
+export const statusToColorCode = (status) => {
+  switch (status) {
+    case "D":
+      return "#ffab40";
+    case "A":
+      return "#008B00";
+    default:
+      return "#2196f3";
+  }
+};

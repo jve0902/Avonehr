@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "0px",
   },
   textField: {
-    marginLeft: "30px",
     width: "250px",
   },
   submit: {
+    marginTop: theme.spacing(1),
     padding: "4px 30px",
     fontSize: "1rem",
   },
@@ -37,35 +37,30 @@ const Drugsform = ({
 
   return (
     <div style={{ margin: "10px 0" }}>
-      <FormControlLabel
-        control={
-          <TextField
-            autoFocus={true}
-            onChange={textChangeHandler}
-            className={classes.textField}
-            name="searchTerm"
-            onKeyUp={(event) => handleKeyUp(event)}
-          />
-        }
+      <TextField
+        size="small"
+        variant="outlined"
+        autoFocus
+        onChange={textChangeHandler}
+        className={classes.textField}
+        name="searchTerm"
         label="Name"
-        labelPlacement="start"
-        className={classes.controlLabel}
+        onKeyUp={(event) => handleKeyUp(event)}
       />
-      <br />
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="favorite"
-            onChange={checkBoxChangeHandler}
-            color="primary"
-            onKeyUp={(event) => handleKeyUp(event)}
-          />
-        }
-        label="Favorites"
-        labelPlacement="start"
-        className={classes.controlLabel}
-      />
-      <br />
+      <div>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={checkBoxChangeHandler}
+              color="primary"
+              onKeyUp={(event) => handleKeyUp(event)}
+              name="favorite"
+              size="small"
+            />
+          }
+          label="Favorite"
+        />
+      </div>
       <Button
         size="small"
         type="submit"

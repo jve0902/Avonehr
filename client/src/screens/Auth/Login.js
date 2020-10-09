@@ -163,6 +163,12 @@ const Login = () => {
                   autoComplete="email"
                   autoFocus
                   onChange={(event) => setEmail(event.target.value)}
+                  inputProps={{ maxLength: 255 }}
+                  helperText={`${
+                    email.length >= 255
+                      ? "Enter an email between 255 charecter"
+                      : ""
+                  }`}
                 />
                 <TextField
                   value={password}
@@ -176,6 +182,12 @@ const Login = () => {
                   id="password"
                   autoComplete="current-password"
                   onChange={(event) => setPassword(event.target.value)}
+                  inputProps={{ maxLength: 128 }}
+                  helperText={`${
+                    password.length >= 128
+                      ? "Enter a password between 128 charecter"
+                      : ""
+                  }`}
                 />
                 <FormControlLabel
                   control={

@@ -22,7 +22,7 @@ import {
   MergePatient,
   DeletePatient,
   PatientSearch,
-  Support,
+  Support
 } from "../screens/Client/Manage";
 import {
   AccountingTypes,
@@ -40,7 +40,7 @@ import {
   LabRanges,
   PortalHeader,
   Schedule,
-  Users,
+  Users
 } from "../screens/Client/Setup";
 import Agreement from "../screens/Agreement";
 import ProcessLab from "../screens/ProcessLab";
@@ -173,7 +173,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/setup/report-finance"
+              path="/reports/report-finance"
               component={ReportFinance}
               exact
             />

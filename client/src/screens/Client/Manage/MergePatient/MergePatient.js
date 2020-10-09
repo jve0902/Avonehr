@@ -36,6 +36,9 @@ export default function MergePatient() {
       >
         Merge Patient
       </Typography>
+      <Typography component="p" variant="body2" color="textPrimary">
+        This page is used to merge patient account together
+      </Typography>
       <div className={classes.mergeItems}>
         <TextField
           value={patientIdKeep}
@@ -47,6 +50,7 @@ export default function MergePatient() {
           autoComplete="patientId"
           autoFocus
           onChange={(event) => setPatientIdKeep(event.target.value)}
+          size="small"
         />
         <TextField
           value={patientIdDelete}
@@ -57,6 +61,7 @@ export default function MergePatient() {
           name="patientIdDelete"
           autoComplete="patientIdDelete"
           onChange={(event) => setPatientIdDelete(event.target.value)}
+          size="small"
         />
 
         <Button
@@ -65,6 +70,7 @@ export default function MergePatient() {
           color="primary"
           className={classes.submit}
           // onClick={(event) => onFormSubmit(event, login)}
+          size="small"
         >
           Merge
         </Button>

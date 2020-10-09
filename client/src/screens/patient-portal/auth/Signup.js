@@ -1,33 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
 
 import { AuthConsumer } from "./../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: "transparent",
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   lockIcon: {
-    fontSize: "40px",
-  },
+    fontSize: "40px"
+  }
 }));
 
 const PatientSignUp = () => {

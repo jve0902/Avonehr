@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   texArea: {
-    height: "250px !important",
     width: "75%",
-    padding: "5px",
   },
   next: {
     margin: theme.spacing(3, 0, 2),
@@ -70,6 +68,9 @@ export default function EmailPatients() {
         className={classes.title}
       >
         Email Patients
+      </Typography>
+      <Typography component="p" variant="body2" color="textPrimary">
+        This pages send a message to all patients
       </Typography>
       <div className={classes.status}>
         <Typography component="p" variant="body2" color="textPrimary">
@@ -110,15 +111,21 @@ export default function EmailPatients() {
           autoComplete="subject"
           autoFocus
           onChange={(event) => setSubject(event.target.value)}
+          size="small"
         />
-        <Typography component="p" variant="body2" color="textPrimary">
-          Message
-        </Typography>
-        <TextareaAutosize
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Message"
           className={classes.texArea}
-          aria-label="minimum height"
-          placeholder="Your message starts here..."
+          InputProps={{
+            classes: classes.normalOutline,
+            inputComponent: TextareaAutosize,
+            rows: 8,
+          }}
+          value={message}
           onChange={(event) => setMessage(event.target.value)}
+          size="small"
         />
         <Button
           disabled={!subject || !message}
