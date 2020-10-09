@@ -1178,7 +1178,8 @@ export default function Patient(props) {
         hideActions={true}
         size={"lg"}
       />
-
+      <Grid className={classes.main}>
+      {!hasPatientIderror && (
       <ResponsiveGridLayout
         className={"layout"}
         rowHeight={40}
@@ -1306,11 +1307,16 @@ export default function Patient(props) {
           />
         </Grid>
       </ResponsiveGridLayout>
+      )}
+      </Grid>
     </>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
+  main: {
+    minHeight: 'calc(100vh - 188px)'
+  },
   noDisplay: {
     display: "none",
   },
