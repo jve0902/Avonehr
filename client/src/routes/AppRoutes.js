@@ -46,9 +46,13 @@ import Agreement from "../screens/Agreement";
 import ProcessLab from "../screens/ProcessLab";
 import ProcessMessage from "../screens/ProcessMessage";
 //Patient_portal
-import { PatientSignUp, PatientLogin } from "../screens/patient-portal";
+import {
+  PatientSignUp,
+  PatientLogin,
+  PatientHome
+} from "../screens/patient-portal";
 import { Main } from "../layouts";
-import { PlainPatientPortal } from "../layouts/PatientPortal";
+import { PlainPatientPortal, WithLeftSidebar } from "../layouts/PatientPortal";
 import { AuthProvider } from "../providers/AuthProvider";
 import Dashboard from "../layouts/Dashboard";
 import Plain from "../layouts/Plain";
@@ -296,6 +300,11 @@ class AppRouter extends Component {
               layout={PlainPatientPortal}
               path="/login/:clientCode"
               component={PatientLogin}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient"
+              component={PatientHome}
             />
             <Route path="*" component={NotFound} />
           </Switch>
