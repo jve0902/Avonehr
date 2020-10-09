@@ -167,6 +167,7 @@ export default function Patient(props) {
 
   //data states
   const [patientData, setPatientData] = useState(null);
+  const [patientBalance, setPatientBalance] = useState(0);
   const [patientHistory, setPatientHistory] = useState([]);
   const [adminNotesHistory, setAdminNotesHistory] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -193,6 +194,7 @@ export default function Patient(props) {
   useEffect(() => {
     if(!hasPatientIderror) {
       fetchPatientHistory();
+      fetchPatientBalance();
       fetchAdminNotesHistory();
       fetchAllergies();
       fetchPatientHandouts();
@@ -292,9 +294,14 @@ export default function Patient(props) {
   };
 
   const fetchBillings = () => {
-    let limit = 3;
-    PatientService.getBillings(patient_id, limit).then((res) => {
+    PatientService.getBillings(patient_id).then((res) => {
       setBillings(res.data);
+    });
+  };
+
+  const fetchPatientBalance = () => {
+    PatientService.getPatientBalance(patient_id).then((res) => {
+      setPatientBalance(res.data && res.data.length ? res.data[0].amount : '');
     });
   };
 
@@ -1188,7 +1195,7 @@ export default function Patient(props) {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
-                cardInfo={item.cardInfo}
+                cardInfo={item.title === "Billing" ? `Balance $${patientBalance}` : ""}
                 updateLayoutHandler={() => updateCardsLayout()}
                 updateMinHeight={updateMinHeight}
               />
