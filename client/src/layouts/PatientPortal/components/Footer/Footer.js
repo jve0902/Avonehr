@@ -1,8 +1,9 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+
 import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(8),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
+    backgroundColor: "#fafafa",
     [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1)
@@ -38,7 +40,7 @@ export default function Footer() {
       <Box mt={5} className={classes.footerText}>
         <Typography variant="body2" color="textPrimary" align="center">
           {"Copyright © "} {new Date().getFullYear()}
-          {" Clinios"} - User David Potter
+          {" Clinios"} 
         </Typography>
       </Box>
     </Container>
