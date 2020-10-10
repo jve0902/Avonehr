@@ -19,10 +19,10 @@ import { loginComplete } from "./../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    paddingTop: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "left"
   },
   Logo: {
     backgroundColor: "grey"
@@ -54,14 +54,14 @@ const Home = () => {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon className={classes.lockIcon} />
-        </Avatar>
         <Typography component="h1" variant="h2" className={classes.pageTitle}>
-          Patient Portal
+          Portal Home
+        </Typography>
+        <Typography component="p" variant="body2">
+          Welcome to patient portal
         </Typography>
       </div>
     </Container>

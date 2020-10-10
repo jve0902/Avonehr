@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 56,
     height: "100%",
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 50
+      paddingTop: 64
     }
   },
   shiftContent: {
-    paddingLeft: 0
+    paddingLeft: "256px"
   },
   content: {
     height: "100%"
@@ -65,7 +65,6 @@ const WithLeftSidebar = (props) => {
           />
 
           <Container maxWidth="xl" style={{ flex: 1 }}>
-
             {children}
           </Container>
           <Footer />
