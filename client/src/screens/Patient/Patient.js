@@ -761,7 +761,7 @@ export default function Patient(props) {
         x: 0,
         y: 0,
         w: 3,
-        h: y,
+        h: item.title === "Patient" ? 6 : 3.33,
         i: item.title.toString(),
       };
     });
