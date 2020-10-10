@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from "@material-ui/core/Table";
@@ -66,16 +66,15 @@ const BillingDetails = (props) => {
   const classes = useStyles();
   const [billings, setBillings] = useState([]);
 
-  useEffect(() => {
-    fetchAllBillings();
-  }, [])
-
-  const fetchAllBillings = () => {
-    let limit = 100;
-    PatientService.getBillings(patientId, limit).then((res) => {
+  const fetchBillings = useCallback(() => {
+    PatientService.getBillings(patientId).then((res) => {
       setBillings(res.data);
     });
-  }
+  }, [patientId])
+
+  useEffect(() => {
+    fetchBillings();
+  }, [fetchBillings])
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;

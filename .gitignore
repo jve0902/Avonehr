@@ -40,6 +40,7 @@ yarn-error.log*
 /client/.env.development.local
 /client/.env.test.local
 /client/.env.production.local
+/client/.vscode
 
 #server
 /server/node_modules

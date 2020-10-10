@@ -15,7 +15,7 @@ function renderEventContent(eventInfo) {
           width: "100%",
           padding: "3px 5px",
           borderRadius: "3px",
-          cursor: "pointer",
+          cursor: "pointer"
         }}
       >
         {eventInfo.timeText} {eventInfo.event.title}
@@ -31,7 +31,7 @@ const EventCalendar = ({ events, onDayClick, onEventClick }) => {
       headerToolbar={{
         left: "prev,next today",
         center: "title",
-        right: "dayGridMonth,timeGridWeek,timeGridDay",
+        right: "dayGridMonth,timeGridWeek,timeGridDay"
       }}
       initialView="dayGridMonth"
       weekends={true}
@@ -49,9 +49,9 @@ EventCalendar.propTypes = {
   events: PropTypes.arrayOf(
     PropTypes.shape({
       start_dt: PropTypes.string.isRequired,
-      end_dt: PropTypes.string.isRequired,
+      end_dt: PropTypes.string.isRequired
     })
-  ).isRequired,
+  ).isRequired
 };
 
 export default EventCalendar;

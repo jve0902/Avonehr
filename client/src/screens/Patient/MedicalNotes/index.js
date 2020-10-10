@@ -17,6 +17,7 @@ const MedicalNotes = (props) => {
     setOldMedicalNote(props.oldMedicalNote);
     setMedicalNote(props.oldMedicalNote);
     dispatch(setEditorText(props.oldMedicalNote));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.oldMedicalNote]);
 
   const onFormSubmit = (e) => {

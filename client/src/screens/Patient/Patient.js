@@ -64,6 +64,7 @@ import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
 
 //expand detail components
+import FormDetails from "./Form/details";
 import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
 import MessagesDetails from "./Messages/details";
@@ -96,6 +97,9 @@ export default function Patient(props) {
   let { patient_id } = useParams();
   const user = useContext(AuthContext)?.user;
 
+  //patient ID authenticity
+  const [hasPatientIderror, setHasPatientIderror] = useState(true);
+
   //grid layout states
   const [layout, setLayout] = useState([]);
   const [layoutToSave, setLayoutToSave] = useState([]);
@@ -112,6 +116,7 @@ export default function Patient(props) {
   const [showAdminHistoryDialog, setShowAdminHistoryDialog] = useState(false);
 
   const [showFormsExpandDialog, setShowFormsExpandDialog] = useState(false);
+  const [showFormsViewDialog, setShowFormsViewDialog] = useState(false);
 
   const [showBillingExpandDialog, setShowBillingExpandDialog] = useState(false);
   const [showNewTransactionDialog, setShowNewTransactionDialog] = useState(
@@ -164,6 +169,7 @@ export default function Patient(props) {
 
   //data states
   const [patientData, setPatientData] = useState(null);
+  const [patientBalance, setPatientBalance] = useState(0);
   const [patientHistory, setPatientHistory] = useState([]);
   const [adminNotesHistory, setAdminNotesHistory] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -182,27 +188,31 @@ export default function Patient(props) {
 
   useEffect(() => {
     generateLayout();
-  }, []);
-
-  useEffect(() => {
     fetchCardsLayout();
     fetchPatientData();
-    fetchPatientHistory(patient_id);
-    fetchAdminNotesHistory();
-    fetchAllergies();
-    fetchPatientHandouts();
-    fetchForms();
-    fetchBillings();
-    fetchDocuments();
-    fetchEncounters();
-    fetchMedicalNotes();
-    fetchMessages();
-    fetchDiagnoses();
-    fetchMedications();
-    fetchRequisitions();
-    fetchTests();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
+
+  useEffect(() => {
+    if(!hasPatientIderror) {
+      fetchPatientHistory();
+      fetchPatientBalance();
+      fetchAdminNotesHistory();
+      fetchAllergies();
+      fetchPatientHandouts();
+      fetchForms();
+      fetchBillings();
+      fetchDocuments();
+      fetchEncounters();
+      fetchMedicalNotes();
+      fetchMessages();
+      fetchDiagnoses();
+      fetchMedications();
+      fetchRequisitions();
+      fetchTests();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [hasPatientIderror])
 
   const fetchCardsLayout = () => {
     const user_id = user.id;
@@ -226,19 +236,36 @@ export default function Patient(props) {
   };
 
   const updateLayoutState = (gridLayout) => {
+    const propsToRemove = ['isBounded', 'isDraggable', 'isResizable', 'resizeHandles', 'maxH', 'minH', 'maxW', 'minW', 'moved', 'static']
+    let updatedLayout = gridLayout.map(obj => {
+      let result = _.omit(obj, [...propsToRemove]);
+      return result;
+    })
     let layout = {
-      "layout": JSON.stringify(gridLayout)
+      "layout": JSON.stringify(updatedLayout)
     }
     setLayoutToSave(layout);
   };
 
   const fetchPatientData = () => {
     PatientService.getPatientData(patient_id).then((res) => {
-      setPatientData(res.data);
+      //check if patient exists in the database
+      //check if patient's client_id is equal to the signed user's client_id
+      if(!!res.data && res.data.client_id && (res.data.client_id === user.client_id)) {
+        setPatientData(res.data);
+        setHasPatientIderror(false)
+      } else {
+        dispatch(
+          setError({
+            severity: 'error',
+            message: 'Patient not found',
+          })
+        );
+      }
     });
   };
 
-  const fetchPatientHistory = (patient_id) => {
+  const fetchPatientHistory = () => {
     PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
@@ -269,9 +296,14 @@ export default function Patient(props) {
   };
 
   const fetchBillings = () => {
-    let limit = 3;
-    PatientService.getBillings(patient_id, limit).then((res) => {
+    PatientService.getBillings(patient_id).then((res) => {
       setBillings(res.data);
+    });
+  };
+
+  const fetchPatientBalance = () => {
+    PatientService.getPatientBalance(patient_id).then((res) => {
+      setPatientBalance(res.data && res.data.length ? res.data[0].amount : '');
     });
   };
 
@@ -362,6 +394,10 @@ export default function Patient(props) {
 
   const toggleFormsExpandDialog = () => {
     setShowFormsExpandDialog((prevState) => !prevState);
+  };
+
+  const toggleFormsViewDialog = () => {
+    setShowFormsViewDialog((prevState) => !prevState);
   };
 
   const toggleNewTransactionDialog = () => {
@@ -474,7 +510,7 @@ export default function Patient(props) {
     } else if (value === "Admin Notes") {
       return toggleAdminHistoryDialog;
     } else if (value === "Forms") {
-      return toggleFormsExpandDialog;
+      return toggleFormsViewDialog;
     } else if (value === "Handouts") {
       return toggleHandoutsDialog;
     } else if (value === "Billing") {
@@ -499,6 +535,8 @@ export default function Patient(props) {
       return togglePatientInfoDialog;
     } else if (value === "Admin Notes") {
       return toggleAdminFormDialog;
+    } else if (value === "Forms") {
+      return toggleFormsExpandDialog;
     } else if (value === "Handouts") {
       return toggleHandoutsExpandDialog;
     } else if (value === "Billing") {
@@ -520,7 +558,7 @@ export default function Patient(props) {
 
   const mapCardContentDataHandlers = (value) => {
     if (value === "Patient") {
-      return !!patientData && <PatientCardContent data={patientData} />;
+      return !!patientData && <PatientCardContent data={patientData} patientId={patient_id} />;
     } else if (value === "Admin Notes") {
       if(!!patientData) {
         return (
@@ -855,9 +893,18 @@ export default function Patient(props) {
       <Dialog
         open={showFormsExpandDialog}
         title={" "}
-        message={<Form onClose={toggleFormsExpandDialog} />}
+        message={<FormDetails data={forms} onClose={toggleFormsExpandDialog} />}
         applyForm={() => toggleFormsExpandDialog()}
         cancelForm={() => toggleFormsExpandDialog()}
+        hideActions={true}
+        size={"lg"}
+      />
+      <Dialog
+        open={showFormsViewDialog}
+        title={" "}
+        message={<Form onClose={toggleFormsViewDialog} />}
+        applyForm={() => toggleFormsViewDialog()}
+        cancelForm={() => toggleFormsViewDialog()}
         hideActions={true}
         size={"lg"}
       />
@@ -1144,6 +1191,7 @@ export default function Patient(props) {
         compactType={"vertical"}
         containerPadding={[0, 0]}
         margin={[5, 0]}
+        measureBeforeMount={true}
       >
         {FirstColumnPatientCards.map((item, index) => {
           return (
@@ -1164,7 +1212,7 @@ export default function Patient(props) {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
-                cardInfo={item.cardInfo}
+                cardInfo={item.title === "Billing" ? `Balance $${patientBalance}` : ""}
                 updateLayoutHandler={() => updateCardsLayout()}
                 updateMinHeight={updateMinHeight}
               />

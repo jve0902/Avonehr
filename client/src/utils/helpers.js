@@ -14,7 +14,6 @@ export const removeEmpty = (obj) => {
   return obj;
 };
 
-
 function getFullDate(x) {
   switch (x) {
     case 0:
@@ -64,16 +63,16 @@ export const calculateAge = (date) => {
   }
 
   return year > 0 ? year + " yrs" : month + " mo";
-}
+};
 
 export const formatPhoneNumber = (phoneNumber) => {
-  let cleaned = ('' + phoneNumber).replace(/\D/g, '')
-  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  let cleaned = ("" + phoneNumber).replace(/\D/g, "");
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
-    return match[1] + ' ' + match[2] + ' ' + match[3]
+    return match[1] + " " + match[2] + " " + match[3];
   }
-  return null
-}
+  return null;
+};
 
 export const formatDate = (date) => {
   var d = new Date(date),
@@ -86,3 +85,44 @@ export const formatDate = (date) => {
 
   return [year, month, day].join("-");
 }
+
+export const DateDiff = {
+
+  inDays: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+
+      return parseInt((t2-t1)/(24*3600*1000));
+  },
+
+  inWeeks: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+
+      return parseInt((t2-t1)/(24*3600*1000*7));
+  },
+
+  inMonths: function(d1, d2) {
+      var d1Y = d1.getFullYear();
+      var d2Y = d2.getFullYear();
+      var d1M = d1.getMonth();
+      var d2M = d2.getMonth();
+
+      return (d2M+12*d2Y)-(d1M+12*d1Y);
+  },
+
+  inYears: function(d1, d2) {
+      return d2.getFullYear()-d1.getFullYear();
+  }
+};
+
+export const statusToColorCode = (status) => {
+  switch (status) {
+    case "D":
+      return "#ffab40";
+    case "A":
+      return "#008B00";
+    default:
+      return "#2196f3";
+  }
+};
