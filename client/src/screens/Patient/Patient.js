@@ -769,15 +769,16 @@ export default function Patient(props) {
       x: 3,
       y: 0,
       w: 3,
-      h: y,
+      h: 16,
       i: "Encounters",
     };
     let thirdlayout = ThirdColumnPatientCards.map((item, i) => {
+      let title = item.title;
       return {
         x: 6,
         y: y,
         w: 3,
-        h: y,
+        h: title === "Allergies" || title === "Requisitions" ? 3 : title === "Messages" ? 6 : y,
         i: item.title.toString(),
       };
     });
@@ -786,7 +787,7 @@ export default function Patient(props) {
         x: 9,
         y: 0,
         w: 3,
-        h: y,
+        h: 3.2,
         i: item.title.toString(),
       };
     });
@@ -794,14 +795,14 @@ export default function Patient(props) {
       x: 0,
       y: y,
       w: 6,
-      h: 5,
+      h: 6,
       i: "Documents",
     };
     let testslayout = {
       x: 6,
       y: y,
       w: 6,
-      h: 5,
+      h: 6,
       i: "All Tests",
     };
     setLayout([
