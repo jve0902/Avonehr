@@ -1194,6 +1194,7 @@ export default function Patient(props) {
         containerPadding={[0, 0]}
         margin={[5, 0]}
         measureBeforeMount={true}
+        useCSSTransforms={false}
       >
         {FirstColumnPatientCards.map((item, index) => {
           return (
@@ -1214,7 +1215,6 @@ export default function Patient(props) {
                 secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                 iconHandler={mapIconHandlers(item.title)}
                 searchHandler={(value) => debouncedSearchPatients(value)}
-                cardInfo={item.title === "Billing" ? `Balance $${patientBalance}` : ""}
                 updateLayoutHandler={() => updateCardsLayout()}
                 updateMinHeight={updateMinHeight}
               />

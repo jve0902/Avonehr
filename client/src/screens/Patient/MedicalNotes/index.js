@@ -70,7 +70,7 @@ const MedicalNotes = (props) => {
                 setMedicalNote(e.target.value)
               }}
               multiline={true}
-              rows={8}
+              rows={6}
               autoFocus={true}
               onKeyDown={(event) => {
                 if (event.key === "Escape") {
