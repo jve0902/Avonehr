@@ -7,7 +7,14 @@ class HomeService {
   getClientHeader() {
     return axios
       .get(API_BASE + `/client-portal/header`, {
-        headers: authHeader(),
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+  getClientHeader() {
+    return axios
+      .get(API_BASE + `/client-portal/header`, {
+        headers: authHeader()
       })
       .then((res) => res.data);
   }
