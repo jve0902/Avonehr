@@ -1,10 +1,10 @@
 import React from "react";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
+
 import { Divider, Drawer } from "@material-ui/core";
+import PaymentIcon from "@material-ui/icons/Payment";
+import ReceiptIcon from "@material-ui/icons/Receipt";
 import SettingsIcon from "@material-ui/icons/Settings";
-import Icon from "@mdi/react";
+import { makeStyles } from "@material-ui/styles";
 import {
   mdiChartBox,
   mdiAccount,
@@ -18,8 +18,10 @@ import {
   mdiFormSelect,
   mdiLogoutVariant
 } from "@mdi/js";
-import ReceiptIcon from "@material-ui/icons/Receipt";
-import PaymentIcon from "@material-ui/icons/Payment";
+import Icon from "@mdi/react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+
 import { Profile, SidebarNav } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,53 +68,53 @@ const Sidebar = (props) => {
     },
     {
       title: "Messages",
-      href: "/messages",
+      href: "/patient/messages",
       icon: <Icon path={mdiMessage} size={1} horizontal vertical rotate={180} />
     },
     {
       title: "Encounters",
-      href: "/encounters",
+      href: "/patient/encounters",
       icon: <SettingsIcon />
     },
     {
       title: "Handouts",
-      href: "/handouts",
+      href: "/patient/handouts",
       icon: (
         <Icon path={mdiChartBox} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Labs/Documents",
-      href: "/labs",
+      href: "/patient/labs",
       icon: (
         <Icon path={mdiTestTube} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Labs/Requisition",
-      href: "/labs-requisition",
+      href: "/patient/labs-requisition",
       icon: (
         <Icon path={mdiTestTube} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Billing",
-      href: "/billing",
+      href: "/patient/billing",
       icon: <ReceiptIcon />
     },
     {
       title: "Payment Methods",
-      href: "/payment-methods",
+      href: "/patient/payment-methods",
       icon: <PaymentIcon />
     },
     {
       title: "Allergies",
-      href: "/allergies",
+      href: "/patient/allergies",
       icon: <Icon path={mdiAllergy} size={1} horizontal vertical rotate={180} />
     },
     {
       title: "Prescriptions",
-      href: "/prescriptions",
+      href: "/patient/prescriptions",
       icon: (
         <Icon
           path={mdiPrescription}
@@ -125,33 +127,33 @@ const Sidebar = (props) => {
     },
     {
       title: "Pharmacies",
-      href: "/pharmacies",
+      href: "/patient/pharmacies",
       icon: (
         <Icon path={mdiPharmacy} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Appointments",
-      href: "/appointments",
+      href: "/patient/appointments",
       icon: (
         <Icon path={mdiCalendar} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Profile",
-      href: "/profile",
+      href: "/patient/profile",
       icon: <Icon path={mdiAccount} size={1} horizontal vertical rotate={180} />
     },
     {
       title: "Forms",
-      href: "/forms",
+      href: "/patient/forms",
       icon: (
         <Icon path={mdiFormSelect} size={1} horizontal vertical rotate={180} />
       )
     },
     {
       title: "Signoff",
-      href: "/signoff",
+      href: "/patient/signoff",
       icon: (
         <Icon
           path={mdiLogoutVariant}
