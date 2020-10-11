@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
     const dest = process.env.LAB_UPLOAD_DIR;
-    fs.access(dest, function(error) {
+    fs.access(dest, function (error) {
       if (error) {
         console.log("Directory does not exist.");
         return fs.mkdir(dest, (error) => cb(error, dest));
@@ -192,6 +192,64 @@ const history = async (req, res) => {
             where ph.id=${patient_id}
             order by ph.created desc
             limit 50
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const nextAppointment = async(req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+  const now = moment().format("YYYY-MM-DD HH:mm:ss");
+  try {
+    const dbResponse = await db.query(
+      `select 
+        min(start_dt) start_dt
+        from user_calendar
+        where patient_id=${patient_id}
+        and start_dt>'${now}'
+      `
+    );
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+}
+
+const balance = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { patient_id } = req.params;
+  try {
+    const dbResponse = await db.query(
+      `select 
+          sum(t.amount) amount
+          from tran t
+          where t.patient_id=${patient_id}
       `
     );
 
@@ -677,7 +735,7 @@ const getDocuments = async (req, res) => {
   try {
     let $sql;
 
-    $sql = `select l.id, l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.upload_error, l.note
+    $sql = `select l.id, l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.note
       , group_concat(c.name, ': ', c.id, ' ', lc.value, ' ', lc.range_low, ' ', lc.range_high separator ' | ') tests
       from lab l
       left join lab_cpt lc on lc.lab_id=l.id
@@ -696,7 +754,7 @@ const getDocuments = async (req, res) => {
     }
     $sql =
       $sql +
-      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
+      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.note
         order by l.created desc
         limit 200`;
 
@@ -1389,6 +1447,8 @@ const appointmentTypes = {
   getPatient,
   search,
   history,
+  balance,
+  nextAppointment,
   AdminNotehistory,
   adminNoteupdate,
   getForms,

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchResults = ({ open, results, noContent }) => {
+const SearchResults = ({ open, results, noContent, handleClose }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -54,7 +54,13 @@ const SearchResults = ({ open, results, noContent }) => {
           {results &&
             results.map((result) => (
               <>
-                <ListItem component={RouterLink} to={`/patient/${result.id}`} button key={result.id} className={classes.listItem}>
+                <ListItem
+                  component={RouterLink}
+                  to={`/patient/${result.id}`}
+                  button key={result.id}
+                  className={classes.listItem}
+                  onClick={() => !!handleClose && handleClose()}
+                >
                   <ListItemAvatar>
                     <Avatar
                       alt={`${result.firstname} ${result.lastname}`}

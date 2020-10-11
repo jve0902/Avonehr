@@ -108,7 +108,7 @@ const PatientCard = (props) => {
             !!data ?
             data
             :
-            "Fetching Data..."
+            ""
           }
         </Grid>
       </Card>
