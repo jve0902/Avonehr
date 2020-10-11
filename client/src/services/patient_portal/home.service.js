@@ -11,9 +11,18 @@ class HomeService {
       })
       .then((res) => res.data);
   }
-  getClientHeader() {
+
+  getClientForms() {
     return axios
-      .get(API_BASE + `/client-portal/header`, {
+      .get(API_BASE + `/client-portal/forms`, {
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+
+  getUpcomingAppointments() {
+    return axios
+      .get(API_BASE + `/client-portal/upcoming-appointments`, {
         headers: authHeader()
       })
       .then((res) => res.data);

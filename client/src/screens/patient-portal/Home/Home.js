@@ -8,12 +8,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import clsx from "clsx";
 import ReactHtmlParser from "react-html-parser";
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { Link , useHistory, useParams } from "react-router-dom";
+
 
 import Error from "./../../../components/common/Error";
 import { AuthConsumer } from "./../../../providers/AuthProvider";
@@ -35,8 +35,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     color: theme.palette.text.secondary
   },
-  lockIcon: {
-    fontSize: "40px"
+  BoxStyle: {
+    backgroundColor: theme.palette.background.paper,
+    borderColor: theme.palette.borderColor,
+    borderWidth: "1px",
+    borderStyle: "solid",
+    padding: "7px",
+    margin: "20px 0"
   },
   pageTitle: {
     marginBottom: theme.spacing(3)
@@ -56,6 +61,8 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [header, setHeader] = useState({});
+  const [clientForms, setClientForms] = useState({});
+  const [upcomingAppointments, setUpcomingAppointments] = useState({});
 
   useEffect(() => {
     HomeService.getClientHeader().then(
@@ -67,8 +74,26 @@ const Home = () => {
         console.log("error", error);
       }
     );
+    HomeService.getClientForms().then(
+      (response) => {
+        setClientForms(response.data[0]);
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+    HomeService.getUpcomingAppointments().then(
+      (response) => {
+        setUpcomingAppointments(response.data[0]);
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
   }, []);
 
+  console.log("clientForms", clientForms);
+  console.log("upcomingAppointments", upcomingAppointments);
   return (
     <Container component="main">
       <CssBaseline />
@@ -76,8 +101,11 @@ const Home = () => {
         <Alert severity="info">
           {header && ReactHtmlParser(header.header)}
         </Alert>
-        <Box component="span" m={1}>
-          <Button />
+        <Box component="div" className={classes.BoxStyle}>
+          <p>
+            Please fill out the following forms:{" "}
+            <Link to="#">{clientForms.title}</Link>
+          </p>
         </Box>
         <Typography component="h1" variant="h2" className={classes.pageTitle}>
           Portal Home
