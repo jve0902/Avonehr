@@ -169,7 +169,7 @@ export default function Patient(props) {
 
   //data states
   const [patientData, setPatientData] = useState(null);
-  const [patientBalance, setPatientBalance] = useState(0);
+  const [patientBalance, setPatientBalance] = useState(null);
   const [patientHistory, setPatientHistory] = useState([]);
   const [adminNotesHistory, setAdminNotesHistory] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -1263,8 +1263,6 @@ export default function Patient(props) {
         )
       }
 
-
-
       <Grid className={classes.main}>
         {!hasPatientIderror && (
           <ResponsiveGridLayout
@@ -1357,6 +1355,7 @@ export default function Patient(props) {
                     primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                     secondaryButtonHandler={mapSecondaryButtonHandlers(item.title)}
                     updateMinHeight={updateMinHeight}
+                    cardInfo={item.title === "Billing" && patientBalance !== null ? `Balance $${patientBalance}` : ""}
                   />
                 </Grid>
               );
