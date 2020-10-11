@@ -14,69 +14,69 @@ import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 import { useDispatch } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
-    padding: 9,
+    padding: 9
   },
   tableContainer: {
-    minWidth: 650,
+    minWidth: 650
   },
   actions: {
     display: "flex",
     justifyContent: "center",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
       fontSize: 12,
-      whiteSpace: 'nowrap',
+      whiteSpace: "nowrap",
       padding: "2px 4px"
     },
     "& td": {
       fontSize: 12,
-      whiteSpace: 'nowrap',
+      whiteSpace: "nowrap",
       padding: "2px 4px"
-    },
-  },
+    }
+  }
 }))(TableRow);
 
-const DocumentsContent = (props) => {
+const DocumentsContent = props => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const onItemDelete = (selectedItem) => {
+  const onItemDelete = selectedItem => {
     const documentId = selectedItem.id || 1;
     const tab = "Labs";
     PatientService.deleteDocument(documentId, tab)
-      .then((response) => {
+      .then(response => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
       })
-      .catch((error) => {
+      .catch(error => {
         const resMessage =
           (error.response &&
             error.response.data &&
@@ -87,7 +87,7 @@ const DocumentsContent = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -105,7 +105,6 @@ const DocumentsContent = (props) => {
             <StyledTableCell>Physician</StyledTableCell>
             <StyledTableCell align="center">Conventional Flag</StyledTableCell>
             <StyledTableCell>Functional Flag</StyledTableCell>
-            <StyledTableCell>Error</StyledTableCell>
             <StyledTableCell>Notes</StyledTableCell>
             <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
@@ -124,7 +123,6 @@ const DocumentsContent = (props) => {
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>
-              <TableCell>{row.upload_error}</TableCell>
               <TableCell>{row.note}</TableCell>
 
               <TableCell className={classes.actions}>
