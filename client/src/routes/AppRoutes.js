@@ -49,7 +49,12 @@ import ProcessMessage from "../screens/ProcessMessage";
 import {
   PatientSignUp,
   PatientLogin,
-  PatientHome
+  PatientHome,
+  PatientMessages,
+  PatientEncounters,
+  PatientHandouts,
+  PatientLabs,
+  PatientRequisition
 } from "../screens/patient-portal";
 import { Main } from "../layouts";
 import { PlainPatientPortal, WithLeftSidebar } from "../layouts/PatientPortal";
@@ -305,6 +310,21 @@ class AppRouter extends Component {
               layout={WithLeftSidebar}
               path="/patient"
               component={PatientHome}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/handouts"
+              component={PatientHandouts}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/labs"
+              component={PatientLabs}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/labs-requisition"
+              component={PatientRequisition}
             />
             <Route path="*" component={NotFound} />
           </Switch>
