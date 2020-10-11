@@ -81,7 +81,7 @@ const AdminNotes = (props) => {
               fullWidth
               onChange={(e) => handleInputChange(e)}
               multiline={true}
-              rows={8}
+              rows={5}
               autoFocus={true}
               onKeyDown={(event) => {
                 if (event.key === "Escape") {
