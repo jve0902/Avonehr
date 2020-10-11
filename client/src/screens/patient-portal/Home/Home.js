@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [header, setHeader] = useState({});
+
   useEffect(() => {
     HomeService.getClientHeader().then(
       (response) => {
@@ -67,7 +69,6 @@ const Home = () => {
     );
   }, []);
 
-  console.log("header:", header);
   return (
     <Container component="main">
       <CssBaseline />
@@ -75,6 +76,9 @@ const Home = () => {
         <Alert severity="info">
           {header && ReactHtmlParser(header.header)}
         </Alert>
+        <Box component="span" m={1}>
+          <Button />
+        </Box>
         <Typography component="h1" variant="h2" className={classes.pageTitle}>
           Portal Home
         </Typography>
