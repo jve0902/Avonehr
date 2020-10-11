@@ -43,7 +43,7 @@ exports.signin = async (req, res) => {
   }
 
   //TODO:: if password not correct, and more than 20 times, then lock for 5 minutes, and print message "Account locked for 5 minutes"
-  if (patient.status === "A") {
+  if (patient.status !== "A") {
     errorMessage.message = "Patient portal status is not active";
     return res.status(status.error).send(errorMessage);
   }
