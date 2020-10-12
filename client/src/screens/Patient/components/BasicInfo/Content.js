@@ -57,7 +57,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Name:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {data.firstname} {data.lastname}
         </Typography>
       </Grid>
@@ -66,7 +66,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Gender:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {mapGender(data.gender)}
         </Typography>
       </Grid>
@@ -75,7 +75,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           DOB:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {moment(data.dob).format("MMM D YYYY")} (Age:&nbsp;
           {calculateAge(data.dob)})
         </Typography>
@@ -85,7 +85,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Home:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {formatPhoneNumber(data.phone_home)}
         </Typography>
       </Grid>
@@ -94,7 +94,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Mobile:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {formatPhoneNumber(data.phone_cell)}
         </Typography>
       </Grid>
@@ -103,7 +103,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Provider:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {data.provider}
         </Typography>
       </Grid>
@@ -112,7 +112,7 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Next Appointment:&nbsp;
         </Typography>
-        <Typography variant="body1" className={classes.text12} color="textPrimary">
+        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
           {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''} {!!nextAppointment && `(In ${calculateDateDifference()})`}
         </Typography>
       </Grid>
@@ -123,8 +123,14 @@ export default function BasicInfoContent(props) {
 const useStyles = makeStyles((theme) => ({
   inputRow: {
     marginBottom: theme.spacing(0.5),
+    flexWrap: 'nowrap',
   },
   text12: {
-    fontSize: 12
+    fontSize: 12,
+  },
+  value: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   }
 }));

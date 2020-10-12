@@ -735,7 +735,7 @@ const getDocuments = async (req, res) => {
   try {
     let $sql;
 
-    $sql = `select l.id, l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.upload_error, l.note
+    $sql = `select l.id, l.created, l.filename, right(l.filename,3) type, l.lab_dt, l.physician, l.note
       , group_concat(c.name, ': ', c.id, ' ', lc.value, ' ', lc.range_low, ' ', lc.range_high separator ' | ') tests
       from lab l
       left join lab_cpt lc on lc.lab_id=l.id
@@ -754,7 +754,7 @@ const getDocuments = async (req, res) => {
     }
     $sql =
       $sql +
-      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.upload_error, l.note
+      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.note
         order by l.created desc
         limit 200`;
 
