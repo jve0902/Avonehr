@@ -1,42 +1,42 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
-import clsx from "clsx";
-import { NavLink as RouterLink } from "react-router-dom";
-import { fade, makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
+
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Hidden from "@material-ui/core/Hidden";
-import SearchIcon from "@material-ui/icons/Search";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import SearchIcon from "@material-ui/icons/Search";
+import clsx from "clsx";
+import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import DropdownItems from "./DropdownItems";
-import useDebounce from "./../../../../hooks/useDebounce";
-import * as API from "./../../../../utils/API";
+import { NavLink as RouterLink } from "react-router-dom";
 
-import { SearchResults } from "./components";
+import useDebounce from "./../../../../hooks/useDebounce";
 import { logOut } from "./../../../../store/auth/actions";
+import * as API from "./../../../../utils/API";
+import { SearchResults } from "./components";
+import DropdownItems from "./DropdownItems";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: "none",
+    boxShadow: "none"
   },
   flexGrow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   toolbar: {
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   headerWithNav: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "center"
   },
   title: {
     display: "none",
@@ -47,58 +47,58 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
-      display: "block",
+      display: "block"
     },
     "& a": {
       color: theme.palette.white,
-      textDecoration: "none",
-    },
+      textDecoration: "none"
+    }
   },
   navs: {
-    display: "block",
+    display: "block"
   },
   link: {
     color: "#ffffff",
     padding: "10px 10px",
-    textDecoration: "none",
+    textDecoration: "none"
   },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: "auto",
-    },
+      width: "auto"
+    }
   },
   grow: {
-    flexGrow: 0,
+    flexGrow: 0
   },
   headerWithSearchBar: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
       display: "flex",
-      alignItems: "center",
-    },
+      alignItems: "center"
+    }
   },
   name: {
     marginRight: theme.spacing(2),
     fontSize: 14,
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.contrastText
   },
   date: {
     fontSize: 14,
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.contrastText
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -107,10 +107,10 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   inputRoot: {
-    color: "inherit",
+    color: "inherit"
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -118,18 +118,18 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
+      width: "20ch"
+    }
   },
   signOutButton: {
-    marginLeft: theme.spacing(1),
-  },
+    marginLeft: theme.spacing(1)
+  }
 }));
 
 const pages = [
   {
     title: "Home",
-    href: "/dashboard",
+    href: "/dashboard"
   },
   {
     title: "Manage",
@@ -137,33 +137,33 @@ const pages = [
     subMenus: [
       {
         title: "Accounting Search",
-        href: "/manage/accounting-search",
+        href: "/manage/accounting-search"
       },
       {
         title: "Email Patients",
-        href: "/manage/email-patients",
+        href: "/manage/email-patients"
       },
       {
         title: "Fax",
-        href: "/manage/fax",
+        href: "/manage/fax"
       },
       {
         title: "Merge Patient",
-        href: "/manage/merge-patient",
+        href: "/manage/merge-patient"
       },
       {
         title: "Delete Patient",
-        href: "/manage/delete-patient",
+        href: "/manage/delete-patient"
       },
       {
         title: "Patient Search",
-        href: "/manage/patient-search",
+        href: "/manage/patient-search"
       },
       {
         title: "Support Center",
-        href: "/manage/support",
-      },
-    ],
+        href: "/manage/support"
+      }
+    ]
   },
   {
     title: "Setup",
@@ -171,79 +171,79 @@ const pages = [
     subMenus: [
       {
         title: "Accounting Types",
-        href: "/setup/accounting-types",
+        href: "/setup/accounting-types"
       },
       {
         title: "Appointment Types",
-        href: "/setup/appointment-types",
+        href: "/setup/appointment-types"
       },
       {
         title: "Appointment Types User Assignment",
-        href: "/setup/appoinment-user-types",
+        href: "/setup/appoinment-user-types"
       },
       {
         title: "Backup",
-        href: "/setup/backup",
+        href: "/setup/backup"
       },
       {
         title: "Configuration",
-        href: "/setup/configuration",
+        href: "/setup/configuration"
       },
       {
         title: "CPT Codes",
-        href: "/setup/ctp-codes",
+        href: "/setup/ctp-codes"
       },
       {
         title: "Drugs",
-        href: "/setup/drugs",
+        href: "/setup/drugs"
       },
       {
         title: "Forms",
-        href: "/setup/forms",
+        href: "/setup/forms"
       },
       {
         title: "Handouts",
-        href: "/setup/handouts",
+        href: "/setup/handouts"
       },
       {
         title: "ICD Codes",
-        href: "/setup/icd-codes",
+        href: "/setup/icd-codes"
       },
       {
         title: "Integrations",
-        href: "/setup/integrations",
+        href: "/setup/integrations"
       },
       {
         title: "Lab Ranges",
-        href: "/setup/lab-ranges",
+        href: "/setup/lab-ranges"
       },
       {
         title: "Patient Portal Header",
-        href: "/setup/patient-portal-header",
+        href: "/setup/patient-portal-header"
       },
       {
         title: "Schedule",
-        href: "/setup/schedule",
+        href: "/setup/schedule"
       },
       {
         title: "Users",
-        href: "/setup/users",
-      },
-    ],
+        href: "/setup/users"
+      }
+    ]
   },
   {
     title: "Reports",
-    href: "/reports",
+    href: "/reports"
   },
   {
     title: "Myself",
-    href: "/myself",
+    href: "/myself"
   },
   {
     title: "Logout",
     href: "/",
-    logout: true,
-  },
+    logout: true
+  }
 ];
 
 const Topbar = (props) => {
@@ -256,7 +256,7 @@ const Topbar = (props) => {
   const [results, setResults] = useState([]);
   const handleClose = (event) => {
     setOpen(false);
-    setSearchTerm('');
+    setSearchTerm("");
   };
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -345,7 +345,7 @@ const Topbar = (props) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
                 inputProps={{ "aria-label": "search" }}
               />
@@ -374,7 +374,7 @@ const Topbar = (props) => {
 
 Topbar.propTypes = {
   className: PropTypes.string,
-  onSidebarOpen: PropTypes.func,
+  onSidebarOpen: PropTypes.func
 };
 
 export default Topbar;
