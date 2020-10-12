@@ -236,6 +236,7 @@ export default function Patient(props) {
   };
 
   const updateLayoutState = (gridLayout) => {
+    setLayout(gridLayout);
     const propsToRemove = ['isBounded', 'isDraggable', 'isResizable', 'resizeHandles', 'maxH', 'minH', 'maxW', 'minW', 'moved', 'static']
     let updatedLayout = gridLayout.map(obj => {
       let result = _.omit(obj, [...propsToRemove]);
