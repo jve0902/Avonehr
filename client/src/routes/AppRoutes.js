@@ -55,7 +55,15 @@ import {
   PatientEncounters,
   PatientHandouts,
   PatientLabs,
-  PatientRequisition
+  PatientRequisition,
+  PatientBilling,
+  PaymentMethods,
+  Allergies,
+  Prescriptions,
+  Pharmacies,
+  PatientAppointments,
+  PatientProfile,
+  PatientForms
 } from "../screens/patient-portal";
 import ProcessLab from "../screens/ProcessLab";
 import ProcessMessage from "../screens/ProcessMessage";
@@ -338,6 +346,46 @@ class AppRouter extends Component {
               layout={WithLeftSidebar}
               path="/patient/labs-requisition"
               component={PatientRequisition}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/billing"
+              component={PatientBilling}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/payment-methods"
+              component={PaymentMethods}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/allergies"
+              component={Allergies}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/prescriptions"
+              component={Prescriptions}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/pharmacies"
+              component={Pharmacies}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/appointments"
+              component={PatientAppointments}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/profile"
+              component={PatientProfile}
+            />
+            <RouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/forms"
+              component={PatientForms}
             />
             <Route path="*" component={NotFound} />
           </Switch>
