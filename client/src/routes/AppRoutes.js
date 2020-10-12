@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+
 import { createBrowserHistory } from "history";
-import RouteWithLayout from "./RouteWithLayout";
-import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
-import Contact from "../screens/Contact";
-import ForgetPassword from "../screens/ForgetPassword";
-import EmailConfirmation from "../screens/EmailConfirmation";
-import Home from "../screens/Home";
+import { Router, Route, Switch } from "react-router-dom";
+
+import { Main } from "../layouts";
+import Dashboard from "../layouts/Dashboard";
+import { PlainPatientPortal, WithLeftSidebar } from "../layouts/PatientPortal";
+import Plain from "../layouts/Plain";
+import { AuthProvider } from "../providers/AuthProvider";
+import Agreement from "../screens/Agreement";
 import Login from "../screens/Auth/Login";
-import NotFound from "../screens/NotFound";
-import ResetPassword from "../screens/ResetPassword";
 import SignUp from "../screens/Auth/SignUp";
-// import UserSignUp from "../screens/Auth/UserSignUp";
-import { DoctorHome } from "../screens/Client/Home";
-import Patient from "../screens/Patient";
 import { Reports, Myself } from "../screens/Client";
+import { DoctorHome } from "../screens/Client/Home";
 import {
   AccountingSearch,
   EmailPatients,
@@ -42,15 +40,37 @@ import {
   Schedule,
   Users
 } from "../screens/Client/Setup";
-import Agreement from "../screens/Agreement";
+import Contact from "../screens/Contact";
+import EmailConfirmation from "../screens/EmailConfirmation";
+import ForgetPassword from "../screens/ForgetPassword";
+import Home from "../screens/Home";
+import NotFound from "../screens/NotFound";
+//Patient_portal
+import Patient from "../screens/Patient";
+import {
+  PatientSignUp,
+  PatientLogin,
+  PatientHome,
+  PatientMessages,
+  PatientEncounters,
+  PatientHandouts,
+  PatientLabs,
+  PatientRequisition,
+  PatientBilling,
+  PaymentMethods,
+  Allergies,
+  Prescriptions,
+  Pharmacies,
+  PatientAppointments,
+  PatientProfile,
+  PatientForms
+} from "../screens/patient-portal";
 import ProcessLab from "../screens/ProcessLab";
 import ProcessMessage from "../screens/ProcessMessage";
-//Patient_portal
-import { PatientSignUp, PatientLogin } from "../screens/patient-portal";
-import { Main, PatientPortal } from "../layouts";
-import { AuthProvider } from "../providers/AuthProvider";
-import Dashboard from "../layouts/Dashboard";
-import Plain from "../layouts/Plain";
+import ResetPassword from "../screens/ResetPassword";
+// import UserSignUp from "../screens/Auth/UserSignUp";
+import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
+import RouteWithLayout from "./RouteWithLayout";
 
 const history = createBrowserHistory();
 
@@ -112,7 +132,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Plain}
-              path="/patient/:patient_id"
+              path="/patients/:patient_id"
               component={Patient}
               exact
             />
@@ -287,14 +307,85 @@ class AppRouter extends Component {
             />
             {/* Patient_portal */}
             <RouteWithLayout
-              layout={PatientPortal}
+              layout={PlainPatientPortal}
               path="/signup"
               component={PatientSignUp}
             />
             <RouteWithLayout
-              layout={PatientPortal}
+              layout={PlainPatientPortal}
               path="/login/:clientCode"
               component={PatientLogin}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient"
+              component={PatientHome}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/messages"
+              component={PatientMessages}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/encounters"
+              component={PatientEncounters}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/handouts"
+              component={PatientHandouts}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/labs"
+              component={PatientLabs}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/labs-requisition"
+              component={PatientRequisition}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/billing"
+              component={PatientBilling}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/payment-methods"
+              component={PaymentMethods}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/allergies"
+              component={Allergies}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/prescriptions"
+              component={Prescriptions}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/pharmacies"
+              component={Pharmacies}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/appointments"
+              component={PatientAppointments}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/profile"
+              component={PatientProfile}
+            />
+            <PrivateRouteWithLayout
+              layout={WithLeftSidebar}
+              path="/patient/forms"
+              component={PatientForms}
             />
             <Route path="*" component={NotFound} />
           </Switch>
