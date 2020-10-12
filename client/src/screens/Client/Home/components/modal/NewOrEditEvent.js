@@ -98,7 +98,8 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3)
-  }
+  },
+  appointmentLength:{}
 }));
 
 const NewOrEditEvent = ({
@@ -120,6 +121,7 @@ const NewOrEditEvent = ({
   const [selectedPatient, setSelectedPatient] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
   const [calEvent, setCalEvent] = useState("");
+  const [appointmentLength, setAppointmentLength] = useState(" ")
 
   useEffect(() => {
     if (isNewEvent) {
@@ -178,43 +180,54 @@ const NewOrEditEvent = ({
   };
 
   const handleSaveOrUpdate = () => {
-    if (isNewEvent) {
-      const payload = {
-        data: {
-          title: calEvent.title,
-          provider: provider,
-          patient: selectedPatient,
-          ApptStatus: calEvent.status,
-          notes: calEvent.notes,
-          start_dt: calEvent.start_dt,
-          end_dt: calEvent.end_dt
-        }
-      };
-      onSave(payload);
-    } else {
-      const payload = {
-        data: {
-          id: props.event.id,
-          title: calEvent.title,
-          providerName: calEvent.provider_name,
-          provider: provider,
-          patient: selectedPatient
-            ? selectedPatient
-            : {
-                id: props.event.patient_id,
-                firstname: props.event.firstname,
-                email: props.event.email
-              },
-          ApptStatus: calEvent.status,
-          notes: calEvent.notes,
-          old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
-          old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
-          new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
-          new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
-        }
-      };
-      onEventUpdate(payload);
-    }
+    console.log(
+      props.appointments.map((appointment) =>
+        selectedPatient.includes(appointment.patient_id)
+      ),
+      "ddd",
+      selectedPatient
+    );  
+
+    props.appointments.map((appointment) =>
+      selectedPatient.includes(appointment.patient_id)
+    );
+    // if (isNewEvent) {
+    //   const payload = {
+    //     data: {
+    //       title: calEvent.title,
+    //       provider: provider,
+    //       patient: selectedPatient,
+    //       ApptStatus: calEvent.status,
+    //       notes: calEvent.notes,
+    //       start_dt: calEvent.start_dt,
+    //       end_dt: calEvent.end_dt
+    //     }
+    //   };
+    //   onSave(payload);
+    // } else {
+    //   const payload = {
+    //     data: {
+    //       id: props.event.id,
+    //       title: calEvent.title,
+    //       providerName: calEvent.provider_name,
+    //       provider: provider,
+    //       patient: selectedPatient
+    //         ? selectedPatient
+    //         : {
+    //             id: props.event.patient_id,
+    //             firstname: props.event.firstname,
+    //             email: props.event.email
+    //           },
+    //       ApptStatus: calEvent.status,
+    //       notes: calEvent.notes,
+    //       old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
+    //       old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
+    //       new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
+    //       new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
+    //     }
+    //   };
+    //   onEventUpdate(payload);
+    // }
   };
 
   return (
@@ -306,6 +319,7 @@ const NewOrEditEvent = ({
               />
               <KeyboardDateTimePicker
                 clearable
+                className={classes.startdatePicker}
                 variant="outlined"
                 id="start-date-picker-inline"
                 label="End"
@@ -325,6 +339,19 @@ const NewOrEditEvent = ({
                 KeyboardButtonProps={{
                   "aria-label": "change date"
                 }}
+              />
+              <TextField
+                value={appointmentLength}
+                variant="outlined"
+                margin="dense"
+                className={classes.appointmentLength}
+                size="small"
+                id="title"
+                label="Appointment Length"
+                name="title"
+                autoComplete="title"
+                onChange={(event) => handleOnChange(event)}
+                disabled 
               />
             </div>
             <FormControl className={classes.statuses}>

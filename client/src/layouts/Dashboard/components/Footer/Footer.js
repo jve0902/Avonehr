@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
+      paddingBottom: theme.spacing(1)
+    }
   },
   footerText: {
     color: "#ffffff",
@@ -26,20 +26,29 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     "& p": {
-      color: "#ffffff",
+      color: "#ffffff"
     },
-  },
+    fontSize: "11px !important"
+  }
 }));
+
+const CustomTypography = withStyles((theme) => ({
+  root: {
+    fontSize: "11px",
+    lineHeight: "4px",
+    letterSpacing: ".65px"
+  }
+}))(Typography);
 
 export default function Footer() {
   const classes = useStyles();
   return (
     <Container component="footer" maxWidth={false} className={classes.footer}>
       <Box mt={5} className={classes.footerText}>
-        <Typography variant="body2" color="textPrimary" align="center">
+        <CustomTypography variant="body1" color="textPrimary" align="center">
           {"Copyright © "} {new Date().getFullYear()}
           {" Clinios"} - User David Potter
-        </Typography>
+        </CustomTypography>
       </Box>
     </Container>
   );

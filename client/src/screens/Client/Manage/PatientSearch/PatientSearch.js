@@ -17,24 +17,30 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   submit: {
     maxWidth: "200px",
-    marginTop: "15px",
+    marginTop: "15px"
   },
   paper: {
-    maxWidth: "900px",
+    maxWidth: "900px"
   },
   textField: {
-    width: "200px",
+    width: "200px"
   },
   customSelect: {
-    width: "200px",
+    width: "200px"
   },
+  inputGroup: {
+    marginTop: "14px"
+  },
+  form: {
+    marginTop: theme.spacing(1)
+  }
 }));
 
 function NumberFormatCustom(props) {
@@ -48,8 +54,8 @@ function NumberFormatCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
-          },
+            value: values.value
+          }
         });
       }}
       isNumericString
@@ -59,7 +65,7 @@ function NumberFormatCustom(props) {
 NumberFormatCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default function PatientSearch() {
@@ -105,8 +111,8 @@ export default function PatientSearch() {
         paymentFrom,
         paymentTo,
         id: patientId,
-        patientStatus: selectStatus,
-      },
+        patientStatus: selectStatus
+      }
     };
     SearchPatient.search(payload).then((res) => {
       setSearchResults(res.data.data);
@@ -117,26 +123,26 @@ export default function PatientSearch() {
     <div className={classes.root}>
       <div className={classes.paper}>
         <Grid container direction="column">
-          <form onSubmit={(e) => serchPatients(e)}>
-            <Typography
-              component="h1"
-              variant="h2"
-              color="textPrimary"
-              className={classes.title}
-            >
-              Patient Search
-            </Typography>
-            <Typography component="p" variant="body2" color="textPrimary">
-              This page is to search for patients
-            </Typography>
-            <div>
-              <Grid container spacing={0}>
+          <Typography
+            component="h1"
+            variant="h2"
+            color="textPrimary"
+            className={classes.title}
+          >
+            Patient Search
+          </Typography>
+          <Typography component="p" variant="body2" color="textPrimary">
+            This page is to search for patients
+          </Typography>
+          <form className={classes.form} onSubmit={(e) => serchPatients(e)}>
+            <div className={classes.inputGroup}>
+              <Grid container spacing={2}>
                 <Grid item xs={12} sm={3}>
                   <TextField
                     className={classes.textField}
                     value={firstName}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     autoFocus
                     name="firstName"
                     label="First Name"
@@ -152,7 +158,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={lastName}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     size="small"
                     name="lastName"
                     label="Last Name"
@@ -166,7 +172,7 @@ export default function PatientSearch() {
                   <KeyboardDatePicker
                     clearable
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
@@ -176,7 +182,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     onChange={(date) => setCreatedFrom(date)}
                     size="small"
-                    margin="dense"
+                    // margin="dense"
                     autoOk
                   />
                 </Grid>
@@ -185,7 +191,7 @@ export default function PatientSearch() {
                     clearable
                     autoOk
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
@@ -196,7 +202,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     onChange={(date) => setCreatedTo(date)}
                     size="small"
-                    margin="dense"
+                    // margin="dense"
                   />
                 </Grid>
                 <Grid item xs={12} sm={3}>
@@ -204,7 +210,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={phone}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="phone"
                     label="Phone"
                     size="small"
@@ -219,7 +225,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={email}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="email"
                     size="small"
                     label="Email"
@@ -234,14 +240,14 @@ export default function PatientSearch() {
                     clearable
                     autoOk
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
                     className={classes.textField}
                     value={appointmentFrom ? moment(appointmentFrom) : null}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="appointmentFrom"
                     size="small"
                     label="Appointment From"
@@ -254,7 +260,7 @@ export default function PatientSearch() {
                   <KeyboardDatePicker
                     clearable
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     autoOk
                     format="yyyy/MM/dd"
@@ -262,7 +268,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={appointmentTo ? moment(appointmentFrom) : null}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="appointmentTO"
                     size="small"
                     label="Appointment To"
@@ -276,7 +282,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={patientId}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="patientId"
                     size="small"
                     label="Patient ID"
@@ -284,10 +290,10 @@ export default function PatientSearch() {
                     id="patientId"
                     autoComplete="patientId"
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={patientId.length >= 13}
                     helperText={
@@ -303,7 +309,7 @@ export default function PatientSearch() {
                     variant="outlined"
                     className={classes.customSelect}
                     size="small"
-                    margin="dense"
+                    // margin="dense"
                   >
                     <InputLabel htmlFor="age-native-simple">Status</InputLabel>
                     <Select
@@ -312,7 +318,7 @@ export default function PatientSearch() {
                       onChange={handleChange}
                       inputProps={{
                         name: "type",
-                        id: "age-native-simple",
+                        id: "age-native-simple"
                       }}
                       label="Status"
                     >
@@ -328,17 +334,17 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={paymentFrom}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="paymentFrom"
                     label="Payment From"
                     id="paymentFrom"
                     autoComplete="paymentFrom"
                     onChange={(event) => setPaymentFrom(event.target.value)}
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={paymentFrom.length >= 13}
                     helperText={
@@ -354,7 +360,7 @@ export default function PatientSearch() {
                     className={classes.textField}
                     value={paymentTo}
                     variant="outlined"
-                    margin="dense"
+                    // margin="dense"
                     name="paymentTo"
                     label="Payment To"
                     type="paymentTo"
@@ -362,10 +368,10 @@ export default function PatientSearch() {
                     autoComplete="paymentTo"
                     onChange={(event) => setPaymentTo(event.target.value)}
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={paymentTo.length >= 13}
                     helperText={
@@ -385,6 +391,8 @@ export default function PatientSearch() {
                 color="primary"
                 type="subhmit"
                 className={classes.submit}
+                onClick={(event) => console.log(event)}
+                onKeyPress={(e) => console.log(e.key)}
               >
                 Search
               </Button>

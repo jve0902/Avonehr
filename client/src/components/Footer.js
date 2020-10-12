@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
-  },
+      paddingBottom: theme.spacing(1)
+    }
+  }
 }));
 
 export default function Footer() {

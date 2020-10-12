@@ -14,15 +14,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 56,
     height: "100%",
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 50,
-    },
+      paddingTop: 50
+    }
   },
   shiftContent: {
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   content: {
-    height: "100%",
-  },
+    height: "100%"
+  }
 }));
 
 const Dashboard = (props) => {
@@ -31,7 +31,7 @@ const Dashboard = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
-    defaultMatches: true,
+    defaultMatches: true
   });
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -49,7 +49,7 @@ const Dashboard = (props) => {
         <div
           className={clsx({
             [classes.root]: true,
-            [classes.shiftContent]: isDesktop,
+            [classes.shiftContent]: isDesktop
           })}
         >
           {/*        <Header

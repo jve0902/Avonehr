@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex",
     alignItems: "center",
     cursor: "pointer",
-    padding: "10px 10px",
+    padding: "10px 10px"
   },
   subMenus: {
-    zIndex: 9999,
+    zIndex: 9999
   },
   link: {
     color: theme.palette.secondary.main,
@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     padding: "5px 0",
     "&:last-child": {
-      border: "none",
-    },
+      border: "none"
+    }
   },
 
   nav: {
@@ -37,18 +37,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "3px",
     fontSize: "13px",
-    marginTop: "10px",
+    marginTop: "1px",
     "& .MuiListItem-divider": {
       "&:last-child": {
-        borderBottom: "none",
-      },
-    },
+        borderBottom: "none"
+      }
+    }
   },
   itemWithSubmenus: {
     color: theme.palette.white,
     padding: "16px 15px",
-    textDecoration: "none",
-  },
+    textDecoration: "none"
+  }
 }));
 
 // menuItems is an array of object like: {content: "", onClick: function}
@@ -108,12 +108,12 @@ export default function DropdownItems({ menuId, parentItem, menuItems }) {
 
 // by default we are generating a random id for the dropdown menu
 DropdownItems.defaultProps = {
-  menuId: `simpleMenu`,
+  menuId: `simpleMenu`
 };
 
 // For additional type checking
 DropdownItems.propTypes = {
   menuId: PropTypes.string,
   parentItem: PropTypes.string.isRequired,
-  menuItems: PropTypes.array,
+  menuItems: PropTypes.array
 };

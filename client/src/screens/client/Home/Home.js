@@ -47,6 +47,7 @@ export default function Home() {
   const [isNewEvent, setIsNewEvent] = useState(true);
   const [isNewMessage, setIsNewMessage] = useState(true);
   const [patient_id_to, setPatient_id_to] = useState(null);
+  const [appointments, setAppointments] = useState([]);
 
   const [isMessageToPatientOpen, setIsMessageToPatientOpen] = useState(false);
 
@@ -87,6 +88,7 @@ export default function Home() {
     const { data } = await Appointments.getAll();
     const eventsFromAPI = getMapFromArray(data);
     setEvents(eventsFromAPI);
+    setAppointments(data);
   }
 
   const handleProviderClick = async (provider) => {
@@ -133,7 +135,8 @@ export default function Home() {
       (error) => {
         setErrors(error.response.data.error);
       }
-    );
+    
+      );
   };
 
   const handleEventClick = (calEvent) => {
@@ -282,7 +285,7 @@ export default function Home() {
                 onReject={(payload) => handleEventCancellation(payload)}
               />
             </React.Fragment>
-          )}
+          )} 
         </Grid>
       </Grid>
       <NewOrEditEvent
@@ -297,6 +300,7 @@ export default function Home() {
         onSave={handleEventCreation}
         onEventUpdate={(payload) => handleEventUpdate(payload)}
         errors={errors}
+        appointments={appointments}
       />
       <MessageToPatient
         isLoading={isLoading}
