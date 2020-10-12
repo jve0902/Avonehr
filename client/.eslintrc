@@ -35,7 +35,8 @@
         "ObjectExpression": 1,
         "ImportDeclaration": 1,
         "flatTernaryExpressions": true,
-        "ignoreComments": true 
+        "ignoreComments": true,
+        "SwitchCase": 1 
       }
     ],
     "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],

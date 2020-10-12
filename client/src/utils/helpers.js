@@ -16,32 +16,32 @@ export const removeEmpty = (obj) => {
 
 function getFullDate(x) {
   switch (x) {
-  case 0:
-    return 31;
-  case 1:
-    return 28;
-  case 2:
-    return 31;
-  case 3:
-    return 30;
-  case 4:
-    return 31;
-  case 5:
-    return 30;
-  case 6:
-    return 31;
-  case 7:
-    return 31;
-  case 8:
-    return 30;
-  case 9:
-    return 31;
-  case 10:
-    return 30;
-  case 11:
-    return 31;
-  default:
-    return 30;
+    case 0:
+      return 31;
+    case 1:
+      return 28;
+    case 2:
+      return 31;
+    case 3:
+      return 30;
+    case 4:
+      return 31;
+    case 5:
+      return 30;
+    case 6:
+      return 31;
+    case 7:
+      return 31;
+    case 8:
+      return 30;
+    case 9:
+      return 31;
+    case 10:
+      return 30;
+    case 11:
+      return 31;
+    default:
+      return 30;
   }
 }
 
@@ -95,8 +95,8 @@ export const DateDiff = {
   },
 
   inWeeks: function (d1, d2) {
-    let t2 = d2.getTime();
-    let t1 = d1.getTime();
+    const t2 = d2.getTime();
+    const t1 = d1.getTime();
 
     return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
   },
@@ -117,11 +117,11 @@ export const DateDiff = {
 
 export const statusToColorCode = (status) => {
   switch (status) {
-  case "D":
-    return "#ffab40";
-  case "A":
-    return "#008B00";
-  default:
-    return "#2196f3";
+    case "D":
+      return "#ffab40";
+    case "A":
+      return "#008B00";
+    default:
+      return "#2196f3";
   }
 };
