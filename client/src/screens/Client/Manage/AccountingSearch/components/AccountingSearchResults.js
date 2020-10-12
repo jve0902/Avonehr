@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -7,9 +8,9 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Tooltip from "@material-ui/core/Tooltip";
 import moment from "moment";
 import PropTypes from "prop-types";
-import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -85,10 +86,10 @@ const TotalTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
     "& th": {
-      fontSize: 14,
+      fontSize: 12,
     },
     "& td": {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "bold",
     },
   },
@@ -209,7 +210,7 @@ export default function AccountingSearchResults(props) {
                 // colSpan={1}
                 // align="left"
               >
-                {`$\u00A0${amount}`}
+                <div style={{marginLeft: "5px"}}>{`$\u00A0\u00A0${amount}`}</div>
               </TableCell>
             </TotalTableRow>
           </TableBody>
