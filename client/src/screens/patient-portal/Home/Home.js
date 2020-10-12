@@ -67,11 +67,10 @@ const Home = () => {
   useEffect(() => {
     HomeService.getClientHeader().then(
       (response) => {
-        console.log("response", response);
         setHeader(response.data[0]);
       },
       (error) => {
-        console.log("error", error);
+        console.error("error", error);
       }
     );
     HomeService.getClientForms().then(
@@ -79,7 +78,7 @@ const Home = () => {
         setClientForms(response.data[0]);
       },
       (error) => {
-        console.log("error", error);
+        console.error("error", error);
       }
     );
     HomeService.getUpcomingAppointments().then(
@@ -87,7 +86,7 @@ const Home = () => {
         setUpcomingAppointment(response.data[0]);
       },
       (error) => {
-        console.log("error", error);
+        console.error("error", error);
       }
     );
   }, []);
@@ -99,19 +98,27 @@ const Home = () => {
         <Alert icon={false} variant="filled" severity="info">
           {header && ReactHtmlParser(header.header)}
         </Alert>
-        <Box component="div" className={classes.BoxStyle}>
-          <p>
-            Appointment Scheduled with {upcomingAppointment.provider} on{" "}
-            {moment(upcomingAppointment.start_dt).format("MMM Do YYYY, h:mm a")}{" "}
-            - {moment(upcomingAppointment.end_dt).format("h:mm  a")}
-          </p>
-        </Box>
-        <Box component="div" className={classes.formBox}>
-          <p>
-            Please fill out the following forms:{" "}
-            <Link to="#">{clientForms.title}</Link>
-          </p>
-        </Box>
+        {upcomingAppointment && (
+          <Box component="div" className={classes.BoxStyle}>
+            <p>
+              Appointment Scheduled with {upcomingAppointment.provider} on{" "}
+              {moment(upcomingAppointment.start_dt).format(
+                "MMM Do YYYY, h:mm a"
+              )}{" "}
+              - {moment(upcomingAppointment.end_dt).format("h:mm  a")}
+            </p>
+          </Box>
+        )}
+
+        {clientForms && (
+          <Box component="div" className={classes.formBox}>
+            <p>
+              Please fill out the following forms:{" "}
+              <Link to="#">{clientForms.title}</Link>
+            </p>
+          </Box>
+        )}
+
         <Typography component="h1" variant="h2" className={classes.pageTitle}>
           Portal Home
         </Typography>
