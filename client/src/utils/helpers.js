@@ -16,32 +16,32 @@ export const removeEmpty = (obj) => {
 
 function getFullDate(x) {
   switch (x) {
-    case 0:
-      return 31;
-    case 1:
-      return 28;
-    case 2:
-      return 31;
-    case 3:
-      return 30;
-    case 4:
-      return 31;
-    case 5:
-      return 30;
-    case 6:
-      return 31;
-    case 7:
-      return 31;
-    case 8:
-      return 30;
-    case 9:
-      return 31;
-    case 10:
-      return 30;
-    case 11:
-      return 31;
-    default:
-      return 30;
+  case 0:
+    return 31;
+  case 1:
+    return 28;
+  case 2:
+    return 31;
+  case 3:
+    return 30;
+  case 4:
+    return 31;
+  case 5:
+    return 30;
+  case 6:
+    return 31;
+  case 7:
+    return 31;
+  case 8:
+    return 30;
+  case 9:
+    return 31;
+  case 10:
+    return 30;
+  case 11:
+    return 31;
+  default:
+    return 30;
   }
 }
 
@@ -76,53 +76,52 @@ export const formatPhoneNumber = (phoneNumber) => {
 
 export const formatDate = (date) => {
   var d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + d.getDate(),
-    year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
-}
+};
 
 export const DateDiff = {
+  inDays: function (d1, d2) {
+    let t2 = d2.getTime();
+    let t1 = d1.getTime();
 
-  inDays: function(d1, d2) {
-      var t2 = d2.getTime();
-      var t1 = d1.getTime();
-
-      return parseInt((t2-t1)/(24*3600*1000));
+    return parseInt((t2 - t1) / (24 * 3600 * 1000));
   },
 
-  inWeeks: function(d1, d2) {
-      var t2 = d2.getTime();
-      var t1 = d1.getTime();
+  inWeeks: function (d1, d2) {
+    var t2 = d2.getTime();
+    var t1 = d1.getTime();
 
-      return parseInt((t2-t1)/(24*3600*1000*7));
+    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
   },
 
-  inMonths: function(d1, d2) {
-      var d1Y = d1.getFullYear();
-      var d2Y = d2.getFullYear();
-      var d1M = d1.getMonth();
-      var d2M = d2.getMonth();
+  inMonths: function (d1, d2) {
+    var d1Y = d1.getFullYear();
+    var d2Y = d2.getFullYear();
+    var d1M = d1.getMonth();
+    var d2M = d2.getMonth();
 
-      return (d2M+12*d2Y)-(d1M+12*d1Y);
+    return d2M + 12 * d2Y - (d1M + 12 * d1Y);
   },
 
-  inYears: function(d1, d2) {
-      return d2.getFullYear()-d1.getFullYear();
+  inYears: function (d1, d2) {
+    return d2.getFullYear() - d1.getFullYear();
   }
 };
 
 export const statusToColorCode = (status) => {
   switch (status) {
-    case "D":
-      return "#ffab40";
-    case "A":
-      return "#008B00";
-    default:
-      return "#2196f3";
+  case "D":
+    return "#ffab40";
+  case "A":
+    return "#008B00";
+  default:
+    return "#2196f3";
   }
 };
