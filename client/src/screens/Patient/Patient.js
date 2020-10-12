@@ -381,6 +381,15 @@ export default function Patient(props) {
   };
 
   const toggleAdminFormDialog = () => {
+    // making card static till the time editor is active
+    const newLayout = layout.map(item =>
+      item.i === "Admin Notes"
+        ? { ...item, static: !item.static }
+        : item
+    );
+
+    setLayout([...newLayout]);
+    
     firstCardsSequence[1].showEditorActions = !firstCardsSequence[1].showEditorActions;
     setFirstCardsSequence([
       ...firstCardsSequence,
@@ -441,6 +450,15 @@ export default function Patient(props) {
   };
 
   const toggleMedicalNotesFormDialog = () => {
+    // making card static till the time editor is active
+    const newLayout = layout.map(item =>
+      item.i === "Medical Notes"
+        ? { ...item, static: !item.static }
+        : item
+    );
+
+    setLayout([...newLayout]);
+
     thirdCardsSequence[0].showEditorActions = !thirdCardsSequence[0].showEditorActions;
     setThirdCardsSequence([
       ...thirdCardsSequence,
@@ -776,7 +794,7 @@ export default function Patient(props) {
       let title = item.title;
       return {
         x: 6,
-        y: y,
+        y: 0,
         w: 3,
         h: title === "Allergies" || title === "Requisitions" ? 3 : title === "Messages" ? 6 : y,
         i: item.title.toString(),
