@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formInput: {
     marginBottom: theme.spacing(1),
-    pointerEvents: 'all',
+    pointerEvents: 'auto',
     
     "& .MuiOutlinedInput-multiline": {
       padding: 5,

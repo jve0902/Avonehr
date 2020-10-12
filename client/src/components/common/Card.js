@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 34,
-    pointerEvents: 'all',
+    pointerEvents: 'auto',
     cursor: 'move'
   },
   fullPadding: {
