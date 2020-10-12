@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -97,11 +97,6 @@ const TotalTableRow = withStyles((theme) => ({
 export default function AccountingSearchResults(props) {
   const classes = useStyles();
   const history = useHistory();
-  const [totalAmount, setTotalAmount] = useState(0);
-  // const addAmount = (amount) => {
-  //   let add = 0
-  //   add = add+amount
-  // }
   const amount = props.result.reduce((a, b) => a + b.amount, 0);
   return (
     <div className={classes.root}>

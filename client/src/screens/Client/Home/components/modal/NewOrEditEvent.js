@@ -121,7 +121,7 @@ const NewOrEditEvent = ({
   const [selectedPatient, setSelectedPatient] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
   const [calEvent, setCalEvent] = useState("");
-  const [appointmentLength, setAppointmentLength] = useState(" ")
+  const [appointmentLength] = useState(" ")
 
   useEffect(() => {
     if (isNewEvent) {
@@ -180,54 +180,47 @@ const NewOrEditEvent = ({
   };
 
   const handleSaveOrUpdate = () => {
-    console.log(
-      props.appointments.map((appointment) =>
-        selectedPatient.includes(appointment.patient_id)
-      ),
-      "ddd",
-      selectedPatient
-    );  
 
     props.appointments.map((appointment) =>
       selectedPatient.includes(appointment.patient_id)
     );
-    // if (isNewEvent) {
-    //   const payload = {
-    //     data: {
-    //       title: calEvent.title,
-    //       provider: provider,
-    //       patient: selectedPatient,
-    //       ApptStatus: calEvent.status,
-    //       notes: calEvent.notes,
-    //       start_dt: calEvent.start_dt,
-    //       end_dt: calEvent.end_dt
-    //     }
-    //   };
-    //   onSave(payload);
-    // } else {
-    //   const payload = {
-    //     data: {
-    //       id: props.event.id,
-    //       title: calEvent.title,
-    //       providerName: calEvent.provider_name,
-    //       provider: provider,
-    //       patient: selectedPatient
-    //         ? selectedPatient
-    //         : {
-    //             id: props.event.patient_id,
-    //             firstname: props.event.firstname,
-    //             email: props.event.email
-    //           },
-    //       ApptStatus: calEvent.status,
-    //       notes: calEvent.notes,
-    //       old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
-    //       old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
-    //       new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
-    //       new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
-    //     }
-    //   };
-    //   onEventUpdate(payload);
-    // }
+    if (isNewEvent) {
+      const payload = {
+        data: {
+          title: calEvent.title,
+          provider: provider,
+          patient: selectedPatient,
+          ApptStatus: calEvent.status,
+          notes: calEvent.notes,
+          start_dt: calEvent.start_dt,
+          end_dt: calEvent.end_dt
+        }
+      };
+      onSave(payload);
+    } else {
+      const payload = {
+        data: {
+          id: props.event.id,
+          title: calEvent.title,
+          providerName: calEvent.provider_name,
+          provider: provider,
+          patient: selectedPatient
+            ? selectedPatient
+            : {
+                id: props.event.patient_id,
+                firstname: props.event.firstname,
+                email: props.event.email
+              },
+          ApptStatus: calEvent.status,
+          notes: calEvent.notes,
+          old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
+          old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
+          new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
+          new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
+        }
+      };
+      onEventUpdate(payload);
+    }
   };
 
   return (
