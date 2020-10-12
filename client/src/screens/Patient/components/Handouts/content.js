@@ -7,23 +7,19 @@ import {
 import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    padding: 9,
-  },
-  tableContainer: {
-    // minWidth: 650,
-  },
-  actions: {
-    textAlign: "center",
-    display: "flex",
-    border: "none",
-    "& button": {
-      fontSize: "12px",
-    },
+  inputRow: {
+    marginBottom: theme.spacing(0.5),
+    flexWrap: 'nowrap',
   },
   block: {
     minWidth: 90,
     maxWidth: 120,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: theme.spacing(0, 0.5, 0, 0),
+  },
+  fullWidth: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -43,12 +39,8 @@ const HandoutsContent = (props) => {
     {
       data.map(item => (
         <Grid onClick={() => alert(item.filename)} key={item.created} container className={classes.inputRow}>
-          <Grid item className={classes.block}>
-            <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
-          </Grid>
-          <Grid item className={classes.block}>
-            <Typography component="span" className={classes.text12} color="textPrimary">{item.filename}</Typography>
-          </Grid>
+          <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
+          <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.filename}</Typography>
         </Grid>
       ))
     }
