@@ -127,7 +127,9 @@ const useStyles = makeStyles((theme) => ({
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 34
+    minHeight: 34,
+    pointerEvents: 'all',
+    cursor: 'move'
   },
   fullPadding: {
     padding: 8,
@@ -147,6 +149,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "14px",
   },
   cardContent: {
+    pointerEvents: 'none',
     padding: 8,
   },
   sideIcon: {

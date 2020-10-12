@@ -9,6 +9,7 @@
 
 .react-grid-item > .react-resizable-handle {
     bottom: 6px;
+    pointer-events: all;
 }
 
 .react-grid-item.react-grid-placeholder {

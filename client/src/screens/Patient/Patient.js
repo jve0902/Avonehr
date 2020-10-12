@@ -1282,7 +1282,7 @@ export default function Patient(props) {
           >
             {FirstColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title} className={`${classes.clickDisabled} `}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1305,7 +1305,7 @@ export default function Patient(props) {
                 </Grid>
               );
             })}
-            <Grid key={"Encounters"} className={classes.overflowAuto}>
+            <Grid key={"Encounters"} className={classes.clickDisabled}>
               <Card
                 title="Encounters"
                 data={!!encounters && <EncountersCardContent data={encounters} />}
@@ -1320,7 +1320,7 @@ export default function Patient(props) {
             </Grid>
             {ThirdColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title} className={classes.clickDisabled}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1342,7 +1342,7 @@ export default function Patient(props) {
             })}
             {FourthColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title} className={classes.clickDisabled}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1360,7 +1360,7 @@ export default function Patient(props) {
                 </Grid>
               );
             })}
-            <Grid key={"Documents"} className={classes.overflowAuto}>
+            <Grid key={"Documents"} className={classes.clickDisabled}>
               <Card
                 title="Documents"
                 data={
@@ -1380,7 +1380,7 @@ export default function Patient(props) {
                 updateMinHeight={updateMinHeight}
               />
             </Grid>
-            <Grid key={"All Tests"} className={classes.overflowAuto}>
+            <Grid key={"All Tests"} className={classes.clickDisabled}>
               <Card
                 title="All Tests"
                 data={!!tests && <TestsCardContent data={tests} />}
@@ -1406,7 +1406,7 @@ const useStyles = makeStyles((theme) => ({
   noDisplay: {
     display: "none",
   },
-  overflowAuto: {
-    overflowY: "auto",
+  clickDisabled: {
+    pointerEvents: 'none',
   },
 }));
