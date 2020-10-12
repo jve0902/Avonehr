@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Divider, Drawer } from "@material-ui/core";
+import { Drawer } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -22,7 +22,7 @@ import Icon from "@mdi/react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 
-import { Profile, SidebarNav } from "./components";
+import { SidebarNav } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -48,16 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Sidebar = (props) => {
-  const {
-    open,
-    variant,
-    isAuth,
-    logout,
-    onClose,
-    className,
-    user,
-    ...rest
-  } = props;
+  const { open, variant, isAuth, logout, onClose, className, ...rest } = props;
   const classes = useStyles();
 
   const pages = [
@@ -153,7 +144,8 @@ const Sidebar = (props) => {
     },
     {
       title: "Signoff",
-      href: "/patient/signoff",
+      href: "/",
+      logout: true,
       icon: (
         <Icon
           path={mdiLogoutVariant}
@@ -175,7 +167,7 @@ const Sidebar = (props) => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
-        <SidebarNav className={classes.nav} pages={pages} />
+        <SidebarNav className={classes.nav} pages={pages} logout={logout} />
       </div>
     </Drawer>
   );
@@ -185,8 +177,7 @@ Sidebar.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired,
-  user: PropTypes.object.isRequired
+  variant: PropTypes.string.isRequired
 };
 
 export default Sidebar;

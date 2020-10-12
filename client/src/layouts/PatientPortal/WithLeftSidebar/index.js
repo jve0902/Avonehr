@@ -53,15 +53,13 @@ const WithLeftSidebar = (props) => {
             [classes.shiftContent]: isDesktop
           })}
         >
-          <Topbar
-            onSidebarOpen={handleSidebarOpen} />
+          <Topbar onSidebarOpen={handleSidebarOpen} />
           <Sidebar
             onClose={handleSidebarClose}
             open={shouldOpenSidebar}
             variant={isDesktop ? "persistent" : "temporary"}
             isAuth={isAuth}
             logout={logout}
-            user={user}
           />
 
           <Container maxWidth="xl" style={{ flex: 1 }}>

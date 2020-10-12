@@ -316,73 +316,73 @@ class AppRouter extends Component {
               path="/login/:clientCode"
               component={PatientLogin}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient"
               component={PatientHome}
               exact
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/messages"
               component={PatientMessages}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/encounters"
               component={PatientEncounters}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/handouts"
               component={PatientHandouts}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/labs"
               component={PatientLabs}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/labs-requisition"
               component={PatientRequisition}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/billing"
               component={PatientBilling}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/payment-methods"
               component={PaymentMethods}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/allergies"
               component={Allergies}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/prescriptions"
               component={Prescriptions}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/pharmacies"
               component={Pharmacies}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/appointments"
               component={PatientAppointments}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/profile"
               component={PatientProfile}
             />
-            <RouteWithLayout
+            <PrivateRouteWithLayout
               layout={WithLeftSidebar}
               path="/patient/forms"
               component={PatientForms}

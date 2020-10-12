@@ -1,9 +1,13 @@
 import React, { forwardRef } from "react";
-import { NavLink as RouterLink } from "react-router-dom";
+
+import { List, ListItem, Button, colors } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
-import { List, ListItem, Button, colors } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { NavLink as RouterLink } from "react-router-dom";
+
+import { logOut } from "./../../../../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,9 +49,16 @@ const CustomRouterLink = forwardRef((props, ref) => (
 ));
 
 const SidebarNav = (props) => {
-  const { pages, className, ...rest } = props;
-
+  const { pages, className, logout, ...rest } = props;
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    dispatch(logOut());
+    logout();
+    window.location.reload();
+  };
 
   return (
     <List {...rest} className={clsx(classes.root, className)}>
@@ -58,6 +69,7 @@ const SidebarNav = (props) => {
             className={classes.button}
             component={CustomRouterLink}
             to={page.href}
+            onClick={page.logout && handleLogout}
           >
             <div className={classes.icon}>{page.icon}</div>
             {page.title}

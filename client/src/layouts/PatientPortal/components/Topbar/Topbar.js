@@ -1,20 +1,17 @@
 import React from "react";
 
 import AppBar from "@material-ui/core/AppBar";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { NavLink as RouterLink } from "react-router-dom";
 
 import Logo from "./../../../../assets/client/c1_logo.png";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: "none",
     backgroundColor: "#FFFFFF"
-
   },
   LogoWrapper: {
     display: "block",
