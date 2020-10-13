@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-import _ from "lodash";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
-
+import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
-import TextFieldWithError from "./TextFieldWithError";
+import _ from "lodash";
+
 import AuthService from "./../../services/auth.service";
 import { getAcronym } from "./../../utils/helpers";
+import TextFieldWithError from "./TextFieldWithError";
 
-import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   form: {

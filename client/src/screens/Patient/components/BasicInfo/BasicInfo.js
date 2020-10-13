@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Typography,
@@ -14,14 +13,16 @@ import {
   TableRow,
   TableCell
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+import CountrySelect from "./../../../../components/common/CountrySelect";
+import RegionSelect from "./../../../../components/common/RegionSelect";
 import {
   BasicInfoForm,
   InsuranceForm,
   Pharmacies,
   PaymentData
 } from "./../../../../static/patientBasicInfoForm";
-import CountrySelect from "./../../../../components/common/CountrySelect";
-import RegionSelect from "./../../../../components/common/RegionSelect";
 
 export default function BasicInfo() {
   const classes = useStyles();

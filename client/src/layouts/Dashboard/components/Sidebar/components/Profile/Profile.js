@@ -1,16 +1,16 @@
 import React from "react";
 
-import { Link as RouterLink } from "react-router-dom";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import { fade, makeStyles } from "@material-ui/core/styles";
 import { Avatar, Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import InputIcon from "@material-ui/icons/Input";
-
+import clsx from "clsx";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
+
 import { logOut } from "./../../../../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({

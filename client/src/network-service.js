@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { UNAUTH_USER } from "./store/auth/types";
 import { setError } from "./store/common/actions";
 
@@ -15,7 +16,7 @@ export default {
           store.dispatch(
             setError({
               severity: "error",
-              message: "Network error - make sure API is running",
+              message: "Network error - make sure API is running"
             })
           );
         }
@@ -37,7 +38,7 @@ export default {
           store.dispatch(
             setError({
               severity: severity,
-              message: resMessage,
+              message: resMessage
             })
           );
           //TODO:: Check access token validaity on backend and handle on fronend client
@@ -52,5 +53,5 @@ export default {
         return Promise.reject(error);
       }
     );
-  },
+  }
 };

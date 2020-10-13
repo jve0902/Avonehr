@@ -8,7 +8,6 @@ import {
   setEditorText,
   resetEditorText
 } from "./../../../../store/patient/actions";
-
 import { useDispatch } from "react-redux";
 
 const AdminNotes = (props) => {

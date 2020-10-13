@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 
 import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
-import Success from "./../../components/signup/Success";
-import { useHistory } from "react-router-dom";
-import { signupComplete } from "./../../store/auth/actions";
-import { sendVerificationEmail } from "./../../store/email/actions";
-import { setSuccess } from "./../../store/common/actions";
-import AuthService from "./../../services/auth.service";
-
-import { AuthConsumer } from "./../../providers/AuthProvider";
-import PracticeForm from "../../components/signup/PracticeForm";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import PracticeForm from "../../components/signup/PracticeForm";
+import Success from "./../../components/signup/Success";
+import { AuthConsumer } from "./../../providers/AuthProvider";
+import AuthService from "./../../services/auth.service";
+import { signupComplete } from "./../../store/auth/actions";
+import { setSuccess } from "./../../store/common/actions";
+import { sendVerificationEmail } from "./../../store/email/actions";
+
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {

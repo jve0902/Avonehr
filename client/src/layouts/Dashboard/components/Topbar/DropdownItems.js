@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
+import { ClickAwayListener, Paper, Popper } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Button from "@material-ui/core/Button";
-import { ClickAwayListener, Paper, Popper } from "@material-ui/core";
-import { NavLink as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@material-ui/icons/ArrowDropUpOutlined";
-import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { NavLink as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {

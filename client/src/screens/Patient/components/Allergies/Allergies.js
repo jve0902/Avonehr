@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import _ from "lodash";
 import {
   TextField,
   Button,
@@ -11,9 +10,12 @@ import {
   ListItemText
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+import { useDispatch } from "react-redux";
+
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
-import { useDispatch } from "react-redux";
+
 
 const Allergies = (props) => {
   const classes = useStyles();

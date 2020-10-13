@@ -1,8 +1,7 @@
 import React from "react";
 
-import PropTypes from "prop-types";
-
 import Alert from "@material-ui/lab/Alert";
+import PropTypes from "prop-types";
 
 const Error = ({ errors, children }) => {
   return (

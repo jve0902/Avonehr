@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 import PatientService from "../../../../services/patient.service";
 import { setError, setSuccess } from "../../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
 const NewMessage = (props) => {
   const classes = useStyles();
