@@ -1,6 +1,8 @@
 import React from "react";
 
 import AppBar from "@material-ui/core/AppBar";
+import grey from "@material-ui/core/colors/grey";
+import orange from "@material-ui/core/colors/orange";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     backgroundColor: "#ffffff",
     "& button": {
-      color: colors.orange[800],
-      backgroundColor: colors.grey[200]
+      color: orange[800],
+      backgroundColor: grey[200]
     }
   },
   toolbar: {
