@@ -1,6 +1,7 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+
 import { API_BASE } from "./../utils/API_BASE";
+import authHeader from "./auth-header";
 
 class AppointmentService {
   getAll() {
@@ -10,7 +11,7 @@ class AppointmentService {
   }
   create(data) {
     return axios.post(API_BASE + `/appointment-types`, data, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
   update(data, userId, appointmentId) {
@@ -18,13 +19,13 @@ class AppointmentService {
       API_BASE + `/appointment-types/${userId}/${appointmentId}`,
       data,
       {
-        headers: authHeader(),
+        headers: authHeader()
       }
     );
   }
   deleteById(id) {
     return axios.delete(API_BASE + `/appointment-types/${id}`, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
 }

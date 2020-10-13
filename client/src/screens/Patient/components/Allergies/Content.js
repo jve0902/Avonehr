@@ -4,15 +4,12 @@ import { Grid, Typography } from "@material-ui/core";
 
 export default function AllergiesContent(props) {
   const classes = useStyles();
-  const { data, /* reloadData */ } = props;
+  const { data /* reloadData */ } = props;
 
   return (
     <>
       {data.map((item) => (
-        <Grid
-          key={item.drug_id}
-          className={classes.inputRow}
-        >
+        <Grid key={item.drug_id} className={classes.inputRow}>
           <Typography className={classes.text12}>{item.name}</Typography>
         </Grid>
       ))}
@@ -22,9 +19,9 @@ export default function AllergiesContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   text12: {
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 }));

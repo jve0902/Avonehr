@@ -1,6 +1,7 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+
 import { API_BASE } from "./../utils/API_BASE";
+import authHeader from "./auth-header";
 
 class DashboardHome {
   getProviders() {
@@ -16,14 +17,14 @@ class DashboardHome {
   getPatientUnreadMessages(providerId) {
     return axios
       .get(API_BASE + `/unread-messages/${providerId}`, {
-        headers: authHeader(),
+        headers: authHeader()
       })
       .then((res) => res.data);
   }
   getPatientApptRequests(providerId) {
     return axios
       .get(API_BASE + `/appointment-requests/${providerId}`, {
-        headers: authHeader(),
+        headers: authHeader()
       })
       .then((res) => res.data);
   }

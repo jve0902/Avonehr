@@ -1,6 +1,7 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+
 import { API_BASE } from "./../utils/API_BASE";
+import authHeader from "./auth-header";
 
 class Messages {
   getMessageByID(id) {
@@ -10,12 +11,12 @@ class Messages {
   }
   create(payload) {
     return axios.post(API_BASE + `/message`, payload, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
   update(payload) {
     return axios.put(API_BASE + `/message/${payload.data.id}`, payload, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
 }

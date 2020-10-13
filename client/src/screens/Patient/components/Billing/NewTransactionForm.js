@@ -4,7 +4,7 @@ import {
   Button,
   Grid,
   Typography,
-  MenuItem,
+  MenuItem
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { TransactionFormFields } from "../../../../static/transactionForm";
@@ -24,14 +24,14 @@ const NewTransactionForm = (props) => {
     country: "",
     state: "",
     city: "",
-    zipPostal: "",
+    zipPostal: ""
   });
 
   const handleInputChnage = (e) => {
     const { value, name } = e.target;
     setFormFields({
       ...formFields,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -125,11 +125,11 @@ const NewTransactionForm = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   formInput: {
-    marginBottom: theme.spacing(1),
-  },
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 export default NewTransactionForm;

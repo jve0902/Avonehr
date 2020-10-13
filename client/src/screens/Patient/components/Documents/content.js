@@ -1,20 +1,21 @@
 import React from "react";
+
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import moment from "moment";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import moment from "moment";
+import { useDispatch } from "react-redux";
 
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     padding: 9
   },
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
@@ -44,7 +45,7 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
@@ -63,20 +64,20 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
-const DocumentsContent = props => {
+const DocumentsContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const onItemDelete = selectedItem => {
+  const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
     const tab = "Labs";
     PatientService.deleteDocument(documentId, tab)
-      .then(response => {
+      .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
       })
-      .catch(error => {
+      .catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
