@@ -1,13 +1,14 @@
 import React from "react";
 
-import moment from "moment";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Colors from "../../../../../theme/colors";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+import { Link } from "react-router-dom";
+
+import Colors from "../../../../../theme/colors";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -153,16 +154,16 @@ const ProviderDetailsCard = ({ selectedProvider, providerDetails }) => {
                 "min(m.unread_notify_dt)"
               ]
                 ? `${moment(
-                    providerDetails.messageToPatientsNotRead[
-                      "min(m.unread_notify_dt)"
-                    ]
-                  ).format("ll")} (${moment(
-                    providerDetails.messageToPatientsNotRead[
-                      "min(m.unread_notify_dt)"
-                    ]
-                  )
-                    .startOf("day")
-                    .fromNow()})`
+                  providerDetails.messageToPatientsNotRead[
+                    "min(m.unread_notify_dt)"
+                  ]
+                ).format("ll")} (${moment(
+                  providerDetails.messageToPatientsNotRead[
+                    "min(m.unread_notify_dt)"
+                  ]
+                )
+                  .startOf("day")
+                  .fromNow()})`
                 : "-"}
             </div>
           </li>
@@ -180,16 +181,16 @@ const ProviderDetailsCard = ({ selectedProvider, providerDetails }) => {
                 "min(m.unread_notify_dt)"
               ]
                 ? `${moment(
-                    providerDetails.patientAppointmentRequest[
-                      "min(m.unread_notify_dt)"
-                    ]
-                  ).format("ll")} (${moment(
-                    providerDetails.messageToPatientsNotRead[
-                      "min(m.unread_notify_dt)"
-                    ]
-                  )
-                    .startOf("day")
-                    .fromNow()})`
+                  providerDetails.patientAppointmentRequest[
+                    "min(m.unread_notify_dt)"
+                  ]
+                ).format("ll")} (${moment(
+                  providerDetails.messageToPatientsNotRead[
+                    "min(m.unread_notify_dt)"
+                  ]
+                )
+                  .startOf("day")
+                  .fromNow()})`
                 : "-"}
             </div>
           </li>

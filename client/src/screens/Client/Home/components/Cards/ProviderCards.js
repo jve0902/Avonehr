@@ -1,12 +1,13 @@
 import React from "react";
 
-import moment from "moment";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Colors from "../../../../../theme/colors";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+
+import Colors from "../../../../../theme/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
