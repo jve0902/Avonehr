@@ -1,14 +1,16 @@
-import React from 'react';
+import React from "react";
+
+import { Card, Typography, Grid, Button, TextField, IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/AddCircleOutline";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SaveIcon from "@material-ui/icons/CheckCircle";
+import CardIcon from "@material-ui/icons/CreditCard";
+import DesktopIcon from "@material-ui/icons/DesktopMac";
+import SaveLayoutIcon from "@material-ui/icons/Save";
 import PropTypes from "prop-types";
-import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, Button, TextField, IconButton } from '@material-ui/core';
-import Colors from '../../theme/colors';
-import CardIcon from '@material-ui/icons/CreditCard';
-import DesktopIcon from '@material-ui/icons/DesktopMac';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
-import SaveIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
-import SaveLayoutIcon from '@material-ui/icons/Save';
+
+import Colors from "../../theme/colors";
 
 const PatientCard = (props) => {
   const classes = useStyles();
@@ -36,7 +38,8 @@ const PatientCard = (props) => {
   return (
     <>
       <Card className={classes.root} variant="outlined">
-        <Grid container justify="space-between" alignItems="center" className={`${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
+        {/* drag-handle className is important for the header as it makes the header draggable only */}
+        <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
@@ -58,14 +61,14 @@ const PatientCard = (props) => {
           }
           {
             showEditorActions && (
-            <Grid>
-              <IconButton variant="outlined" onClick={editorCancelHandler} size="small">
-                <CancelIcon />
-              </IconButton>
-              <IconButton variant="outlined" type="submit" size="small" onClick={editorSaveHandler}>
-                <SaveIcon />
-              </IconButton>
-            </Grid>
+              <Grid>
+                <IconButton variant="outlined" onClick={editorCancelHandler} size="small">
+                  <CancelIcon />
+                </IconButton>
+                <IconButton variant="outlined" type="submit" size="small" onClick={editorSaveHandler}>
+                  <SaveIcon />
+                </IconButton>
+              </Grid>
             )
           }
           {
@@ -106,9 +109,9 @@ const PatientCard = (props) => {
         <Grid className={classes.cardContent}>
           {
             !!data ?
-            data
-            :
-            ""
+              data
+              :
+              ""
           }
         </Grid>
       </Card>
@@ -119,26 +122,25 @@ const PatientCard = (props) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 100,
-    overflowY: 'auto',
+    overflowY: "auto",
     background: Colors.white,
-    border: '1px solid rgba(38, 38, 38, 0.12)',
+    border: "1px solid rgba(38, 38, 38, 0.12)",
     borderRadius: 4,
     marginBottom: 6
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 34,
-    pointerEvents: 'auto',
-    cursor: 'move'
+    cursor: "move"
   },
   fullPadding: {
     padding: 8,
   },
   leftPadding: {
-    padding: '0 0 0 8px',
+    padding: "0 0 0 8px",
   },
   title: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 13
   },
   cardInfo: {
@@ -149,7 +151,6 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "14px",
   },
   cardContent: {
-    pointerEvents: 'none',
     padding: 8,
   },
   sideIcon: {
@@ -165,18 +166,18 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
   },
   text: {
-    fontStyle: 'normal',
-    fontWeight: '500',
-    fontSize: '1rem',
-    lineHeight: '1.3rem',
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: "1rem",
+    lineHeight: "1.3rem",
     color: Colors.black
   },
   searchInput: {
     margin: "2px 0",
-    maxWidth: '110px'
+    maxWidth: "110px"
   },
   icon: {
-    cursor: 'pointer'
+    cursor: "pointer"
   },
   textField: {
     height: 8,
@@ -184,13 +185,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 PatientCard.defaultProps = {
-  title: 'Title',
+  title: "Title",
   showActions: false,
   showEditorActions: false,
   showSearch: false,
   data: <div />,
-  primaryButtonText: 'History',
-  secondaryButtonText: 'Edit',
+  primaryButtonText: "History",
+  secondaryButtonText: "Edit",
   icon: null,
   cardInfo: null,
   primaryButtonHandler: () => {},

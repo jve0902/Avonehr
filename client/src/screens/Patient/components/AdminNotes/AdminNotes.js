@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import { TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 import { setEditorText, resetEditorText } from "./../../../../store/patient/actions";
-import { useDispatch } from "react-redux";
 
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
@@ -71,25 +73,25 @@ const AdminNotes = (props) => {
   return (
     <>
       <form onSubmit={onFormSubmit}>
-          <Grid className={classes.formInput} item md={12}>
-            <TextField
-              variant="outlined"
-              value={formFields.notes}
-              name="notes"
-              id="notes"
-              type="text"
-              fullWidth
-              onChange={(e) => handleInputChange(e)}
-              multiline={true}
-              rows={5}
-              autoFocus={true}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                   !!onClose && onClose();
-                   dispatch(resetEditorText());
-                }
-             }}
-            />
+        <Grid className={classes.formInput} item md={12}>
+          <TextField
+            variant="outlined"
+            value={formFields.notes}
+            name="notes"
+            id="notes"
+            type="text"
+            fullWidth
+            onChange={(e) => handleInputChange(e)}
+            multiline={true}
+            rows={5}
+            autoFocus={true}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                onClose();
+                dispatch(resetEditorText());
+              }
+            }}
+          />
         </Grid>
       </form>
     </>
@@ -102,7 +104,6 @@ const useStyles = makeStyles((theme) => ({
   },
   formInput: {
     marginBottom: theme.spacing(1),
-    pointerEvents: 'auto',
     
     "& .MuiOutlinedInput-multiline": {
       padding: 5,

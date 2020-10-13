@@ -1,12 +1,13 @@
 import React from "react";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import moment from "moment";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -30,8 +31,9 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
     fontWeight: 700,
+    padding: "6px 24px 6px 2px"
   },
   body: {
     fontSize: 12,
@@ -46,13 +48,13 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "& th": {
       fontSize: 12,
-      whiteSpace: 'nowrap',
-      padding: "2px 4px"
+      whiteSpace: "nowrap",
+      padding: "2px 16px 2px 2px"
     },
     "& td": {
       fontSize: 12,
-      whiteSpace: 'nowrap',
-      padding: "2px 4px"
+      whiteSpace: "nowrap",
+      padding: "2px 16px 2px 2px"
     },
   },
 }))(TableRow);

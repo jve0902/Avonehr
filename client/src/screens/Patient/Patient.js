@@ -1,34 +1,31 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import _ from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect, useRef, useContext, useCallback } from "react";
+
 import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 
 //common components
+import { AuthContext } from "../../providers/AuthProvider"
 import Card from "./../../components/common/Card";
 import Dialog from "./../../components/Dialog";
+//service
+import PatientService from "./../../services/patient.service";
 import {
   FirstColumnPatientCards,
   ThirdColumnPatientCards,
   FourthColumnPatientCards,
 } from "./../../static/patient";
-
+import { setError, setSuccess } from "./../../store/common/actions";
+import { resetEditorText } from "./../../store/patient/actions";
 // dialog components
 import {
   AdminNotesForm,
   AdminNotesHistory,
   AdminNotesCardContent,
 } from "./components/AdminNotes";
-import {
-  NewTransactionForm,
-  PaymentForm,
-  BillingCardContent,
-  BillingDetails,
-} from "./components/Billing";
-import Form from "./Form";
-import EncountersForm from "./Encounters";
-import MedicalNotesForm from "./MedicalNotes";
-import NewMessageForm from "./Messages/NewMessage";
 import {
   Allergies,
   AllergiesCardContent,
@@ -40,56 +37,52 @@ import {
   PatientHistoryDetails,
 } from "./components/BasicInfo";
 import {
+  NewTransactionForm,
+  PaymentForm,
+  BillingCardContent,
+  BillingDetails,
+} from "./components/Billing";
+import {
   DiagnosesForm,
   DiagnosesCardContent,
   DiagnosesDetails,
 } from "./components/Diagnoses";
+import { DocumentsCardContent } from "./components/Documents";
 import {
   HandoutsForm,
   HandoutsCardContent,
   HandoutsDetails,
 } from "./components/Handouts";
-import { DocumentsCardContent } from "./components/Documents";
-import MedicationsForm from "./Medications";
-import RequisitionsForm from "./Requisitions";
-
-//card content components
-import FormCardContent from "./Form/content";
+import EncountersForm from "./Encounters";
 import EncountersCardContent from "./Encounters/content";
-import MedicalNotesCardContent from "./MedicalNotes/content";
-import MessagesCardContent from "./Messages/content";
-
-import MedicationsCardContent from "./Medications/content";
-import RequisitionsCardContent from "./Requisitions/content";
-import TestsCardContent from "./Tests/content";
-
-//expand detail components
-import FormDetails from "./Form/details";
 import EncountersDetails from "./Encounters/details";
+import Form from "./Form";
+import FormCardContent from "./Form/content";
+import FormDetails from "./Form/details";
+import MedicalNotesForm from "./MedicalNotes";
+import MedicalNotesCardContent from "./MedicalNotes/content";
 import MedicalNotesDetails from "./MedicalNotes/details";
-import MessagesDetails from "./Messages/details";
+import MedicationsForm from "./Medications";
+import MedicationsCardContent from "./Medications/content";
 import MedicationsDetails from "./Medications/details";
+import MessagesCardContent from "./Messages/content";
+import MessagesDetails from "./Messages/details";
+import NewMessageForm from "./Messages/NewMessage";
+import RequisitionsForm from "./Requisitions";
+//card content components
+import RequisitionsCardContent from "./Requisitions/content";
 import RequisitionsDetails from "./Requisitions/details";
-
-//service
-import PatientService from "./../../services/patient.service";
-import { setError, setSuccess } from "./../../store/common/actions";
-import { resetEditorText } from "./../../store/patient/actions";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-
+import TestsCardContent from "./Tests/content";
+//expand detail components
 //react-grid-layout styles
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import "../../reactGridLayout.css";
-
-import { Responsive, WidthProvider } from "react-grid-layout";
-
 //providers
-import { AuthContext } from "../../providers/AuthProvider"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export default function Patient(props) {
+export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
@@ -193,27 +186,6 @@ export default function Patient(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient_id]);
 
-  useEffect(() => {
-    if (!hasPatientIderror) {
-      fetchPatientHistory();
-      fetchPatientBalance();
-      fetchAdminNotesHistory();
-      fetchAllergies();
-      fetchPatientHandouts();
-      fetchForms();
-      fetchBillings();
-      fetchDocuments();
-      fetchEncounters();
-      fetchMedicalNotes();
-      fetchMessages();
-      fetchDiagnoses();
-      fetchMedications();
-      fetchRequisitions();
-      fetchTests();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }
-  }, [hasPatientIderror])
-
   const fetchCardsLayout = () => {
     const user_id = user.id;
     PatientService.getCardsLayout(user_id).then((res) => {
@@ -237,7 +209,7 @@ export default function Patient(props) {
 
   const updateLayoutState = (gridLayout) => {
     setLayout(gridLayout);
-    const propsToRemove = ['isBounded', 'isDraggable', 'isResizable', 'resizeHandles', 'maxH', 'minH', 'maxW', 'minW', 'moved', 'static']
+    const propsToRemove = ["isBounded", "isDraggable", "isResizable", "resizeHandles", "maxH", "minH", "maxW", "minW", "moved", "static"]
     let updatedLayout = gridLayout.map(obj => {
       let result = _.omit(obj, [...propsToRemove]);
       return result;
@@ -258,104 +230,104 @@ export default function Patient(props) {
       } else {
         dispatch(
           setError({
-            severity: 'error',
-            message: 'Patient not found',
+            severity: "error",
+            message: "Patient not found",
           })
         );
       }
     });
   };
 
-  const fetchPatientHistory = () => {
+  const fetchPatientHistory = useCallback(() => {
     PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchAdminNotesHistory = () => {
+  const fetchAdminNotesHistory = useCallback(() => {
     PatientService.getAdminNotesHistory(patient_id).then((res) => {
       setAdminNotesHistory(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchAllergies = () => {
+  const fetchAllergies = useCallback(() => {
     PatientService.getAllergies(patient_id).then((res) => {
       setAllergies(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchPatientHandouts = () => {
+  const fetchPatientHandouts = useCallback(() => {
     PatientService.getPatientHandouts(patient_id).then((res) => {
       setHandouts(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchForms = () => {
+  const fetchForms = useCallback(() => {
     PatientService.getForms(patient_id).then((res) => {
       setForms(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchBillings = () => {
+  const fetchBillings = useCallback(() => {
     PatientService.getBillings(patient_id).then((res) => {
       setBillings(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchPatientBalance = () => {
+  const fetchPatientBalance = useCallback(() => {
     PatientService.getPatientBalance(patient_id).then((res) => {
-      setPatientBalance(res.data && res.data.length ? res.data[0].amount : '');
+      setPatientBalance(res.data && res.data.length ? res.data[0].amount : "");
     });
-  };
+  }, [patient_id])
 
-  const fetchDocuments = () => {
+  const fetchDocuments = useCallback(() => {
     let tab = "Labs";
     PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchEncounters = () => {
+  const fetchEncounters = useCallback(() => {
     PatientService.getEncounters(patient_id).then((res) => {
       setEncounters(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMedicalNotes = () => {
+  const fetchMedicalNotes = useCallback(() => {
     PatientService.getMedicalNotes(patient_id).then((res) => {
       setMedicalNotes(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMessages = () => {
+  const fetchMessages = useCallback(() => {
     PatientService.getMessages(patient_id).then((res) => {
       setMessages(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchDiagnoses = () => {
+  const fetchDiagnoses = useCallback(() => {
     PatientService.getDiagnoses(patient_id).then((res) => {
       setDiagnoses(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMedications = () => {
+  const fetchMedications = useCallback(() => {
     PatientService.getMedications(patient_id).then((res) => {
       setMedications(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchRequisitions = () => {
+  const fetchRequisitions = useCallback(() => {
     PatientService.getRequisitions(patient_id).then((res) => {
       setRequisitions(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchTests = () => {
+  const fetchTests = useCallback(() => {
     PatientService.getTests(patient_id).then((res) => {
       setTests(res.data);
     });
-  };
+  }, [patient_id])
 
   const searchPatientHandler = (searchText) => {
     const reqBody = {
@@ -365,7 +337,6 @@ export default function Patient(props) {
     };
     PatientService.searchPatient(patient_id, reqBody).then((res) => {
       setPatients(res.data);
-      console.log("Patient's earch result: ", patients);
     });
   };
 
@@ -648,7 +619,12 @@ export default function Patient(props) {
   };
 
   const redirectToPatientPortal = () => {
-    history.push("/manage/patient-search");
+    history.push({
+      pathname : "/manage/patient-search",
+      state : {
+        patients,
+      }} 
+    );
   };
 
   const mapIconHandlers = (value) => {
@@ -689,7 +665,6 @@ export default function Patient(props) {
 
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
-    console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
     fd.append("patient_id", patient_id);
@@ -841,6 +816,44 @@ export default function Patient(props) {
     );
     setLayout([...newLayout]);
   };
+
+  useEffect(() => {
+    if (!hasPatientIderror) {
+      fetchPatientHistory();
+      fetchPatientBalance();
+      fetchAdminNotesHistory();
+      fetchAllergies();
+      fetchPatientHandouts();
+      fetchForms();
+      fetchBillings();
+      fetchDocuments();
+      fetchEncounters();
+      fetchMedicalNotes();
+      fetchMessages();
+      fetchDiagnoses();
+      fetchMedications();
+      fetchRequisitions();
+      fetchTests();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [
+    hasPatientIderror,
+    fetchPatientHistory,
+    fetchPatientBalance,
+    fetchAdminNotesHistory,
+    fetchAllergies,
+    fetchPatientHandouts,
+    fetchForms,
+    fetchBillings,
+    fetchDocuments,
+    fetchEncounters,
+    fetchMedicalNotes,
+    fetchMessages,
+    fetchDiagnoses,
+    fetchMedications,
+    fetchRequisitions,
+    fetchTests,
+  ])
 
   return (
     <>
@@ -1298,6 +1311,7 @@ export default function Patient(props) {
             margin={[5, 0]}
             measureBeforeMount={true}
             useCSSTransforms={false}
+            draggableHandle={".drag-handle"}
           >
             {FirstColumnPatientCards.map((item, index) => {
               return (
@@ -1420,12 +1434,11 @@ export default function Patient(props) {
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    minHeight: 'calc(100vh - 188px)'
+    minHeight: "calc(100vh - 188px)"
   },
   noDisplay: {
     display: "none",
   },
   clickDisabled: {
-    pointerEvents: 'none',
   },
 }));
