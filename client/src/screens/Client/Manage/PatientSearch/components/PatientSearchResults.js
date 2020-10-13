@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -17,22 +18,22 @@ const useStyles = makeStyles((theme) => ({
     // padding: "0 25px",
   },
   paper: {
-    padding: "5px",
+    padding: "5px"
   },
   tableContainer: {
     minWidth: 650,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   overFlowControl: {
     maxWidth: "130px",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    whiteSpace: "nowrap",
+    whiteSpace: "nowrap"
   },
   patientLink: {
     color: theme.palette.text.link,
-    cursor: "pointer",
-  },
+    cursor: "pointer"
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -40,26 +41,26 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
-      fontSize: 12,
-    },
-  },
+      fontSize: 12
+    }
+  }
 }))(TableRow);
 
 export default function PatientSearchResults(props) {
@@ -155,7 +156,7 @@ PatientSearchResults.propTypes = {
       phone_home: PropTypes.email,
       email: PropTypes.string.isRequired,
       gender: PropTypes.string.isRequired,
-      created: PropTypes.string.isRequired,
+      created: PropTypes.string.isRequired
     })
-  ),
+  )
 };
