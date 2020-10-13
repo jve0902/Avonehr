@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -9,6 +10,7 @@ import Messages from "../../../services/message-to-patient.service";
 import Appointments from "./../../../services/appointments.service";
 import { setSuccess } from "./../../../store/common/actions";
 import { statusToColorCode } from "./../../../utils/helpers";
+
 import {
   AppointmentRequests,
   Calendar,

@@ -1,4 +1,5 @@
 import React from "react";
+
 import moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -9,19 +10,19 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   title: {
     fontWeight: "600",
     fontSize: "1em",
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   titleContainer: {
     padding: "0 0 0 1em",
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 47,
+    minHeight: 47
   },
   providers: {
     display: "block",
@@ -35,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
       padding: "3px 0px",
       cursor: "pointer",
       "&:hover": {
-        background: "#fafafa",
+        background: "#fafafa"
       },
       "& div": {
-        flex: 2,
-      },
+        flex: 2
+      }
     },
     "& a": {
       fontSize: "13px",
@@ -52,21 +53,21 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       color: theme.palette.text.primary,
       "&:hover": {
-        background: "#fafafa",
+        background: "#fafafa"
       },
       "& div": {
-        flex: 2,
-      },
-    },
+        flex: 2
+      }
+    }
   },
   providersLabel: {
     fontWeight: 600,
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   count: {
     width: "30px",
-    flex: "1 !important",
-  },
+    flex: "1 !important"
+  }
 }));
 
 const ProviderCards = ({ providers, handleProviderClick }) => {

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -18,22 +19,22 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: "transparent",
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   lockIcon: {
-    fontSize: "40px",
-  },
+    fontSize: "40px"
+  }
 }));
 
 const SignUp = () => {
