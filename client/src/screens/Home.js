@@ -1,11 +1,12 @@
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
+
 import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-  root: { paddingTop: theme.spacing(3), minHeight: 500 },
+  root: { paddingTop: theme.spacing(3), minHeight: 500 }
 }));
 
 const Home = () => {

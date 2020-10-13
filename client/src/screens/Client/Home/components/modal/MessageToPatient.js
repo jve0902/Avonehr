@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+
 import moment from "moment";
-// import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -24,63 +24,63 @@ const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1 / 2),
     top: theme.spacing(1 / 2),
-    color: "#ffffff",
+    color: "#ffffff"
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     fontSize: "18px",
-    minWidth: "600px",
+    minWidth: "600px"
   },
   subject: {
-    width: "280px",
+    width: "280px"
   },
   textArea: {
     height: "100px !important",
     width: "100%",
-    padding: "5px",
+    padding: "5px"
   },
   patientListCard: {
     position: "absolute",
     width: "100%",
-    top: "54px",
+    top: "54px"
   },
   modalConentBelow: { opacity: "1" },
   contentWithLoading: {
-    opacity: "0.5",
+    opacity: "0.5"
   },
   patientListContent: {
     padding: 0,
     "&:last-child": {
-      padding: 0,
-    },
+      padding: 0
+    }
   },
   NotifyInfo: {
     display: "flex",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   datePicker: {
     lineHeight: "21px",
     border: "none !important",
     "& > div": {
       "&:before": {
-        display: "none",
-      },
+        display: "none"
+      }
     },
 
     "& input": {
-      display: "none",
+      display: "none"
     },
     "& button": {
-      paddingBottom: 0,
-    },
+      paddingBottom: 0
+    }
   },
   ListOfButtons: {
     display: "flex",
@@ -89,8 +89,8 @@ const useStyles = makeStyles((theme) => ({
     "& button": {
       padding: "5px",
       fontSize: "11px",
-      minWidth: "48px",
-    },
+      minWidth: "48px"
+    }
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -99,8 +99,8 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
+    paddingRight: theme.spacing(3)
+  }
 }));
 
 const MessageToPatient = ({
@@ -115,7 +115,7 @@ const MessageToPatient = ({
   const classes = useStyles();
   // const [selectedDate, handleDateChange] = useState(new Date());
   const [message, setMessage] = useState("");
-  const unread_notify_dt = "unread_notify_dt"
+  const unread_notify_dt = "unread_notify_dt";
 
   useEffect(() => {
     if (isNewMessage) {
@@ -128,7 +128,7 @@ const MessageToPatient = ({
   const handleOnChange = (event) => {
     setMessage({
       ...message,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
@@ -156,7 +156,7 @@ const MessageToPatient = ({
         {isLoading && (
           <div
             style={{
-              textAlign: "center",
+              textAlign: "center"
             }}
           >
             <CircularProgress />
@@ -165,7 +165,7 @@ const MessageToPatient = ({
         <div
           className={clsx({
             [classes.modalConentBelow]: true, //always apply
-            [classes.contentWithLoading]: isLoading, //only when isLoading === true
+            [classes.contentWithLoading]: isLoading //only when isLoading === true
           })}
         >
           <DialogContentText id="alert-dialog-description">
@@ -229,11 +229,11 @@ const MessageToPatient = ({
               onChange={(date) =>
                 setMessage({
                   ...message,
-                  unread_notify_dt: date,
+                  unread_notify_dt: date
                 })
               }
               KeyboardButtonProps={{
-                "aria-label": "change date",
+                "aria-label": "change date"
               }}
             />
             <div className={classes.ListOfButtons}>
@@ -241,7 +241,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    [unread_notify_dt]: null,
+                    [unread_notify_dt]: null
                   })
                 }
               >
@@ -251,7 +251,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    [unread_notify_dt]: moment().add(7, "days"),
+                    [unread_notify_dt]: moment().add(7, "days")
                   })
                 }
               >
@@ -261,7 +261,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    [unread_notify_dt]: moment().add(14, "days"),
+                    [unread_notify_dt]: moment().add(14, "days")
                   })
                 }
               >
@@ -271,7 +271,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    [unread_notify_dt]: moment().add(21, "days"),
+                    [unread_notify_dt]: moment().add(21, "days")
                   })
                 }
               >
@@ -281,7 +281,7 @@ const MessageToPatient = ({
                 onClick={() =>
                   setMessage({
                     ...message,
-                    [unread_notify_dt]: moment().add(28, "days"),
+                    [unread_notify_dt]: moment().add(28, "days")
                   })
                 }
               >

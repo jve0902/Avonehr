@@ -1,39 +1,40 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Button from "@material-ui/core/Button";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   status: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "center"
   },
   subject: {
-    width: "50%",
+    width: "50%"
   },
   fields: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   texArea: {
-    width: "75%",
+    width: "75%"
   },
   next: {
     margin: theme.spacing(3, 0, 2),
     maxWidth: "100px",
-    width: "100px",
+    width: "100px"
   },
   historyTop: {
-    marginTop: "15px",
+    marginTop: "15px"
   },
   history: {
     marginTop: "5px",
@@ -44,16 +45,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     "& div": {
       width: "16%",
-      margin: "5px",
-    },
+      margin: "5px"
+    }
   },
   fileUpload: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "center"
   },
   fileItems: {
-    marginRight: "5px",
-  },
+    marginRight: "5px"
+  }
 }));
 
 export default function Fax() {
@@ -100,7 +101,7 @@ export default function Fax() {
           InputProps={{
             classes: classes.normalOutline,
             inputComponent: TextareaAutosize,
-            rows: 8,
+            rows: 8
           }}
           value={cover}
           onChange={(event) => setCover(event)}

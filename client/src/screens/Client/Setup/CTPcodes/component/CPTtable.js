@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import {
   IconButton,
   makeStyles,
@@ -8,24 +10,25 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  withStyles,
+  withStyles
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import React, { useState } from "react";
+import Alert from "@material-ui/lab/Alert";
 import moment from "moment";
-import CptGroupMembersModal from "./modal/CptGroupMembersModal";
-import EditCptCodeModal from "./modal/EditCptCodeModal";
+import NumberFormat from "react-number-format";
+import { useDispatch } from "react-redux";
+
 import CPTCodesService from "../../../../../services/cpt.service";
 import { setSuccess } from "../../../../../store/common/actions";
-import { useDispatch } from "react-redux";
-import Alert from "@material-ui/lab/Alert";
-import NumberFormat from "react-number-format";
+import CptGroupMembersModal from "./modal/CptGroupMembersModal";
+import EditCptCodeModal from "./modal/EditCptCodeModal";
+
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 450,
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -33,28 +36,28 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       padding: "6px 16px",
       fontSize: 12,
-      height: "50px",
-    },
-  },
+      height: "50px"
+    }
+  }
 }))(TableRow);
 
 const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
@@ -81,7 +84,7 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
     updatedFavorite: cpt_favorite,
     updatedBillable: cpt_billable,
     updatedFee: cpt_fee,
-    updatedNotes: cpt_notes,
+    updatedNotes: cpt_notes
   };
 
   const handleIsOpen = (id, desc, fee, fav, bill) => {
@@ -109,7 +112,7 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
           let list = {
             id: c.id,
             description: c.cpt,
-            lab: c.lab_company,
+            lab: c.lab_company
           };
           data.push(list);
         }

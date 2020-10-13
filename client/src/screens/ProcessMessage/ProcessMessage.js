@@ -1,15 +1,17 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import { makeStyles } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { useParams } from "react-router-dom";
+
 import Video from "./../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
-  },
+    padding: "40px 0px"
+  }
 }));
 const ProcessMessage = () => {
   const classes = useStyles();

@@ -1,4 +1,5 @@
 import React from "react";
+
 import moment from "moment";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -14,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
     fontSize: "1em",
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   titleContainer: {
     padding: "0 0 0 1em",
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 47,
+    minHeight: 47
   },
   messageToPatientsUnread: {
     marginTop: theme.spacing(8),
@@ -28,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "13px",
       listStyle: "none",
       lineHeight: "19px",
-      marginBottom: theme.spacing(1.5),
-    },
+      marginBottom: theme.spacing(1.5)
+    }
   },
   unreadMsgActions: {
     display: "flex",
@@ -42,20 +43,20 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "none",
       fontSize: "13px",
-      color: theme.palette.text.primary,
+      color: theme.palette.text.primary
     },
     "& button": {
       border: "none",
       padding: 0,
-      fontSize: "13px",
-    },
-  },
+      fontSize: "13px"
+    }
+  }
 }));
 
 const MessagesUnread = ({
   appointmentRequests,
   messagesUnread,
-  onMessageEdit,
+  onMessageEdit
 }) => {
   const classes = useStyles();
 

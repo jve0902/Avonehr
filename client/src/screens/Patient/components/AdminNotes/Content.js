@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
@@ -21,10 +22,10 @@ export default function AdminNotesContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: 0,
+    marginBottom: 0
   },
   text12: {
     fontSize: 12,
-    whiteSpace: "pre-line",
-  },
+    whiteSpace: "pre-line"
+  }
 }));

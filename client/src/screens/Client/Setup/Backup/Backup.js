@@ -1,4 +1,5 @@
 import React from "react";
+
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -8,15 +9,15 @@ import Video from "./../../../../components/videos/Video";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   action: {
     textTransform: "none",
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 }));
 
 export default function Backup() {

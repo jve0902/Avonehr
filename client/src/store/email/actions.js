@@ -1,39 +1,39 @@
+import EmailService from "../../services/email.service";
+import { setError, setSuccess } from "../../store/common/actions";
 import {
   EMAIL_PENDING,
   EMAIL_ERROR,
   EMAIL_ALREADY_VERIFIED,
   VERIFICATION_EMAIL_SUCCESS,
-  VERIFICATION_EMAIL_FAILED,
+  VERIFICATION_EMAIL_FAILED
 } from "./types";
 // CAll common action creator to set error
-import { setError, setSuccess } from "../../store/common/actions";
 
-import EmailService from "../../services/email.service";
 
 export const startEmail = () => {
   return {
-    type: EMAIL_PENDING,
+    type: EMAIL_PENDING
   };
 };
 
 const emailError = (data) => ({
   type: EMAIL_ERROR,
-  data,
+  data
 });
 
 const verificationEmailSuccess = (message) => ({
   type: VERIFICATION_EMAIL_SUCCESS,
-  data: message,
+  data: message
 });
 
 const verificationEmailFailed = () => ({
-  type: VERIFICATION_EMAIL_FAILED,
+  type: VERIFICATION_EMAIL_FAILED
 });
 
 export const emailAlreadyVerified = (message) => {
   return {
     type: EMAIL_ALREADY_VERIFIED,
-    data: message,
+    data: message
   };
 };
 
@@ -62,7 +62,7 @@ export const verificationEmail = (userId, token) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       }

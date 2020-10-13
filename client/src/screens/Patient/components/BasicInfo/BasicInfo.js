@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -11,13 +12,13 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell,
+  TableCell
 } from "@material-ui/core";
 import {
   BasicInfoForm,
   InsuranceForm,
   Pharmacies,
-  PaymentData,
+  PaymentData
 } from "./../../../../static/patientBasicInfoForm";
 import CountrySelect from "./../../../../components/common/CountrySelect";
 import RegionSelect from "./../../../../components/common/RegionSelect";
@@ -47,14 +48,14 @@ export default function BasicInfo() {
     socialSecurity: "",
     password: "",
     city: "",
-    zipPostal: "",
+    zipPostal: ""
   });
 
   const handleInputChnage = (e) => {
     const { value, name } = e.target;
     setBasicInfo({
       ...basicInfo,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -393,27 +394,27 @@ export default function BasicInfo() {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   sectionCard: {
-    padding: theme.spacing(1.5, 1),
+    padding: theme.spacing(1.5, 1)
   },
   halfSectionCard: {
     padding: theme.spacing(1.5, 1),
-    minHeight: 198,
+    minHeight: 198
   },
   root: {
     border: "1px solid",
     margin: theme.spacing(0, 0, 1, 0),
-    borderRadius: 0,
+    borderRadius: 0
   },
   inputTextRow: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   select: {
-    lineHeight: "2.30em",
+    lineHeight: "2.30em"
   },
   table: {
-    background: "white",
-  },
+    background: "white"
+  }
 }));

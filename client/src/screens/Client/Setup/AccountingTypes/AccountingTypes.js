@@ -1,15 +1,16 @@
 import React from "react";
+
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
-  },
+    paddingBottom: theme.spacing(1)
+  }
 }));
 
 export default function AccountingTypes() {

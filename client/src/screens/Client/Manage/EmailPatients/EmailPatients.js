@@ -1,42 +1,43 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   status: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "center"
   },
   subject: {
-    width: "50%",
+    width: "50%"
   },
   fields: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   texArea: {
-    width: "75%",
+    width: "75%"
   },
   next: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: "100px",
+    maxWidth: "100px"
   },
   historyTop: {
-    marginTop: "15px",
+    marginTop: "15px"
   },
   history: {
     marginTop: "5px",
@@ -47,9 +48,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     "& div": {
       width: "16%",
-      margin: "5px",
-    },
-  },
+      margin: "5px"
+    }
+  }
 }));
 
 export default function EmailPatients() {
@@ -121,7 +122,7 @@ export default function EmailPatients() {
           InputProps={{
             classes: classes.normalOutline,
             inputComponent: TextareaAutosize,
-            rows: 8,
+            rows: 8
           }}
           value={message}
           onChange={(event) => setMessage(event.target.value)}

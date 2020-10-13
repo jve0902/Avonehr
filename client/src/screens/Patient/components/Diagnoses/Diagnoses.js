@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
+
 import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+import { useDispatch } from "react-redux";
+
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
 const Diagnoses = (props) => {
   const classes = useStyles();
@@ -28,8 +30,8 @@ const Diagnoses = (props) => {
   const fetchDiagnosis = (searchText) => {
     const reqBody = {
       data: {
-        text: searchText,
-      },
+        text: searchText
+      }
     };
     PatientService.searchDiagnosis(reqBody).then((res) => {
       setDiagnosis(res.data);
@@ -40,8 +42,8 @@ const Diagnoses = (props) => {
     e.preventDefault();
     const reqBody = {
       data: {
-        patient_id: patientId,
-      },
+        patient_id: patientId
+      }
     };
     PatientService.createDiagnoses(reqBody)
       .then((response) => {
@@ -59,7 +61,7 @@ const Diagnoses = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -87,17 +89,14 @@ const Diagnoses = (props) => {
               className={classes.heading}
             />
             {diagnosis.length
-            ?
-            diagnosis.map((item, index) => (
-              <Grid key={index}>
-                <Typography gutterBottom variant="body1">
-                  Chronic Fatigue (Un-specified)
-                </Typography>
-              </Grid>
-            ))
-            :
-            null
-          }
+              ? diagnosis.map((item, index) => (
+                <Grid key={index}>
+                  <Typography gutterBottom variant="body1">
+                      Chronic Fatigue (Un-specified)
+                  </Typography>
+                </Grid>
+              ))
+              : null}
           </Grid>
         </Grid>
         <Grid item lg={8}>
@@ -154,21 +153,21 @@ const Diagnoses = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   heading: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   border: {
     border: "1px solid grey",
-    padding: 10,
+    padding: 10
   },
   height100: {
-    height: "100%",
+    height: "100%"
   },
   actionContainer: {
-    paddingTop: theme.spacing(2),
-  },
+    paddingTop: theme.spacing(2)
+  }
 }));
 
 export default Diagnoses;

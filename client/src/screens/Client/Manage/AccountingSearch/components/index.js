@@ -1,1 +1,1 @@
-export { default } from './AccountingSearchResults';
+export { default } from "./AccountingSearchResults";

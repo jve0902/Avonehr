@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useDispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.error.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontSize: "18px",
+    fontSize: "18px"
   },
   modalAction: {
-    borderTop: `1px solid ${theme.palette.background.default}`,
-  },
+    borderTop: `1px solid ${theme.palette.background.default}`
+  }
 }));
 
 const DeleteAppointment = ({ isOpen, onClose, id }) => {

@@ -1,38 +1,39 @@
 import React, { useState } from "react";
+
 import Avatar from "@material-ui/core/Avatar";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { setSuccess } from "./../store/common/actions";
-import AuthService from "./../services/auth.service";
-import Success from "./../screens/ForgetPassword/Success";
 import Error from "./../components/common/Error";
+import Success from "./../screens/ForgetPassword/Success";
+import AuthService from "./../services/auth.service";
+import { setSuccess } from "./../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(8)
   },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   pageTitle: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   resetPasswordFormSentWrapper: {},
   resetPasswordFormWrapper: {},
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 }));
 
 const ResetPassword = () => {
@@ -74,8 +75,8 @@ const ResetPassword = () => {
         {
           value: event.target.value,
           msg: "Too Weak. Must be atleast 8 Characters",
-          param: "user.password",
-        },
+          param: "user.password"
+        }
       ]);
     } else {
       setFieldErrors([]);
@@ -86,8 +87,8 @@ const ResetPassword = () => {
       setFieldErrors([
         {
           value: `password: ${password} confirmPassword ${confirmPassword}`,
-          msg: "Password and ConfirmPassword must be same!",
-        },
+          msg: "Password and ConfirmPassword must be same!"
+        }
       ]);
     }
     if (confirmPassword === password) {

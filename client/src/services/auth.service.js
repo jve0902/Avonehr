@@ -1,11 +1,12 @@
 import axios from "axios";
+
 import { API_BASE } from "./../utils/API_BASE";
 
 class AuthService {
   async login(user) {
     const loginResponse = await axios.post(API_BASE + "/auth/login", {
       email: user.email,
-      password: user.password,
+      password: user.password
     });
     if (loginResponse.data) {
       if (loginResponse.data.data.accessToken) {
@@ -23,7 +24,7 @@ class AuthService {
   }
   resetPassword(userId, token, password) {
     return axios.post(API_BASE + `/auth/reset/${userId}/${token}`, {
-      password: password,
+      password: password
     });
   }
 

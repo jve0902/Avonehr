@@ -1,36 +1,37 @@
 import React from "react";
+
+import { colors, FormControlLabel, FormGroup, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { green, grey } from "@material-ui/core/colors";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Switch from "@material-ui/core/Switch";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { colors, FormControlLabel, FormGroup, Grid } from "@material-ui/core";
-import { green, grey } from "@material-ui/core/colors";
-import NumberFormat from "react-number-format";
+import Switch from "@material-ui/core/Switch";
+import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
 
 const useStyles = makeStyles((theme) => ({
   gridMargin: {
-    margin: "8px 0px",
+    margin: "8px 0px"
   },
   noteMargin: {
-    margin: "15px 0px",
+    margin: "15px 0px"
   },
   title: {
     backgroundColor: theme.palette.primary.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontSize: "18px",
+    fontSize: "18px"
   },
   formControl: {
     display: "flex",
@@ -38,19 +39,19 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: theme.palette.text.secondary,
     "& .MuiSelect-select": {
-      minWidth: 120,
-    },
+      minWidth: 120
+    }
   },
   root: {
     paddingLeft: "5px",
     "& .MuiTypography-root": {
-      marginLeft: "5px",
-    },
+      marginLeft: "5px"
+    }
   },
   formHelperText: {
     width: "220px",
     fontSize: "12px",
-    paddingLeft: "10px",
+    paddingLeft: "10px"
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -59,23 +60,23 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
+    paddingRight: theme.spacing(3)
+  }
 }));
 
 const GreenSwitch = withStyles({
   switchBase: {
     color: grey[300],
     "&$checked": {
-      color: green[500],
+      color: green[500]
     },
     "&$checked + $track": {
-      backgroundColor: green[500],
-    },
+      backgroundColor: green[500]
+    }
   },
 
   checked: {},
-  track: {},
+  track: {}
 })(Switch);
 
 function NumberFormatCustom(props) {
@@ -89,8 +90,8 @@ function NumberFormatCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
-          },
+            value: values.value
+          }
         });
       }}
       thousandSeparator
@@ -102,7 +103,7 @@ function NumberFormatCustom(props) {
 NumberFormatCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 const EditCptCodeModal = ({
@@ -118,7 +119,7 @@ const EditCptCodeModal = ({
   handleChangeFavorite,
   handleChangeBillable,
   handleChangeNotes,
-  handleEditCptCode,
+  handleEditCptCode
 }) => {
   const classes = useStyles();
   const handleKeyUp = (event) => {
@@ -154,7 +155,7 @@ const EditCptCodeModal = ({
                   variant="outlined"
                   size="small"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }}
                   disabled={true}
                 />
@@ -170,7 +171,7 @@ const EditCptCodeModal = ({
                   variant="outlined"
                   size="small"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }}
                   disabled={true}
                 />
@@ -189,10 +190,10 @@ const EditCptCodeModal = ({
                   variant="outlined"
                   size="small"
                   InputProps={{
-                    inputComponent: NumberFormatCustom,
+                    inputComponent: NumberFormatCustom
                   }}
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }}
                   onChange={handleChangeFee}
                   onKeyUp={handleKeyUp}
@@ -237,10 +238,10 @@ const EditCptCodeModal = ({
                 name="note"
                 label="Notes"
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true
                 }}
                 InputProps={{
-                  rows: 8,
+                  rows: 8
                 }}
                 value={cpt_notes}
                 onChange={handleChangeNotes}
@@ -256,7 +257,7 @@ const EditCptCodeModal = ({
             onClick={hendleOnClose}
             style={{
               borderColor: colors.orange[600],
-              color: colors.orange[600],
+              color: colors.orange[600]
             }}
           >
             Cancel

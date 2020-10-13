@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -16,28 +17,28 @@ import MySelfService from "../../../../services/myself.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 180
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   formElment: {
     marginTop: theme.spacing(2),
-    width: "250px",
+    width: "250px"
   },
   submit: {
     width: "100px",
-    marginTop: theme.spacing(4),
-  },
+    marginTop: theme.spacing(4)
+  }
 }));
 
 function NumberFormatCustom(props) {
@@ -51,8 +52,8 @@ function NumberFormatCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
-          },
+            value: values.value
+          }
         });
       }}
       thousandSeparator
@@ -64,7 +65,7 @@ function NumberFormatCustom(props) {
 NumberFormatCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default function MyProfile() {
@@ -94,11 +95,11 @@ export default function MyProfile() {
         title,
         created,
         ...(selectedForwardEmail > 0 && {
-          email_forward_user_id: selectedForwardEmail,
+          email_forward_user_id: selectedForwardEmail
         }),
         phone,
-        ...(password.length && { password }),
-      },
+        ...(password.length && { password })
+      }
     };
 
     MySelfService.updateProfile(payload, userId).then(
@@ -163,7 +164,7 @@ export default function MyProfile() {
               size="small"
               disabled={true}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
             />
             <TextField
@@ -175,7 +176,7 @@ export default function MyProfile() {
               size="small"
               disabled={true}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
             />
             <TextField
@@ -187,7 +188,7 @@ export default function MyProfile() {
               size="small"
               disabled={true}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
             />
             <TextField
@@ -201,7 +202,7 @@ export default function MyProfile() {
               size="small"
               disabled={true}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
             />
             <FormControl
@@ -218,7 +219,7 @@ export default function MyProfile() {
                 }}
                 inputProps={{
                   name: "Forward Email",
-                  id: "age-native-simple",
+                  id: "age-native-simple"
                 }}
                 label="Forward Email"
               >

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -22,26 +23,26 @@ const GreenSwitch = withStyles({
   switchBase: {
     color: green[400],
     "&$checked": {
-      color: green[500],
+      color: green[500]
     },
     "&$checked + $track": {
-      backgroundColor: green[500],
-    },
+      backgroundColor: green[500]
+    }
   },
   checked: {},
-  track: {},
+  track: {}
 })(Switch);
 const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontSize: "18px",
+    fontSize: "18px"
   },
   formControl: {
     display: "flex",
@@ -50,21 +51,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: theme.palette.text.secondary,
     "& .MuiSelect-select": {
-      minWidth: 120,
-    },
+      minWidth: 120
+    }
   },
   formLabel: {
     fontSize: "14px",
     fontWeight: "600",
-    width: "220px",
+    width: "220px"
   },
   formHelperText: {
     // width: "230px",
     fontSize: "12px",
-    paddingLeft: "16px",
+    paddingLeft: "16px"
   },
   formField: {
-    flex: 1,
+    flex: 1
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -73,20 +74,20 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
+    paddingRight: theme.spacing(3)
   },
   formFieldLarge: {
     maxWidth: "270px",
     flex: 1,
-    width: "300px",
+    width: "300px"
   },
   formFieldSmall: {
     maxWidth: "100px",
-    flex: 1,
+    flex: 1
   },
   textArea: {
-    marginTop: "12px",
-  },
+    marginTop: "12px"
+  }
 }));
 
 const NewOrEditAppointment = ({
@@ -107,7 +108,7 @@ const NewOrEditAppointment = ({
       length: 20,
       sort_order: 1,
       allow_patients_schedule: true,
-      active: true,
+      active: true
     };
 
     setAppointment(appt);
@@ -124,8 +125,8 @@ const NewOrEditAppointment = ({
         note: appointment.note,
         active: appointment.active ? 1 : 0,
         created_user_id: user.id,
-        client_id: user.client_id,
-      }),
+        client_id: user.client_id
+      })
     };
     if (isNewAppointment) {
       createNewAppointment(formedData);
@@ -158,7 +159,7 @@ const NewOrEditAppointment = ({
   const handleOnChange = (event) => {
     setAppointment({
       ...appointment,
-      [event.target.name]: event.target.value.trim(),
+      [event.target.name]: event.target.value.trim()
     });
   };
   console.log("appointment", appointment);
@@ -249,7 +250,7 @@ const NewOrEditAppointment = ({
                 onChange={(event) =>
                   setAppointment({
                     ...appointment,
-                    [event.target.name]: !appointment.allow_patients_schedule,
+                    [event.target.name]: !appointment.allow_patients_schedule
                   })
                 }
                 name="allow_patients_schedule"
@@ -285,7 +286,7 @@ const NewOrEditAppointment = ({
                 onChange={(event) =>
                   setAppointment({
                     ...appointment,
-                    [event.target.name]: !appointment.active,
+                    [event.target.name]: !appointment.active
                   })
                 }
                 name="active"
@@ -311,7 +312,7 @@ const NewOrEditAppointment = ({
                 InputProps={{
                   classes: classes.normalOutline,
                   inputComponent: TextareaAutosize,
-                  rows: 8,
+                  rows: 8
                 }}
                 value={appointment.note}
                 onChange={(event) => handleOnChange(event)}
@@ -326,7 +327,7 @@ const NewOrEditAppointment = ({
             onClick={() => onClose()}
             style={{
               borderColor: colors.orange[600],
-              color: colors.orange[600],
+              color: colors.orange[600]
             }}
           >
             Cancel
