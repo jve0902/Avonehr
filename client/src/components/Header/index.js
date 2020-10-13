@@ -1,6 +1,5 @@
 import React from "react";
 
-import { colors } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,7 +13,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { logOut } from "../../store/auth/actions";
 import Logo from "./../../assets/img/Logo.png";
 import { AuthConsumer } from "./../../providers/AuthProvider";
-
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
