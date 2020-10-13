@@ -1,10 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+
 import {
   colors,
   Paper,
@@ -13,25 +8,31 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: theme.palette.primary.light,
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   content: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     fontSize: "18px",
-    minHeight: "450px",
+    minHeight: "450px"
   },
   tableContainer: {
     minWidth: 450,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   modalAction: {
     borderTop: `1px solid ${theme.palette.background.default}`,
@@ -40,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
+    paddingRight: theme.spacing(3)
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -49,28 +50,28 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       padding: "6px 16px",
       fontSize: 12,
-      height: "50px",
-    },
-  },
+      height: "50px"
+    }
+  }
 }))(TableRow);
 
 const CptGroupMembersModal = ({ isOpen, hendleOnClose, groups }) => {
@@ -119,7 +120,7 @@ const CptGroupMembersModal = ({ isOpen, hendleOnClose, groups }) => {
             onClick={hendleOnClose}
             style={{
               borderColor: colors.orange[600],
-              color: colors.orange[600],
+              color: colors.orange[600]
             }}
           >
             Cancel

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import moment from "moment";
+
 import {
   makeStyles,
   Paper,
@@ -10,27 +10,30 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  withStyles,
+  withStyles
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
+import Alert from "@material-ui/lab/Alert";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+
 import DrugsService from "../../../../../services/drugs.service";
 import { setSuccess } from "../../../../../store/common/actions";
-import { useDispatch } from "react-redux";
-import Alert from "@material-ui/lab/Alert";
+
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 450,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   actions: {
     textAlign: "center",
     display: "flex",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -38,41 +41,41 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       fontSize: 12,
-      height: "50px",
-    },
-  },
+      height: "50px"
+    }
+  }
 }))(TableRow);
 
 const GreenSwitch = withStyles({
   switchBase: {
     color: grey[300],
     "&$checked": {
-      color: green[500],
+      color: green[500]
     },
     "&$checked + $track": {
-      backgroundColor: green[500],
-    },
+      backgroundColor: green[500]
+    }
   },
   checked: {},
-  track: {},
+  track: {}
 })(Switch);
 
 const Drugstable = ({ user, result, fetchSearchDrugs }) => {
@@ -83,7 +86,7 @@ const Drugstable = ({ user, result, fetchSearchDrugs }) => {
 
   const changeHandler = (event, drugId) => {
     const payload = {
-      drug_id: drugId,
+      drug_id: drugId
     };
     let checked = event.target.checked;
     setState(

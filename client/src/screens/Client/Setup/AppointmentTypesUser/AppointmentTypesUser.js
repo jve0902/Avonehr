@@ -1,4 +1,5 @@
 import React from "react";
+
 import { withStyles } from "@material-ui/core/styles";
 import { green, grey } from "@material-ui/core/colors";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,49 +14,49 @@ import { AuthConsumer } from "../../../../providers/AuthProvider";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   forms: {
-    maxWidth: "150px",
+    maxWidth: "150px"
   },
   labels: {
     display: "flex",
     justifyContent: "space-between",
     padding: "0 10px",
     "& p": {
-      margin: 0,
-    },
+      margin: 0
+    }
   },
   gridLabels: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   formFields: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   formField: {
-    width: "80px",
-  },
+    width: "80px"
+  }
 }));
 
 const GreenSwitch = withStyles({
   switchBase: {
     color: grey[300],
     "&$checked": {
-      color: green[500],
+      color: green[500]
     },
     "&$checked + $track": {
-      backgroundColor: green[500],
-    },
+      backgroundColor: green[500]
+    }
   },
   checked: {},
-  track: {},
+  track: {}
 })(Switch);
 
 export default function AppointmentTypesUser(props) {

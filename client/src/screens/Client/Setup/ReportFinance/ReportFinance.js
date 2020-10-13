@@ -1,65 +1,67 @@
 import React, { useState, useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
-import CssBaseline from "@material-ui/core/CssBaseline";
+
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import moment from "moment";
-import { Reports } from "./components";
-import ReportFinanceService from "./../../../../services/reportFinance.service";
-import { AuthConsumer } from "../../../../providers/AuthProvider";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import moment from "moment";
+
+import { AuthConsumer } from "../../../../providers/AuthProvider";
+import ReportFinanceService from "./../../../../services/reportFinance.service";
+import { Reports } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "20px 0px",
+    padding: "20px 0px"
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   formElments: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "500px",
+    maxWidth: "500px"
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
     marginTop: "20px",
-    maxWidth: "440px",
+    maxWidth: "440px"
   },
   customSelect: {
-    width: "200px",
+    width: "200px"
   },
   type: {
-    marginTop: "20px",
+    marginTop: "20px"
   },
   paper: {
-    maxWidth: "456px",
+    maxWidth: "456px"
   },
   textField: {
-    width: "200px",
+    width: "200px"
   },
   amount: {
-    marginTop: "18px",
+    marginTop: "18px"
   },
   datePicker: {
     display: "flex",
     flexDirection: "column",
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
+    marginBottom: theme.spacing(3)
+  }
 }));
 
 export default function ReportFinance(props) {
@@ -109,7 +111,7 @@ export default function ReportFinance(props) {
                       <KeyboardDatePicker
                         clearable
                         KeyboardButtonProps={{
-                          "aria-label": "change date",
+                          "aria-label": "change date"
                         }}
                         format="dd/MM/yyyy"
                         inputVariant="outlined"
@@ -126,7 +128,7 @@ export default function ReportFinance(props) {
                       <KeyboardDatePicker
                         clearable
                         KeyboardButtonProps={{
-                          "aria-label": "change date",
+                          "aria-label": "change date"
                         }}
                         format="dd/MM/yyyy"
                         inputVariant="outlined"

@@ -1,27 +1,29 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import { CssBaseline, makeStyles } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
 //simport Video from "./../../../../components/videos/Video";
-import ICDcodestable from "./components/ICDcodestable";
-import ICDcodesform from "./components/ICDcodesform";
 import { AuthConsumer } from "../../../../providers/AuthProvider";
 import icdcodesService from "../../../../services/icdcodes.service";
+import ICDcodesform from "./components/ICDcodesform";
+import ICDcodestable from "./components/ICDcodestable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   card: {
     minHeight: 300,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   title: {
-    paddingBottom: theme.spacing(1),
-  },
+    paddingBottom: theme.spacing(1)
+  }
 }));
 
 const ICDcodes = () => {
@@ -32,7 +34,7 @@ const ICDcodes = () => {
   const [searchResult, setSearchResult] = useState([]);
   const payload = {
     searchTerm,
-    checkBox: favorite,
+    checkBox: favorite
   };
   const fetchSearchIcdCodes = () => {
     icdcodesService.search(payload).then((res) => {

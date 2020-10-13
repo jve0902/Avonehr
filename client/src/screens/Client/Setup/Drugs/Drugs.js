@@ -1,32 +1,34 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import { makeStyles, Container, CssBaseline } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
 //simport Video from "./../../../../components/videos/Video";
-import Drugstable from "./components/Drugstable";
-import Drugsform from "./components/Drugsform";
-import DrugsService from "../../../../services/drugs.service";
 import { AuthConsumer } from "../../../../providers/AuthProvider";
+import DrugsService from "../../../../services/drugs.service";
+import Drugsform from "./components/Drugsform";
+import Drugstable from "./components/Drugstable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   action: {
     textTransform: "none",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
 
   card: {
     minHeight: 300,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 }));
 
 export default function Drugs() {
@@ -37,7 +39,7 @@ export default function Drugs() {
   const [searchResult, setSearchResult] = useState([]);
   const payload = {
     searchTerm,
-    checkBox: favorite,
+    checkBox: favorite
   };
 
   const fetchSearchDrugs = () => {

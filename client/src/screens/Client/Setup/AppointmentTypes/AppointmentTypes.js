@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import _ from "lodash";
 import Grid from "@material-ui/core/Grid";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,7 +17,7 @@ import { AuthConsumer } from "./../../../../providers/AuthProvider";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   uploadButtons: {
     display: "flex",
@@ -26,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     "& h1": {
       [theme.breakpoints.up("md")]: {
-        marginRight: theme.spacing(4),
-      },
-    },
+        marginRight: theme.spacing(4)
+      }
+    }
   },
   card: {
     minHeight: 300,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 }));
 
 export default function AppointmentTypes(props) {
