@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Grid, Menu, MenuItem } from "@material-ui/core"; 
+
+import { Grid, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useContextMenu = () => {
@@ -34,17 +35,16 @@ const useContextMenu = () => {
   return { xPos, yPos, showMenu };
 };
 
-
 const ContextMenu = (props) => {
   const { xPos, yPos, showMenu } = useContextMenu();
-  const { menu, element, deleteHandler } = props
+  const { menu, element, deleteHandler } = props;
   const classes = useStyles();
 
   const onActionHandler = (value) => {
-    if(value === "delete") {
+    if (value === "delete") {
       deleteHandler();
     }
-  }
+  };
 
   return (
     <>
@@ -53,9 +53,9 @@ const ContextMenu = (props) => {
           className="menu-container"
           style={{
             top: yPos,
-            left: xPos,
+            left: xPos
           }}
-        > 
+        >
           <Menu
             id="context-menu"
             anchorEl={element}
@@ -71,22 +71,28 @@ const ContextMenu = (props) => {
             //   horizontal: 'center',
             // }}
           >
-            {menu.length && menu.map((item, index) => (
-              <MenuItem key={index} onClick={() => onActionHandler(item.value)}>{item.label}</MenuItem>
-            ))}
+            {menu.length &&
+              menu.map((item, index) => (
+                <MenuItem
+                  key={index}
+                  onClick={() => onActionHandler(item.value)}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
           </Menu>
         </Grid>
       ) : (
-          <></>
-        )}
+        <></>
+      )}
     </>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(1),
-  },
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 export default ContextMenu;

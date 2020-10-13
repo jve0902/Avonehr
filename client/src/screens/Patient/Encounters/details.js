@@ -8,8 +8,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
@@ -18,10 +18,10 @@ import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: 9,
+    padding: 9
   },
   tableContainer: {
-    minWidth: 650,
+    minWidth: 650
   },
   actions: {
     textAlign: "center",
@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -39,27 +39,27 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       fontSize: 12,
       height: "50px"
-    },
-  },
+    }
+  }
 }))(TableRow);
 
 const EncountersDetails = (props) => {
@@ -75,22 +75,26 @@ const EncountersDetails = (props) => {
         reloadData();
       })
       .catch((error) => {
-        const resMessage = (error.response && error.response.data &&
-          error.response.data.message) || error.message || error.toString();
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
         let severity = "error";
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
-      })
-  }
+      });
+  };
 
   const onItemEdit = (selectedItem) => {
     dispatch(setEncounter(selectedItem));
     toggleEncountersDialog();
-  }
+  };
 
   return (
     <TableContainer className={classes.tableContainer}>
@@ -119,10 +123,16 @@ const EncountersDetails = (props) => {
               <TableCell>{row.paymentPlan || ""}</TableCell>
 
               <TableCell className={classes.actions}>
-                <IconButton className={classes.button} onClick={() => onItemEdit(row)}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => onItemEdit(row)}
+                >
                   <EditIcon fontSize="small" />
                 </IconButton>
-                <IconButton className={classes.button} onClick={() => onItemDelete(row)}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => onItemDelete(row)}
+                >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </TableCell>

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
+
+import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+
+import PatientService from "../../../../services/patient.service";
 import {
   calculateAge,
   formatPhoneNumber,
   DateDiff
 } from "./../../../../utils/helpers";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+
 
 //service
-import PatientService from "../../../../services/patient.service";
 
 export default function BasicInfoContent(props) {
   const classes = useStyles();
@@ -28,8 +31,8 @@ export default function BasicInfoContent(props) {
   }, [patientId]);
 
   const calculateDateDifference = () => {
-    var d1 = new Date();
-    var d2 = new Date(nextAppointment);
+    let d1 = new Date();
+    let d2 = new Date(nextAppointment);
 
     let daysDiff = DateDiff.inDays(d1, d2);
     let monthsDiff = DateDiff.inMonths(d1, d2);

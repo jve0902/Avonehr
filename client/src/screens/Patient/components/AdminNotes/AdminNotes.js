@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PatientService from "./../../../../services/patient.service";
@@ -7,6 +8,7 @@ import {
   setEditorText,
   resetEditorText
 } from "./../../../../store/patient/actions";
+
 import { useDispatch } from "react-redux";
 
 const AdminNotes = (props) => {
