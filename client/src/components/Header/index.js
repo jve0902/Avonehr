@@ -9,6 +9,7 @@ import InputIcon from "@material-ui/icons/Input";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
+
 import { logOut } from "../../store/auth/actions";
 import Logo from "./../../assets/img/Logo.png";
 import { AuthConsumer } from "./../../providers/AuthProvider";

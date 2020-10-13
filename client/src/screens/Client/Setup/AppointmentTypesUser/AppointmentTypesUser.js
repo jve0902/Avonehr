@@ -1,14 +1,14 @@
 import React from "react";
 
-import { withStyles } from "@material-ui/core/styles";
 import { green, grey } from "@material-ui/core/colors";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import Switch from "@material-ui/core/Switch";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles , withStyles } from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+
 import { AuthConsumer } from "../../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({

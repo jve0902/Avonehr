@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 
+import { colors, withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { green } from "@material-ui/core/colors";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Switch from "@material-ui/core/Switch";
-import Alert from "@material-ui/lab/Alert";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import { colors, withStyles } from "@material-ui/core";
+import Switch from "@material-ui/core/Switch";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 import { useDispatch } from "react-redux";
+
+import AppointmentService from "./../../../../../../services/appointmentType.service";
 import { setSuccess } from "./../../../../../../store/common/actions";
 import { removeEmpty } from "./../../../../../../utils/helpers";
-import AppointmentService from "./../../../../../../services/appointmentType.service";
-import { green } from "@material-ui/core/colors";
 
 const GreenSwitch = withStyles({
   switchBase: {

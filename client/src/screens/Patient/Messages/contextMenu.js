@@ -20,6 +20,7 @@ const useContextMenu = () => {
   );
 
   const handleClick = useCallback(() => {
+    // eslint-disable-next-line mdx/no-unused-expressions
     showMenu && setShowMenu(false);
   }, [showMenu]);
 

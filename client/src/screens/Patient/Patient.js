@@ -1,34 +1,28 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
-import { useHistory, useParams } from "react-router-dom";
-import _ from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-//common components
+import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+
+import { AuthContext } from "../../providers/AuthProvider";
 import Card from "./../../components/common/Card";
 import Dialog from "./../../components/Dialog";
+import PatientService from "./../../services/patient.service";
 import {
   FirstColumnPatientCards,
   ThirdColumnPatientCards,
   FourthColumnPatientCards
 } from "./../../static/patient";
-// dialog components
+import { setError, setSuccess } from "./../../store/common/actions";
+import { resetEditorText } from "./../../store/patient/actions";
 import {
   AdminNotesForm,
   AdminNotesHistory,
   AdminNotesCardContent
 } from "./components/AdminNotes";
-import {
-  NewTransactionForm,
-  PaymentForm,
-  BillingCardContent,
-  BillingDetails
-} from "./components/Billing";
-import Form from "./Form";
-import EncountersForm from "./Encounters";
-import MedicalNotesForm from "./MedicalNotes";
-import MedicationsDetails from "./Medications/details";
-import NewMessageForm from "./Messages/NewMessage";
 import {
   Allergies,
   AllergiesCardContent,
@@ -40,44 +34,46 @@ import {
   PatientHistoryDetails
 } from "./components/BasicInfo";
 import {
+  NewTransactionForm,
+  PaymentForm,
+  BillingCardContent,
+  BillingDetails
+} from "./components/Billing";
+import {
   DiagnosesForm,
   DiagnosesCardContent,
   DiagnosesDetails
 } from "./components/Diagnoses";
+import { DocumentsCardContent } from "./components/Documents";
 import {
   HandoutsForm,
   HandoutsCardContent,
   HandoutsDetails
 } from "./components/Handouts";
-import { DocumentsCardContent } from "./components/Documents";
-import MedicationsForm from "./Medications";
-import RequisitionsForm from "./Requisitions";
-//card content components
-import FormCardContent from "./Form/content";
+import EncountersForm from "./Encounters";
 import EncountersCardContent from "./Encounters/content";
-import MedicalNotesCardContent from "./MedicalNotes/content";
-import MessagesCardContent from "./Messages/content";
-import MedicationsCardContent from "./Medications/content";
-import RequisitionsCardContent from "./Requisitions/content";
-import TestsCardContent from "./Tests/content";
-//expand detail components
-import FormDetails from "./Form/details";
 import EncountersDetails from "./Encounters/details";
+import Form from "./Form";
+import FormCardContent from "./Form/content";
+import FormDetails from "./Form/details";
+import MedicalNotesForm from "./MedicalNotes";
+import MedicalNotesCardContent from "./MedicalNotes/content";
 import MedicalNotesDetails from "./MedicalNotes/details";
+import MedicationsForm from "./Medications";
+import MedicationsCardContent from "./Medications/content";
+import MedicationsDetails from "./Medications/details";
+import MessagesCardContent from "./Messages/content";
 import MessagesDetails from "./Messages/details";
+import NewMessageForm from "./Messages/NewMessage";
+import RequisitionsForm from "./Requisitions";
+import RequisitionsCardContent from "./Requisitions/content";
 import RequisitionsDetails from "./Requisitions/details";
-//service
-import PatientService from "./../../services/patient.service";
-import { setError, setSuccess } from "./../../store/common/actions";
-import { resetEditorText } from "./../../store/patient/actions";
-import { Responsive, WidthProvider } from "react-grid-layout";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-//react-grid-layout styles
+import TestsCardContent from "./Tests/content";
+
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import "../../reactGridLayout.css";
-//providers
-import { AuthContext } from "../../providers/AuthProvider";
+
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -208,6 +204,7 @@ export default function Patient(props) {
       fetchTests();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasPatientIderror]);
 
   const fetchCardsLayout = () => {
@@ -684,7 +681,6 @@ export default function Patient(props) {
 
   const handleDocumentsFile = (e) => {
     const { files } = e.target;
-    console.log("files", files);
     let fd = new FormData();
     fd.append("file", files[0]);
     fd.append("patient_id", patient_id);
@@ -799,8 +795,8 @@ export default function Patient(props) {
           title === "Allergies" || title === "Requisitions"
             ? 3
             : title === "Messages"
-            ? 6
-            : y,
+              ? 6
+              : y,
         i: item.title.toString()
       };
     });

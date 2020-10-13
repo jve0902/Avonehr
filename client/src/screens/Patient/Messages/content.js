@@ -1,8 +1,9 @@
 import React from "react";
+
+import { Grid, Typography, Divider } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Divider } from "@material-ui/core";
 
 export default function MessagesContent(props) {
   const classes = useStyles();

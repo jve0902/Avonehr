@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-import _ from "lodash";
-import Grid from "@material-ui/core/Grid";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import { Appointments } from "./components";
-import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
-import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
-import AppointmentService from "./../../../../services/appointmentType.service";
+import Typography from "@material-ui/core/Typography";
+import _ from "lodash";
+
 import { AuthConsumer } from "./../../../../providers/AuthProvider";
+import AppointmentService from "./../../../../services/appointmentType.service";
+import { Appointments } from "./components";
+import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
+import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
 //import Video from "./../../../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +65,7 @@ export default function AppointmentTypes(props) {
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-    appointmentById && setSelectedAppointment(_.head(appointmentById));
+    appointmentById && setSelectedAppointment(_.head(appointmentById)); // eslint-disable-line mdx/no-unused-expressions
   };
 
   const handleDeleteButton = (id) => {
