@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import { TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 import {
   setEditorText,
   resetEditorText
 } from "./../../../../store/patient/actions";
-import { useDispatch } from "react-redux";
 
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const AdminNotes = (props) => {
             autoFocus={true}
             onKeyDown={(event) => {
               if (event.key === "Escape") {
-                !!onClose && onClose();
+                !!onClose && onClose(); // eslint-disable-line mdx/no-unused-expressions
                 dispatch(resetEditorText());
               }
             }}

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import { Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { setEditorText, resetEditorText } from "../../../store/patient/actions";
-import { useDispatch } from "react-redux";
 
 const MedicalNotes = (props) => {
   const classes = useStyles();
@@ -73,10 +74,13 @@ const MedicalNotes = (props) => {
             multiline={true}
             rows={6}
             autoFocus={true}
+            //eslint-disable-next-line mdx/no-unused-expressions
             onKeyDown={(event) => {
               if (event.key === "Escape") {
+                // eslint-disable-next-line mdx/no-unused-expressions
                 !!onClose && onClose();
                 dispatch(resetEditorText());
+                // eslint-disable-next-line mdx/no-unused-expressions
               }
             }}
           />

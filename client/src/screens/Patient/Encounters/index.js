@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import moment from "moment";
 import {
   TextField,
   Button,
@@ -9,12 +8,14 @@ import {
   MenuItem
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
+import { useSelector, shallowEqual } from "react-redux";
+
+import Card from "../../../components/common/Card";
 import {
   EncountersFormFields,
   EncountersCards
 } from "../../../static/encountersForm";
-import Card from "../../../components/common/Card";
-import { useSelector, shallowEqual } from "react-redux";
 
 const Form = (props) => {
   const classes = useStyles();

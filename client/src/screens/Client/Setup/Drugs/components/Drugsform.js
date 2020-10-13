@@ -1,31 +1,32 @@
+import React from "react";
+
 import {
   Button,
   Checkbox,
   FormControlLabel,
   makeStyles,
-  TextField,
+  TextField
 } from "@material-ui/core";
-import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   controlLabel: {
     marginLeft: "0px",
-    marginRight: "0px",
+    marginRight: "0px"
   },
   textField: {
-    width: "250px",
+    width: "250px"
   },
   submit: {
     marginTop: theme.spacing(1),
     padding: "4px 30px",
-    fontSize: "1rem",
-  },
+    fontSize: "1rem"
+  }
 }));
 
 const Drugsform = ({
   fetchSearchDrugs,
   textChangeHandler,
-  checkBoxChangeHandler,
+  checkBoxChangeHandler
 }) => {
   const classes = useStyles();
 
