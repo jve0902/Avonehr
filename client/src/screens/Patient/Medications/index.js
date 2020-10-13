@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import _ from "lodash";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+
 import PatientService from "../../../services/patient.service";
 
 const Medications = (props) => {
@@ -58,12 +59,12 @@ const Medications = (props) => {
           />
           {medications.length
             ? medications.map((item, index) => (
-                <Grid key={index}>
-                  <Typography gutterBottom variant="body1">
+              <Grid key={index}>
+                <Typography gutterBottom variant="body1">
                     Exythromycine 25mcg Tablets
-                  </Typography>
-                </Grid>
-              ))
+                </Typography>
+              </Grid>
+            ))
             : null}
         </Grid>
         <Grid item md={4}>

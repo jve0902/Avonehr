@@ -1,12 +1,12 @@
 import React from "react";
 
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
 import { Divider, Drawer } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
-import Icon from "@mdi/react";
+import { makeStyles } from "@material-ui/styles";
 import { mdiChartBox, mdiAccount, mdiAccountSupervisor } from "@mdi/js";
+import Icon from "@mdi/react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 
 import { Profile, SidebarNav, SearchBar } from "./components";
 

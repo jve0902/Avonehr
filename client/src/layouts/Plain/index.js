@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+
 import { useMediaQuery } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import Topbar from "../Dashboard/components/Topbar";
-import Footer from "./../Dashboard/components/Footer";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import clsx from "clsx";
+
 import Sidebar from "../Dashboard/components/Sidebar";
+import Topbar from "../Dashboard/components/Topbar";
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import Footer from "./../Dashboard/components/Footer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 64,
     height: "100%",
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 70,
-    },
+      paddingTop: 70
+    }
   },
   shiftContent: {
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   content: {
-    height: "100%",
-  },
+    height: "100%"
+  }
 }));
 
 const Plain = ({ children }) => {
@@ -31,7 +33,7 @@ const Plain = ({ children }) => {
   const theme = useTheme();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
-    defaultMatches: true,
+    defaultMatches: true
   });
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -47,11 +49,11 @@ const Plain = ({ children }) => {
     <AuthConsumer>
       {({ isAuth, logout, user }) => (
         <div
-        className={clsx({
-          [classes.root]: true,
-          [classes.shiftContent]: isDesktop,
-        })}
-      >
+          className={clsx({
+            [classes.root]: true,
+            [classes.shiftContent]: isDesktop
+          })}
+        >
           <Topbar
             onSidebarOpen={handleSidebarOpen}
             logout={logout}

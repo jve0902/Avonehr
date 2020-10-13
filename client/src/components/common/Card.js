@@ -1,7 +1,5 @@
 import React from "react";
 
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   Typography,
@@ -10,14 +8,16 @@ import {
   TextField,
   IconButton
 } from "@material-ui/core";
-import Colors from "../../theme/colors";
-
+import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/AddCircleOutline";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SaveIcon from "@material-ui/icons/CheckCircle";
 import CardIcon from "@material-ui/icons/CreditCard";
 import DesktopIcon from "@material-ui/icons/DesktopMac";
-import AddIcon from "@material-ui/icons/AddCircleOutline";
-import SaveIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
 import SaveLayoutIcon from "@material-ui/icons/Save";
+import PropTypes from "prop-types";
+
+import Colors from "../../theme/colors";
 
 const PatientCard = (props) => {
   const classes = useStyles();

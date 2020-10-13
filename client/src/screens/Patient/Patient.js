@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
 import { useHistory, useParams } from "react-router-dom";
-
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-
 //common components
 import Card from "./../../components/common/Card";
 import Dialog from "./../../components/Dialog";
@@ -14,7 +12,6 @@ import {
   ThirdColumnPatientCards,
   FourthColumnPatientCards
 } from "./../../static/patient";
-
 // dialog components
 import {
   AdminNotesForm,
@@ -30,6 +27,7 @@ import {
 import Form from "./Form";
 import EncountersForm from "./Encounters";
 import MedicalNotesForm from "./MedicalNotes";
+import MedicationsDetails from "./Medications/details";
 import NewMessageForm from "./Messages/NewMessage";
 import {
   Allergies,
@@ -54,38 +52,30 @@ import {
 import { DocumentsCardContent } from "./components/Documents";
 import MedicationsForm from "./Medications";
 import RequisitionsForm from "./Requisitions";
-
 //card content components
 import FormCardContent from "./Form/content";
 import EncountersCardContent from "./Encounters/content";
 import MedicalNotesCardContent from "./MedicalNotes/content";
 import MessagesCardContent from "./Messages/content";
-
 import MedicationsCardContent from "./Medications/content";
 import RequisitionsCardContent from "./Requisitions/content";
 import TestsCardContent from "./Tests/content";
-
 //expand detail components
 import FormDetails from "./Form/details";
 import EncountersDetails from "./Encounters/details";
 import MedicalNotesDetails from "./MedicalNotes/details";
 import MessagesDetails from "./Messages/details";
-import MedicationsDetails from "./Medications/details";
 import RequisitionsDetails from "./Requisitions/details";
-
 //service
 import PatientService from "./../../services/patient.service";
 import { setError, setSuccess } from "./../../store/common/actions";
 import { resetEditorText } from "./../../store/patient/actions";
+import { Responsive, WidthProvider } from "react-grid-layout";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-
 //react-grid-layout styles
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import "../../reactGridLayout.css";
-
-import { Responsive, WidthProvider } from "react-grid-layout";
-
 //providers
 import { AuthContext } from "../../providers/AuthProvider";
 

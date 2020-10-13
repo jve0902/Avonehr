@@ -2,9 +2,9 @@ import React from "react";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { closeSnackbar } from "../../store/auth/actions";
-
 import { useSelector, useDispatch } from "react-redux";
+
+import { closeSnackbar } from "../../store/auth/actions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

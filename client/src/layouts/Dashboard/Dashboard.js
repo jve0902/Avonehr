@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
-
 import Container from "@material-ui/core/Container";
-import { Topbar, Sidebar, Footer } from "./components";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import clsx from "clsx";
+
 import { AuthConsumer } from "./../../providers/AuthProvider";
+import { Topbar, Sidebar, Footer } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {

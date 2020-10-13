@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import SignatureCanvas from "react-signature-canvas";
 import {
   TextField,
   Button,
@@ -12,9 +11,11 @@ import {
   Divider
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormFields } from "../../../static/expandForm";
+import SignatureCanvas from "react-signature-canvas";
+
 import CountrySelect from "../../../components/common/CountrySelect";
 import RegionSelect from "../../../components/common/RegionSelect";
+import { FormFields } from "../../../static/expandForm";
 
 const Form = (props) => {
   const classes = useStyles();
