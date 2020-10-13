@@ -1,4 +1,5 @@
 import React from "react";
+
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -14,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
-  },
+      paddingBottom: theme.spacing(1)
+    }
+  }
 }));
 
 export default function Footer() {

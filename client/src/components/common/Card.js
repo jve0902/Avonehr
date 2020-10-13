@@ -1,14 +1,23 @@
-import React from 'react';
+import React from "react";
+
 import PropTypes from "prop-types";
-import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid, Button, TextField, IconButton } from '@material-ui/core';
-import Colors from '../../theme/colors';
-import CardIcon from '@material-ui/icons/CreditCard';
-import DesktopIcon from '@material-ui/icons/DesktopMac';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
-import SaveIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
-import SaveLayoutIcon from '@material-ui/icons/Save';
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  Typography,
+  Grid,
+  Button,
+  TextField,
+  IconButton
+} from "@material-ui/core";
+import Colors from "../../theme/colors";
+
+import CardIcon from "@material-ui/icons/CreditCard";
+import DesktopIcon from "@material-ui/icons/DesktopMac";
+import AddIcon from "@material-ui/icons/AddCircleOutline";
+import SaveIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SaveLayoutIcon from "@material-ui/icons/Save";
 
 const PatientCard = (props) => {
   const classes = useStyles();
@@ -30,98 +39,106 @@ const PatientCard = (props) => {
     editorCancelHandler,
     updateLayoutHandler
   } = props;
-  
+
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
   return (
     <>
       <Card className={classes.root} variant="outlined">
-        <Grid container justify="space-between" alignItems="center" className={`${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
+        <Grid
+          container
+          justify="space-between"
+          alignItems="center"
+          className={`${classes.titleContainer} ${
+            showActions ? classes.leftPadding : classes.fullPadding
+          }`}
+        >
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
-          {
-            title === "Patient" && (
-              <SaveLayoutIcon
-                className={classes.icon}
-                onClick={() => updateLayoutHandler()}
-              />
-            )
-          }
-          {
-            !!icon && (
-              React.createElement(menuIcons[icon], {
-                onClick: iconHandler,
-                className: classes.icon
-              })
-            )
-          }
-          {
-            showEditorActions && (
+          {title === "Patient" && (
+            <SaveLayoutIcon
+              className={classes.icon}
+              onClick={() => updateLayoutHandler()}
+            />
+          )}
+          {!!icon &&
+            React.createElement(menuIcons[icon], {
+              onClick: iconHandler,
+              className: classes.icon
+            })}
+          {showEditorActions && (
             <Grid>
-              <IconButton variant="outlined" onClick={editorCancelHandler} size="small">
+              <IconButton
+                variant="outlined"
+                onClick={editorCancelHandler}
+                size="small"
+              >
                 <CancelIcon />
               </IconButton>
-              <IconButton variant="outlined" type="submit" size="small" onClick={editorSaveHandler}>
+              <IconButton
+                variant="outlined"
+                type="submit"
+                size="small"
+                onClick={editorSaveHandler}
+              >
                 <SaveIcon />
               </IconButton>
             </Grid>
-            )
-          }
-          {
-            !!showSearch && (
-              <TextField
-                margin='dense'
-                variant='outlined'
-                placeholder="Search ..."
-                className={classes.searchInput}
-                InputProps={{
-                  classes: { input: classes.textField },
-                }}
-                onChange={(e) => {
-                  const searchedValue = e.target.value;
-                  if(!!searchedValue && searchedValue.length) {
-                    searchHandler(searchedValue)
-                  }
-                }}
-              />
-            )
-          }
-          {
-            !!cardInfo && (
-              <Typography className={classes.cardInfo}>
-                {cardInfo}
-              </Typography>
-            )
-          }
-          {
-            showActions && (
-              <Grid>
-                {!!primaryButtonText && (<Button className={classes.button} onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
-                {!!secondaryButtonText && (<Button className={classes.button} onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
-              </Grid>
-            )
-          }
+          )}
+          {!!showSearch && (
+            <TextField
+              margin="dense"
+              variant="outlined"
+              placeholder="Search ..."
+              className={classes.searchInput}
+              InputProps={{
+                classes: { input: classes.textField }
+              }}
+              onChange={(e) => {
+                const searchedValue = e.target.value;
+                if (!!searchedValue && searchedValue.length) {
+                  searchHandler(searchedValue);
+                }
+              }}
+            />
+          )}
+          {!!cardInfo && (
+            <Typography className={classes.cardInfo}>{cardInfo}</Typography>
+          )}
+          {showActions && (
+            <Grid>
+              {!!primaryButtonText && (
+                <Button
+                  className={classes.button}
+                  onClick={() => primaryButtonHandler()}
+                >
+                  {primaryButtonText}
+                </Button>
+              )}
+              {!!secondaryButtonText && (
+                <Button
+                  className={classes.button}
+                  onClick={() => secondaryButtonHandler()}
+                >
+                  {secondaryButtonText}
+                </Button>
+              )}
+            </Grid>
+          )}
         </Grid>
-        <Grid className={classes.cardContent}>
-          {
-            !!data ?
-            data
-            :
-            ""
-          }
-        </Grid>
+        <Grid className={classes.cardContent}>{!!data ? data : ""}</Grid>
       </Card>
     </>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 100,
-    overflowY: 'auto',
+    overflowY: "auto",
     background: Colors.white,
-    border: '1px solid rgba(38, 38, 38, 0.12)',
+    border: "1px solid rgba(38, 38, 38, 0.12)",
     borderRadius: 4,
     marginBottom: 6
   },
@@ -130,13 +147,13 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 34
   },
   fullPadding: {
-    padding: 8,
+    padding: 8
   },
   leftPadding: {
-    padding: '0 0 0 8px',
+    padding: "0 0 0 8px"
   },
   title: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 13
   },
   cardInfo: {
@@ -144,50 +161,50 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     fontSize: 13,
-    lineHeight: "14px",
+    lineHeight: "14px"
   },
   cardContent: {
-    padding: 8,
+    padding: 8
   },
   sideIcon: {
-    minWidth: 35,
+    minWidth: 35
   },
   profileContainer: {
     padding: theme.spacing(1, 2),
-    cursor: "pointer",
+    cursor: "pointer"
   },
   avatar: {
     marginRight: 15,
     width: theme.spacing(6),
-    height: theme.spacing(6),
+    height: theme.spacing(6)
   },
   text: {
-    fontStyle: 'normal',
-    fontWeight: '500',
-    fontSize: '1rem',
-    lineHeight: '1.3rem',
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: "1rem",
+    lineHeight: "1.3rem",
     color: Colors.black
   },
   searchInput: {
     margin: "2px 0",
-    maxWidth: '110px'
+    maxWidth: "110px"
   },
   icon: {
-    cursor: 'pointer'
+    cursor: "pointer"
   },
   textField: {
-    height: 8,
+    height: 8
   }
-}))
+}));
 
 PatientCard.defaultProps = {
-  title: 'Title',
+  title: "Title",
   showActions: false,
   showEditorActions: false,
   showSearch: false,
   data: <div />,
-  primaryButtonText: 'History',
-  secondaryButtonText: 'Edit',
+  primaryButtonText: "History",
+  secondaryButtonText: "Edit",
   icon: null,
   cardInfo: null,
   primaryButtonHandler: () => {},
@@ -196,7 +213,7 @@ PatientCard.defaultProps = {
   searchHandler: () => {},
   editorSaveHandler: () => {},
   editorCancelHandler: () => {},
-  updateLayoutHandler: () => {},
+  updateLayoutHandler: () => {}
 };
 
 PatientCard.propTypes = {
@@ -215,9 +232,8 @@ PatientCard.propTypes = {
   searchHandler: PropTypes.func,
   editorSaveHandler: PropTypes.func,
   editorCancelHandler: PropTypes.func,
-  updateLayoutHandler: PropTypes.func,
+  updateLayoutHandler: PropTypes.func
 };
-
 
 // export default rglDynamicHeight(PatientCard);
 export default PatientCard;

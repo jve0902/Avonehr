@@ -12,18 +12,18 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: "solid",
     backgroundColor: fade(theme.palette.divider, 0.15),
     "&:hover": {
-      backgroundColor: fade(theme.palette.divider, 0.25),
+      backgroundColor: fade(theme.palette.divider, 0.25)
     },
     marginRight: theme.spacing(1),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(0),
-      width: "auto",
-    },
+      width: "auto"
+    }
   },
   name: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   inputRoot: {
-    color: "inherit",
+    color: "inherit"
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+      width: "20ch"
+    }
+  }
 }));
 
 const SearchBar = () => {
@@ -60,7 +60,7 @@ const SearchBar = () => {
         placeholder="Search…"
         classes={{
           root: classes.inputRoot,
-          input: classes.inputInput,
+          input: classes.inputInput
         }}
         inputProps={{ "aria-label": "search" }}
       />

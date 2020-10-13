@@ -1,6 +1,8 @@
 import React from "react";
+
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
+
 import Error from "./../common/Error";
 
 const TextFieldWithError = ({
@@ -11,7 +13,7 @@ const TextFieldWithError = ({
   handleOnBlur,
   errors,
   type,
-  id,
+  id
 }) => {
   return (
     <React.Fragment>
@@ -41,7 +43,7 @@ TextFieldWithError.propTypes = {
   handleOnChange: PropTypes.func.isRequired,
   handleOnBlur: PropTypes.func.isRequired,
   errors: PropTypes.array.isRequired,
-  type: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default TextFieldWithError;

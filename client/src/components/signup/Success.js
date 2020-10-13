@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import Alert from "@material-ui/lab/Alert";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -17,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     "& p": {
       fontSize: "16px",
-      lineHeight: "24px",
-    },
-  },
+      lineHeight: "24px"
+    }
+  }
 }));
 
 const Success = () => {

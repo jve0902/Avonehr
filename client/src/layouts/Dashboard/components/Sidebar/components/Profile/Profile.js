@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Link as RouterLink } from "react-router-dom";
 import clsx from "clsx";
 import PropTypes from "prop-types";
@@ -17,25 +18,25 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    minHeight: "fit-content",
+    minHeight: "fit-content"
   },
   avatar: {
     width: 60,
-    height: 60,
+    height: 60
   },
   name: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   authCredential: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   signOutButton: {
     marginLeft: theme.spacing(1),
-    backgroundColor: fade(theme.palette.secondary.light, 0.15),
-  },
+    backgroundColor: fade(theme.palette.secondary.light, 0.15)
+  }
 }));
 
 const Profile = (props) => {
@@ -83,7 +84,7 @@ const Profile = (props) => {
 
 Profile.propTypes = {
   className: PropTypes.string,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default Profile;
