@@ -74,13 +74,10 @@ const MedicalNotes = (props) => {
             multiline={true}
             rows={6}
             autoFocus={true}
-            //eslint-disable-next-line mdx/no-unused-expressions
             onKeyDown={(event) => {
               if (event.key === "Escape") {
-                // eslint-disable-next-line mdx/no-unused-expressions
                 !!onClose && onClose();
                 dispatch(resetEditorText());
-                // eslint-disable-next-line mdx/no-unused-expressions
               }
             }}
           />

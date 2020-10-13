@@ -65,7 +65,7 @@ export default function AppointmentTypes(props) {
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-    appointmentById && setSelectedAppointment(_.head(appointmentById)); // eslint-disable-line mdx/no-unused-expressions
+    appointmentById && setSelectedAppointment(_.head(appointmentById));
   };
 
   const handleDeleteButton = (id) => {

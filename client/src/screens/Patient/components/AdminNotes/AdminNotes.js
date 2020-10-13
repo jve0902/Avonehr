@@ -90,7 +90,7 @@ const AdminNotes = (props) => {
             autoFocus={true}
             onKeyDown={(event) => {
               if (event.key === "Escape") {
-                !!onClose && onClose(); // eslint-disable-line mdx/no-unused-expressions
+                !!onClose && onClose();
                 dispatch(resetEditorText());
               }
             }}
