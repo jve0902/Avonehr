@@ -1,28 +1,30 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import Typography from "@material-ui/core/Typography";
+import React, { useState, useEffect } from "react";
+
+
 import { makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Error from "./../../../../components/common/Error";
-import Select from "@material-ui/core/Select";
-import Logo from "../../../../assets/img/Logo.png";
 import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
-import AuthService from "../../../../services/auth.service";
-import ConfigurationService from "../../../../services/configuration.service";
-import StateData from "./data/state";
-import { useDispatch } from "react-redux";
-import ConfigModal from "./modal";
-import { setSuccess } from "./../../../../store/common/actions";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import { KeyboardTimePicker } from "@material-ui/pickers";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+
+import Logo from "../../../../assets/img/Logo.png";
+import AuthService from "../../../../services/auth.service";
+import ConfigurationService from "../../../../services/configuration.service";
+import Error from "./../../../../components/common/Error";
+import { setSuccess } from "./../../../../store/common/actions";
+import StateData from "./data/state";
+import ConfigModal from "./modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   uploadButtons: {
     display: "flex",
@@ -32,50 +34,50 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     "& h1": {
       [theme.breakpoints.up("md")]: {
-        marginRight: theme.spacing(4),
-      },
-    },
+        marginRight: theme.spacing(4)
+      }
+    }
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   formElments: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "500px",
+    maxWidth: "500px"
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
     marginTop: "20px",
-    maxWidth: "440px",
+    maxWidth: "440px"
   },
   customSelect: {
-    width: "200px",
+    width: "200px"
   },
   type: {
-    marginTop: "20px",
+    marginTop: "20px"
   },
   paper: {
-    maxWidth: "456px",
+    maxWidth: "456px"
   },
   textField: {
-    width: "200px",
+    width: "200px"
   },
   amount: {
-    marginTop: "18px",
+    marginTop: "18px"
   },
   fileInput: {
-    display: "none",
-  },
+    display: "none"
+  }
 }));
 
 export default function Configuration(props) {
@@ -88,7 +90,7 @@ export default function Configuration(props) {
   const [modalHistory, setModalHistory] = useState({
     isOpen: false,
     data: [],
-    currentUser: currentUser,
+    currentUser: currentUser
   });
   const logoRef = React.useRef(null);
 
@@ -109,7 +111,7 @@ export default function Configuration(props) {
     zipcode: "",
     country: "",
     phone: "",
-    fax: "",
+    fax: ""
   };
 
   const [formParams, setFormParams] = useState(initFormParams);
@@ -138,7 +140,7 @@ export default function Configuration(props) {
 
         country: data.country,
         phone: data.phone,
-        fax: data.fax,
+        fax: data.fax
       });
       setCalendarStartTime(
         moment(data.calendar_start_time, "HH:mm:ss").format(
@@ -184,7 +186,7 @@ export default function Configuration(props) {
         npi: formParams.npi,
         postal: formParams.zipcode,
         phone: formParams.phone,
-        fax: formParams.fax,
+        fax: formParams.fax
       };
       const response = await ConfigurationService.updateConfig(
         currentUser.id,
@@ -202,7 +204,7 @@ export default function Configuration(props) {
     if (e.target.files) {
       setFormParams({
         ...formParams,
-        logo: URL.createObjectURL(e.target.files[0]),
+        logo: URL.createObjectURL(e.target.files[0])
       });
       try {
         let formData = new FormData();
@@ -222,7 +224,7 @@ export default function Configuration(props) {
     setModalHistory({
       ...modalHistory,
       isOpen: true,
-      data: result,
+      data: result
     });
   };
 
@@ -239,7 +241,7 @@ export default function Configuration(props) {
   const _onChangeInput = (e) => {
     setFormParams({
       ...formParams,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
   // const _onTimeChangeStart = (date) => {
@@ -514,7 +516,7 @@ export default function Configuration(props) {
                   onChange={(e) => _onChangeInput(e)}
                   inputProps={{
                     name: "state",
-                    id: "age-native-simple",
+                    id: "age-native-simple"
                   }}
                   label="State"
                 >
@@ -566,7 +568,7 @@ export default function Configuration(props) {
               <KeyboardTimePicker
                 inputVariant="outlined"
                 KeyboardButtonProps={{
-                  "aria-label": "change time",
+                  "aria-label": "change time"
                 }}
                 id="calendarStartTime"
                 name={`calendarStartTime`}
@@ -597,7 +599,7 @@ export default function Configuration(props) {
                   onChange={(e) => _onChangeInput(e)}
                   inputProps={{
                     name: "country",
-                    id: "age-native-simple",
+                    id: "age-native-simple"
                   }}
                   label="Country"
                 >
@@ -612,7 +614,7 @@ export default function Configuration(props) {
               <KeyboardTimePicker
                 inputVariant="outlined"
                 KeyboardButtonProps={{
-                  "aria-label": "change time",
+                  "aria-label": "change time"
                 }}
                 id="calendarEndTime"
                 name={`calendarEndTime`}

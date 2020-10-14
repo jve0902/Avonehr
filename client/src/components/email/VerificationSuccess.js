@@ -1,7 +1,8 @@
 import React from "react";
-import Link from "@material-ui/core/Link";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,9 +11,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     "& p": {
       fontSize: "16px",
-      lineHeight: "24px",
-    },
-  },
+      lineHeight: "24px"
+    }
+  }
 }));
 
 const VerificationSuccess = ({ isEmailVerified }) => {

@@ -1,51 +1,53 @@
 import React, { useEffect } from "react";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import clsx from "clsx";
-import AuthService from "./../../../services/patient_portal/auth.service";
-import { AuthConsumer } from "./../../../providers/AuthProvider";
-import { loginComplete } from "./../../../store/auth/actions";
+import { useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+
 import Error from "./../../../components/common/Error";
+import { AuthConsumer } from "./../../../providers/AuthProvider";
+import AuthService from "./../../../services/patient_portal/auth.service";
+import { loginComplete } from "./../../../store/auth/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   Logo: {
-    backgroundColor: "grey",
+    backgroundColor: "grey"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: "transparent",
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   lockIcon: {
-    fontSize: "40px",
+    fontSize: "40px"
   },
   pageTitle: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   withErrors: {
-    opacity: 0.9,
+    opacity: 0.9
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 }));
 
 const PatientLogin = () => {
@@ -74,8 +76,8 @@ const PatientLogin = () => {
         if (status === 400) {
           setErrors([
             {
-              msg: data.message,
-            },
+              msg: data.message
+            }
           ]);
         } else {
           setErrors([]);
@@ -93,7 +95,7 @@ const PatientLogin = () => {
     AuthService.login({
       client_id: clientId,
       email: email.trim(),
-      password: password.trim(),
+      password: password.trim()
     }).then(
       (res) => {
         setErrors([]);
@@ -109,8 +111,8 @@ const PatientLogin = () => {
         if (status === 400) {
           setErrors([
             {
-              msg: data.message,
-            },
+              msg: data.message
+            }
           ]);
         } else {
           setErrors([]);
@@ -161,7 +163,7 @@ const PatientLogin = () => {
               <form
                 className={clsx({
                   [classes.form]: true, //always apply
-                  [classes.withErrors]: errors.length > 0, //only when isLoading === true
+                  [classes.withErrors]: errors.length > 0 //only when isLoading === true
                 })}
                 noValidate
               >

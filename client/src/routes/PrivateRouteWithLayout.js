@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Route, Redirect } from "react-router-dom";
 
 import { AuthConsumer } from "../providers/AuthProvider";
@@ -20,7 +21,7 @@ const PrivateRouteWithLayout = ({
             <Redirect
               to={{
                 pathname: "/login_client",
-                state: { from: props.location },
+                state: { from: props.location }
               }}
             />
           )

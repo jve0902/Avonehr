@@ -1,17 +1,17 @@
 export const EncountersFormFields = [
   {
-    name: 'title',
-    id: 'title',
-    label: 'Title',
-    baseType: 'input',
-    type: 'text',
-    options: [],
+    name: "title",
+    id: "title",
+    label: "Title",
+    baseType: "input",
+    type: "text",
+    options: []
   },
   {
-    name: 'type',
-    id: 'type',
-    label: 'Type',
-    baseType: 'select',
+    name: "type",
+    id: "type",
+    label: "Type",
+    baseType: "select",
     type: null,
     options: [
       {
@@ -19,20 +19,20 @@ export const EncountersFormFields = [
         value: "Office Visit"
       },
       {
-        label: 'Advance',
-        value: 'advance'
+        label: "Advance",
+        value: "advance"
       }
-    ],
+    ]
   },
   {
-    name: 'date',
-    id: 'date',
-    label: 'Date',
-    baseType: 'input',
-    type: 'date',
-    options: [],
+    name: "date",
+    id: "date",
+    label: "Date",
+    baseType: "input",
+    type: "date",
+    options: []
   }
-]
+];
 
 export const EncountersCards = [
   {
@@ -42,7 +42,7 @@ export const EncountersCards = [
     data: [],
     primaryButtonText: "",
     secondaryButtonText: "",
-    icon: null,
+    icon: null
   },
   {
     title: "Plan",
@@ -51,7 +51,7 @@ export const EncountersCards = [
     data: [],
     primaryButtonText: "",
     secondaryButtonText: "",
-    icon: "AddIcon",
+    icon: "AddIcon"
   },
   {
     title: "Billing",
@@ -60,7 +60,6 @@ export const EncountersCards = [
     data: [],
     primaryButtonText: "",
     secondaryButtonText: "",
-    icon: "AddIcon",
-  },
-]
-
+    icon: "AddIcon"
+  }
+];

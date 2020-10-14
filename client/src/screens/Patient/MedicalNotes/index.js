@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+
 import { Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { setEditorText, resetEditorText } from "../../../store/patient/actions";
-import { useDispatch } from "react-redux";
 
 const MedicalNotes = (props) => {
   const classes = useStyles();
@@ -27,8 +29,8 @@ const MedicalNotes = (props) => {
     const reqBody = {
       data: {
         old_medical_note: oldMedicalNote,
-        medical_note: medicalNote,
-      },
+        medical_note: medicalNote
+      }
     };
     PatientService.updateMedicalNotes(patientId, reqBody, noteId)
       .then((response) => {
@@ -47,7 +49,7 @@ const MedicalNotes = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -56,30 +58,30 @@ const MedicalNotes = (props) => {
   return (
     <>
       <form onSubmit={onFormSubmit}>
-          <Grid className={classes.formInput} item md={12}>
-            <TextField
-              required
-              value={medicalNote}
-              variant="outlined"
-              name="medicalNote"
-              id="medicalNote"
-              type="text"
-              fullWidth
-              onChange={(e) => {
-                dispatch(setEditorText(e.target.value));
-                setMedicalNote(e.target.value)
-              }}
-              multiline={true}
-              rows={8}
-              autoFocus={true}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                   !!onClose && onClose();
-                   dispatch(resetEditorText());
-                }
-             }}
-            />
-          </Grid>
+        <Grid className={classes.formInput} item md={12}>
+          <TextField
+            required
+            value={medicalNote}
+            variant="outlined"
+            name="medicalNote"
+            id="medicalNote"
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              dispatch(setEditorText(e.target.value));
+              setMedicalNote(e.target.value);
+            }}
+            multiline={true}
+            rows={6}
+            autoFocus={true}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                !!onClose && onClose();
+                dispatch(resetEditorText());
+              }
+            }}
+          />
+        </Grid>
       </form>
     </>
   );
@@ -87,19 +89,19 @@ const MedicalNotes = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   formInput: {
     marginBottom: theme.spacing(1),
-    
+
     "& .MuiOutlinedInput-multiline": {
       padding: 5,
       fontSize: 12
     }
   },
   actionContainer: {
-    marginTop: theme.spacing(1),
-  },
+    marginTop: theme.spacing(1)
+  }
 }));
 
 export default MedicalNotes;

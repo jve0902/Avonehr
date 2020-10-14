@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback } from "react";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-import { verificationEmail } from "./../store/email/actions";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
-import Dimmer from "./../components/common/Dimmer";
-import VerificationSuccess from "../components/email/VerificationSuccess";
 import VerificationMessage from "../components/email/VerificationMessage";
+import VerificationSuccess from "../components/email/VerificationSuccess";
+import Dimmer from "./../components/common/Dimmer";
+import { verificationEmail } from "./../store/email/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,16 +16,16 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     "& p": {
       fontSize: "16px",
-      lineHeight: "24px",
-    },
-  },
+      lineHeight: "24px"
+    }
+  }
 }));
 
 const EmailConfirmation = ({ ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const {
-    match: { params },
+    match: { params }
   } = props;
 
   const success = useSelector(

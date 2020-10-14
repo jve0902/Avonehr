@@ -1,40 +1,43 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import SearchPatient from "../../../../services/patientSearch.service";
-import Select from "@material-ui/core/Select";
-import PatientSearchResults from "./components";
 import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
-import moment from "moment";
-import NumberFormat from "react-number-format";
-import PropTypes from "prop-types";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import moment from "moment";
+import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
+
+import SearchPatient from "../../../../services/patientSearch.service";
+import PatientSearchResults from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   submit: {
     maxWidth: "200px",
-    marginTop: "15px",
+    marginTop: "15px"
   },
   paper: {
-    maxWidth: "900px",
+    maxWidth: "900px"
   },
   textField: {
-    width: "200px",
+    width: "200px"
   },
   customSelect: {
     width: "200px",
-  },
+    marginTop: "16px"
+  }
 }));
 
 function NumberFormatCustom(props) {
@@ -48,8 +51,8 @@ function NumberFormatCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
-          },
+            value: values.value
+          }
         });
       }}
       isNumericString
@@ -59,7 +62,7 @@ function NumberFormatCustom(props) {
 NumberFormatCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default function PatientSearch() {
@@ -105,8 +108,8 @@ export default function PatientSearch() {
         paymentFrom,
         paymentTo,
         id: patientId,
-        patientStatus: selectStatus,
-      },
+        patientStatus: selectStatus
+      }
     };
     SearchPatient.search(payload).then((res) => {
       setSearchResults(res.data.data);
@@ -166,7 +169,7 @@ export default function PatientSearch() {
                   <KeyboardDatePicker
                     clearable
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
@@ -185,7 +188,7 @@ export default function PatientSearch() {
                     clearable
                     autoOk
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
@@ -234,7 +237,7 @@ export default function PatientSearch() {
                     clearable
                     autoOk
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     format="yyyy/MM/dd"
                     inputVariant="outlined"
@@ -254,7 +257,7 @@ export default function PatientSearch() {
                   <KeyboardDatePicker
                     clearable
                     KeyboardButtonProps={{
-                      "aria-label": "change date",
+                      "aria-label": "change date"
                     }}
                     autoOk
                     format="yyyy/MM/dd"
@@ -284,10 +287,10 @@ export default function PatientSearch() {
                     id="patientId"
                     autoComplete="patientId"
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={patientId.length >= 13}
                     helperText={
@@ -312,7 +315,7 @@ export default function PatientSearch() {
                       onChange={handleChange}
                       inputProps={{
                         name: "type",
-                        id: "age-native-simple",
+                        id: "age-native-simple"
                       }}
                       label="Status"
                     >
@@ -335,10 +338,10 @@ export default function PatientSearch() {
                     autoComplete="paymentFrom"
                     onChange={(event) => setPaymentFrom(event.target.value)}
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={paymentFrom.length >= 13}
                     helperText={
@@ -362,10 +365,10 @@ export default function PatientSearch() {
                     autoComplete="paymentTo"
                     onChange={(event) => setPaymentTo(event.target.value)}
                     InputProps={{
-                      inputComponent: NumberFormatCustom,
+                      inputComponent: NumberFormatCustom
                     }}
                     inputProps={{
-                      maxLength: 16,
+                      maxLength: 16
                     }}
                     error={paymentTo.length >= 13}
                     helperText={

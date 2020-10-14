@@ -1,37 +1,39 @@
+import React from "react";
+
 import {
   Button,
   Checkbox,
   FormControlLabel,
   Grid,
   makeStyles,
-  TextField,
+  TextField
 } from "@material-ui/core";
-import React from "react";
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: "100%",
+    minWidth: "100%"
   },
   controlLabel: {
     marginLeft: "0px",
-    marginRight: "15px",
+    marginRight: "15px"
   },
   input: {
-    padding: "10.5px",
+    padding: "10.5px"
   },
   formStyle: {
-    display: "flex",
+    display: "flex"
   },
   gridMargin: {
     marginRight: "10px",
-    marginBottom: "8px",
+    marginBottom: "8px"
   },
   submit: {
     paddingLeft: "30px",
     paddingRight: "30px",
     // fontSize: "1rem",
-    marginTop: "8px",
-  },
+    marginTop: "8px"
+  }
 }));
 
 const CPTform = ({
@@ -44,7 +46,7 @@ const CPTform = ({
   handleChangeOfFavorite,
   handleChangeOfBillable,
   handleChangeOfSelf,
-  handleChangeOfGroup,
+  handleChangeOfGroup
 }) => {
   const classes = useStyles();
 
@@ -65,7 +67,7 @@ const CPTform = ({
             variant="outlined"
             size="small"
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             onChange={handleChangeOfCptId}
             onKeyUp={handleKeyUp}
@@ -78,7 +80,7 @@ const CPTform = ({
             variant="outlined"
             size="small"
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             onChange={handleChangeOfCptDescription}
             onKeyUp={handleKeyUp}
@@ -95,10 +97,10 @@ const CPTform = ({
             variant="outlined"
             size="small"
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             SelectProps={{
-              native: true,
+              native: true
             }}
           >
             <option aria-label="None" value="" />

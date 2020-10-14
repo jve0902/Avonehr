@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import authHeader from "./auth-header";
 
 const API_URL =
@@ -15,7 +16,7 @@ class CPTCodes {
   }
   updateClientCpt(id, userId, data) {
     return axios.post(API_URL + `/cpt/${id}/${userId}`, data, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
 }

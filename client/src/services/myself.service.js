@@ -1,6 +1,7 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+
 import { API_BASE } from "./../utils/API_BASE";
+import authHeader from "./auth-header";
 
 class MySelfService {
   getProfile(userId) {
@@ -10,27 +11,27 @@ class MySelfService {
   }
   updateProfile(payload, userId) {
     return axios.put(API_BASE + `/myself/profile/${userId}`, payload, {
-      headers: authHeader(),
+      headers: authHeader()
     });
   }
   getForwardEmail(userId) {
     return axios
       .get(API_BASE + `/myself/forward-email/${userId}`, {
-        headers: authHeader(),
+        headers: authHeader()
       })
       .then((res) => res.data);
   }
   getLogins(userId) {
     return axios
       .get(API_BASE + `/myself/logins/${userId}`, {
-        headers: authHeader(),
+        headers: authHeader()
       })
       .then((res) => res.data);
   }
   getActivityHistory(userId) {
     return axios
       .get(API_BASE + `/myself/activity-history/${userId}`, {
-        headers: authHeader(),
+        headers: authHeader()
       })
       .then((res) => res.data);
   }

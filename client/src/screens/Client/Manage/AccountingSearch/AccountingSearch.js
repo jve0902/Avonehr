@@ -1,62 +1,65 @@
 //Todo: Have to add validation
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import moment from "moment";
+import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
+
 import Accounting from "../../../../services/accountingSearch.service";
 import AccountingSearchResults from "./components";
-import NumberFormat from "react-number-format";
-import PropTypes from "prop-types";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   formElments: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "500px",
+    maxWidth: "500px"
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
     marginTop: "20px",
-    maxWidth: "440px",
+    maxWidth: "440px"
   },
   customSelect: {
-    width: "200px",
+    width: "200px"
   },
   type: {
-    marginTop: "20px",
+    marginTop: "20px"
   },
   paper: {
-    maxWidth: "456px",
+    maxWidth: "456px"
   },
   textField: {
-    width: "200px",
+    width: "200px"
   },
   amount: {
-    marginTop: "18px",
-  },
+    marginTop: "18px"
+  }
 }));
 
 function NumberFormatCustom(props) {
@@ -70,8 +73,8 @@ function NumberFormatCustom(props) {
         onChange({
           target: {
             name: props.name,
-            value: values.value,
-          },
+            value: values.value
+          }
         });
       }}
       thousandSeparator
@@ -83,7 +86,7 @@ function NumberFormatCustom(props) {
 NumberFormatCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default function AccountingSearch() {
@@ -91,9 +94,7 @@ export default function AccountingSearch() {
   const [amountFrom, setAmountFrom] = useState("0");
   const [amountTo, setAmountTo] = useState("100");
   const [dateFrom, setDateFrom] = useState(
-    moment()
-      .subtract(7, "days")
-      .format("YYYY-MM-DD")
+    moment().subtract(7, "days").format("YYYY-MM-DD")
   );
   const [dateTo, setDateTo] = useState(moment().format("YYYY-MM-DD"));
   const [types, setTypes] = useState([]);
@@ -109,8 +110,8 @@ export default function AccountingSearch() {
         amount2: amountTo,
         dateFrom: dateFrom,
         dateTo: dateTo,
-        typeID: selectType,
-      },
+        typeID: selectType
+      }
     };
     Accounting.search(payload).then((res) => {
       if (res.data.data.length > 0) {
@@ -157,10 +158,10 @@ export default function AccountingSearch() {
                   className={`${classes.textField} ${classes.amount}`}
                   onChange={(event) => setAmountFrom(event.target.value)}
                   InputProps={{
-                    inputComponent: NumberFormatCustom,
+                    inputComponent: NumberFormatCustom
                   }}
                   inputProps={{
-                    maxLength: 16,
+                    maxLength: 16
                   }}
                   error={amountFrom.length >= 13}
                   helperText={
@@ -180,10 +181,10 @@ export default function AccountingSearch() {
                   onChange={(event) => setAmountTo(event.target.value)}
                   className={`${classes.textField} ${classes.amount}`}
                   InputProps={{
-                    inputComponent: NumberFormatCustom,
+                    inputComponent: NumberFormatCustom
                   }}
                   inputProps={{
-                    maxLength: 16,
+                    maxLength: 16
                   }}
                   error={amountTo.length >= 13}
                   helperText={
@@ -205,7 +206,7 @@ export default function AccountingSearch() {
                   onChange={(date) => setDateFrom(date)}
                   clearable
                   KeyboardButtonProps={{
-                    "aria-label": "change date",
+                    "aria-label": "change date"
                   }}
                   format="yyyy/MM/dd"
                   inputVariant="outlined"
@@ -217,7 +218,7 @@ export default function AccountingSearch() {
                   autoOk
                   clearable
                   KeyboardButtonProps={{
-                    "aria-label": "change date",
+                    "aria-label": "change date"
                   }}
                   format="yyyy/MM/dd"
                   inputVariant="outlined"
@@ -243,7 +244,7 @@ export default function AccountingSearch() {
                     onChange={(event) => setSelectedType(event.target.value)}
                     inputProps={{
                       name: "type",
-                      id: "age-native-simple",
+                      id: "age-native-simple"
                     }}
                     label="Age"
                   >

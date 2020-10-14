@@ -26,7 +26,41 @@
     }
   },
   "rules": {
+    "indent": ["error", 2,
+      { 
+        "VariableDeclarator": { "var": 2, "let": 2, "const": 3 },
+        "outerIIFEBody": 0,
+        "MemberExpression": 1,
+        "ArrayExpression": 1,
+        "ObjectExpression": 1,
+        "ImportDeclaration": 1,
+        "flatTernaryExpressions": true,
+        "ignoreComments": true,
+        "SwitchCase": 1 
+      }
+    ],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "no-var": "error",
     "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
     "quotes": [
       "error",
       "double",

@@ -1,4 +1,5 @@
 import React from "react";
+
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player/youtube";
 
@@ -17,7 +18,7 @@ const Video = ({ height, width, url }) => {
 Video.propTypes = {
   url: PropTypes.string.isRequired,
   height: PropTypes.string,
-  width: PropTypes.string,
+  width: PropTypes.string
 };
 
 export default Video;

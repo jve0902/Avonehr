@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
+
 import {
   TextField,
   Button,
@@ -7,12 +7,15 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText,
+  ListItemText
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import _ from "lodash";
+import { useDispatch } from "react-redux";
+
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
-import { useDispatch } from "react-redux";
+
 
 const Allergies = (props) => {
   const classes = useStyles();
@@ -36,8 +39,8 @@ const Allergies = (props) => {
   const fetchAllergies = (searchText) => {
     const reqBody = {
       data: {
-        text: searchText,
-      },
+        text: searchText
+      }
     };
     PatientService.searchAllergies(reqBody).then((res) => {
       setAllergies(res.data);
@@ -48,8 +51,8 @@ const Allergies = (props) => {
     const reqBody = {
       data: {
         patient_id: patientId,
-        drug_id: "1",
-      },
+        drug_id: "1"
+      }
     };
     PatientService.createAllergy(reqBody)
       .then((response) => {
@@ -67,7 +70,7 @@ const Allergies = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -112,11 +115,11 @@ const Allergies = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   heading: {
-    marginBottom: theme.spacing(2),
-  },
+    marginBottom: theme.spacing(2)
+  }
 }));
 
 export default Allergies;

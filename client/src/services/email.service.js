@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { API_BASE } from "./../utils/API_BASE";
 
 class EmailService {

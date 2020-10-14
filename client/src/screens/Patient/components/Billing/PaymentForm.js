@@ -1,10 +1,11 @@
 import React from "react";
+
 import {
   TextField,
   Button,
   Grid,
   Typography,
-  FormControlLabel,
+  FormControlLabel
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -86,17 +87,17 @@ const PaymentForm = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   processPaymentButton: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   amountContainer: {
-    marginLeft: "0px !important",
+    marginLeft: "0px !important"
   },
   formInput: {
-    marginBottom: theme.spacing(1),
-  },
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 export default PaymentForm;

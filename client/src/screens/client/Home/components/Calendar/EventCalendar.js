@@ -1,9 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+import timeGridPlugin from "@fullcalendar/timegrid";
+import PropTypes from "prop-types";
 
 function renderEventContent(eventInfo) {
   return (
