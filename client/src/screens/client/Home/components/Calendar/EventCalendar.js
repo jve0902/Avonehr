@@ -2,7 +2,7 @@ import React from "react";
 
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react"; //this import should be at the top
 import timeGridPlugin from "@fullcalendar/timegrid";
 import PropTypes from "prop-types";
 
