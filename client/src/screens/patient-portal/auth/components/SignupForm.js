@@ -13,11 +13,14 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import RotateLeftTwoToneIcon from "@material-ui/icons/RotateLeftTwoTone";
+import _ from "lodash";
 import SignatureCanvas from "react-signature-canvas";
 
 import CountrySelect from "../../../../components/common/CountrySelect";
 import RegionSelect from "../../../../components/common/RegionSelect";
 import { FormFields } from "../../../../static/expandForm";
+import Error from "./../../../../components/common/Error";
+import AuthService from "./../../../../services/auth.service";
 
 const SignupForm = (props) => {
   const classes = useStyles();
@@ -46,6 +49,7 @@ const SignupForm = (props) => {
     zipPostal: "",
     contactPreference: ""
   });
+  const [fieldErrors, setFieldErrors] = useState([]);
 
   const handleInputChnage = (e) => {
     const { value, name } = e.target;
@@ -78,7 +82,55 @@ const SignupForm = (props) => {
     signatureRef.clear();
   };
 
-  console.log("formFields:", formFields);
+  const getFieldError = (target, fieldName) => {
+    let value = "client." + fieldName;
+    if (target) {
+      value = target + "." + fieldName;
+    }
+    return fieldErrors && fieldErrors.filter((err) => err.param === value);
+  };
+
+  const handleAjaxValidation = (event, target) => {
+    if (!event.target) {
+      return;
+    }
+    if (!target) {
+      target = "patient";
+    }
+
+    AuthService.validate({
+      fieldName: event.target.name,
+      value: event.target.value,
+      target
+    })
+      .then(
+        (response) => {
+          //Remove errors record with param
+          const updatedErrors = fieldErrors.filter(
+            (error) => error.param !== response.data.message.param
+          );
+          console.log("updatedErrors:", updatedErrors);
+          setFieldErrors(updatedErrors);
+        },
+        (error) => {
+          console.log("error.status", error);
+
+          if (!error.response) {
+            // network error
+            console.error(error);
+          } else {
+            const uniqueFieldErrors = _.uniqWith(
+              [...fieldErrors, error.response.data.message],
+              _.isEqual
+            );
+            setFieldErrors(uniqueFieldErrors);
+          }
+        }
+      )
+      .catch((err) => {
+        console.log("catch err", err);
+      });
+  };
 
   return (
     <>
@@ -194,16 +246,22 @@ const SignupForm = (props) => {
             {ContactInfo.map((item, index) => (
               <Grid key={index} item md={4}>
                 {item.baseType === "input" ? (
-                  <TextField
-                    size="small"
-                    variant="outlined"
-                    label={item.label}
-                    name={item.name}
-                    id={item.id}
-                    type={item.type}
-                    fullWidth
-                    onChange={(e) => handleInputChnage(e)}
-                  />
+                  <>
+                    <TextField
+                      size="small"
+                      variant="outlined"
+                      label={item.label}
+                      name={item.name}
+                      id={item.id}
+                      type={item.type}
+                      fullWidth
+                      onChange={(e) => handleInputChnage(e)}
+                      onBlur={(event) =>
+                        item.name === "email" && handleAjaxValidation(event)
+                      }
+                    />
+                    <Error errors={getFieldError("patient", item.name)} />
+                  </>
                 ) : (
                   <TextField
                     size="small"
@@ -250,7 +308,12 @@ const SignupForm = (props) => {
                   type={item.type}
                   fullWidth
                   onChange={(e) => handleInputChnage(e)}
+                  onBlur={(event) =>
+                    item.name === "emergency_email" &&
+                    handleAjaxValidation(event)
+                  }
                 />
+                <Error errors={getFieldError("patient", item.name)} />
               </Grid>
             ))}
           </Grid>
@@ -387,7 +450,7 @@ const SignupForm = (props) => {
               </Button>
             </Grid>
           </Grid>
-          <Grid container justify="left" className={classes.signupActions}>
+          <Grid container justify="flex-end" className={classes.signupActions}>
             <Button variant="contained" color="primary" onClick={() => alert()}>
               Submit
             </Button>

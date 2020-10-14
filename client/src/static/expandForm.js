@@ -197,7 +197,7 @@ export const FormFields = {
       options: []
     },
     {
-      name: "emergencyemail",
+      name: "emergency_email",
       id: "emergencyemail",
       label: "Email",
       baseType: "input",
