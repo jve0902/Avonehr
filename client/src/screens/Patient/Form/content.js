@@ -12,8 +12,8 @@ export default function FormContent(props) {
   return (
     <>
       {
-        data.map(item => (
-          <Grid key={item.created} container className={classes.inputRow}>
+        data.map((item, index) => (
+          <Grid key={`${item.created}_${index}`} container className={classes.inputRow}>
             <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
             <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.title}</Typography>
           </Grid>

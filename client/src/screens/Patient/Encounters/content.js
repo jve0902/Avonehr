@@ -20,26 +20,6 @@ export default function EncountersContent(props) {
               <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.name}</Typography>
             </Grid>
 
-            <Grid item className={classes.block}>
-              <Typography
-                component="span"
-                className={classes.text12}
-                color="textPrimary"
-              >
-                {item.title}
-              </Typography>
-            </Grid>
-
-            <Grid item className={classes.block}>
-              <Typography
-                component="span"
-                className={classes.text12}
-                color="textPrimary"
-              >
-                {item.name}
-              </Typography>
-            </Grid>
-
             <Grid className={classes.inputRow}>
               <Typography className={classes.text12} color="textPrimary">
               Notes:
@@ -69,14 +49,13 @@ export default function EncountersContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(0)
+    marginBottom: theme.spacing(0.5)
   },
   block: {
     width: 90,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    padding: theme.spacing(0, 0, 1, 0)
   },
   divider: {
     margin: theme.spacing(1, 0)

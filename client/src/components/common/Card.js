@@ -113,14 +113,6 @@ const PatientCard = (props) => {
             )
           }
         </Grid>
-        <Grid className={classes.cardContent}>
-          {
-            !!data ?
-              data
-              :
-              ""
-          }
-        </Grid>
         <Grid className={classes.cardContent}>{!!data ? data : ""}</Grid>
       </Card>
     </>
