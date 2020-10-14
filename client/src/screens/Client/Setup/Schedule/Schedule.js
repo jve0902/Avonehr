@@ -90,7 +90,7 @@ const Schedule = () => {
     setIsOpen(true);
     setIsNewSchedule(false);
     const scheduleById = searchResult.filter((result) => result.id === id);
-    if(!!scheduleById) {
+    if (!!scheduleById) {
       setSelectedScheduleValues(_.head(scheduleById));
     }
   };
@@ -122,7 +122,7 @@ const Schedule = () => {
               <Grid container justify="center" spacing={2}>
                 <Grid item md={12} xs={12}>
                   <Typography component="p" variant="body2" color="textPrimary">
-                    This page is used to set availability for patient
+                    This page is used to set availability for new patient
                     appointments.
                   </Typography>
                   <ScheduleSearchForm
