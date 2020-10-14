@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-import { calculateAge, formatPhoneNumber, DateDiff } from "./../../../../utils/helpers";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
 
+import { Grid, Typography, Tooltip } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import moment from "moment";
+
+import LightTooltip from "../../../../components/common/CustomTooltip"
 //service
 import PatientService from "../../../../services/patient.service";
+import { calculateAge, formatPhoneNumber, DateDiff } from "./../../../../utils/helpers";
 
 export default function BasicInfoContent(props) {
   const classes = useStyles();
@@ -15,7 +17,7 @@ export default function BasicInfoContent(props) {
   useEffect(() => {
     const fetchNextAppointment = () => {
       PatientService.getNextAppointment(patientId).then((res) => {
-        setNextAppointment(res.data && res.data.length ? res.data[0].start_dt : '');
+        setNextAppointment(res.data && res.data.length ? res.data[0].start_dt : "");
       });
     };
     fetchNextAppointment();
@@ -57,9 +59,11 @@ export default function BasicInfoContent(props) {
         <Typography variant="body1" className={classes.text12} color="textPrimary">
           Name:&nbsp;
         </Typography>
-        <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
-          {data.firstname} {data.lastname}
-        </Typography>
+        <LightTooltip title={`${data.firstname} ${data.lastname}`}>
+          <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
+            {data.firstname} {data.lastname}
+          </Typography>
+        </LightTooltip>
       </Grid>
 
       <Grid container className={classes.inputRow}>
@@ -113,7 +117,7 @@ export default function BasicInfoContent(props) {
           Next Appointment:&nbsp;
         </Typography>
         <Typography variant="body1" className={`${classes.text12} ${classes.value}`} color="textPrimary">
-          {!!nextAppointment ? moment(nextAppointment).format('MMM D YYYY') : ''} {!!nextAppointment && `(In ${calculateDateDifference()})`}
+          {!!nextAppointment ? moment(nextAppointment).format("MMM D YYYY") : ""} {!!nextAppointment && `(In ${calculateDateDifference()})`}
         </Typography>
       </Grid>
     </>
@@ -123,14 +127,14 @@ export default function BasicInfoContent(props) {
 const useStyles = makeStyles((theme) => ({
   inputRow: {
     marginBottom: theme.spacing(0.5),
-    flexWrap: 'nowrap',
+    flexWrap: "nowrap",
   },
   text12: {
     fontSize: 12,
   },
   value: {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   }
 }));
