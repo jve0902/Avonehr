@@ -1,11 +1,12 @@
 import React from "react";
-import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
+
 import {
   Grid,
   Divider,
   Typography
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
 export default function EncountersContent(props) {
   const classes = useStyles();
@@ -16,22 +17,11 @@ export default function EncountersContent(props) {
       {
         data.map((item, index) => (
           <Grid key={index}>
-            <Grid key={index} container>
-              <Grid item className={classes.block}>
-                <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM D YYYY")}</Typography>
-              </Grid>
-
-              <Grid item className={classes.block}>
-                <Typography component="span" className={classes.text12} color="textPrimary">{item.encounter_type}</Typography>
-              </Grid>
-
-              <Grid item className={classes.block}>
-                <Typography component="span" className={classes.text12} color="textPrimary">{item.title}</Typography>
-              </Grid>
-
-              <Grid item className={classes.block}>
-                <Typography component="span" className={classes.text12} color="textPrimary">{item.name}</Typography>
-              </Grid>
+            <Grid key={index} className={classes.inputRow} container>
+              <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.dt).format("MMM D YYYY")}</Typography>
+              <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.encounter_type}</Typography>
+              <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.title}</Typography>
+              <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.name}</Typography>
             </Grid>
 
             <Grid className={classes.inputRow}>
@@ -58,19 +48,18 @@ export default function EncountersContent(props) {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    marginBottom: theme.spacing(0),
+    marginBottom: theme.spacing(0.5),
   },
   block: {
     width: 90,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    padding: theme.spacing(0, 0, 1, 0),
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   divider: {
     margin: theme.spacing(1, 0)
   },
   text12: {
-    fontSize: 12
+    fontSize: 12,
   }
 }));
