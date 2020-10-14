@@ -39,6 +39,40 @@ exports.getClientByCode = async (req, res) => {
   }
 };
 
+exports.clientFieldValidate = async (req, res) => {
+  if (!req.body.fieldName && !req.body.value) {
+    errorMessage.message = "body content must be provided!";
+    return res.status(status.error).send(errorMessage);
+  }
+  let tableName = "client"; // By default let if look into client table
+  if (req.body.target) {
+    tableName = req.body.target;
+  }
+  const db = makeDb(configuration, res);
+  try {
+    const rows = await db.query(
+      `SELECT id, ${req.body.fieldName} FROM ${tableName} WHERE ${req.body.fieldName} = ?`,
+      [req.body.value]
+    );
+    if (rows.length > 0) {
+      errorMessage.message = {
+        value: req.body.value,
+        msg: `${req.body.value} already taken.`,
+        param: `${tableName}.${req.body.fieldName}`,
+      };
+      return res.status(status.bad).send(errorMessage);
+    }
+    successMessage.message = {
+      value: req.body.value,
+      msg: `${req.body.value} can be used.`,
+      param: `${tableName}.${req.body.fieldName}`,
+    };
+    res.status(status.success).send(successMessage);
+  } catch (error) {
+    return res.status(status.notfound).send(JSON.stringify(error));
+  }
+};
+
 exports.getClientForm = async (req, res) => {
   const db = makeDb(configuration, res);
   const { clientId } = req.params;
