@@ -13,10 +13,7 @@ import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    // marginTop: "20px",
-    // padding: "0 25px",
-  },
+  root: {},
   paper: {
     padding: "5px"
   },
@@ -70,28 +67,59 @@ export default function PatientSearchResults(props) {
   return (
     <div className={classes.root}>
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Patient ID</StyledTableCell>
-              <StyledTableCell align="center">First Name</StyledTableCell>
-              <StyledTableCell align="center">Middle Name</StyledTableCell>
-              <StyledTableCell align="center">Last Name</StyledTableCell>
-              <StyledTableCell align="center">City</StyledTableCell>
-              <StyledTableCell align="center">State</StyledTableCell>
-              <StyledTableCell align="center">Postal Code</StyledTableCell>
-              <StyledTableCell align="center">Country</StyledTableCell>
-              <StyledTableCell align="center">Phone</StyledTableCell>
-              <StyledTableCell align="center">Phone Home</StyledTableCell>
-              <StyledTableCell align="center">Email</StyledTableCell>
-              <StyledTableCell align="center">Gender</StyledTableCell>
-              <StyledTableCell align="center">Created</StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Patient ID
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                First Name
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Middle Name
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Last Name
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                City
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                State
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Postal Code
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Country
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Phone
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Phone Home
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Email
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Gender
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Created
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.result.map((result, index) => (
               <StyledTableRow key={index}>
                 <TableCell
+                  padding="checkbox"
                   className={classes.patientLink}
                   onClick={() => history.push(`/patient/${result.id}`)}
                   align="center"
@@ -101,6 +129,7 @@ export default function PatientSearchResults(props) {
                   {result.id}
                 </TableCell>
                 <TableCell
+                  padding="checkbox"
                   className={classes.patientLink}
                   align="center"
                   onClick={() => history.push(`/patient/${result.id}`)}
@@ -108,6 +137,7 @@ export default function PatientSearchResults(props) {
                   {result.firstname}
                 </TableCell>
                 <TableCell
+                  padding="checkbox"
                   className={classes.patientLink}
                   align="center"
                   onClick={() => history.push(`/patient/${result.id}`)}
@@ -115,21 +145,38 @@ export default function PatientSearchResults(props) {
                   {result.middlename}
                 </TableCell>
                 <TableCell
+                  padding="checkbox"
                   className={classes.patientLink}
                   align="center"
                   onClick={() => history.push(`/patient/${result.id}`)}
                 >
                   {result.lastname}
                 </TableCell>
-                <TableCell align="center">{result.city}</TableCell>
-                <TableCell align="center">{result.state}</TableCell>
-                <TableCell align="center">{result.postal}</TableCell>
-                <TableCell align="center">{result.country}</TableCell>
-                <TableCell align="center">{result.phone_cell}</TableCell>
-                <TableCell align="center">{result.phone_home}</TableCell>
-                <TableCell align="center">{result.email}</TableCell>
-                <TableCell align="center">{result.gender}</TableCell>
-                <TableCell align="center">
+                <TableCell padding="checkbox" align="center">
+                  {result.city}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.state}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.postal}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.country}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.phone_cell}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.phone_home}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.email}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
+                  {result.gender}
+                </TableCell>
+                <TableCell padding="checkbox" align="center">
                   {moment(result.created).format("lll")}
                 </TableCell>
               </StyledTableRow>

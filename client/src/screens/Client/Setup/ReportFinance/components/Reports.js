@@ -53,10 +53,9 @@ const StyledTableRow = withStyles((theme) => ({
       fontSize: 12
     },
     "& td": {
-      fontSize: 12
-      // height: "50px",
-    }
-  }
+      fontSize: 12,
+    },
+  },
 }))(TableRow);
 const TotalTableRow = withStyles((theme) => ({
   root: {
@@ -65,13 +64,13 @@ const TotalTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 14
+      fontSize: 12,
     },
     "& td": {
-      fontSize: 14,
-      fontWeight: "bold"
-    }
-  }
+      fontSize: 12,
+      fontWeight: "bold",
+    },
+  },
 }))(TableRow);
 
 const Reports = ({ reports, ...props }) => {
@@ -100,39 +99,27 @@ const Reports = ({ reports, ...props }) => {
               </TableCell>
               <TableCell>{moment(report.month, "M").format("MMM")}</TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Total}
-                />
+                {`$ ${report.Total}`}
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Service}
-                />
+               
+                {`$ ${report.Service}`}
+
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Credit}
-                />
+
+                {`$ ${report.Credit}`}
+                
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Payment}
-                />
+
+                {`$ ${report.Payment}`}
+
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Refund}
-                />
+
+                {`$ ${report.Refund}`}
+
               </TableCell>
               <TableCell
                 className={classes.detailLink}
@@ -152,19 +139,19 @@ const Reports = ({ reports, ...props }) => {
               Total
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Total, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Total, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Service, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Service, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Credit, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Credit, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Payment, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Payment, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Refund, 0)}`}
+              <div style={{marginLeft: "5px"}} >{`$ ${reports.reduce((a, b) => a + b.Refund, 0)}`}</div>
             </TableCell>
           </TotalTableRow>
         </TableBody>

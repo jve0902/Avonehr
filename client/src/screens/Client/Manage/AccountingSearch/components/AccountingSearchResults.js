@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -86,6 +86,7 @@ const TotalTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover
     },
     "& th": {
+<<<<<<< HEAD
       fontSize: 14
     },
     "& td": {
@@ -93,16 +94,20 @@ const TotalTableRow = withStyles((theme) => ({
       fontWeight: "bold"
     }
   }
+=======
+      fontSize: 12,
+    },
+    "& td": {
+      fontSize: 12,
+      fontWeight: "bold",
+    },
+  },
+>>>>>>> 95c386796365d544d40c8f53552ecee52a86523f
 }))(TableRow);
 
 export default function AccountingSearchResults(props) {
   const classes = useStyles();
   const history = useHistory();
-  const [totalAmount, setTotalAmount] = useState(0);
-  // const addAmount = (amount) => {
-  //   let add = 0
-  //   add = add+amount
-  // }
   const amount = props.result.reduce((a, b) => a + b.amount, 0);
   return (
     <div className={classes.root}>
@@ -215,7 +220,7 @@ export default function AccountingSearchResults(props) {
                 // colSpan={1}
                 // align="left"
               >
-                {`$\u00A0${amount}`}
+                <div style={{marginLeft: "5px"}}>{`$\u00A0\u00A0${amount}`}</div>
               </TableCell>
             </TotalTableRow>
           </TableBody>

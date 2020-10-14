@@ -102,6 +102,8 @@ const NewOrEditAppointment = ({
   const dispatch = useDispatch();
   const [appointment, setAppointment] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [nameError, setNameError] = useState(false);
+  const [typeError, setTypeError] = useState(false);
 
   useEffect(() => {
     const appt = {
@@ -111,37 +113,69 @@ const NewOrEditAppointment = ({
       allow_patients_schedule: true,
       active: true
     };
-
     setAppointment(appt);
   }, [props.appointment]);
 
   const handleFormSubmission = () => {
-    const formedData = {
-      data: removeEmpty({
-        appointment_type: appointment.appointment_type,
-        appointment_name_portal: appointment.appointment_name_portal,
-        length: appointment.length,
-        allow_patients_schedule: appointment.allow_patients_schedule ? 1 : 0,
-        sort_order: appointment.sort_order,
-        note: appointment.note,
-        active: appointment.active ? 1 : 0,
-        created_user_id: user.id,
-        client_id: user.client_id
-      })
-    };
-    if (isNewAppointment) {
-      createNewAppointment(formedData);
-      console.log("new");
+    console.log(
+      appointment.appointment_name_portal,
+      props.savedAppointments,
+      appointment.appointment_type
+    );
+    //Duplicate Name
+    const duplicateName = props.savedAppointments
+      .map((x) =>
+        appointment.appointment_name_portal.includes(x.appointment_name_portal)
+      )
+      .includes(true);
+    //Duplicate Type
+    const duplicateType = props.savedAppointments
+      .map((x) => appointment.appointment_type.includes(x.appointment_type))
+      .includes(true);
+    //Validation Start Here
+    if (duplicateName || duplicateType) {
+      if (duplicateName && duplicateType) {
+        setNameError(true);
+        setTypeError(true);
+      } else {
+        if (duplicateName) {
+          setNameError(true);
+          setTypeError(false);
+        } else {
+          setTypeError(true);
+          setNameError(false);
+        }
+      }
     } else {
-      delete formedData.data.created_user_id;
-      console.log("Update");
+      const formedData = {
+        data: removeEmpty({
+          appointment_type: appointment.appointment_type,
+          appointment_name_portal: appointment.appointment_name_portal,
+          length: appointment.length,
+          allow_patients_schedule: appointment.allow_patients_schedule ? 1 : 0,
+          sort_order: appointment.sort_order,
+          note: appointment.note,
+          active: appointment.active ? 1 : 0,
+          created_user_id: user.id,
+          client_id: user.client_id
+        })
+      };
+      if (isNewAppointment) {
+        createNewAppointment(formedData);
+        console.log("new");
+      } else {
+        delete formedData.data.created_user_id;
+        console.log("Update");
 
-      AppointmentService.update(formedData, user.id, props.appointment.id).then(
-        (response) => {
+        AppointmentService.update(
+          formedData,
+          user.id,
+          props.appointment.id
+        ).then((response) => {
           dispatch(setSuccess(`${response.data.message}`));
           onClose();
-        }
-      );
+        });
+      }
     }
   };
 
@@ -203,6 +237,8 @@ const NewOrEditAppointment = ({
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.appointment_type}
                 size="small"
+                error={typeError}
+                helperText={typeError ? "You entered a duplicate type" : ""}
               />
               <p className={classes.formHelperText}>
                 The name of the appointment type
@@ -221,6 +257,8 @@ const NewOrEditAppointment = ({
                 onChange={(event) => handleOnChange(event)}
                 value={appointment.appointment_name_portal}
                 size="small"
+                error={nameError}
+                helperText={nameError ? "You entered a duplicate name" : ""}
               />
               <p className={classes.formHelperText}>
                 The name shown in the patient portal

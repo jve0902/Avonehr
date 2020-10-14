@@ -293,7 +293,7 @@ const Topbar = (props) => {
 
   return (
     <AppBar {...rest} className={clsx(classes.root, className)}>
-      <Toolbar className={classes.toolbar}>
+      <Toolbar variant="dense" className={classes.toolbar}>
         <div className={classes.headerWithNav}>
           <Typography className={classes.title} variant="h6" noWrap>
             <RouterLink to="/dashboard" className={classes.titleAsLogo}>

@@ -135,24 +135,28 @@ const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
           </Alert>
         ))}
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Code</StyledTableCell>
-              <StyledTableCell>Description</StyledTableCell>
-              <StyledTableCell>Favorites</StyledTableCell>
-              <StyledTableCell>Updated</StyledTableCell>
-              <StyledTableCell>Updated By</StyledTableCell>
+              <StyledTableCell padding="checkbox">Code</StyledTableCell>
+              <StyledTableCell padding="checkbox">Description</StyledTableCell>
+              <StyledTableCell padding="checkbox">Favorites</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated By</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {result.map((code) => (
               <StyledTableRow key={code.id}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {code.id}
                 </TableCell>
-                <TableCell>{code.name}</TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">{code.name}</TableCell>
+                <TableCell padding="checkbox">
                   <GreenSwitch
                     size="small"
                     checked={Boolean(code.favorite)}
@@ -165,10 +169,10 @@ const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   {code.updated ? moment(code.updated).format("lll") : ""}
                 </TableCell>
-                <TableCell>{code.updated_name}</TableCell>
+                <TableCell padding="checkbox">{code.updated_name}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

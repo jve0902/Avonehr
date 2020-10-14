@@ -111,7 +111,7 @@ export default function Integrations() {
             noValidate
             onSubmit={(e) => updateIntegrations(e)}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={0}>
               <Grid item xs={6} sm={12}>
                 <TextField
                   autoFocus
