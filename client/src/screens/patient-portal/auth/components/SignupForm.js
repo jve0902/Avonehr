@@ -10,7 +10,9 @@ import {
   FormControlLabel,
   Divider
 } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
+import RotateLeftTwoToneIcon from "@material-ui/icons/RotateLeftTwoTone";
 import SignatureCanvas from "react-signature-canvas";
 
 import CountrySelect from "../../../../components/common/CountrySelect";
@@ -359,7 +361,7 @@ const SignupForm = (props) => {
           <Typography variant="h4" color="textPrimary" gutterBottom>
             Signature
           </Typography>
-          <Grid container justify="center">
+          <Grid container justify="center" style={{ position: "relative" }}>
             <Grid item>
               <SignatureCanvas
                 ref={(ref) => setSignatureRef(ref)}
@@ -371,6 +373,13 @@ const SignupForm = (props) => {
                   className: classes.sigCanvas
                 }}
               />
+              <IconButton
+                aria-label="delete"
+                onClick={() => clearSignaturePad()}
+                className={classes.sigCanvasClear}
+              >
+                <RotateLeftTwoToneIcon />
+              </IconButton>
             </Grid>
             <Grid item className={classes.sigCanvasActions}>
               <Button variant="outlined" onClick={() => clearSignaturePad()}>
@@ -379,7 +388,7 @@ const SignupForm = (props) => {
             </Grid>
           </Grid>
           <Grid container justify="left" className={classes.signupActions}>
-            <Button variant="outlined" primary onClick={() => alert()}>
+            <Button variant="contained" color="primary" onClick={() => alert()}>
               Submit
             </Button>
           </Grid>
@@ -396,12 +405,18 @@ const useStyles = makeStyles((theme) => ({
   sigCanvas: {
     border: "1px solid grey"
   },
+  sigCanvasClear: {
+    position: "absolute",
+    background: "#f3f3f3",
+    top: "-20px"
+  },
   sigCanvasActions: {
-    padding: "0 15px"
+    padding: "0 15px",
+    display: "none"
   },
   signupActions: {
     marginTop: theme.spacing(1),
-    maxWidth: "408px",
+    maxWidth: "506px",
     marginLeft: "auto",
     marginRight: "auto",
     textAlign: "right",
