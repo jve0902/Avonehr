@@ -65,7 +65,9 @@ export default function AppointmentTypes(props) {
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-    appointmentById && setSelectedAppointment(_.head(appointmentById));
+    if(!!appointmentById) {
+      setSelectedAppointment(_.head(appointmentById));
+    }
   };
 
   const handleDeleteButton = (id) => {

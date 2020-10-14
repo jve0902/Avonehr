@@ -115,7 +115,7 @@ const EncountersDetails = (props) => {
           {data.map((row) => (
             <StyledTableRow key={row.dt}>
               <TableCell component="th" scope="row">
-                {moment(row.dt).format("MMM, D, YYYY")}
+                {moment(row.dt).format("MMM D YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.title}</TableCell>

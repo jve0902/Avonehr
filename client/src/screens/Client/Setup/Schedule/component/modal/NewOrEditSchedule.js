@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+
 import {
   Button,
   colors,
@@ -15,13 +17,13 @@ import {
   withStyles
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
-import React, { useEffect, useState } from "react";
-import moment from "moment";
-import { useDispatch } from "react-redux";
-import { setSuccess } from "./../../../../../../store/common/actions";
-import ScheduleService from "../../../../../../services/schedule.service";
 import Alert from "@material-ui/lab/Alert";
 import { KeyboardDatePicker, KeyboardTimePicker } from "@material-ui/pickers";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+
+import ScheduleService from "../../../../../../services/schedule.service";
+import { setSuccess } from "./../../../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   gridMargin: {
@@ -317,8 +319,8 @@ const NewOrEditSchedule = ({
                   value={
                     schedule.time_start
                       ? moment(schedule.time_start, "HH:mm:ss").format(
-                          "YYYY-MM-DDTHH:mm:ss"
-                        )
+                        "YYYY-MM-DDTHH:mm:ss"
+                      )
                       : null
                   }
                   className={classes.textField}
@@ -353,8 +355,8 @@ const NewOrEditSchedule = ({
                   value={
                     schedule.time_end
                       ? moment(schedule.time_end, "HH:mm:ss").format(
-                          "YYYY-MM-DDTHH:mm:ss"
-                        )
+                        "YYYY-MM-DDTHH:mm:ss"
+                      )
                       : null
                   }
                   className={classes.textField}

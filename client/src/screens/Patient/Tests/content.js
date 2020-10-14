@@ -32,7 +32,8 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.grey,
     fontSize: "12px",
     whiteSpace: "nowrap",
-    fontWeight: 700
+    fontWeight: 700,
+    padding: "6px 24px 6px 2px"
   },
   body: {
     fontSize: 12
@@ -48,14 +49,14 @@ const StyledTableRow = withStyles((theme) => ({
     "& th": {
       fontSize: 12,
       whiteSpace: "nowrap",
-      padding: "2px 4px"
+      padding: "2px 16px 2px 2px"
     },
     "& td": {
       fontSize: 12,
       whiteSpace: "nowrap",
-      padding: "2px 4px"
-    }
-  }
+      padding: "2px 16px 2px 2px"
+    },
+  },
 }))(TableRow);
 
 const TestsContent = (props) => {

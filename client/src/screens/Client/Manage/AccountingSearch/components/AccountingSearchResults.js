@@ -86,23 +86,13 @@ const TotalTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover
     },
     "& th": {
-<<<<<<< HEAD
-      fontSize: 14
+      fontSize: 12,
     },
     "& td": {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "bold"
-    }
-  }
-=======
-      fontSize: 12,
-    },
-    "& td": {
-      fontSize: 12,
-      fontWeight: "bold",
     },
   },
->>>>>>> 95c386796365d544d40c8f53552ecee52a86523f
 }))(TableRow);
 
 export default function AccountingSearchResults(props) {

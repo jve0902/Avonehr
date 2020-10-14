@@ -63,7 +63,7 @@ const FormsDetails = (props) => {
             data.map((row, index) => (
               <StyledTableRow key={`${row.created}_${index}`}>
                 <TableCell component="th" scope="row">
-                  {moment(row.created).format("MMM, D, YYYY")}
+                  {moment(row.created).format("MMM D YYYY")}
                 </TableCell>
                 <TableCell>{row.form_id || ""}</TableCell>
                 <TableCell>{row.title || ""}</TableCell>

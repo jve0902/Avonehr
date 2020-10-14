@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext, useCallback } from "react";
 
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -77,7 +77,7 @@ import "../../reactGridLayout.css";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export default function Patient(props) {
+export default function Patient() {
   const classes = useStyles();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
@@ -161,7 +161,7 @@ export default function Patient(props) {
 
   //data states
   const [patientData, setPatientData] = useState(null);
-  const [patientBalance, setPatientBalance] = useState(0);
+  const [patientBalance, setPatientBalance] = useState(null);
   const [patientHistory, setPatientHistory] = useState([]);
   const [adminNotesHistory, setAdminNotesHistory] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -278,96 +278,96 @@ export default function Patient(props) {
     });
   };
 
-  const fetchPatientHistory = () => {
+  const fetchPatientHistory = useCallback(() => {
     PatientService.getPatientHistory(patient_id).then((res) => {
       setPatientHistory(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchAdminNotesHistory = () => {
+  const fetchAdminNotesHistory = useCallback(() => {
     PatientService.getAdminNotesHistory(patient_id).then((res) => {
       setAdminNotesHistory(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchAllergies = () => {
+  const fetchAllergies = useCallback(() => {
     PatientService.getAllergies(patient_id).then((res) => {
       setAllergies(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchPatientHandouts = () => {
+  const fetchPatientHandouts = useCallback(() => {
     PatientService.getPatientHandouts(patient_id).then((res) => {
       setHandouts(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchForms = () => {
+  const fetchForms = useCallback(() => {
     PatientService.getForms(patient_id).then((res) => {
       setForms(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchBillings = () => {
+  const fetchBillings = useCallback(() => {
     PatientService.getBillings(patient_id).then((res) => {
       setBillings(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchPatientBalance = () => {
+  const fetchPatientBalance = useCallback(() => {
     PatientService.getPatientBalance(patient_id).then((res) => {
       setPatientBalance(res.data && res.data.length ? res.data[0].amount : "");
     });
-  };
+  }, [patient_id])
 
-  const fetchDocuments = () => {
+  const fetchDocuments = useCallback(() => {
     let tab = "Labs";
     PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchEncounters = () => {
+  const fetchEncounters = useCallback(() => {
     PatientService.getEncounters(patient_id).then((res) => {
       setEncounters(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMedicalNotes = () => {
+  const fetchMedicalNotes = useCallback(() => {
     PatientService.getMedicalNotes(patient_id).then((res) => {
       setMedicalNotes(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMessages = () => {
+  const fetchMessages = useCallback(() => {
     PatientService.getMessages(patient_id).then((res) => {
       setMessages(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchDiagnoses = () => {
+  const fetchDiagnoses = useCallback(() => {
     PatientService.getDiagnoses(patient_id).then((res) => {
       setDiagnoses(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchMedications = () => {
+  const fetchMedications = useCallback(() => {
     PatientService.getMedications(patient_id).then((res) => {
       setMedications(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchRequisitions = () => {
+  const fetchRequisitions = useCallback(() => {
     PatientService.getRequisitions(patient_id).then((res) => {
       setRequisitions(res.data);
     });
-  };
+  }, [patient_id])
 
-  const fetchTests = () => {
+  const fetchTests = useCallback(() => {
     PatientService.getTests(patient_id).then((res) => {
       setTests(res.data);
     });
-  };
+  }, [patient_id])
 
   const searchPatientHandler = (searchText) => {
     const reqBody = {
@@ -377,7 +377,6 @@ export default function Patient(props) {
     };
     PatientService.searchPatient(patient_id, reqBody).then((res) => {
       setPatients(res.data);
-      console.log("Patient's earch result: ", patients);
     });
   };
 
@@ -640,7 +639,12 @@ export default function Patient(props) {
   };
 
   const redirectToPatientPortal = () => {
-    history.push("/manage/patient-search");
+    history.push({
+      pathname : "/manage/patient-search",
+      state : {
+        patients,
+      }} 
+    );
   };
 
   const mapIconHandlers = (value) => {
@@ -789,7 +793,7 @@ export default function Patient(props) {
       let title = item.title;
       return {
         x: 6,
-        y: y,
+        y: 0,
         w: 3,
         h:
           title === "Allergies" || title === "Requisitions"
@@ -840,6 +844,44 @@ export default function Patient(props) {
     );
     setLayout([...newLayout]);
   };
+
+  useEffect(() => {
+    if (!hasPatientIderror) {
+      fetchPatientHistory();
+      fetchPatientBalance();
+      fetchAdminNotesHistory();
+      fetchAllergies();
+      fetchPatientHandouts();
+      fetchForms();
+      fetchBillings();
+      fetchDocuments();
+      fetchEncounters();
+      fetchMedicalNotes();
+      fetchMessages();
+      fetchDiagnoses();
+      fetchMedications();
+      fetchRequisitions();
+      fetchTests();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [
+    hasPatientIderror,
+    fetchPatientHistory,
+    fetchPatientBalance,
+    fetchAdminNotesHistory,
+    fetchAllergies,
+    fetchPatientHandouts,
+    fetchForms,
+    fetchBillings,
+    fetchDocuments,
+    fetchEncounters,
+    fetchMedicalNotes,
+    fetchMessages,
+    fetchDiagnoses,
+    fetchMedications,
+    fetchRequisitions,
+    fetchTests,
+  ])
 
   return (
     <>
@@ -896,346 +938,385 @@ export default function Patient(props) {
           hideActions={true}
           size={"md"}
         />
-      )}
+      )
+      }
 
-      {!!showFormsExpandDialog && (
-        <Dialog
-          open={showFormsExpandDialog}
-          title={" "}
-          message={
-            <FormDetails data={forms} onClose={toggleFormsExpandDialog} />
-          }
-          applyForm={() => toggleFormsExpandDialog()}
-          cancelForm={() => toggleFormsExpandDialog()}
-          hideActions={true}
-          size={"lg"}
-        />
-      )}
+      {
+        !!showFormsExpandDialog && (
+          <Dialog
+            open={showFormsExpandDialog}
+            title={" "}
+            message={<FormDetails data={forms} onClose={toggleFormsExpandDialog} />}
+            applyForm={() => toggleFormsExpandDialog()}
+            cancelForm={() => toggleFormsExpandDialog()}
+            hideActions={true}
+            size={"lg"}
+          />
+        )
+      }
 
-      {!!showFormsViewDialog && (
-        <Dialog
-          open={showFormsViewDialog}
-          title={" "}
-          message={<Form onClose={toggleFormsViewDialog} />}
-          applyForm={() => toggleFormsViewDialog()}
-          cancelForm={() => toggleFormsViewDialog()}
-          hideActions={true}
-          size={"lg"}
-        />
-      )}
+      {
+        !!showFormsViewDialog && (
+          <Dialog
+            open={showFormsViewDialog}
+            title={" "}
+            message={<Form onClose={toggleFormsViewDialog} />}
+            applyForm={() => toggleFormsViewDialog()}
+            cancelForm={() => toggleFormsViewDialog()}
+            hideActions={true}
+            size={"lg"}
+          />
+        )
+      }
 
-      {!!showNewTransactionDialog && (
-        <Dialog
-          open={showNewTransactionDialog}
-          title={" "}
-          message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
-          applyForm={() => toggleNewTransactionDialog()}
-          cancelForm={() => toggleNewTransactionDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showNewTransactionDialog && (
+          <Dialog
+            open={showNewTransactionDialog}
+            title={" "}
+            message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
+            applyForm={() => toggleNewTransactionDialog()}
+            cancelForm={() => toggleNewTransactionDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showBillingExpandDialog && (
-        <Dialog
-          open={showBillingExpandDialog}
-          title={" "}
-          message={
-            <BillingDetails
-              data={billings}
-              onClose={toggleBillngExpandDialog}
-              patientId={patient_id}
-            />
-          }
-          applyForm={() => toggleBillngExpandDialog()}
-          cancelForm={() => toggleBillngExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showBillingExpandDialog && (
+          <Dialog
+            open={showBillingExpandDialog}
+            title={" "}
+            message={
+              <BillingDetails data={billings} onClose={toggleBillngExpandDialog} patientId={patient_id} />
+            }
+            applyForm={() => toggleBillngExpandDialog()}
+            cancelForm={() => toggleBillngExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showPaymentDialog && (
-        <Dialog
-          open={showPaymentDialog}
-          title={" "}
-          message={<PaymentForm onClose={togglePaymentDialog} />}
-          applyForm={() => togglePaymentDialog()}
-          cancelForm={() => togglePaymentDialog()}
-          hideActions={true}
-          size={"sm"}
-        />
-      )}
+      {
+        !!showPaymentDialog && (
+          <Dialog
+            open={showPaymentDialog}
+            title={" "}
+            message={<PaymentForm onClose={togglePaymentDialog} />}
+            applyForm={() => togglePaymentDialog()}
+            cancelForm={() => togglePaymentDialog()}
+            hideActions={true}
+            size={"sm"}
+          />
+        )
+      }
 
-      {!!showAllergyDialog && (
-        <Dialog
-          open={showAllergyDialog}
-          title={" "}
-          message={
-            <Allergies onClose={toggleAllergyDialog} patientId={patient_id} />
-          }
-          applyForm={() => toggleAllergyDialog()}
-          cancelForm={() => toggleAllergyDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showAllergyDialog && (
+          <Dialog
+            open={showAllergyDialog}
+            title={" "}
+            message={
+              <Allergies onClose={toggleAllergyDialog} patientId={patient_id} />
+            }
+            applyForm={() => toggleAllergyDialog()}
+            cancelForm={() => toggleAllergyDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showAllergyExpandDialog && (
-        <Dialog
-          open={showAllergyExpandDialog}
-          title={" "}
-          message={
-            <AllergiesDetails
-              data={allergies}
-              onClose={toggleAllergyExpandDialog}
-            />
-          }
-          applyForm={() => toggleAllergyExpandDialog()}
-          cancelForm={() => toggleAllergyExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showAllergyExpandDialog && (
+          <Dialog
+            open={showAllergyExpandDialog}
+            title={" "}
+            message={
+              <AllergiesDetails
+                data={allergies}
+                onClose={toggleAllergyExpandDialog}
+              />
+            }
+            applyForm={() => toggleAllergyExpandDialog()}
+            cancelForm={() => toggleAllergyExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showHandoutsDialog && (
-        <Dialog
-          open={showHandoutsDialog}
-          title={" "}
-          message={
-            <HandoutsForm
-              patientId={patient_id}
-              onClose={toggleHandoutsDialog}
-              reloadData={fetchPatientHandouts}
-            />
-          }
-          applyForm={() => toggleHandoutsDialog()}
-          cancelForm={() => toggleHandoutsDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showHandoutsDialog && (
+          <Dialog
+            open={showHandoutsDialog}
+            title={" "}
+            message={
+              <HandoutsForm
+                patientId={patient_id}
+                onClose={toggleHandoutsDialog}
+                reloadData={fetchPatientHandouts}
+              />
+            }
+            applyForm={() => toggleHandoutsDialog()}
+            cancelForm={() => toggleHandoutsDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showHandoutsExpandDialog && (
-        <Dialog
-          open={showHandoutsExpandDialog}
-          title={" "}
-          message={
-            <HandoutsDetails
-              patientId={patient_id}
-              data={handouts}
-              reloadData={fetchPatientHandouts}
-              onClose={toggleHandoutsExpandDialog}
-            />
-          }
-          applyForm={() => toggleHandoutsExpandDialog()}
-          cancelForm={() => toggleHandoutsExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showHandoutsExpandDialog && (
+          <Dialog
+            open={showHandoutsExpandDialog}
+            title={" "}
+            message={
+              <HandoutsDetails
+                patientId={patient_id}
+                data={handouts}
+                reloadData={fetchPatientHandouts}
+                onClose={toggleHandoutsExpandDialog}
+              />
+            }
+            applyForm={() => toggleHandoutsExpandDialog()}
+            cancelForm={() => toggleHandoutsExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showEncountersDialog && (
-        <Dialog
-          open={showEncountersDialog}
-          title={" "}
-          message={<EncountersForm onClose={toggleEncountersDialog} />}
-          applyForm={() => toggleEncountersDialog()}
-          cancelForm={() => toggleEncountersDialog()}
-          hideActions={true}
-          size={"lg"}
-        />
-      )}
+      {
+        !!showEncountersDialog && (
+          <Dialog
+            open={showEncountersDialog}
+            title={" "}
+            message={<EncountersForm onClose={toggleEncountersDialog} />}
+            applyForm={() => toggleEncountersDialog()}
+            cancelForm={() => toggleEncountersDialog()}
+            hideActions={true}
+            size={"lg"}
+          />
+        )
+      }
 
-      {!!showEncountersExpandDialog && (
-        <Dialog
-          open={showEncountersExpandDialog}
-          title={" "}
-          message={
-            <EncountersDetails
-              data={encounters}
-              onClose={toggleEncountersExpandDialog}
-              toggleEncountersDialog={toggleEncountersDialog}
-            />
-          }
-          applyForm={() => toggleEncountersExpandDialog()}
-          cancelForm={() => toggleEncountersExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showEncountersExpandDialog && (
+          <Dialog
+            open={showEncountersExpandDialog}
+            title={" "}
+            message={
+              <EncountersDetails
+                data={encounters}
+                onClose={toggleEncountersExpandDialog}
+                toggleEncountersDialog={toggleEncountersDialog}
+              />
+            }
+            applyForm={() => toggleEncountersExpandDialog()}
+            cancelForm={() => toggleEncountersExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showMedicalNotesDialog && (
-        <Dialog
-          open={showMedicalNotesDialog}
-          title={" "}
-          message={<MedicalNotesDetails data={medicalNotes} />}
-          applyForm={() => toggleMedicalNotesDialog()}
-          cancelForm={() => toggleMedicalNotesDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showMedicalNotesDialog && (
+          <Dialog
+            open={showMedicalNotesDialog}
+            title={" "}
+            message={<MedicalNotesDetails data={medicalNotes} />}
+            applyForm={() => toggleMedicalNotesDialog()}
+            cancelForm={() => toggleMedicalNotesDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showMessageDialog && (
-        <Dialog
-          open={showMessageDialog}
-          title={"New Message"}
-          message={
-            <NewMessageForm
-              onClose={toggleMessageDialog}
-              reloadData={fetchMessages}
-              patientId={patient_id}
-            />
-          }
-          applyForm={() => toggleMessageDialog()}
-          cancelForm={() => toggleMessageDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showMessageDialog && (
+          <Dialog
+            open={showMessageDialog}
+            title={"New Message"}
+            message={
+              <NewMessageForm
+                onClose={toggleMessageDialog}
+                reloadData={fetchMessages}
+                patientId={patient_id}
+              />
+            }
+            applyForm={() => toggleMessageDialog()}
+            cancelForm={() => toggleMessageDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showMessageExpandDialog && (
-        <Dialog
-          open={showMessageExpandDialog}
-          title={" "}
-          message={
-            <MessagesDetails
-              data={messages}
-              onClose={toggleMessageDialog}
-              reloadData={fetchMessages}
-              patientId={patient_id}
-            />
-          }
-          applyForm={() => toggleMessageExpandDialog()}
-          cancelForm={() => toggleMessageExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showMessageExpandDialog && (
+          <Dialog
+            open={showMessageExpandDialog}
+            title={" "}
+            message={
+              <MessagesDetails
+                data={messages}
+                onClose={toggleMessageDialog}
+                reloadData={fetchMessages}
+                patientId={patient_id}
+              />
+            }
+            applyForm={() => toggleMessageExpandDialog()}
+            cancelForm={() => toggleMessageExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showDiagnosesDialog && (
-        <Dialog
-          open={showDiagnosesDialog}
-          title={" "}
-          message={
-            <DiagnosesForm
-              onClose={toggleDiagnosesDialog}
-              patientId={patient_id}
-            />
-          }
-          applyForm={() => toggleDiagnosesDialog()}
-          cancelForm={() => toggleDiagnosesDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showDiagnosesDialog && (
+          <Dialog
+            open={showDiagnosesDialog}
+            title={" "}
+            message={
+              <DiagnosesForm
+                onClose={toggleDiagnosesDialog}
+                patientId={patient_id}
+              />
+            }
+            applyForm={() => toggleDiagnosesDialog()}
+            cancelForm={() => toggleDiagnosesDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showDiagnosesExpandDialog && (
-        <Dialog
-          open={showDiagnosesExpandDialog}
-          title={" "}
-          message={
-            <DiagnosesDetails
-              data={diagnoses}
-              onClose={toggleDiagnosesExpandDialog}
-            />
-          }
-          applyForm={() => toggleDiagnosesExpandDialog()}
-          cancelForm={() => toggleDiagnosesExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showDiagnosesExpandDialog && (
+          <Dialog
+            open={showDiagnosesExpandDialog}
+            title={" "}
+            message={
+              <DiagnosesDetails
+                data={diagnoses}
+                onClose={toggleDiagnosesExpandDialog}
+              />
+            }
+            applyForm={() => toggleDiagnosesExpandDialog()}
+            cancelForm={() => toggleDiagnosesExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showMedicationDialog && (
-        <Dialog
-          open={showMedicationDialog}
-          title={" "}
-          message={<MedicationsForm onClose={toggleMedicationDialog} />}
-          applyForm={() => toggleMedicationDialog()}
-          cancelForm={() => toggleMedicationDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showMedicationDialog && (
+          <Dialog
+            open={showMedicationDialog}
+            title={" "}
+            message={<MedicationsForm onClose={toggleMedicationDialog} />}
+            applyForm={() => toggleMedicationDialog()}
+            cancelForm={() => toggleMedicationDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showMedicationExpandDialog && (
-        <Dialog
-          open={showMedicationExpandDialog}
-          title={" "}
-          message={
-            <MedicationsDetails
-              data={medications}
-              onClose={toggleMedicationExpandDialog}
-            />
-          }
-          applyForm={() => toggleMedicationExpandDialog()}
-          cancelForm={() => toggleMedicationExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showMedicationExpandDialog && (
+          <Dialog
+            open={showMedicationExpandDialog}
+            title={" "}
+            message={
+              <MedicationsDetails
+                data={medications}
+                onClose={toggleMedicationExpandDialog}
+              />
+            }
+            applyForm={() => toggleMedicationExpandDialog()}
+            cancelForm={() => toggleMedicationExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showRequisitionDialog && (
-        <Dialog
-          open={showRequisitionDialog}
-          title={" "}
-          message={<RequisitionsForm onClose={toggleRequisitionDialog} />}
-          applyForm={() => toggleRequisitionDialog()}
-          cancelForm={() => toggleRequisitionDialog()}
-          hideActions={true}
-          size={"xl"}
-        />
-      )}
+      {
+        !!showRequisitionDialog && (
+          <Dialog
+            open={showRequisitionDialog}
+            title={" "}
+            message={<RequisitionsForm onClose={toggleRequisitionDialog} />}
+            applyForm={() => toggleRequisitionDialog()}
+            cancelForm={() => toggleRequisitionDialog()}
+            hideActions={true}
+            size={"xl"}
+          />
+        )
+      }
 
-      {!!showRequisitionExpandDialog && (
-        <Dialog
-          open={showRequisitionExpandDialog}
-          title={" "}
-          message={
-            <RequisitionsDetails
-              data={requisitions}
-              onClose={toggleRequisitionExpandDialog}
-              patientId={patient_id}
-            />
-          }
-          applyForm={() => toggleRequisitionExpandDialog()}
-          cancelForm={() => toggleRequisitionExpandDialog()}
-          hideActions={true}
-          size={"md"}
-        />
-      )}
+      {
+        !!showRequisitionExpandDialog && (
+          <Dialog
+            open={showRequisitionExpandDialog}
+            title={" "}
+            message={
+              <RequisitionsDetails
+                data={requisitions}
+                onClose={toggleRequisitionExpandDialog}
+                patientId={patient_id}
+              />
+            }
+            applyForm={() => toggleRequisitionExpandDialog()}
+            cancelForm={() => toggleRequisitionExpandDialog()}
+            hideActions={true}
+            size={"md"}
+          />
+        )
+      }
 
-      {!!showDocumentsExpandDialog && (
-        <Dialog
-          open={showDocumentsExpandDialog}
-          title={" "}
-          message={
-            <DocumentsCardContent
-              data={documents}
-              onClose={toggleDocumentsExpandDialog}
-            />
-          }
-          applyForm={() => toggleDocumentsExpandDialog()}
-          cancelForm={() => toggleDocumentsExpandDialog()}
-          hideActions={true}
-          size={"lg"}
-        />
-      )}
+      {
+        !!showDocumentsExpandDialog && (
+          <Dialog
+            open={showDocumentsExpandDialog}
+            title={" "}
+            message={
+              <DocumentsCardContent
+                data={documents}
+                onClose={toggleDocumentsExpandDialog}
+              />
+            }
+            applyForm={() => toggleDocumentsExpandDialog()}
+            cancelForm={() => toggleDocumentsExpandDialog()}
+            hideActions={true}
+            size={"lg"}
+          />
+        )
+      }
 
-      {!!showTestsExpandDialog && (
-        <Dialog
-          open={showTestsExpandDialog}
-          title={" "}
-          message={
-            <TestsCardContent data={tests} onClose={toggleTestsExpandDialog} />
-          }
-          applyForm={() => toggleTestsExpandDialog()}
-          cancelForm={() => toggleTestsExpandDialog()}
-          hideActions={true}
-          size={"lg"}
-        />
-      )}
+      {
+        !!showTestsExpandDialog && (
+          <Dialog
+            open={showTestsExpandDialog}
+            title={" "}
+            message={
+              <TestsCardContent data={tests} onClose={toggleTestsExpandDialog} />
+            }
+            applyForm={() => toggleTestsExpandDialog()}
+            cancelForm={() => toggleTestsExpandDialog()}
+            hideActions={true}
+            size={"lg"}
+          />
+        )
+      }
 
       <Grid className={classes.main}>
         {!hasPatientIderror && (
@@ -1253,10 +1334,11 @@ export default function Patient(props) {
             margin={[5, 0]}
             measureBeforeMount={true}
             useCSSTransforms={false}
+            draggableHandle={".drag-handle"}
           >
             {FirstColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1283,7 +1365,7 @@ export default function Patient(props) {
                 </Grid>
               );
             })}
-            <Grid key={"Encounters"} className={classes.overflowAuto}>
+            <Grid key={"Encounters"}>
               <Card
                 title="Encounters"
                 data={
@@ -1300,7 +1382,7 @@ export default function Patient(props) {
             </Grid>
             {ThirdColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1326,7 +1408,7 @@ export default function Patient(props) {
             })}
             {FourthColumnPatientCards.map((item, index) => {
               return (
-                <Grid key={item.title} className={classes.overflowAuto}>
+                <Grid key={item.title}>
                   <Card
                     key={index}
                     title={item.title}
@@ -1341,11 +1423,12 @@ export default function Patient(props) {
                       item.title
                     )}
                     updateMinHeight={updateMinHeight}
+                    cardInfo={item.title === "Billing" && patientBalance !== null ? `Balance $${patientBalance}` : ""}
                   />
                 </Grid>
               );
             })}
-            <Grid key={"Documents"} className={classes.overflowAuto}>
+            <Grid key={"Documents"}>
               <Card
                 title="Documents"
                 data={
@@ -1365,7 +1448,7 @@ export default function Patient(props) {
                 updateMinHeight={updateMinHeight}
               />
             </Grid>
-            <Grid key={"All Tests"} className={classes.overflowAuto}>
+            <Grid key={"All Tests"}>
               <Card
                 title="All Tests"
                 data={!!tests && <TestsCardContent data={tests} />}
@@ -1390,8 +1473,5 @@ const useStyles = makeStyles((theme) => ({
   },
   noDisplay: {
     display: "none"
-  },
-  overflowAuto: {
-    overflowY: "auto"
   }
 }));

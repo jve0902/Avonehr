@@ -10,37 +10,14 @@ export default function RequisitionsContent(props) {
 
   return (
     <>
-      {data.map((item) => (
-        <Grid key={item.id} container>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {moment(item.created).format("MMM D YYYY")}
-            </Typography>
+      {
+        data.map(item => (
+          <Grid key={item.id} container className={classes.inputRow}>
+            <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
+            <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.id}</Typography>
+            <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.cpt_name}</Typography>
           </Grid>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {item.id}
-            </Typography>
-          </Grid>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {item.cpt_name}
-            </Typography>
-          </Grid>
-        </Grid>
-      ))}
+        ))}
     </>
   );
 }
@@ -49,8 +26,18 @@ const useStyles = makeStyles((theme) => ({
   text12: {
     fontSize: 12
   },
+  inputRow: {
+    marginBottom: theme.spacing(0.5),
+    flexWrap: "nowrap"
+  },
   block: {
     width: 90,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: theme.spacing(0, 0.5, 0, 0)
+  },
+  fullWidth: {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",

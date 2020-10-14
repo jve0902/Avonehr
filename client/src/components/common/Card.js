@@ -45,87 +45,73 @@ const PatientCard = (props) => {
   return (
     <>
       <Card className={classes.root} variant="outlined">
-        <Grid
-          container
-          justify="space-between"
-          alignItems="center"
-          className={`${classes.titleContainer} ${
-            showActions ? classes.leftPadding : classes.fullPadding
-          }`}
-        >
+        {/* drag-handle className is important for the header as it makes the header draggable only */}
+        <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
             {title} &nbsp; &nbsp;
           </Typography>
-          {title === "Patient" && (
-            <SaveLayoutIcon
-              className={classes.icon}
-              onClick={() => updateLayoutHandler()}
-            />
-          )}
-          {!!icon &&
-            React.createElement(menuIcons[icon], {
-              onClick: iconHandler,
-              className: classes.icon
-            })}
-          {showEditorActions && (
-            <Grid>
-              <IconButton
-                variant="outlined"
-                onClick={editorCancelHandler}
-                size="small"
-              >
-                <CancelIcon />
-              </IconButton>
-              <IconButton
-                variant="outlined"
-                type="submit"
-                size="small"
-                onClick={editorSaveHandler}
-              >
-                <SaveIcon />
-              </IconButton>
-            </Grid>
-          )}
-          {!!showSearch && (
-            <TextField
-              margin="dense"
-              variant="outlined"
-              placeholder="Search ..."
-              className={classes.searchInput}
-              InputProps={{
-                classes: { input: classes.textField }
-              }}
-              onChange={(e) => {
-                const searchedValue = e.target.value;
-                if (!!searchedValue && searchedValue.length) {
-                  searchHandler(searchedValue);
-                }
-              }}
-            />
-          )}
-          {!!cardInfo && (
-            <Typography className={classes.cardInfo}>{cardInfo}</Typography>
-          )}
-          {showActions && (
-            <Grid>
-              {!!primaryButtonText && (
-                <Button
-                  className={classes.button}
-                  onClick={() => primaryButtonHandler()}
-                >
-                  {primaryButtonText}
-                </Button>
-              )}
-              {!!secondaryButtonText && (
-                <Button
-                  className={classes.button}
-                  onClick={() => secondaryButtonHandler()}
-                >
-                  {secondaryButtonText}
-                </Button>
-              )}
-            </Grid>
-          )}
+          {
+            title === "Patient" && (
+              <SaveLayoutIcon
+                className={classes.icon}
+                onClick={() => updateLayoutHandler()}
+              />
+            )
+          }
+          {
+            !!icon && (
+              React.createElement(menuIcons[icon], {
+                onClick: iconHandler,
+                className: classes.icon
+              })
+            )
+          }
+          {
+            showEditorActions && (
+              <Grid>
+                <IconButton variant="outlined" onClick={editorCancelHandler} size="small">
+                  <CancelIcon />
+                </IconButton>
+                <IconButton variant="outlined" type="submit" size="small" onClick={editorSaveHandler}>
+                  <SaveIcon />
+                </IconButton>
+              </Grid>
+            )
+          }
+          {
+            !!showSearch && (
+              <TextField
+                margin='dense'
+                variant='outlined'
+                placeholder="Search ..."
+                className={classes.searchInput}
+                InputProps={{
+                  classes: { input: classes.textField },
+                }}
+                onChange={(e) => {
+                  const searchedValue = e.target.value;
+                  if(!!searchedValue && searchedValue.length) {
+                    searchHandler(searchedValue)
+                  }
+                }}
+              />
+            )
+          }
+          {
+            !!cardInfo && (
+              <Typography className={classes.cardInfo}>
+                {cardInfo}
+              </Typography>
+            )
+          }
+          {
+            showActions && (
+              <Grid>
+                {!!primaryButtonText && (<Button className={classes.button} onClick={() => primaryButtonHandler()}>{primaryButtonText}</Button>)}
+                {!!secondaryButtonText && (<Button className={classes.button} onClick={() => secondaryButtonHandler()}>{secondaryButtonText}</Button>)}
+              </Grid>
+            )
+          }
         </Grid>
         <Grid className={classes.cardContent}>{!!data ? data : ""}</Grid>
       </Card>
@@ -144,7 +130,8 @@ const useStyles = makeStyles((theme) => ({
   },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 34
+    minHeight: 34,
+    cursor: "move"
   },
   fullPadding: {
     padding: 8

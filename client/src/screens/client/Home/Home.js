@@ -137,7 +137,7 @@ export default function Home() {
         setErrors(error.response.data.error);
       }
     
-      );
+    );
   };
 
   const handleEventClick = (calEvent) => {

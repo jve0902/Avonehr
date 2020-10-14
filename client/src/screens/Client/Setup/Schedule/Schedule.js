@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-import _ from "lodash";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import { Button, Container, CssBaseline, makeStyles } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import _ from "lodash";
+import moment from "moment";
+
 import { AuthConsumer } from "../../../../providers/AuthProvider";
-import ScheduleSearchForm from "./component/ScheduleSearchForm";
-import ScheduleSearchResultTable from "./component/ScheduleSearchResultTable";
-import NewOrEditSchedule from "./component/modal/NewOrEditSchedule";
 import ScheduleService from "../../../../services/schedule.service";
 import DeleteSchedule from "./component/modal/DeleteSchedule";
+import NewOrEditSchedule from "./component/modal/NewOrEditSchedule";
+import ScheduleSearchForm from "./component/ScheduleSearchForm";
+import ScheduleSearchResultTable from "./component/ScheduleSearchResultTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,7 +90,9 @@ const Schedule = () => {
     setIsOpen(true);
     setIsNewSchedule(false);
     const scheduleById = searchResult.filter((result) => result.id === id);
-    scheduleById && setSelectedScheduleValues(_.head(scheduleById));
+    if(!!scheduleById) {
+      setSelectedScheduleValues(_.head(scheduleById));
+    }
   };
 
   const handleDeleteSchedule = (id) => {

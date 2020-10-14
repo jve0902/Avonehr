@@ -10,37 +10,14 @@ export default function DiagnosesContent(props) {
 
   return (
     <>
-      {data.map((item) => (
-        <Grid key={item.icd_id} container>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {moment(item.created).format("MMM D YYYY")}
-            </Typography>
+      {
+        data.map(item => (
+          <Grid key={item.icd_id} container className={classes.inputRow}>
+            <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
+            <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{item.icd_id}</Typography>
+            <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.name}</Typography>
           </Grid>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {item.icd_id}
-            </Typography>
-          </Grid>
-          <Grid item className={classes.block}>
-            <Typography
-              component="span"
-              className={classes.text12}
-              color="textPrimary"
-            >
-              {item.name}
-            </Typography>
-          </Grid>
-        </Grid>
-      ))}
+        ))}
     </>
   );
 }
@@ -48,6 +25,10 @@ export default function DiagnosesContent(props) {
 const useStyles = makeStyles((theme) => ({
   text12: {
     fontSize: 12
+  },
+  inputRow: {
+    marginBottom: theme.spacing(0.5),
+    flexWrap: "nowrap",
   },
   block: {
     width: 90,

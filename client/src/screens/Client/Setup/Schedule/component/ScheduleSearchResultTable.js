@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   IconButton,
   makeStyles,
@@ -10,9 +12,8 @@ import {
   TableRow,
   withStyles,
 } from "@material-ui/core";
-import React from "react";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
@@ -108,8 +109,8 @@ const ScheduleSearchResultTable = ({
                   {moment(result.date_start) > moment()
                     ? "Future"
                     : moment(result.date_end) < moment()
-                    ? "Past"
-                    : "Current"}
+                      ? "Past"
+                      : "Current"}
                 </TableCell>
                 <TableCell>
                   {result.created ? moment(result.created).format("lll") : ""}

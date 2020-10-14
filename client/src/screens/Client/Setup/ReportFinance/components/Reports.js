@@ -9,7 +9,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
-import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
