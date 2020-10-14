@@ -1,20 +1,21 @@
 import React from "react";
+
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import moment from "moment";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import moment from "moment";
+import { useDispatch } from "react-redux";
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
 import { setEncounter } from "../../../store/patient/actions";
-import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -110,7 +111,7 @@ const EncountersDetails = (props) => {
           {data.map((row) => (
             <StyledTableRow key={row.dt}>
               <TableCell component="th" scope="row">
-                {moment(row.dt).format("MMM, D, YYYY")}
+                {moment(row.dt).format("MMM D YYYY")}
               </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.title}</TableCell>

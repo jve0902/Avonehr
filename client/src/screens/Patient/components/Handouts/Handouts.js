@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
+
 import {
   Button,
   Grid,
@@ -12,9 +12,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+
 import PatientService from "../../../../services/patient.service";
 import { setError, setSuccess } from "../../../../store/common/actions";
-import { useDispatch } from "react-redux";
 
 const HandoutsForm = (props) => {
   const classes = useStyles();
@@ -29,17 +31,17 @@ const HandoutsForm = (props) => {
 
   const fetchAllHandouts = () => {
     PatientService.getAllHandouts(patientId).then((res) => {
-        setAllHandouts(res.data);
-      });
+      setAllHandouts(res.data);
+    });
   }
 
   const createPatientHandoutHandler = () => {
     const reqBody = {
-        data : {
-            "patient_id": patientId,
-            "handout_id": 1,
-        }
-      };
+      data : {
+        "patient_id": patientId,
+        "handout_id": 1,
+      }
+    };
       // TODO:: static for the time being - discussion required
 
     PatientService.createPatientHandout(patientId, reqBody)
@@ -68,29 +70,29 @@ const HandoutsForm = (props) => {
       </Typography>
 
       <TableContainer className={classes.tableContainer}>
-      <Table size="small" className={classes.table}>
-        <TableBody>
-          {allHandouts.map((row, index) => (
-            <TableRow key={`${row.created}_${index}`}>
+        <Table size="small" className={classes.table}>
+          <TableBody>
+            {allHandouts.map((row, index) => (
+              <TableRow key={`${row.created}_${index}`}>
                 <TableCell padding="checkbox">
-                <Checkbox
+                  <Checkbox
                     // indeterminate={numSelected > 0 && numSelected < rowCount}
                     // checked={rowCount > 0 && numSelected === rowCount}
                     // onChange={onSelectAllClick}
                     // inputProps={{ 'aria-label': 'select all desserts' }}
-                />
+                  />
                 </TableCell>
-              <TableCell component="th" scope="row">
-                {moment(row.created).format("MMM, D, YYYY")}
-              </TableCell>
-              <TableCell>{row.filename}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                <TableCell component="th" scope="row">
+                  {moment(row.created).format("MMM D YYYY")}
+                </TableCell>
+                <TableCell>{row.filename}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-    <Grid
+      <Grid
         className={classes.actionContainer}
         container
         justify="space-between"

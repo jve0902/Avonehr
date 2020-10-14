@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+
+import { TextField, Button, Grid, Typography, MenuItem } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import { TextField, Button, Grid, Typography, MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { EncountersFormFields, EncountersCards } from "../../../static/encountersForm";
-import Card from "../../../components/common/Card";
 import { useSelector, shallowEqual } from "react-redux";
+
+import Card from "../../../components/common/Card";
+import { EncountersFormFields, EncountersCards } from "../../../static/encountersForm";
 
 const Form = (props) => {
   const classes = useStyles();
   const { onClose } = props;
   const [formFields, setFormFields] = useState({
-    title: '',
-    type: '',
-    name: '',
-    date: '',
+    title: "",
+    type: "",
+    name: "",
+    date: "",
   })
   const encounter = useSelector((state) => state.patient.selectedEncounter, shallowEqual);
 
@@ -145,7 +147,7 @@ const Form = (props) => {
             <Button variant="outlined" onClick={() => onClose()}>Save</Button>
             <Button variant="outlined" onClick={() => onClose()}>Exit</Button>
           </Grid>
-          <Typography gutterBottom>Created {moment().format("MMM, D, YYYY")}</Typography>
+          <Typography gutterBottom>Created {moment().format("MMM D YYYY")}</Typography>
           <Typography gutterBottom>Created By {!!encounter && encounter.name}</Typography>
         </Grid>
       </Grid>
