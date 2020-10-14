@@ -1,4 +1,6 @@
 import React from "react";
+
+import Paper from "@material-ui/core/Paper";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -6,28 +8,27 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import NumberFormat from "react-number-format";
 import moment from "moment";
+import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 1000,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   actions: {
     textAlign: "center",
     display: "flex",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
+      fontSize: "12px"
+    }
   },
   detailLink: {
     color: theme.palette.text.link,
-    cursor: "pointer",
-  },
+    cursor: "pointer"
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -35,25 +36,24 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       fontSize: 12,
-      // height: "50px",
     },
   },
 }))(TableRow);
@@ -61,13 +61,13 @@ const TotalTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 14,
+      fontSize: 12,
     },
     "& td": {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "bold",
     },
   },
@@ -99,39 +99,27 @@ const Reports = ({ reports, ...props }) => {
               </TableCell>
               <TableCell>{moment(report.month, "M").format("MMM")}</TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Total}
-                />
+                {`$ ${report.Total}`}
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Service}
-                />
+               
+                {`$ ${report.Service}`}
+
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Credit}
-                />
+
+                {`$ ${report.Credit}`}
+                
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Payment}
-                />
+
+                {`$ ${report.Payment}`}
+
               </TableCell>
               <TableCell padding="checkbox">
-                <NumberFormat
-                  prefix="$ "
-                  displayType="text"
-                  value={report.Refund}
-                />
+
+                {`$ ${report.Refund}`}
+
               </TableCell>
               <TableCell
                 className={classes.detailLink}
@@ -151,19 +139,19 @@ const Reports = ({ reports, ...props }) => {
               Total
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Total, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Total, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Service, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Service, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Credit, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Credit, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Payment, 0)}`}
+              {`$ ${reports.reduce((a, b) => a + b.Payment, 0)}`}
             </TableCell>
             <TableCell padding="checkbox" colSpan={1} align="left">
-              {`$ \u00A0${reports.reduce((a, b) => a + b.Refund, 0)}`}
+              <div style={{marginLeft: "5px"}} >{`$ ${reports.reduce((a, b) => a + b.Refund, 0)}`}</div>
             </TableCell>
           </TotalTableRow>
         </TableBody>

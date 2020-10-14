@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import moment from "moment";
+
 import {
   makeStyles,
   Paper,
@@ -10,27 +10,30 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  withStyles,
+  withStyles
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
+import Alert from "@material-ui/lab/Alert";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+
 import icdcodesService from "../../../../../services/icdcodes.service";
 import { setSuccess } from "../../../../../store/common/actions";
-import { useDispatch } from "react-redux";
-import Alert from "@material-ui/lab/Alert";
+
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 450,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   actions: {
     textAlign: "center",
     display: "flex",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -38,41 +41,41 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       fontSize: 12,
-      height: "50px",
-    },
-  },
+      height: "50px"
+    }
+  }
 }))(TableRow);
 
 const GreenSwitch = withStyles({
   switchBase: {
     color: grey[300],
     "&$checked": {
-      color: green[500],
+      color: green[500]
     },
     "&$checked + $track": {
-      backgroundColor: green[500],
-    },
+      backgroundColor: green[500]
+    }
   },
   checked: {},
-  track: {},
+  track: {}
 })(Switch);
 
 const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
@@ -83,7 +86,7 @@ const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
 
   const changeHandler = (event, icdcode_id) => {
     const payload = {
-      icd_id: icdcode_id,
+      icd_id: icdcode_id
     };
     let checked = event.target.checked;
     setState(
@@ -132,24 +135,28 @@ const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
           </Alert>
         ))}
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Code</StyledTableCell>
-              <StyledTableCell>Description</StyledTableCell>
-              <StyledTableCell>Favorites</StyledTableCell>
-              <StyledTableCell>Updated</StyledTableCell>
-              <StyledTableCell>Updated By</StyledTableCell>
+              <StyledTableCell padding="checkbox">Code</StyledTableCell>
+              <StyledTableCell padding="checkbox">Description</StyledTableCell>
+              <StyledTableCell padding="checkbox">Favorites</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated By</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {result.map((code) => (
               <StyledTableRow key={code.id}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {code.id}
                 </TableCell>
-                <TableCell>{code.name}</TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">{code.name}</TableCell>
+                <TableCell padding="checkbox">
                   <GreenSwitch
                     size="small"
                     checked={Boolean(code.favorite)}
@@ -162,10 +169,10 @@ const ICDcodestable = ({ user, result, fetchSearchIcdCodes }) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   {code.updated ? moment(code.updated).format("lll") : ""}
                 </TableCell>
-                <TableCell>{code.updated_name}</TableCell>
+                <TableCell padding="checkbox">{code.updated_name}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

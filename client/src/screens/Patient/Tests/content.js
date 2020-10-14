@@ -11,19 +11,19 @@ import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: 9,
+    padding: 9
   },
   tableContainer: {
-    minWidth: 650,
+    minWidth: 650
   },
   actions: {
     display: "flex",
     justifyContent: "center",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -36,15 +36,15 @@ const StyledTableCell = withStyles((theme) => ({
     padding: "6px 24px 6px 2px"
   },
   body: {
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
       fontSize: 12,
@@ -84,7 +84,9 @@ const TestsContent = (props) => {
           {data.map((row) => (
             <StyledTableRow key={row.name}>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.lab_dt ? moment(row.lab_dt).format("MMM D YYYY") : ""}</TableCell>
+              <TableCell>
+                {row.lab_dt ? moment(row.lab_dt).format("MMM, D, YYYY") : ""}
+              </TableCell>
               <TableCell>{row.value}</TableCell>
               <TableCell>{row.physician}</TableCell>
               <TableCell>{row.physician}</TableCell>

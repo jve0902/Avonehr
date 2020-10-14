@@ -75,44 +75,43 @@ export const formatPhoneNumber = (phoneNumber) => {
 };
 
 export const formatDate = (date) => {
-  var d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + d.getDate(),
-    year = d.getFullYear();
+  let d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
-}
+};
 
 export const DateDiff = {
+  inDays: function (d1, d2) {
+    let t2 = d2.getTime();
+    let t1 = d1.getTime();
 
-  inDays: function(d1, d2) {
-      var t2 = d2.getTime();
-      var t1 = d1.getTime();
-
-      return parseInt((t2-t1)/(24*3600*1000));
+    return parseInt((t2 - t1) / (24 * 3600 * 1000));
   },
 
-  inWeeks: function(d1, d2) {
-      var t2 = d2.getTime();
-      var t1 = d1.getTime();
+  inWeeks: function (d1, d2) {
+    const t2 = d2.getTime();
+    const t1 = d1.getTime();
 
-      return parseInt((t2-t1)/(24*3600*1000*7));
+    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
   },
 
-  inMonths: function(d1, d2) {
-      var d1Y = d1.getFullYear();
-      var d2Y = d2.getFullYear();
-      var d1M = d1.getMonth();
-      var d2M = d2.getMonth();
+  inMonths: function (d1, d2) {
+    let d1Y = d1.getFullYear();
+    let d2Y = d2.getFullYear();
+    let d1M = d1.getMonth();
+    let d2M = d2.getMonth();
 
-      return (d2M+12*d2Y)-(d1M+12*d1Y);
+    return d2M + 12 * d2Y - (d1M + 12 * d1Y);
   },
 
-  inYears: function(d1, d2) {
-      return d2.getFullYear()-d1.getFullYear();
+  inYears: function (d1, d2) {
+    return d2.getFullYear() - d1.getFullYear();
   }
 };
 

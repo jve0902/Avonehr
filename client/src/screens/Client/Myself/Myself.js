@@ -1,22 +1,24 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import { makeStyles } from "@material-ui/core";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-import { MyActivityHistory, MyLogins, MyProfile } from "./components";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+
+import { MyActivityHistory, MyLogins, MyProfile } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "10px 0px",
+    padding: "10px 0px"
   },
   tabs: {
     height: "25px",
-    minHeight: "25px",
+    minHeight: "25px"
   },
   tabItem: {
     padding: 0,
@@ -25,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "5px",
     textTransform: "none",
     "& span": {
-      textColor: "white",
-    },
+      textColor: "white"
+    }
   },
   tabItems: {
     marginTop: "5px",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   paper: {
-    width: "500px",
-  },
+    width: "500px"
+  }
 }));
 
 function TabPanel(props) {
@@ -60,7 +62,7 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
 };
 
 const Myself = () => {

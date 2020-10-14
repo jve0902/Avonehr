@@ -7,7 +7,7 @@ import {
 
 const initState = {
   selectedEncounter: null,
-  editorText: '',
+  editorText: ""
 };
 
 const reducer = (state = initState, action) => {
@@ -22,15 +22,15 @@ const reducer = (state = initState, action) => {
         ...state,
         selectedEncounter: null
       };
-      case SET_EDITOR_TEXT:
+    case SET_EDITOR_TEXT:
       return {
         ...state,
         editorText: action.payload
       };
-      case RESET_EDITOR_TEXT:
+    case RESET_EDITOR_TEXT:
       return {
         ...state,
-        editorText: ''
+        editorText: ""
       };
     //editor case
     default:

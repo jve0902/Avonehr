@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Card, Typography, Grid, Button, TextField, IconButton } from "@material-ui/core";
+import {
+  Card,
+  Typography,
+  Grid,
+  Button,
+  TextField,
+  IconButton
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -32,7 +39,7 @@ const PatientCard = (props) => {
     editorCancelHandler,
     updateLayoutHandler
   } = props;
-  
+
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
   return (
@@ -114,10 +121,11 @@ const PatientCard = (props) => {
               ""
           }
         </Grid>
+        <Grid className={classes.cardContent}>{!!data ? data : ""}</Grid>
       </Card>
     </>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,10 +142,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "move"
   },
   fullPadding: {
-    padding: 8,
+    padding: 8
   },
   leftPadding: {
-    padding: "0 0 0 8px",
+    padding: "0 0 0 8px"
   },
   title: {
     fontWeight: "600",
@@ -148,22 +156,22 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     fontSize: 13,
-    lineHeight: "14px",
+    lineHeight: "14px"
   },
   cardContent: {
-    padding: 8,
+    padding: 8
   },
   sideIcon: {
-    minWidth: 35,
+    minWidth: 35
   },
   profileContainer: {
     padding: theme.spacing(1, 2),
-    cursor: "pointer",
+    cursor: "pointer"
   },
   avatar: {
     marginRight: 15,
     width: theme.spacing(6),
-    height: theme.spacing(6),
+    height: theme.spacing(6)
   },
   text: {
     fontStyle: "normal",
@@ -180,9 +188,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer"
   },
   textField: {
-    height: 8,
+    height: 8
   }
-}))
+}));
 
 PatientCard.defaultProps = {
   title: "Title",
@@ -200,7 +208,7 @@ PatientCard.defaultProps = {
   searchHandler: () => {},
   editorSaveHandler: () => {},
   editorCancelHandler: () => {},
-  updateLayoutHandler: () => {},
+  updateLayoutHandler: () => {}
 };
 
 PatientCard.propTypes = {
@@ -219,9 +227,8 @@ PatientCard.propTypes = {
   searchHandler: PropTypes.func,
   editorSaveHandler: PropTypes.func,
   editorCancelHandler: PropTypes.func,
-  updateLayoutHandler: PropTypes.func,
+  updateLayoutHandler: PropTypes.func
 };
-
 
 // export default rglDynamicHeight(PatientCard);
 export default PatientCard;

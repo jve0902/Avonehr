@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     padding: 9
   },
@@ -55,7 +55,7 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
@@ -74,21 +74,21 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
-const DocumentsContent = props => {
+const DocumentsContent = (props) => {
   const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
 
-  const onItemDelete = selectedItem => {
+  const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
     const tab = "Labs";
     PatientService.deleteDocument(documentId, tab)
-      .then(response => {
+      .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
       })
-      .catch(error => {
+      .catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&

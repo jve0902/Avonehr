@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+
 import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { Link, useHistory } from "react-router-dom";
 
 import { AuthConsumer } from "./../../../providers/AuthProvider";
 

@@ -1,6 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import Alert from "@material-ui/lab/Alert";
+import PropTypes from "prop-types";
 
 const Error = ({ errors, children }) => {
   return (
@@ -18,7 +19,7 @@ const Error = ({ errors, children }) => {
 
 Error.propTypes = {
   error: PropTypes.shape({
-    msg: PropTypes.string.isRequired,
-  }),
+    msg: PropTypes.string.isRequired
+  })
 };
 export default Error;

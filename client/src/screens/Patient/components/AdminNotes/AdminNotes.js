@@ -6,7 +6,10 @@ import { useDispatch } from "react-redux";
 
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
-import { setEditorText, resetEditorText } from "./../../../../store/patient/actions";
+import {
+  setEditorText,
+  resetEditorText
+} from "./../../../../store/patient/actions";
 
 const AdminNotes = (props) => {
   const dispatch = useDispatch();
@@ -14,14 +17,14 @@ const AdminNotes = (props) => {
   const { onClose, reloadData, patientId } = props;
   const [oldAdminNote, setOldAdminNote] = useState("");
   const [formFields, setFormFields] = useState({
-    notes: "",
+    notes: ""
   });
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     setFormFields({
       ...formFields,
-      [name]: value,
+      [name]: value
     });
     dispatch(setEditorText(value));
   };
@@ -31,7 +34,7 @@ const AdminNotes = (props) => {
     let fieldName = "notes";
     setFormFields({
       ...formFields,
-      [fieldName]: props.oldAdminNote,
+      [fieldName]: props.oldAdminNote
     });
     dispatch(setEditorText(props.oldAdminNote));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,8 +45,8 @@ const AdminNotes = (props) => {
     const reqBody = {
       data: {
         admin_note: formFields.notes,
-        old_admin_note: oldAdminNote,
-      },
+        old_admin_note: oldAdminNote
+      }
     };
     // TODO:: static for the time being - discussion required
     let noteId = 1;
@@ -64,7 +67,7 @@ const AdminNotes = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -100,19 +103,19 @@ const AdminNotes = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   formInput: {
     marginBottom: theme.spacing(1),
-    
+
     "& .MuiOutlinedInput-multiline": {
       padding: 5,
       fontSize: 12
     }
   },
   actionContainer: {
-    marginTop: theme.spacing(1),
-  },
+    marginTop: theme.spacing(1)
+  }
 }));
 
 export default AdminNotes;

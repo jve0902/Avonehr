@@ -1,10 +1,9 @@
 import React from "react";
-import moment from "moment";
+
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Typography
-} from "@material-ui/core";
+import moment from "moment";
+
 
 export default function BillingContent(props) {
   const classes = useStyles();
@@ -12,29 +11,57 @@ export default function BillingContent(props) {
 
   return (
     <>
-      {
-        data.map(item => (
-          <Grid key={item.tran_type} container className={classes.inputRow}>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.dt).format("MMM D YYYY")}</Typography>
-            </Grid>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">$&nbsp;{item.amount}</Typography>
-            </Grid>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{item.tran_type}</Typography>
-            </Grid>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{item.encounter_title}</Typography>
-            </Grid>
-            {!!item.cpt_procedure && (
-              <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{item.cpt_procedure}</Typography>
-            </Grid>
-            )}
+      {data.map((item) => (
+        <Grid key={item.tran_type} container className={classes.inputRow}>
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {moment(item.dt).format("MMM D YYYY")}
+            </Typography>
           </Grid>
-        ))
-      }
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              $&nbsp;{item.amount}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {item.tran_type}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {item.encounter_title}
+            </Typography>
+          </Grid>
+          {!!item.cpt_procedure && (
+            <Grid item className={classes.block}>
+              <Typography
+                component="span"
+                className={classes.text12}
+                color="textPrimary"
+              >
+                {item.cpt_procedure}
+              </Typography>
+            </Grid>
+          )}
+        </Grid>
+      ))}
     </>
   );
 }
@@ -45,9 +72,9 @@ const useStyles = makeStyles((theme) => ({
   },
   block: {
     width: 90,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    padding: theme.spacing(0, 0.5, 0, 0),
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: theme.spacing(0, 0.5, 0, 0)
   }
 }));

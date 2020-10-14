@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+
 import { makeStyles, withStyles } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,41 +9,41 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import moment from "moment";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import moment from "moment";
 import { useDispatch } from "react-redux";
-import { setError } from "../../../../store/common/actions";
+
 import MySelfService from "../../../../services/myself.service";
+import { setError } from "../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   title: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   tableContainer: {
     width: 500,
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   patientLink: {
     color: "#2979FF",
-    cursor: "pointer",
+    cursor: "pointer"
   },
   placeholderText: {
     textAlign: "center",
     padding: "100px",
     fontWeight: "500",
     fontSize: "30px",
-    opacity: "20%",
+    opacity: "20%"
   },
   overFlowControl: {
     maxWidth: "130px",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    whiteSpace: "nowrap",
-  },
+    whiteSpace: "nowrap"
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -49,26 +51,26 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
-      fontSize: 12,
-    },
-  },
+      fontSize: 12
+    }
+  }
 }))(TableRow);
 
 export default function MyActivityHistory(props) {

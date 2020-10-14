@@ -5,26 +5,24 @@
  * do not want to allow users to resize your component
  */
 
-import React from 'react';
-
+import React from "react";
 
 export default function heightHOC(COMPONENT) {
   return class HeightLayerHOC extends React.PureComponent {
-  
     // Ref used to identify own DOM element
     self = React.createRef();
     currentHeight = 0;
-  
+
     // We update the height on any potential change
     componentDidUpdate() {
       this.calculateHeight();
     }
-    
+
     calculateHeight() {
       if (!this.self.current) {
         return;
       }
-      
+
       // Unnecessary to assign value to a variable
       // This is in place only to serve as an example of the values purpose
       // We take the offsetHeight of the child of this layout HOC wrapper
@@ -34,7 +32,7 @@ export default function heightHOC(COMPONENT) {
       if (minHeight === this.currentHeight) {
         return;
       }
-      
+
       this.currentHeight = minHeight;
       // Either a connected redux action or whatever else you prefer
       // this.props.updateMinHeight('<your key for this item goes here>', minHeight);
@@ -45,7 +43,7 @@ export default function heightHOC(COMPONENT) {
       //  myLayouts[myCurrentBreakpoint] = myLayouts[myCurrentBreakpoint]
       //    .map(item => item === key ? { ...item, minH: newMinHeight } : item);
     }
-  
+
     render() {
       // You can filter out props here if needed
       return (
@@ -54,6 +52,5 @@ export default function heightHOC(COMPONENT) {
         </div>
       );
     }
-  }
+  };
 }
-

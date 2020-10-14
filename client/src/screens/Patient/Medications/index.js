@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+
+import { TextField, Button, Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import _ from "lodash";
-import { TextField, Button, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+
 import PatientService from "../../../services/patient.service";
 
 const Medications = (props) => {
@@ -25,8 +27,8 @@ const Medications = (props) => {
   const fetchMedications = (searchText) => {
     const reqBody = {
       data: {
-        text: searchText,
-      },
+        text: searchText
+      }
     };
     PatientService.searchDiagnosis(reqBody).then((res) => {
       setMedications(res.data);
@@ -36,11 +38,15 @@ const Medications = (props) => {
   return (
     <>
       <Grid className={classes.heading} container justify="space-between">
-        <Typography variant="h3" color="textSecondary">Select Drug</Typography>
-        <Button variant="outlined" onClick={() => onClose()}>Cancel</Button>
+        <Typography variant="h3" color="textSecondary">
+          Select Drug
+        </Typography>
+        <Button variant="outlined" onClick={() => onClose()}>
+          Cancel
+        </Button>
       </Grid>
       <Grid container spacing={2}>
-        <Grid item md={4}>   
+        <Grid item md={4}>
           <TextField
             label=""
             placeholder="Search..."
@@ -52,48 +58,51 @@ const Medications = (props) => {
             size="small"
           />
           {medications.length
-          ?
-            medications.map((item, index) => (
+            ? medications.map((item, index) => (
               <Grid key={index}>
-                <Typography gutterBottom variant="body1">Exythromycine 25mcg Tablets</Typography>
+                <Typography gutterBottom variant="body1">
+                    Exythromycine 25mcg Tablets
+                </Typography>
               </Grid>
             ))
-            :
-            null
-          }
+            : null}
         </Grid>
         <Grid item md={4}>
           <Grid className={classes.header}>
-            <Typography variant="h4" color="textSecondary" align='center'>Recent</Typography>
+            <Typography variant="h4" color="textSecondary" align="center">
+              Recent
+            </Typography>
           </Grid>
-          {
-            [...Array(5)].map((item, index) => (
-              <Grid key={index}>
-                <Typography gutterBottom variant="body1" align='center'>Exythromycine 25mcg Tablets</Typography>
-              </Grid>
-            ))
-          }
+          {[...Array(5)].map((item, index) => (
+            <Grid key={index}>
+              <Typography gutterBottom variant="body1" align="center">
+                Exythromycine 25mcg Tablets
+              </Typography>
+            </Grid>
+          ))}
         </Grid>
         <Grid item md={4}>
           <Grid className={classes.header}>
-            <Typography variant="h4" color="textSecondary" align='center'>Recommended</Typography>
+            <Typography variant="h4" color="textSecondary" align="center">
+              Recommended
+            </Typography>
           </Grid>
-          {
-            [...Array(5)].map((item, index) => (
-              <Grid key={index}>
-                <Typography gutterBottom variant="body1" align='center'>Exythromycine 25mcg Tablets</Typography>
-              </Grid>
-            ))
-          }
+          {[...Array(5)].map((item, index) => (
+            <Grid key={index}>
+              <Typography gutterBottom variant="body1" align="center">
+                Exythromycine 25mcg Tablets
+              </Typography>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </>
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   heading: {
     marginBottom: theme.spacing(4)
@@ -104,13 +113,10 @@ const useStyles = makeStyles((theme) => ({
   header: {
     minHeight: 38,
     marginBottom: theme.spacing(1),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   }
-})
-)
-
+}));
 
 export default Medications;
-

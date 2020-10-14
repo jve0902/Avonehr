@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+
+import { ClickAwayListener, Paper, Popper } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Button from "@material-ui/core/Button";
-import { ClickAwayListener, Paper, Popper } from "@material-ui/core";
-import { NavLink as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@material-ui/icons/ArrowDropUpOutlined";
-import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { NavLink as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex",
     alignItems: "center",
     cursor: "pointer",
-    padding: "10px 10px",
+    padding: "10px 10px"
   },
   subMenus: {
-    zIndex: 9999,
+    zIndex: 9999
   },
   link: {
     color: theme.palette.secondary.main,
@@ -26,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     padding: "5px 0",
     "&:last-child": {
-      border: "none",
-    },
+      border: "none"
+    }
   },
 
   nav: {
@@ -37,18 +38,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "3px",
     fontSize: "13px",
-    marginTop: "10px",
+    marginTop: "1px",
     "& .MuiListItem-divider": {
       "&:last-child": {
-        borderBottom: "none",
-      },
-    },
+        borderBottom: "none"
+      }
+    }
   },
   itemWithSubmenus: {
     color: theme.palette.white,
     padding: "16px 15px",
-    textDecoration: "none",
-  },
+    textDecoration: "none"
+  }
 }));
 
 // menuItems is an array of object like: {content: "", onClick: function}
@@ -108,12 +109,12 @@ export default function DropdownItems({ menuId, parentItem, menuItems }) {
 
 // by default we are generating a random id for the dropdown menu
 DropdownItems.defaultProps = {
-  menuId: `simpleMenu`,
+  menuId: `simpleMenu`
 };
 
 // For additional type checking
 DropdownItems.propTypes = {
   menuId: PropTypes.string,
   parentItem: PropTypes.string.isRequired,
-  menuItems: PropTypes.array,
+  menuItems: PropTypes.array
 };

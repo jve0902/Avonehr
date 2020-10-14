@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+
 import { makeStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -7,39 +8,39 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Tooltip from "@material-ui/core/Tooltip";
 import moment from "moment";
 import PropTypes from "prop-types";
-import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "0",
+    padding: "0"
   },
   paper: {
-    padding: "5px",
+    padding: "5px"
   },
   tableContainer: {
     minWidth: 650,
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   patientLink: {
     color: theme.palette.text.link,
-    cursor: "pointer",
+    cursor: "pointer"
   },
   placeholderText: {
     textAlign: "center",
     padding: "100px",
     fontWeight: "500",
     fontSize: "30px",
-    opacity: "20%",
+    opacity: "20%"
   },
   overFlowControl: {
     maxWidth: "130px",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    whiteSpace: "nowrap",
-  },
+    whiteSpace: "nowrap"
+  }
 }));
 
 const LightTooltip = withStyles((theme) => ({
@@ -47,8 +48,8 @@ const LightTooltip = withStyles((theme) => ({
     backgroundColor: theme.palette.common.white,
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[1],
-    fontSize: 13,
-  },
+    fontSize: 13
+  }
 }))(Tooltip);
 
 const StyledTableCell = withStyles((theme) => ({
@@ -56,40 +57,40 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
-      fontSize: 12,
-    },
-  },
+      fontSize: 12
+    }
+  }
 }))(TableRow);
 
 const TotalTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 14,
+      fontSize: 12,
     },
     "& td": {
-      fontSize: 14,
-      fontWeight: "bold",
+      fontSize: 12,
+      fontWeight: "bold"
     },
   },
 }))(TableRow);
@@ -97,11 +98,6 @@ const TotalTableRow = withStyles((theme) => ({
 export default function AccountingSearchResults(props) {
   const classes = useStyles();
   const history = useHistory();
-  const [totalAmount, setTotalAmount] = useState(0);
-  // const addAmount = (amount) => {
-  //   let add = 0
-  //   add = add+amount
-  // }
   const amount = props.result.reduce((a, b) => a + b.amount, 0);
   return (
     <div className={classes.root}>
@@ -214,7 +210,7 @@ export default function AccountingSearchResults(props) {
                 // colSpan={1}
                 // align="left"
               >
-                {`$\u00A0${amount}`}
+                <div style={{marginLeft: "5px"}}>{`$\u00A0\u00A0${amount}`}</div>
               </TableCell>
             </TotalTableRow>
           </TableBody>
@@ -236,7 +232,7 @@ AccountingSearchResults.propTypes = {
       name: PropTypes.string.isRequired,
       note: PropTypes.string,
       patient_id: PropTypes.number.isRequired,
-      patient_name: PropTypes.string.isRequired,
+      patient_name: PropTypes.string.isRequired
     })
-  ).isRequired,
+  ).isRequired
 };

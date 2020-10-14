@@ -17,10 +17,10 @@ import { setError, setSuccess } from "../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: 9,
+    padding: 9
   },
   tableContainer: {
-    minWidth: 650,
+    minWidth: 650
   },
   actions: {
     textAlign: "center",
@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     border: "none",
     "& button": {
-      fontSize: "12px",
-    },
-  },
+      fontSize: "12px"
+    }
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -38,27 +38,27 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
     fontSize: "12px",
-    fontWeight: 700,
+    fontWeight: 700
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     fontSize: 14,
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
     "& th": {
-      fontSize: 12,
+      fontSize: 12
     },
     "& td": {
       fontSize: 12,
-      height: "50px",
-    },
-  },
+      height: "50px"
+    }
+  }
 }))(TableRow);
 
 const BillingDetails = (props) => {
@@ -71,11 +71,11 @@ const BillingDetails = (props) => {
     PatientService.getBillings(patientId).then((res) => {
       setBillings(res.data);
     });
-  }, [patientId])
+  }, [patientId]);
 
   useEffect(() => {
     fetchBillings();
-  }, [fetchBillings])
+  }, [fetchBillings]);
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
@@ -95,7 +95,7 @@ const BillingDetails = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -114,26 +114,26 @@ const BillingDetails = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {billings.length && billings.map((row, index) => (
-            <StyledTableRow key={`${row.dt}_${index}`}>
-              <TableCell component="th" scope="row">
-                {moment(row.dt).format("MMM D YYYY")}
-              </TableCell>
-              <TableCell>{row.tran_type}</TableCell>
-              <TableCell>{row.encounter_title}</TableCell>
-              <TableCell>{row.cpt_procedure || ""}</TableCell>
-              
+          {billings.length &&
+            billings.map((row, index) => (
+              <StyledTableRow key={`${row.dt}_${index}`}>
+                <TableCell component="th" scope="row">
+                  {moment(row.dt).format("MMM, D, YYYY")}
+                </TableCell>
+                <TableCell>{row.tran_type}</TableCell>
+                <TableCell>{row.encounter_title}</TableCell>
+                <TableCell>{row.cpt_procedure || ""}</TableCell>
 
-              <TableCell className={classes.actions}>
-                <IconButton
-                  className={classes.button}
-                  onClick={() => onItemDelete(row)}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
-            </StyledTableRow>
-          ))}
+                <TableCell className={classes.actions}>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => onItemDelete(row)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </StyledTableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

@@ -1,11 +1,13 @@
 import React from "react";
+
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+
 import App from "./App";
-import configureStore from "./store/configureStore";
 import CustomSnackbar from "./components/common/CustomSnackbar";
-import * as serviceWorker from "./serviceWorker";
 import NetworkService from "./network-service";
+import * as serviceWorker from "./serviceWorker";
+import configureStore from "./store/configureStore";
 import "./index.css";
 
 const store = configureStore();

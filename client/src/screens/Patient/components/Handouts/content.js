@@ -1,28 +1,40 @@
 import React from "react";
+
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Typography
-} from "@material-ui/core";
 import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
     marginBottom: theme.spacing(0.5),
-    flexWrap: 'nowrap',
+    flexWrap: "nowrap",
+  },
+  button: {
+    padding: 9
+  },
+  tableContainer: {
+      // minWidth: 650,
+  },
+  actions: {
+    textAlign: "center",
+    display: "flex",
+    border: "none",
+    "& button": {
+      fontSize: "12px"
+    }
   },
   block: {
     minWidth: 90,
     maxWidth: 120,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    padding: theme.spacing(0, 0.5, 0, 0),
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: theme.spacing(0, 0.5, 0, 0)
   },
   fullWidth: {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
     padding: theme.spacing(0, 0.5, 0, 0),
   },
   text12: {
@@ -31,22 +43,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HandoutsContent = (props) => {
-  const { data, /* reloadData */ } = props;
+  const { data /* reloadData */ } = props;
   const classes = useStyles();
 
   return (
     <>
-    {
-      data.map(item => (
-        <Grid onClick={() => alert(item.filename)} key={item.created} container className={classes.inputRow}>
-          <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
-          <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.filename}</Typography>
-        </Grid>
-      ))
-    }
+      {
+        data.map(item => (
+          <Grid onClick={() => alert(item.filename)} key={item.created} container className={classes.inputRow}>
+            <Typography component="span" className={`${classes.text12} ${classes.block}`} color="textPrimary">{moment(item.created).format("MMM D YYYY")}</Typography>
+            <Typography component="span" className={`${classes.text12} ${classes.fullWidth}`} color="textPrimary">{item.filename}</Typography>
+          </Grid>
+        ))}
     </>
   );
 };
 
 export default HandoutsContent;
-

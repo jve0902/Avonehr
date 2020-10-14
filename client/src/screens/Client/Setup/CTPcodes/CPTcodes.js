@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
+
 import { CssBaseline, makeStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+
+import { AuthConsumer } from "../../../../providers/AuthProvider";
+import CPTCodesService from "../../../../services/cpt.service";
 import CPTform from "./component/CPTform";
 import CPTtable from "./component/CPTtable";
-import CPTCodesService from "../../../../services/cpt.service";
-import { AuthConsumer } from "../../../../providers/AuthProvider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px",
+    padding: "40px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1),
-  },
+    paddingBottom: theme.spacing(1)
+  }
 }));
 
 export default function CTPcodes() {
@@ -34,7 +36,7 @@ export default function CTPcodes() {
     favorite,
     billable,
     self,
-    group,
+    group
   };
 
   const fetchLabCompanyList = () => {

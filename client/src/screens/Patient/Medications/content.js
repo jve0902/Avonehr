@@ -1,10 +1,8 @@
 import React from "react";
-import moment from "moment";
+
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Typography
-} from "@material-ui/core";
+import moment from "moment";
 
 export default function MedicationsContent(props) {
   const classes = useStyles();
@@ -12,21 +10,37 @@ export default function MedicationsContent(props) {
 
   return (
     <>
-      {
-        data.map(item => (
-          <Grid key={item.start_dt} container>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{moment(item.start_dt).format("MMM D YYYY")}</Typography>
-            </Grid>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{item.descr}</Typography>
-            </Grid>
-            <Grid item className={classes.block}>
-              <Typography component="span" className={classes.text12} color="textPrimary">{item.name}</Typography>
-            </Grid>
+      {data.map((item) => (
+        <Grid key={item.start_dt} container>
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {moment(item.start_dt).format("MMM D YYYY")}
+            </Typography>
           </Grid>
-        ))
-      }
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {item.descr}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.block}>
+            <Typography
+              component="span"
+              className={classes.text12}
+              color="textPrimary"
+            >
+              {item.name}
+            </Typography>
+          </Grid>
+        </Grid>
+      ))}
     </>
   );
 }
@@ -37,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
   },
   block: {
     width: 90,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    padding: theme.spacing(0, 0.5, 0, 0),
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: theme.spacing(0, 0.5, 0, 0)
   }
 }));

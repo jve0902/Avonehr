@@ -29,8 +29,8 @@ const MedicalNotes = (props) => {
     const reqBody = {
       data: {
         old_medical_note: oldMedicalNote,
-        medical_note: medicalNote,
-      },
+        medical_note: medicalNote
+      }
     };
     PatientService.updateMedicalNotes(patientId, reqBody, noteId)
       .then((response) => {
@@ -49,7 +49,7 @@ const MedicalNotes = (props) => {
         dispatch(
           setError({
             severity: severity,
-            message: resMessage,
+            message: resMessage
           })
         );
       });
@@ -69,7 +69,7 @@ const MedicalNotes = (props) => {
             fullWidth
             onChange={(e) => {
               dispatch(setEditorText(e.target.value));
-              setMedicalNote(e.target.value)
+              setMedicalNote(e.target.value);
             }}
             multiline={true}
             rows={6}
@@ -89,19 +89,19 @@ const MedicalNotes = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
-    margin: theme.spacing(3, 0),
+    margin: theme.spacing(3, 0)
   },
   formInput: {
     marginBottom: theme.spacing(1),
-    
+
     "& .MuiOutlinedInput-multiline": {
       padding: 5,
       fontSize: 12
     }
   },
   actionContainer: {
-    marginTop: theme.spacing(1),
-  },
+    marginTop: theme.spacing(1)
+  }
 }));
 
 export default MedicalNotes;

@@ -1,26 +1,28 @@
 import React from "react";
-import moment from "moment";
-import { Link } from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Colors from "../../../../../theme/colors";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
+import { Link } from "react-router-dom";
+
+import Colors from "../../../../../theme/colors";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: "600",
     fontSize: "1em",
     "& h2": {
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   },
   titleContainer: {
     padding: "0 0 0 1em",
     borderBottom: `1px solid ${Colors.border}`,
-    minHeight: 47,
+    minHeight: 47
   },
   messageToPatientsUnread: {
     marginTop: theme.spacing(8),
@@ -28,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "13px",
       listStyle: "none",
       lineHeight: "19px",
-      marginBottom: theme.spacing(1.5),
-    },
+      marginBottom: theme.spacing(1.5)
+    }
   },
   unreadMsgActions: {
     display: "flex",
@@ -42,20 +44,20 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "none",
       fontSize: "13px",
-      color: theme.palette.text.primary,
+      color: theme.palette.text.primary
     },
     "& button": {
       border: "none",
       padding: 0,
-      fontSize: "13px",
-    },
-  },
+      fontSize: "13px"
+    }
+  }
 }));
 
 const MessagesUnread = ({
   appointmentRequests,
   messagesUnread,
-  onMessageEdit,
+  onMessageEdit
 }) => {
   const classes = useStyles();
 

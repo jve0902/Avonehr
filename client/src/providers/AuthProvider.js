@@ -1,4 +1,5 @@
 import React from "react";
+
 import AuthService from "../services/auth.service";
 
 const AuthContext = React.createContext();
@@ -12,7 +13,7 @@ class AuthProvider extends React.Component {
     this.logout = this.logout.bind(this);
     const isAuthenticated = AuthService.checkAuth();
     this.state = {
-      isAuth: isAuthenticated,
+      isAuth: isAuthenticated
     };
   }
 
@@ -32,7 +33,7 @@ class AuthProvider extends React.Component {
           isAuth: this.state.isAuth,
           login: this.login,
           logout: this.logout,
-          user: JSON.parse(localStorage.getItem("user")),
+          user: JSON.parse(localStorage.getItem("user"))
         }}
       >
         {this.props.children}

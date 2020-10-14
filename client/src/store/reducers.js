@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+
 import authReducer from "./auth";
 import commonReducer from "./common";
 import emailReducer from "./email";
@@ -8,7 +9,7 @@ const appReducer = combineReducers({
   auth: authReducer,
   common: commonReducer,
   email: emailReducer,
-  patient: patientReducer,
+  patient: patientReducer
 });
 
 const reducer = (state, action) => {
