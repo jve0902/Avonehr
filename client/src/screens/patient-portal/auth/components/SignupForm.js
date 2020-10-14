@@ -76,6 +76,8 @@ const SignupForm = (props) => {
     signatureRef.clear();
   };
 
+  console.log("formFields:", formFields);
+
   return (
     <>
       <form>
@@ -376,6 +378,11 @@ const SignupForm = (props) => {
               </Button>
             </Grid>
           </Grid>
+          <Grid container justify="left" className={classes.signupActions}>
+            <Button variant="outlined" primary onClick={() => alert()}>
+              Submit
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </>
@@ -391,6 +398,14 @@ const useStyles = makeStyles((theme) => ({
   },
   sigCanvasActions: {
     padding: "0 15px"
+  },
+  signupActions: {
+    marginTop: theme.spacing(1),
+    maxWidth: "408px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    textAlign: "right",
+    display: "block"
   }
 }));
 
