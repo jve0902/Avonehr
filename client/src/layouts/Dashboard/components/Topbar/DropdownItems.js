@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "3px",
     fontSize: "13px",
-    marginTop: "10px",
+    marginTop: "1px",
     "& .MuiListItem-divider": {
       "&:last-child": {
         borderBottom: "none"

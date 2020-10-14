@@ -139,6 +139,7 @@ export default function AppointmentTypes(props) {
               onClose={() => handleEditModalClose(false)}
               user={user}
               isNewAppointment={isNewAppointment}
+              savedAppointments={appointments}
             />
             <DeleteAppointmentModal
               id={selectedAppointmentId}
