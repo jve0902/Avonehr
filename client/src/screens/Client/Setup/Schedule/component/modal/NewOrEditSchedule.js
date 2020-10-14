@@ -192,7 +192,7 @@ const NewOrEditSchedule = ({
         <DialogContent className={classes.content}>
           <DialogContentText id="alert-dialog-description">
             {isNewSchedule
-              ? "This page is used to Create new schedule entry"
+              ? "This page is used to create a new schedule entry"
               : "This page is used to Edit existing schedule entry"}
           </DialogContentText>
           {errors &&
