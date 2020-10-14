@@ -308,7 +308,7 @@ class AppRouter extends Component {
             {/* Patient_portal */}
             <RouteWithLayout
               layout={PlainPatientPortal}
-              path="/signup"
+              path="/signup/:clientCode"
               component={PatientSignUp}
             />
             <RouteWithLayout

@@ -9,6 +9,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Link, useHistory } from "react-router-dom";
 
 import { AuthConsumer } from "./../../../providers/AuthProvider";
+import { SignupForm } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
@@ -41,7 +42,7 @@ const PatientSignUp = () => {
           history.push("/");
         }
         return (
-          <Container component="main" maxWidth="sm">
+          <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
               <Avatar className={classes.avatar}>
@@ -68,6 +69,7 @@ const PatientSignUp = () => {
                 can log in <Link to="#">here</Link>
               </Typography>
             </div>
+            <SignupForm />
           </Container>
         );
       }}
