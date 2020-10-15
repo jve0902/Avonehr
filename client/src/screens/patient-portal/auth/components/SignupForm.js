@@ -13,6 +13,7 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import RotateLeftTwoToneIcon from "@material-ui/icons/RotateLeftTwoTone";
+import Alert from "@material-ui/lab/Alert";
 import _ from "lodash";
 import SignatureCanvas from "react-signature-canvas";
 
@@ -20,11 +21,11 @@ import CountrySelect from "../../../../components/common/CountrySelect";
 import RegionSelect from "../../../../components/common/RegionSelect";
 import { FormFields } from "../../../../static/expandForm";
 import Error from "./../../../../components/common/Error";
-import AuthService from "./../../../../services/auth.service";
+import PatientAuthService from "./../../../../services/patient_portal/auth.service";
 
 const SignupForm = (props) => {
   const classes = useStyles();
-  const { onClose } = props;
+  const { onFormSubmit } = props;
 
   const BasicInfo = FormFields.basicInfo;
   const AddressDetails = FormFields.addressDetails;
@@ -37,16 +38,16 @@ const SignupForm = (props) => {
   const [termsChecked, setTermsChecked] = useState(true);
   const [signatureRef, setSignatureRef] = useState(null);
   const [formFields, setFormFields] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
     gender: "",
-    address1: "",
+    address: "",
     address2: "",
     country: "",
     state: "",
     city: "",
-    zipPostal: "",
+    postal: "",
     contactPreference: ""
   });
   const [fieldErrors, setFieldErrors] = useState([]);
@@ -82,6 +83,9 @@ const SignupForm = (props) => {
     signatureRef.clear();
   };
 
+  const patientErrors =
+    props.errors && props.errors.filter((err) => err.param.includes("patient"));
+
   const getFieldError = (target, fieldName) => {
     let value = "client." + fieldName;
     if (target) {
@@ -98,7 +102,7 @@ const SignupForm = (props) => {
       target = "patient";
     }
 
-    AuthService.validate({
+    PatientAuthService.validate({
       fieldName: event.target.name,
       value: event.target.value,
       target
@@ -109,12 +113,9 @@ const SignupForm = (props) => {
           const updatedErrors = fieldErrors.filter(
             (error) => error.param !== response.data.message.param
           );
-          console.log("updatedErrors:", updatedErrors);
           setFieldErrors(updatedErrors);
         },
         (error) => {
-          console.log("error.status", error);
-
           if (!error.response) {
             // network error
             console.error(error);
@@ -136,6 +137,12 @@ const SignupForm = (props) => {
     <>
       <form>
         <Grid className={classes.inputRow}>
+          {patientErrors &&
+            patientErrors.map((error, index) => (
+              <Alert severity="error" key={index}>
+                {error.msg}
+              </Alert>
+            ))}
           <Typography variant="h4" color="textPrimary" gutterBottom>
             Basic Information
           </Typography>
@@ -452,7 +459,11 @@ const SignupForm = (props) => {
             </Grid>
           </Grid>
           <Grid container justify="flex-end" className={classes.signupActions}>
-            <Button variant="contained" color="primary" onClick={() => alert()}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => onFormSubmit(formFields)}
+            >
               Submit
             </Button>
           </Grid>

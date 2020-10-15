@@ -1,24 +1,24 @@
 export const FormFields = {
   basicInfo: [
     {
-      name: "firstName",
-      id: "firstName",
+      name: "firstname",
+      id: "firstname",
       label: "First Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "middleName",
-      id: "middleName",
+      name: "middlename",
+      id: "middlename",
       label: "Middle Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "lastName",
-      id: "lastName",
+      name: "lastname",
+      id: "lastname",
       label: "Last Name",
       baseType: "input",
       type: "text",
@@ -33,8 +33,8 @@ export const FormFields = {
       options: []
     },
     {
-      name: "socialSecurity",
-      id: "socialSecurity",
+      name: "ssn",
+      id: "ssn",
       label: "Social Security",
       baseType: "input",
       type: "text",
@@ -100,8 +100,8 @@ export const FormFields = {
       options: []
     },
     {
-      name: "zip",
-      id: "zip",
+      name: "postal",
+      id: "postal",
       label: "Zip/Postal",
       baseType: "input",
       type: "text",
@@ -142,14 +142,6 @@ export const FormFields = {
       options: []
     },
     {
-      name: "ssn",
-      id: "ssn",
-      label: "SNN",
-      baseType: "input",
-      type: "text",
-      options: []
-    },
-    {
       name: "contactPreference",
       id: "contactPreference",
       label: "Contact Preference",
@@ -173,32 +165,32 @@ export const FormFields = {
   ],
   emergencyInfo: [
     {
-      name: "emergencyfirstName",
-      id: "emergencyfirstName",
+      name: "emergency_firstname",
+      id: "emergency_firstname",
       label: "First Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "emergencymiddleName",
-      id: "emergencymiddleName",
+      name: "emergency_middlename",
+      id: "emergency_middlename",
       label: "Middle Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "emergencylastName",
-      id: "emergencylastName",
+      name: "emergency_lastname",
+      id: "emergency_lastname",
       label: "Last Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "relationship",
-      id: "relationship",
+      name: "emergency_relationship",
+      id: "emergency_relationship",
       label: "Relationship",
       baseType: "input",
       type: "text",
@@ -213,8 +205,8 @@ export const FormFields = {
       options: []
     },
     {
-      name: "emergencycontact",
-      id: "emergencycontact",
+      name: "emergency_phone",
+      id: "emergency_phone",
       label: "Contact Number",
       baseType: "input",
       type: "number",
@@ -223,24 +215,24 @@ export const FormFields = {
   ],
   insuranceInfo: [
     {
-      name: "planName",
-      id: "planName",
+      name: "insurance_name",
+      id: "insurance_name",
       label: "Plan Name",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "groupNumber",
-      id: "groupNumber",
+      name: "insurance_group",
+      id: "insurance_group",
       label: "Group Number",
       baseType: "input",
       type: "text",
       options: []
     },
     {
-      name: "memberId",
-      id: "memberId",
+      name: "insurance_member",
+      id: "insurance_member",
       label: "Member Id",
       baseType: "input",
       type: "text",
@@ -273,8 +265,8 @@ export const FormFields = {
       options: []
     },
     {
-      name: "reasonForConsult",
-      id: "reasonForConsult",
+      name: "medical_note",
+      id: "medical_note",
       label: "Reason For Consult",
       baseType: "input",
       type: "number",

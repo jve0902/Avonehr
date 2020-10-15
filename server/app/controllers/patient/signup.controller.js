@@ -47,7 +47,7 @@ exports.getClientByCode = async (req, res) => {
  */
 exports.patientSignup = async (req, res) => {
   const db = makeDb(configuration, res);
-  let patient = req.body.patient;
+  let patient = req.body;
   patient.dob = moment(patient.dob).format("YYYY-MM-DD");
   patient.created = new Date();
 

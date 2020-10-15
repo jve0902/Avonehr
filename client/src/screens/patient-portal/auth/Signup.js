@@ -7,11 +7,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Alert from "@material-ui/lab/Alert";
+import { useDispatch } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
 
 import Error from "./../../../components/common/Error";
 import { AuthConsumer } from "./../../../providers/AuthProvider";
 import AuthService from "./../../../services/patient_portal/auth.service";
+import { setSuccess } from "./../../../store/common/actions";
 import { SignupForm } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +42,10 @@ const useStyles = makeStyles((theme) => ({
 const PatientSignUp = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { clientCode } = useParams();
   const [clientId, setClientId] = React.useState(null);
+  const [clientError, setclientError] = React.useState([]);
   const [errors, setErrors] = React.useState([]);
 
   useEffect(() => {
@@ -70,6 +74,21 @@ const PatientSignUp = () => {
     );
   }, [clientCode]);
 
+  const handleFormSubmit = (data) => {
+    setErrors([]);
+    console.log("handleFormSubmit data:", data);
+    AuthService.register(data).then(
+      (response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+      },
+      (error) => {
+        if (error.response) {
+          setErrors(error.response.data);
+        }
+      }
+    );
+  };
+
   return (
     <AuthConsumer>
       {({ isAuth }) => {
@@ -79,9 +98,9 @@ const PatientSignUp = () => {
         return (
           <Container component="main" maxWidth="lg">
             <CssBaseline />
-            {errors.length > 0 ? (
+            {clientError.length > 0 ? (
               <div className={`${classes.paper} ${classes.ErrorSection}`}>
-                <Error errors={errors} />
+                <Error errors={clientError} />
                 <Alert icon={false} severity="info">
                   Go back to <Link to="/">Home page</Link>
                 </Alert>
@@ -113,7 +132,10 @@ const PatientSignUp = () => {
                     you can log in <Link to="#">here</Link>
                   </Typography>
                 </div>
-                <SignupForm />
+                <SignupForm
+                  onFormSubmit={handleFormSubmit}
+                  errors={errors.error}
+                />
               </>
             )}
           </Container>
