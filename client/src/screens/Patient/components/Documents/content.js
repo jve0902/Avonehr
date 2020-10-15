@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     "& button": {
       fontSize: "12px"
     }
+  },
+  indicator: {
+    backgroundColor : theme.palette.primary.main,
   }
 }));
 
@@ -111,7 +114,7 @@ const DocumentsContent = (props) => {
 
   return (
     <>
-      <Tabs value={tabValue} onChange={handleChange}>
+      <Tabs value={tabValue} onChange={handleChange} classes={{ indicator: classes.indicator }}>
         <CapitalizedTab label="All Labs" />
         <CapitalizedTab label="Imaging" />
         <CapitalizedTab label="Uncategorized" />
