@@ -252,7 +252,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1),
     maxWidth: 400,
-    flexWrap: "wrap",
+    wordWrap: "break-word",
     backgroundColor: theme.palette.common.white,
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[1],
