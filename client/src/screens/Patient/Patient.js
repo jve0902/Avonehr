@@ -1418,6 +1418,7 @@ export default function Patient() {
                     icon={item.icon}
                     primaryButtonText={item.primaryButtonText}
                     secondaryButtonText={item.secondaryButtonText}
+                    iconHandler={mapIconHandlers(item.title)}
                     primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                     secondaryButtonHandler={mapSecondaryButtonHandlers(
                       item.title
