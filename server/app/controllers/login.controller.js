@@ -25,7 +25,7 @@ exports.signin = async (req, res) => {
   const db = makeDb(configuration, res);
 
   const rows = await db.query(
-    "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
+    "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt FROM user WHERE email = ?",
     [req.body.email]
   );
 

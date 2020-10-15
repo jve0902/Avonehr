@@ -110,24 +110,24 @@ export const FormFields = {
   ],
   contactInfo: [
     {
-      name: "homePhone",
-      id: "homePhone",
+      name: "phone_home",
+      id: "phone_home",
       label: "Home Phone",
       baseType: "input",
       type: "number",
       options: []
     },
     {
-      name: "cellPhone",
-      id: "cellPhone",
+      name: "phone_cell",
+      id: "phone_cell",
       label: "Cell Phone",
       baseType: "input",
       type: "number",
       options: []
     },
     {
-      name: "workPhone",
-      id: "workPhone",
+      name: "phone_work",
+      id: "phone_work",
       label: "Work Phone",
       baseType: "input",
       type: "number",
@@ -139,6 +139,14 @@ export const FormFields = {
       label: "Email",
       baseType: "input",
       type: "email",
+      options: []
+    },
+    {
+      name: "ssn",
+      id: "ssn",
+      label: "SNN",
+      baseType: "input",
+      type: "text",
       options: []
     },
     {

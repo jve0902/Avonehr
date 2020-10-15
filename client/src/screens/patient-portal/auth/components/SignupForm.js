@@ -257,7 +257,8 @@ const SignupForm = (props) => {
                       fullWidth
                       onChange={(e) => handleInputChnage(e)}
                       onBlur={(event) =>
-                        item.name === "email" && handleAjaxValidation(event)
+                        (item.name === "email" || item.name === "ssn") &&
+                        handleAjaxValidation(event)
                       }
                     />
                     <Error errors={getFieldError("patient", item.name)} />
