@@ -109,7 +109,7 @@ const MedicationsDetails = (props) => {
             data.map((row) => (
               <StyledTableRow key={row.start_dt}>
                 <TableCell component="th" scope="row">
-                  {moment(row.start_dt).format("MMM, D, YYYY")}
+                  {moment(row.start_dt).format("MMM D YYYY")}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.expires}</TableCell>
