@@ -39,6 +39,60 @@ exports.getClientByCode = async (req, res) => {
   }
 };
 
+/**
+ * This function let client and user to signup into the system.
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} response
+ */
+exports.patientSignup = async (req, res) => {
+  const db = makeDb(configuration, res);
+  let patient = req.body.patient;
+  patient.dob = moment(patient.dob).format("YYYY-MM-DD");
+  patient.created = new Date();
+
+  patient.password = bcrypt.hashSync(patient.password, 8);
+
+  const existingPatientRows = await db.query(
+    `SELECT 1 FROM patient WHERE client_id='${patient.client_id}' and  (email='${patient.email}' or ssn='${patient.ssn}') LIMIT 1`
+  );
+
+  if (existingPatientRows.length > 0) {
+    errorMessage.error = [
+      {
+        value: JSON.stringify(patient),
+        msg: "Patient is already in our system. Try with different values",
+        param: "patient.body",
+      },
+    ];
+    return res.status(status.error).send(errorMessage);
+  }
+
+  try {
+    const patientResponse = await db.query(
+      "INSERT INTO patient set ?",
+      patient
+    );
+
+    if (!patientResponse.insertId) {
+      errorMessage.message = "patient Cannot be registered";
+      res.status(status.notfound).send(errorMessage);
+    }
+
+    if (patientResponse.insertId) {
+      successMessage.message = "User succesfullly registered!";
+      successMessage.data = patientResponse;
+      res.status(status.created).send(successMessage);
+    }
+  } catch (err) {
+    // handle the error
+    errorMessage.error = err.message;
+    res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 exports.getClientForm = async (req, res) => {
   const db = makeDb(configuration, res);
   const { clientId } = req.params;
