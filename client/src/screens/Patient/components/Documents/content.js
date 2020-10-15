@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { Typography } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -78,10 +78,32 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const DocumentsContent = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    setTableData([...data])
+  }, [data])
+
+
+  const fetchDocuments = useCallback((selectedTab) => {
+    let tab = "";
+    if(selectedTab === 0) {
+      tab = "Labs";
+    } else if(selectedTab === 1) {
+      tab = "Imaging";
+    } else if(selectedTab === 2) {
+      tab = "Uncategorized";
+    } else if(selectedTab === 3) {
+      tab = "Deleted";
+    }
+    PatientService.getDocuments(patientId, tab).then((res) => {
+      setTableData(res.data);
+    });
+  }, [patientId])
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
@@ -109,6 +131,7 @@ const DocumentsContent = (props) => {
   };
 
   const handleChange = (event, newValue) => {
+    fetchDocuments(newValue);
     setTabValue(newValue);
   };
 
@@ -136,8 +159,9 @@ const DocumentsContent = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tabValue === 0 ?
-              data.map((row, index) => (
+            {tableData.length
+              ?
+              tableData.map((row, index) => (
                 <StyledTableRow key={`${row.created}_${index}`}>
                   <TableCell component="th" scope="row">
                     {moment(row.created).format("MMM D YYYY")}

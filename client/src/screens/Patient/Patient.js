@@ -1436,6 +1436,7 @@ export default function Patient() {
                     <DocumentsCardContent
                       data={documents}
                       reloadData={() => fetchDocuments()}
+                      patientId={patient_id}
                     />
                   )
                 }
