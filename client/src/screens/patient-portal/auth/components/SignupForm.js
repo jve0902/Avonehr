@@ -133,6 +133,55 @@ const SignupForm = (props) => {
       });
   };
 
+  const handleFormSubmission = () => {
+    const formData = {
+      patient: {
+        client_id: 1,
+        status: "A",
+        firstname: formFields.firstname,
+        middlename: formFields.middlename,
+        lastname: formFields.lastname,
+        //preferred_name: formFields.preferred_name.trim(),
+        address: formFields.address,
+        address2: formFields.address2,
+        city: formFields.city,
+        state: formFields.state,
+        postal: formFields.postal,
+        country: formFields.country,
+        phone_home: formFields.phone_home,
+        phone_cell: formFields.phone_cell,
+        phone_work: formFields.phone_work,
+        phone_other: formFields.phone_other,
+        phone_note: formFields.phone_note,
+        email: formFields.email,
+        password: formFields.password,
+        dob: formFields.dob,
+        ssn: formFields.ssn,
+        gender: formFields.gender,
+        emergency_firstname: formFields.emergency_firstname,
+        emergency_middlename: formFields.emergency_middlename,
+        emergency_lastname: formFields.lastname,
+        emergency_relationship: formFields.emergency_relationship,
+        emergency_email: formFields.emergency_email,
+        emergency_phone: formFields.emergency_phone,
+        insurance_name: formFields.insurance_name,
+        insurance_group: formFields.insurance_group,
+        insurance_member: formFields.insurance_member,
+        insurance_phone: formFields.insurance_phone,
+        insurance_desc: formFields.insurance_desc,
+        primary_reason: formFields.primary_reason,
+        admin_note: formFields.admin_note,
+        medical_note: formFields.medical_note,
+        referred_by: formFields.referred_by,
+        height: formFields.height,
+        waist: formFields.waist,
+        weight: formFields.weigh
+      }
+    };
+
+    onFormSubmit(formData);
+  };
+
   return (
     <>
       <form>
@@ -462,7 +511,7 @@ const SignupForm = (props) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => onFormSubmit(formFields)}
+              onClick={() => handleFormSubmission()}
             >
               Submit
             </Button>
