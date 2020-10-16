@@ -207,7 +207,7 @@ const pages = [
       },
       {
         title: "ICD Codes",
-        href: "/setup/icd-codes"
+        href: "/setup/icd"
       },
       {
         title: "Integrations",
