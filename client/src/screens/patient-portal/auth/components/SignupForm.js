@@ -178,7 +178,6 @@ const SignupForm = (props) => {
         weight: formFields.weigh
       }
     };
-
     onFormSubmit(formData);
   };
 
@@ -188,7 +187,7 @@ const SignupForm = (props) => {
         <Grid className={classes.inputRow}>
           {patientErrors &&
             patientErrors.map((error, index) => (
-              <Alert severity="error" key={index}>
+              <Alert severity="error" variant="filled" key={index}>
                 {error.msg}
               </Alert>
             ))}

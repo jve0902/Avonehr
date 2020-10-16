@@ -44,15 +44,14 @@ const PatientSignUp = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { clientCode } = useParams();
-  const [clientId, setClientId] = React.useState(null);
+  const [client, setClient] = React.useState(null);
   const [clientError, setclientError] = React.useState([]);
   const [errors, setErrors] = React.useState([]);
 
   useEffect(() => {
     AuthService.getClientCode(clientCode).then(
       (res) => {
-        const { client_id } = res.data[0];
-        setClientId(client_id);
+        setClient(res.data[0]);
       },
       (error) => {
         console.log("getClientCode error:", error);
@@ -100,7 +99,7 @@ const PatientSignUp = () => {
             <CssBaseline />
             {clientError.length > 0 ? (
               <div className={`${classes.paper} ${classes.ErrorSection}`}>
-                <Error errors={clientError} />
+                <Error errors={clientError} variant="filled" />
                 <Alert icon={false} severity="info">
                   Go back to <Link to="/">Home page</Link>
                 </Alert>
@@ -116,7 +115,7 @@ const PatientSignUp = () => {
                     variant="h2"
                     className={classes.pageTitle}
                   >
-                    Register with {"client.name"}
+                    Register with {client && client.name}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
                     To register as a new patient, please enter your infromation
@@ -129,7 +128,7 @@ const PatientSignUp = () => {
                   </Typography>
                   <Typography variant="body2" gutterBottom>
                     If you are already a registered patient with online access,
-                    you can log in <Link to="#">here</Link>
+                    you can log in <Link to={`/login/${clientCode}`}>here</Link>
                   </Typography>
                 </div>
                 <SignupForm

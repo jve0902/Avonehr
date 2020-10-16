@@ -17,7 +17,7 @@ exports.getClientByCode = async (req, res) => {
   const { c } = req.query;
   try {
     const dbResponse = await db.query(
-      `select id client_id from client where code='${c}'`
+      `select id client_id, name from client where code='${c}'`
     );
     console.log("dbResponse", dbResponse);
     if (!dbResponse) {
@@ -65,7 +65,7 @@ exports.patientSignup = async (req, res) => {
         param: "patient.body",
       },
     ];
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.bad).send(errorMessage);
   }
 
   try {
