@@ -45,7 +45,7 @@ const PatientSignUp = () => {
   const dispatch = useDispatch();
   const { clientCode } = useParams();
   const [client, setClient] = React.useState(null);
-  const [clientError, setclientError] = React.useState([]);
+  const [clientError, setClientError] = React.useState([]);
   const [errors, setErrors] = React.useState([]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const PatientSignUp = () => {
         const { data, status } = error.response;
 
         if (status === 400) {
-          setErrors([
+          setClientError([
             {
               msg: data.message
             }

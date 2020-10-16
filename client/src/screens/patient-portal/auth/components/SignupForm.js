@@ -133,6 +133,42 @@ const SignupForm = (props) => {
       });
   };
 
+  const validatePassword = (event) => {
+    if (event.target.value.length < 8) {
+      setFieldErrors([
+        ...fieldErrors,
+        {
+          value: event.target.value,
+          msg: "Too Weak. Must be atleast 8 Characters",
+          param: `patient.${event.target.name}`
+        }
+      ]);
+    } else {
+      const updatedErrors = fieldErrors.filter(
+        (error) => error.param !== `patient.${event.target.name}`
+      );
+      setFieldErrors(updatedErrors);
+    }
+
+    if (event.target.name === "confirmPassword") {
+      if (formFields.password !== formFields.confirmPassword) {
+        setFieldErrors([
+          ...fieldErrors,
+          {
+            value: event.target.value,
+            msg: "Passwords must be same",
+            param: `patient.${event.target.name}`
+          }
+        ]);
+      } else {
+        const updatedErrors = fieldErrors.filter(
+          (error) => error.param !== `patient.${event.target.name}`
+        );
+        setFieldErrors(updatedErrors);
+      }
+    }
+  };
+
   const handleFormSubmission = () => {
     const formData = {
       patient: {
@@ -452,7 +488,13 @@ const SignupForm = (props) => {
                   type={item.type}
                   fullWidth
                   onChange={(e) => handleInputChange(e)}
+                  onBlur={(event) =>
+                    (item.name === "password" ||
+                      item.name === "confirmPassword") &&
+                    validatePassword(event)
+                  }
                 />
+                <Error errors={getFieldError("patient", item.name)} />
               </Grid>
             ))}
           </Grid>
@@ -505,6 +547,7 @@ const SignupForm = (props) => {
           </Grid>
           <Grid container justify="flex-end" className={classes.signupActions}>
             <Button
+              disabled={!formFields.email || fieldErrors.length > 0}
               variant="contained"
               color="primary"
               onClick={() => handleFormSubmission()}
