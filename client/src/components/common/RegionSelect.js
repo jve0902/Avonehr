@@ -8,8 +8,10 @@ const getRegions = (country) => {
     return [];
   }
   return country[2].split("|").map((regionPair) => {
-    let [regionName = null] = regionPair.split("~");
-    return regionName;
+    console.log("regionPair:", regionPair.split("~"));
+    let [regionName = null, regionInShort] = regionPair.split("~");
+    console.log("regionName", regionName);
+    return [regionName, regionInShort];
   });
 };
 
@@ -26,8 +28,8 @@ function RegionMUISelectors(props) {
       variant={!!props.outlined ? "outlined" : "standard"}
     >
       {getRegions(props.country).map((option, index) => (
-        <MenuItem key={option} value={option}>
-          {option}
+        <MenuItem key={option[0]} value={option[1]}>
+          {option[0]}
         </MenuItem>
       ))}
     </TextField>

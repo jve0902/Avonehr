@@ -54,7 +54,6 @@ const PatientSignUp = () => {
         setClient(res.data[0]);
       },
       (error) => {
-        console.log("getClientCode error:", error);
         if (!error.response) {
           return;
         }
@@ -74,11 +73,15 @@ const PatientSignUp = () => {
   }, [clientCode]);
 
   const handleFormSubmit = (data) => {
-    setErrors([]);
-    console.log("handleFormSubmit data:", data);
-    AuthService.register(data).then(
+    let formData = data;
+    formData.patient = {
+      ...formData.patient,
+      client_id: client.client_id
+    };
+    AuthService.register(formData).then(
       (response) => {
         dispatch(setSuccess(`${response.data.message}`));
+        history.push(`/login/${clientCode}`);
       },
       (error) => {
         if (error.response) {

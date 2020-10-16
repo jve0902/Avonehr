@@ -65,11 +65,11 @@ export const FormFields = {
       options: [
         {
           label: "Male",
-          value: "male"
+          value: "M"
         },
         {
           label: "Female",
-          value: "female"
+          value: "F"
         }
       ]
     }

@@ -52,7 +52,7 @@ const SignupForm = (props) => {
   });
   const [fieldErrors, setFieldErrors] = useState([]);
 
-  const handleInputChnage = (e) => {
+  const handleInputChange = (e) => {
     const { value, name } = e.target;
     setFormFields({
       ...formFields,
@@ -136,7 +136,6 @@ const SignupForm = (props) => {
   const handleFormSubmission = () => {
     const formData = {
       patient: {
-        client_id: 1,
         status: "A",
         firstname: formFields.firstname,
         middlename: formFields.middlename,
@@ -147,7 +146,7 @@ const SignupForm = (props) => {
         city: formFields.city,
         state: formFields.state,
         postal: formFields.postal,
-        country: formFields.country,
+        country: formFields.country[0],
         phone_home: formFields.phone_home,
         phone_cell: formFields.phone_cell,
         phone_work: formFields.phone_work,
@@ -206,7 +205,7 @@ const SignupForm = (props) => {
                     id={item.id}
                     type={item.type}
                     fullWidth
-                    onChange={(e) => handleInputChnage(e)}
+                    onChange={(e) => handleInputChange(e)}
                   />
                 ) : (
                   <TextField
@@ -220,7 +219,7 @@ const SignupForm = (props) => {
                     name={item.name}
                     value={formFields[item.name]}
                     fullWidth
-                    onChange={(e) => handleInputChnage(e)}
+                    onChange={(e) => handleInputChange(e)}
                   >
                     {item.options.map((option, index) => {
                       return (
@@ -253,7 +252,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </Grid>
             ))}
@@ -310,7 +309,7 @@ const SignupForm = (props) => {
                       id={item.id}
                       type={item.type}
                       fullWidth
-                      onChange={(e) => handleInputChnage(e)}
+                      onChange={(e) => handleInputChange(e)}
                       onBlur={(event) =>
                         (item.name === "email" || item.name === "ssn") &&
                         handleAjaxValidation(event)
@@ -330,7 +329,7 @@ const SignupForm = (props) => {
                     name={item.name}
                     value={formFields[item.name]}
                     fullWidth
-                    onChange={(e) => handleInputChnage(e)}
+                    onChange={(e) => handleInputChange(e)}
                   >
                     {item.options.map((option, index) => {
                       return (
@@ -363,7 +362,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                   onBlur={(event) =>
                     item.name === "emergency_email" &&
                     handleAjaxValidation(event)
@@ -390,7 +389,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </Grid>
             ))}
@@ -414,7 +413,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </Grid>
             ))}
@@ -428,7 +427,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                   multiline={true}
                   rows={5}
                 />
@@ -436,9 +435,7 @@ const SignupForm = (props) => {
             ))}
           </Grid>
         </Grid>
-
         <Divider />
-
         <Grid className={classes.inputRow}>
           <Typography variant="h4" color="textPrimary" gutterBottom>
             Set Username and Password for Patient Portal
@@ -454,7 +451,7 @@ const SignupForm = (props) => {
                   id={item.id}
                   type={item.type}
                   fullWidth
-                  onChange={(e) => handleInputChnage(e)}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </Grid>
             ))}
