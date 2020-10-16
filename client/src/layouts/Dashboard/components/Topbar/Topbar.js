@@ -191,7 +191,7 @@ const pages = [
       },
       {
         title: "CPT Codes",
-        href: "/setup/ctp-codes"
+        href: "/setup/ctp"
       },
       {
         title: "Drugs",
