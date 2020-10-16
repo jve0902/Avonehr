@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log("req:", req.body);
     const dest = process.env.LAB_UPLOAD_DIR;
-    fs.access(dest, function (error) {
+    fs.access(dest, function(error) {
       if (error) {
         console.log("Directory does not exist.");
         return fs.mkdir(dest, (error) => cb(error, dest));
@@ -211,7 +211,7 @@ const history = async (req, res) => {
   }
 };
 
-const nextAppointment = async(req, res) => {
+const nextAppointment = async (req, res) => {
   const db = makeDb(configuration, res);
   const { patient_id } = req.params;
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -239,7 +239,7 @@ const nextAppointment = async(req, res) => {
   } finally {
     await db.close();
   }
-}
+};
 
 const balance = async (req, res) => {
   const db = makeDb(configuration, res);
@@ -902,11 +902,13 @@ const getEncounters = async (req, res) => {
 
   try {
     const dbResponse = await db.query(
-      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name from encounter e left join encounter_type et on et.id=e.type_id
-        left join user u on u.id=e.user_id
-        where e.patient_id=${patient_id}
-        order by e.dt desc
-        limit 50`
+      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name 
+      from encounter e 
+      left join encounter_type et on et.id=e.type_id
+      left join user u on u.id=e.user_id
+      where e.patient_id=${patient_id}
+      order by e.dt desc
+      limit 50`
     );
     if (!dbResponse) {
       errorMessage.error = "None found";
