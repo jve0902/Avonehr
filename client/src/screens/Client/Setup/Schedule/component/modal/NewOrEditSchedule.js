@@ -225,9 +225,6 @@ const NewOrEditSchedule = ({
                     native: true
                   }}
                 >
-                  {!schedule.user_name && (
-                    <option aria-label="None" value=""></option>
-                  )}
                   {userList.map((user) => (
                     <option key={user.id} value={user.id}>
                       {user.firstname + " " + user.lastname}
@@ -319,8 +316,8 @@ const NewOrEditSchedule = ({
                   value={
                     schedule.time_start
                       ? moment(schedule.time_start, "HH:mm:ss").format(
-                        "YYYY-MM-DDTHH:mm:ss"
-                      )
+                          "YYYY-MM-DDTHH:mm:ss"
+                        )
                       : null
                   }
                   className={classes.textField}
@@ -355,8 +352,8 @@ const NewOrEditSchedule = ({
                   value={
                     schedule.time_end
                       ? moment(schedule.time_end, "HH:mm:ss").format(
-                        "YYYY-MM-DDTHH:mm:ss"
-                      )
+                          "YYYY-MM-DDTHH:mm:ss"
+                        )
                       : null
                   }
                   className={classes.textField}
@@ -400,7 +397,6 @@ const NewOrEditSchedule = ({
               <TextField
                 className={classes.noteMargin}
                 fullWidth
-                required
                 variant="outlined"
                 multiline
                 name="note"
@@ -416,15 +412,10 @@ const NewOrEditSchedule = ({
                   setSchedule({ ...schedule, note: e.target.value })
                 }
                 onKeyUp={handleKeyUp}
-                error={
-                  String(schedule.note).length === 0 ||
-                  String(schedule.note).length > 1000
-                }
+                error={String(schedule.note).length > 1000}
                 helperText={
-                  (String(schedule.note).length === 0 &&
-                    "Note can't be empty") ||
-                  (String(schedule.note).length > 1000 &&
-                    "Note can't be grater than 1000 Chars")
+                  String(schedule.note).length > 1000 &&
+                  "Note can't be grater than 1000 Chars"
                 }
               />
             </FormControl>
