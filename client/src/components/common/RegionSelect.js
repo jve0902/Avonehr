@@ -8,9 +8,7 @@ const getRegions = (country) => {
     return [];
   }
   return country[2].split("|").map((regionPair) => {
-    console.log("regionPair:", regionPair.split("~"));
     let [regionName = null, regionInShort] = regionPair.split("~");
-    console.log("regionName", regionName);
     return [regionName, regionInShort];
   });
 };

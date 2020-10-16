@@ -95,7 +95,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
     onFormSubmit(formData);
   };
 
-  const validatePasswod = (event) => {
+  const validatePassword = (event) => {
     if (event.target.value.length < 8) {
       setFieldErrors([
         ...fieldErrors,
@@ -448,7 +448,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
         type="password"
         value={password}
         handleOnChange={(event) => setPassword(event.target.value)}
-        handleOnBlur={(event) => validatePasswod(event)}
+        handleOnBlur={(event) => validatePassword(event)}
         errors={getFieldError("user", "password")}
         inputProps={{ maxLength: 90 }}
         helperText={`${
