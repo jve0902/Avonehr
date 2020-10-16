@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   footerText: {
-    color: "#ffffff",
+    color: theme.palette.secondary.main,
     marginTop: 0,
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     "& p": {
-      color: "#ffffff"
+      color: theme.palette.secondary.main
     }
   }
 }));
@@ -40,7 +40,7 @@ export default function Footer() {
       <Box mt={5} className={classes.footerText}>
         <Typography variant="body2" color="textPrimary" align="center">
           {"Copyright © "} {new Date().getFullYear()}
-          {" Clinios"} 
+          {" Clinios"}
         </Typography>
       </Box>
     </Container>
