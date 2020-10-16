@@ -247,7 +247,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/setup/icd-codes"
+              path="/setup/icd"
               component={ICDcodes}
               exact
             />
