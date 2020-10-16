@@ -104,17 +104,7 @@ const updateClientCpt = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
   const db = makeDb(configuration, res);
-  const {
-    cptId,
-    favorite,
-    billable,
-    fee,
-    notes,
-    updatedFavorite,
-    updatedBillable,
-    updatedFee,
-    updatedNotes,
-  } = req.body;
+  const { cptId, favorite, billable, fee, notes } = req.body;
   let $sql;
   try {
     $sql = `insert into client_cpt (client_id, cpt_id, favorite, billable, fee, notes, created, created_user_id, updated, updated_user_id )
@@ -124,12 +114,12 @@ const updateClientCpt = async (req, res) => {
       req.user_id
     }, now(), ${req.user_id} ) 
          on duplicate key update 
-            favorite=${updatedFavorite},
-            billable=${updatedBillable},
+            favorite=${favorite},
+            billable=${billable},
             fee=${
-              updatedFee > 0 ? updatedFee : 0
+              fee > 0 ? fee : 0
             },  /*TODO if fee is "" then set fee to null*/
-            notes='${updatedNotes}',
+            notes='${notes}',
             created=now(),
             created_user_id=${req.user_id},
             updated=now(),
