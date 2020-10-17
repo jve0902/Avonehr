@@ -321,7 +321,7 @@ export default function Patient() {
   }, [patient_id])
 
   const fetchDocuments = useCallback(() => {
-    let tab = "Labs";
+    let tab = "All";
     PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });

@@ -92,12 +92,14 @@ const DocumentsContent = (props) => {
   const fetchDocuments = useCallback((selectedTab) => {
     let tab = "";
     if(selectedTab === 0) {
-      tab = "Labs";
+      tab = "All";
     } else if(selectedTab === 1) {
-      tab = "Imaging";
+      tab = "Labs";
     } else if(selectedTab === 2) {
-      tab = "Uncategorized";
+      tab = "Imaging";
     } else if(selectedTab === 3) {
+      tab = "Uncategorized";
+    } else if(selectedTab === 4) {
       tab = "Trash";
     }
     PatientService.getDocuments(patientId, tab).then((res) => {
@@ -145,25 +147,32 @@ const DocumentsContent = (props) => {
           onClick={() => handleChange(0)}
           component="span"
         >
-          All Labs
+          All
         </Typography>
         <Typography
           className={tabValue === 1 ? classes.tabSelected : classes.tab}
           onClick={() => handleChange(1)}
           component="span"
         >
-          Imaging
+          Labs
         </Typography>
         <Typography
           className={tabValue === 2 ? classes.tabSelected : classes.tab}
           onClick={() => handleChange(2)}
           component="span"
         >
-          Uncategorized
+          Imaging
         </Typography>
         <Typography
           className={tabValue === 3 ? classes.tabSelected : classes.tab}
           onClick={() => handleChange(3)}
+          component="span"
+        >
+          Uncategorized
+        </Typography>
+        <Typography
+          className={tabValue === 4 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(4)}
           component="span"
         >
           Deleted
