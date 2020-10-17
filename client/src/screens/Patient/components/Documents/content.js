@@ -98,7 +98,7 @@ const DocumentsContent = (props) => {
     } else if(selectedTab === 2) {
       tab = "Uncategorized";
     } else if(selectedTab === 3) {
-      tab = "Deleted";
+      tab = "Trash";
     }
     PatientService.getDocuments(patientId, tab).then((res) => {
       setTableData(res.data);
