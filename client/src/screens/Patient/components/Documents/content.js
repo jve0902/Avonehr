@@ -17,15 +17,17 @@ import { setError, setSuccess } from "./../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   tab: {
-    padding: "5px 10px 5px 0",
+    paddingBottom: 5,
+    margin: "5px 10px 5px 0",
     fontSize: 12,
     cursor: "pointer"
   },
   tabSelected: {
-    padding: "5px 10px 5px 0",
+    paddingBottom: 5,
+    margin: "5px 10px 5px 0",
     fontSize: 12,
     cursor: "pointer",
-    fontWeight: "bold"
+    borderBottom: `2px solid ${theme.palette.primary.main}`
   },
   tableContainer: {
     marginTop: theme.spacing(1.5),
