@@ -1291,6 +1291,7 @@ export default function Patient() {
               <DocumentsCardContent
                 data={documents}
                 onClose={toggleDocumentsExpandDialog}
+                patientId={patient_id}
               />
             }
             applyForm={() => toggleDocumentsExpandDialog()}
