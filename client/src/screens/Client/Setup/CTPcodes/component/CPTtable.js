@@ -23,7 +23,6 @@ import { setSuccess } from "../../../../../store/common/actions";
 import CptGroupMembersModal from "./modal/CptGroupMembersModal";
 import EditCptCodeModal from "./modal/EditCptCodeModal";
 
-
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 450,
@@ -80,11 +79,7 @@ const CPTtable = ({ searchResult, user, fetchCptCodeSearch }) => {
     favorite: cpt_favorite,
     billable: cpt_billable,
     fee: cpt_fee,
-    notes: cpt_notes,
-    updatedFavorite: cpt_favorite,
-    updatedBillable: cpt_billable,
-    updatedFee: cpt_fee,
-    updatedNotes: cpt_notes
+    notes: cpt_notes
   };
 
   const handleIsOpen = (id, desc, fee, fav, bill) => {

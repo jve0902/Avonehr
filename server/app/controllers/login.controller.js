@@ -7,6 +7,7 @@ const { validationResult } = require("express-validator");
 const config = require("./../../config");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
+
 /**
  * This function let user to signin into the system.
  * @param {object} req
@@ -24,7 +25,7 @@ exports.signin = async (req, res) => {
   const db = makeDb(configuration, res);
 
   const rows = await db.query(
-    "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt  FROM user WHERE email = ?",
+    "SELECT id, client_id, firstname, lastname, email, password, sign_dt, email_confirm_dt FROM user WHERE email = ?",
     [req.body.email]
   );
 

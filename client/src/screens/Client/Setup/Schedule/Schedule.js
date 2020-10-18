@@ -83,7 +83,7 @@ const Schedule = () => {
       time_start: "09:00:00",
       time_end: "15:00:00",
       active: true,
-      note: "Leave your note here...!"
+      note: ""
     });
   };
   const handleOnEditClick = (id) => {
