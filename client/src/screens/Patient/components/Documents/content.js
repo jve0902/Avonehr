@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
-import { Typography } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Tabs from "@material-ui/core/Tabs";
 import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -18,11 +16,19 @@ import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    padding: 9
+  tab: {
+    padding: "5px 10px 5px 0",
+    fontSize: 12,
+    cursor: "pointer"
+  },
+  tabSelected: {
+    padding: "5px 10px 5px 0",
+    fontSize: 12,
+    cursor: "pointer",
+    fontWeight: "bold"
   },
   tableContainer: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1.5),
     minWidth: 650
   },
   actions: {
@@ -32,14 +38,11 @@ const useStyles = makeStyles((theme) => ({
     "& button": {
       fontSize: "12px"
     }
+  },
+  indicator: {
+    backgroundColor : theme.palette.primary.main,
   }
 }));
-
-const CapitalizedTab = withStyles(theme => ({
-  root: {
-    textTransform: "capitalize",
-  }
-}))(Tab)
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -75,10 +78,34 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const DocumentsContent = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    setTableData([...data])
+  }, [data])
+
+
+  const fetchDocuments = useCallback((selectedTab) => {
+    let tab = "";
+    if(selectedTab === 0) {
+      tab = "All";
+    } else if(selectedTab === 1) {
+      tab = "Labs";
+    } else if(selectedTab === 2) {
+      tab = "Imaging";
+    } else if(selectedTab === 3) {
+      tab = "Uncategorized";
+    } else if(selectedTab === 4) {
+      tab = "Trash";
+    }
+    PatientService.getDocuments(patientId, tab).then((res) => {
+      setTableData(res.data);
+    });
+  }, [patientId])
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
@@ -105,18 +132,52 @@ const DocumentsContent = (props) => {
       });
   };
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
+    if(newValue !== tabValue) {
+      fetchDocuments(newValue);
+    }
     setTabValue(newValue);
   };
 
   return (
     <>
-      <Tabs value={tabValue} onChange={handleChange}>
-        <CapitalizedTab label="All Labs" />
-        <CapitalizedTab label="Imaging" />
-        <CapitalizedTab label="Uncategorized" />
-        <CapitalizedTab label="Deleted" />
-      </Tabs>
+      <Grid container>
+        <Typography
+          className={tabValue === 0 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(0)}
+          component="span"
+        >
+          All
+        </Typography>
+        <Typography
+          className={tabValue === 1 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(1)}
+          component="span"
+        >
+          Labs
+        </Typography>
+        <Typography
+          className={tabValue === 2 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(2)}
+          component="span"
+        >
+          Imaging
+        </Typography>
+        <Typography
+          className={tabValue === 3 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(3)}
+          component="span"
+        >
+          Uncategorized
+        </Typography>
+        <Typography
+          className={tabValue === 4 ? classes.tabSelected : classes.tab}
+          onClick={() => handleChange(4)}
+          component="span"
+        >
+          Deleted
+        </Typography>
+      </Grid>
       <TableContainer className={classes.tableContainer}>
         <Table size="small" className={classes.table}>
           <TableHead>
@@ -133,8 +194,9 @@ const DocumentsContent = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tabValue === 0 ?
-              data.map((row, index) => (
+            {tableData.length
+              ?
+              tableData.map((row, index) => (
                 <StyledTableRow key={`${row.created}_${index}`}>
                   <TableCell component="th" scope="row">
                     {moment(row.created).format("MMM D YYYY")}

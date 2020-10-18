@@ -171,7 +171,7 @@ const Form = (props) => {
             </Button>
           </Grid>
           <Typography gutterBottom>
-            Created {moment().format("MMM, D, YYYY")}
+            Created {moment().format("MMM D YYYY")}
           </Typography>
           <Typography gutterBottom>
             Created By {!!encounter && encounter.name}

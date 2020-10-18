@@ -118,7 +118,7 @@ const BillingDetails = (props) => {
             billings.map((row, index) => (
               <StyledTableRow key={`${row.dt}_${index}`}>
                 <TableCell component="th" scope="row">
-                  {moment(row.dt).format("MMM, D, YYYY")}
+                  {moment(row.dt).format("MMM D YYYY")}
                 </TableCell>
                 <TableCell>{row.tran_type}</TableCell>
                 <TableCell>{row.encounter_title}</TableCell>

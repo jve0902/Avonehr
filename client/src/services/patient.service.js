@@ -44,7 +44,7 @@ class Patient {
   }
   getDocuments(patient_id, tab) {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/documents/?tab="${tab}"`, {
+      .get(API_BASE + `/patient/${patient_id}/documents/?tab=${tab}`, {
         headers: authHeader()
       })
       .then((res) => res.data);
