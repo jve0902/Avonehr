@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   indicator: {
-    backgroundColor : theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   }
 }));
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
@@ -85,27 +85,29 @@ const DocumentsContent = (props) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setTableData([...data])
-  }, [data])
+    setTableData([...data]);
+  }, [data]);
 
-
-  const fetchDocuments = useCallback((selectedTab) => {
-    let tab = "";
-    if(selectedTab === 0) {
-      tab = "All";
-    } else if(selectedTab === 1) {
-      tab = "Labs";
-    } else if(selectedTab === 2) {
-      tab = "Imaging";
-    } else if(selectedTab === 3) {
-      tab = "Uncategorized";
-    } else if(selectedTab === 4) {
-      tab = "Trash";
-    }
-    PatientService.getDocuments(patientId, tab).then((res) => {
-      setTableData(res.data);
-    });
-  }, [patientId])
+  const fetchDocuments = useCallback(
+    (selectedTab) => {
+      let tab = "";
+      if (selectedTab === 0) {
+        tab = "All";
+      } else if (selectedTab === 1) {
+        tab = "Labs";
+      } else if (selectedTab === 2) {
+        tab = "Imaging";
+      } else if (selectedTab === 3) {
+        tab = "Uncategorized";
+      } else if (selectedTab === 4) {
+        tab = "Trash";
+      }
+      PatientService.getDocuments(patientId, tab).then((res) => {
+        setTableData(res.data);
+      });
+    },
+    [patientId]
+  );
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
@@ -133,7 +135,7 @@ const DocumentsContent = (props) => {
   };
 
   const handleChange = (newValue) => {
-    if(newValue !== tabValue) {
+    if (newValue !== tabValue) {
       fetchDocuments(newValue);
     }
     setTabValue(newValue);
@@ -186,16 +188,16 @@ const DocumentsContent = (props) => {
               <StyledTableCell>Filename</StyledTableCell>
               <StyledTableCell>Type</StyledTableCell>
               <StyledTableCell>Lab Date</StyledTableCell>
-              <StyledTableCell>Physician</StyledTableCell>
-              <StyledTableCell align="center">Conventional Flag</StyledTableCell>
+              <StyledTableCell align="center">
+                Conventional Flag
+              </StyledTableCell>
               <StyledTableCell>Functional Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
               <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.length
-              ?
+            {tableData.length ? (
               tableData.map((row, index) => (
                 <StyledTableRow key={`${row.created}_${index}`}>
                   <TableCell component="th" scope="row">
@@ -208,21 +210,25 @@ const DocumentsContent = (props) => {
                   </TableCell>
                   <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.physician}</TableCell>
-                  <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.note}</TableCell>
 
                   <TableCell className={classes.actions}>
-                    <DeleteIcon onClick={() => onItemDelete(row)} fontSize="small" />
+                    <DeleteIcon
+                      onClick={() => onItemDelete(row)}
+                      fontSize="small"
+                    />
                   </TableCell>
                 </StyledTableRow>
               ))
-              :
+            ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
-                  <Typography align="center" variant="h6">No Documents Found...</Typography>
+                  <Typography align="center" variant="h6">
+                    No Documents Found...
+                  </Typography>
                 </TableCell>
               </StyledTableRow>
-            }
+            )}
           </TableBody>
         </Table>
       </TableContainer>
