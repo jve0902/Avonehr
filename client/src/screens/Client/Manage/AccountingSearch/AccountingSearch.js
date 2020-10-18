@@ -21,14 +21,14 @@ import AccountingSearchResults from "./components";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(.5)
   },
   form: {
     display: "flex",
@@ -121,7 +121,7 @@ export default function AccountingSearch() {
         setEmptyResult("None Found");
       }
     });
-  };
+  }; 
 
   useEffect(() => {
     Accounting.searchType().then((res) => setTypes(res.data.data));
@@ -222,7 +222,7 @@ export default function AccountingSearch() {
                   }}
                   format="yyyy/MM/dd"
                   inputVariant="outlined"
-                  variant="outlined"
+                  variant="0outlined"
                   id="date"
                   label="Date To"
                   value={dateTo}
@@ -252,7 +252,7 @@ export default function AccountingSearch() {
                     {types.map((type) => (
                       <option key={type.id} value={type.id}>
                         {type.name}
-                      </option>
+                      </option>    
                     ))}
                   </Select>
                 </FormControl>

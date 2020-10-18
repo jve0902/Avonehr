@@ -201,7 +201,7 @@ const NewOrEditAppointment = ({
 
   return (
     <div>
-      <Dialog
+      <Dialog 
         open={isOpen}
         onClose={onClose}
         aria-labelledby="alert-dialog-title"
