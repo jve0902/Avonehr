@@ -64,20 +64,6 @@ const StyledTableRow = withStyles((theme) => ({
   }
 }))(TableRow);
 
-// const GreenSwitch = withStyles({
-//   switchBase: {
-//     color: grey[300],
-//     "&$checked": {
-//       color: green[500]
-//     },
-//     "&$checked + $track": {
-//       backgroundColor: green[500]
-//     }
-//   },
-//   checked: {},
-//   track: {}
-// })(Switch);
-
 const GreenSwitch = withStyles({
   switchBase: {
     color: grey[400],

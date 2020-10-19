@@ -267,7 +267,7 @@ const NewOrEditEvent = ({
     } else {
       if (existPatientID) {
         if (startTimeExist) {
-          setErrorText({ ...errorText, errror: "This time is not available" });
+          setErrorText({ ...errorText, error: "This time is not available" });
         } else {
           submitData();
         }
