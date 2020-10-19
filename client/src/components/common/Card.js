@@ -6,10 +6,10 @@ import {
   Grid,
   Button,
   TextField,
-  IconButton
+  IconButton,
+  Menu,
+  MenuItem
 } from "@material-ui/core";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -46,7 +46,7 @@ const PatientCard = (props) => {
   } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const menuOpen = Boolean(anchorEl);
+  const isMenuOpen = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,7 +69,7 @@ const PatientCard = (props) => {
         id="long-menu"
         anchorEl={anchorEl}
         keepMounted
-        menuOpen={menuOpen}
+        open={isMenuOpen}
         onClose={handleClose}
       >
         <MenuItem disabled={!isLayoutUpdated} onClick={resetLayoutAndClose}>
