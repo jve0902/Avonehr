@@ -202,7 +202,6 @@ export default function Patient() {
       fetchMedications();
       fetchRequisitions();
       fetchTests();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasPatientIderror]);
@@ -321,7 +320,7 @@ export default function Patient() {
   }, [patient_id])
 
   const fetchDocuments = useCallback(() => {
-    let tab = "Labs";
+    let tab = "All";
     PatientService.getDocuments(patient_id, tab).then((res) => {
       setDocuments(res.data);
     });
@@ -1418,6 +1417,7 @@ export default function Patient() {
                     icon={item.icon}
                     primaryButtonText={item.primaryButtonText}
                     secondaryButtonText={item.secondaryButtonText}
+                    iconHandler={mapIconHandlers(item.title)}
                     primaryButtonHandler={mapPrimaryButtonHandlers(item.title)}
                     secondaryButtonHandler={mapSecondaryButtonHandlers(
                       item.title
@@ -1436,6 +1436,7 @@ export default function Patient() {
                     <DocumentsCardContent
                       data={documents}
                       reloadData={() => fetchDocuments()}
+                      patientId={patient_id}
                     />
                   )
                 }
@@ -1469,7 +1470,7 @@ export default function Patient() {
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    minHeight: "calc(100vh - 188px)"
+    minHeight: "calc(100vh - 171px)"
   },
   noDisplay: {
     display: "none"

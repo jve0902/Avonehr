@@ -57,7 +57,7 @@ const SearchResults = ({ open, results, noContent, handleClose }) => {
               <>
                 <ListItem
                   component={RouterLink}
-                  to={`/patient/${result.id}`}
+                  to={`/patients/${result.id}`}
                   button
                   key={result.id}
                   className={classes.listItem}

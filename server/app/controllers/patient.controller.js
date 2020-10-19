@@ -904,7 +904,7 @@ const getEncounters = async (req, res) => {
 
   try {
     const dbResponse = await db.query(
-      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name 
+      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name, notes, treatment
       from encounter e 
       left join encounter_type et on et.id=e.type_id
       left join user u on u.id=e.user_id
