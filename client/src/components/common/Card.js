@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Card,
@@ -8,12 +8,15 @@ import {
   TextField,
   IconButton
 } from "@material-ui/core";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import CancelIcon from "@material-ui/icons/Cancel";
 import SaveIcon from "@material-ui/icons/CheckCircle";
 import CardIcon from "@material-ui/icons/CreditCard";
 import DesktopIcon from "@material-ui/icons/DesktopMac";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SaveLayoutIcon from "@material-ui/icons/Save";
 import PropTypes from "prop-types";
 
@@ -37,13 +40,42 @@ const PatientCard = (props) => {
     cardInfo,
     editorSaveHandler,
     editorCancelHandler,
-    updateLayoutHandler
+    updateLayoutHandler,
+    resetLayoutHandler,
+    isLayoutUpdated
   } = props;
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const resetLayoutAndClose = () => {
+    setAnchorEl(null);
+    resetLayoutHandler();
+  }
 
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
 
   return (
     <>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        menuOpen={menuOpen}
+        onClose={handleClose}
+      >
+        <MenuItem disabled={!isLayoutUpdated} onClick={resetLayoutAndClose}>
+          Reset Layout
+        </MenuItem>
+      </Menu>
       <Card className={classes.root} variant="outlined">
         {/* drag-handle className is important for the header as it makes the header draggable only */}
         <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
@@ -52,10 +84,16 @@ const PatientCard = (props) => {
           </Typography>
           {
             title === "Patient" && (
-              <SaveLayoutIcon
-                className={classes.icon}
-                onClick={() => updateLayoutHandler()}
-              />
+              <>
+                <MoreVertIcon
+                  className={classes.icon}
+                  onClick={handleClick}
+                />
+                <SaveLayoutIcon
+                  className={classes.icon}
+                  onClick={() => updateLayoutHandler()}
+                />
+              </>
             )
           }
           {
@@ -90,7 +128,7 @@ const PatientCard = (props) => {
                 }}
                 onChange={(e) => {
                   const searchedValue = e.target.value;
-                  if(!!searchedValue && searchedValue.length) {
+                  if (!!searchedValue && searchedValue.length) {
                     searchHandler(searchedValue)
                   }
                 }}
@@ -196,13 +234,15 @@ PatientCard.defaultProps = {
   secondaryButtonText: "Edit",
   icon: null,
   cardInfo: null,
-  primaryButtonHandler: () => {},
-  secondaryButtonHandler: () => {},
-  iconHandler: () => {},
-  searchHandler: () => {},
-  editorSaveHandler: () => {},
-  editorCancelHandler: () => {},
-  updateLayoutHandler: () => {}
+  primaryButtonHandler: () => { },
+  secondaryButtonHandler: () => { },
+  iconHandler: () => { },
+  searchHandler: () => { },
+  editorSaveHandler: () => { },
+  editorCancelHandler: () => { },
+  updateLayoutHandler: () => { },
+  resetLayoutHandler: () => { },
+  isLayoutUpdated: false,
 };
 
 PatientCard.propTypes = {
@@ -221,7 +261,9 @@ PatientCard.propTypes = {
   searchHandler: PropTypes.func,
   editorSaveHandler: PropTypes.func,
   editorCancelHandler: PropTypes.func,
-  updateLayoutHandler: PropTypes.func
+  updateLayoutHandler: PropTypes.func,
+  resetLayoutHandler: PropTypes.func,
+  isLayoutUpdated: PropTypes.bool,
 };
 
 // export default rglDynamicHeight(PatientCard);

@@ -91,6 +91,7 @@ export default function Patient() {
   //grid layout states
   const [layout, setLayout] = useState([]);
   const [layoutToSave, setLayoutToSave] = useState([]);
+  const [isLayoutUpdated, setIsLayoutUpdated] = useState(false);
   const [firstCardsSequence, setFirstCardsSequence] = useState([
     ...FirstColumnPatientCards
   ]);
@@ -211,12 +212,13 @@ export default function Patient() {
     PatientService.getCardsLayout(user_id).then((res) => {
       let layout =
         res.data.length &&
-        res.data[0].layout &&
-        res.data[0].layout !== "undefined"
+          res.data[0].layout &&
+          res.data[0].layout !== "undefined"
           ? JSON.parse(res.data[0].layout)
           : null;
       if (!!layout) {
         setLayout(layout);
+        setIsLayoutUpdated(true);
         let _layout = {
           layout: JSON.stringify(layout)
         };
@@ -228,7 +230,18 @@ export default function Patient() {
   const updateCardsLayout = () => {
     const user_id = user.id;
     PatientService.updateCardsLayout(user_id, layoutToSave).then((res) => {
+      setIsLayoutUpdated(true);
       dispatch(setSuccess(`Layout updated successfully`));
+    });
+  };
+
+  const resetCardsLayout = () => {
+    const user_id = user.id;
+    PatientService.resetCardsLayout(user_id).then((res) => {
+      setIsLayoutUpdated(false);
+      setLayout([]); //removing the current layout state so the cards layout gets re-rendered
+      generateLayout();
+      dispatch(setSuccess(`Layout reset successfully`));
     });
   };
 
@@ -639,10 +652,11 @@ export default function Patient() {
 
   const redirectToPatientPortal = () => {
     history.push({
-      pathname : "/manage/patient-search",
-      state : {
+      pathname: "/manage/patient-search",
+      state: {
         patients,
-      }} 
+      }
+    }
     );
   };
 
@@ -929,7 +943,7 @@ export default function Patient() {
             <AdminNotesHistory
               onClose={toggleAdminHistoryDialog}
               data={adminNotesHistory}
-              //onLoad={() => fetchPatientHistory()}
+            //onLoad={() => fetchPatientHistory()}
             />
           }
           applyForm={() => toggleAdminHistoryDialog()}
@@ -1360,6 +1374,8 @@ export default function Patient() {
                     iconHandler={mapIconHandlers(item.title)}
                     searchHandler={(value) => debouncedSearchPatients(value)}
                     updateLayoutHandler={() => updateCardsLayout()}
+                    resetLayoutHandler={() => resetCardsLayout()}
+                    isLayoutUpdated={isLayoutUpdated}
                     updateMinHeight={updateMinHeight}
                   />
                 </Grid>
