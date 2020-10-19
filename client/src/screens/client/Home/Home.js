@@ -282,13 +282,6 @@ export default function Home() {
           <p className={classes.formHelperText}>Show canceled/rejected</p>
           <GreenSwitch
             size="small"
-            // checked={appointment.active}
-            // onChange={(event) =>
-            //   setAppointment({
-            //     ...appointment,
-            //     [event.target.name]: !appointment.active
-            //   })
-            // }
             name="active"
             inputProps={{ "aria-label": "primary checkbox" }}
           />

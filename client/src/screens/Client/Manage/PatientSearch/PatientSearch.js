@@ -93,11 +93,6 @@ export default function PatientSearch() {
 
   const serchPatients = (e) => {
     e.preventDefault();
-    // eslint-disable-next-line
-    const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    console.log(re.test(String(email).toLowerCase()));
-
-    console.log();
 
     const payload = {
       data: {
