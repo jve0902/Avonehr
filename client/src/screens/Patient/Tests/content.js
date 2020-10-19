@@ -71,10 +71,10 @@ const TestsContent = (props) => {
             <StyledTableCell>Test</StyledTableCell>
             <StyledTableCell>Last Date</StyledTableCell>
             <StyledTableCell>Last Result</StyledTableCell>
-            <StyledTableCell align="center">Conventional Range</StyledTableCell>
-            <StyledTableCell align="center">Conventional Flag</StyledTableCell>
-            <StyledTableCell>Functional Range</StyledTableCell>
-            <StyledTableCell>Functional Flag</StyledTableCell>
+            <StyledTableCell>Conv Range</StyledTableCell>
+            <StyledTableCell>Conv Flag</StyledTableCell>
+            <StyledTableCell>Func Range</StyledTableCell>
+            <StyledTableCell>Func Flag</StyledTableCell>
             <StyledTableCell>Units</StyledTableCell>
             <StyledTableCell>Count</StyledTableCell>
             <StyledTableCell>Detail</StyledTableCell>

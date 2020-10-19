@@ -189,9 +189,9 @@ const DocumentsContent = (props) => {
               <StyledTableCell>Type</StyledTableCell>
               <StyledTableCell>Lab Date</StyledTableCell>
               <StyledTableCell align="center">
-                Conventional Flag
+                Conv Flag
               </StyledTableCell>
-              <StyledTableCell>Functional Flag</StyledTableCell>
+              <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
               <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
