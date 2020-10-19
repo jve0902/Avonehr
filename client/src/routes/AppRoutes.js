@@ -50,6 +50,7 @@ import Patient from "../screens/Patient";
 import {
   PatientSignUp,
   PatientLogin,
+  PatientForgotPassword,
   PatientHome,
   PatientMessages,
   PatientEncounters,
@@ -315,6 +316,11 @@ class AppRouter extends Component {
               layout={PlainPatientPortal}
               path="/login/:clientCode"
               component={PatientLogin}
+            />
+            <RouteWithLayout
+              layout={PlainPatientPortal}
+              path="/forgot/:clientCode"
+              component={PatientForgotPassword}
             />
             <PrivateRouteWithLayout
               layout={WithLeftSidebar}
