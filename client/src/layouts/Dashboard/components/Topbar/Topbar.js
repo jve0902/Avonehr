@@ -191,7 +191,7 @@ const pages = [
       },
       {
         title: "CPT Codes",
-        href: "/setup/ctp"
+        href: "/setup/ctp-codes"
       },
       {
         title: "Drugs",
@@ -207,7 +207,7 @@ const pages = [
       },
       {
         title: "ICD Codes",
-        href: "/setup/icd"
+        href: "/setup/icd-codes"
       },
       {
         title: "Integrations",
