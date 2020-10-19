@@ -30,6 +30,7 @@ import Alert from "@material-ui/lab/Alert";
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import clsx from "clsx";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
@@ -100,6 +101,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3)
+  },
+  patientLink: {
+    cursor: "pointer",
+    color: theme.palette.text.link
   }
 }));
 
@@ -116,6 +121,7 @@ const NewOrEditEvent = ({
   ...props
 }) => {
   const classes = useStyles();
+  const history = useHistory();
   const { providers, errors } = props;
   const [provider, setProvider] = React.useState("");
   const [patients, setPatients] = React.useState([]);
@@ -504,6 +510,26 @@ const NewOrEditEvent = ({
               value={calEvent.notes}
               onChange={(event) => handleOnChange(event)}
             />
+          </div>
+          <div>
+            <Typography
+              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              component="p"
+              variant="body2"
+              color="textPrimary"
+              className={classes.patientLink}
+            >
+              Go to patient page
+            </Typography>
+            <Typography
+              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              component="p"
+              variant="body2"
+              color="textPrimary"
+              className={classes.patientLink}
+            >
+              Go to patient page in new tab
+            </Typography>
           </div>
         </div>
       </DialogContent>
