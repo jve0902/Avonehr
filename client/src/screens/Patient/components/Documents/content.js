@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `2px solid ${theme.palette.primary.main}`
   },
   tableContainer: {
-    marginTop: theme.spacing(1.5),
     minWidth: 650
   },
   actions: {
