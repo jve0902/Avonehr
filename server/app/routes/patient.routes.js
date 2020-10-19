@@ -206,4 +206,10 @@ router.post(
   Patient.saveLayout
 );
 
+router.delete(
+  "/patient-layout/:user_id",
+  [authJwt.verifyToken],
+  Patient.deleteLayout
+);
+
 module.exports = router;
