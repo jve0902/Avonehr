@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
 import Alert from "@material-ui/lab/Alert";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import UserService from "../../../../../../services/users.service";
 import { setSuccess } from "../../../../../../store/common/actions";
@@ -85,6 +85,8 @@ const GreenSwitch = withStyles({
   track: {}
 })(Switch);
 
+const errorsInitialState = { one: "", two: "", three: "", four: "", five: "" };
+
 const NewOrEditUserModal = ({
   isOpen,
   handleOnClose,
@@ -99,41 +101,84 @@ const NewOrEditUserModal = ({
   const dispatch = useDispatch();
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [errorChecking, setErrorChecking] = useState(errorsInitialState);
 
   const nameError = allUsers.some((u) =>
     isNewUser
-      ? String(u.firstname).trim() === String(user.firstname).trim() &&
-        String(u.lastname).trim() === String(user.lastname).trim()
+      ? String(u.firstname).trim().toLowerCase() ===
+          String(user.firstname).trim().toLowerCase() &&
+        String(u.lastname).trim().toLowerCase() ===
+          String(user.lastname).trim().toLowerCase()
       : false
   );
   const firstnameError =
-    String(user.firstname).length <= 0 || String(user.firstname).length > 255;
+    String(user.firstname).length <= 0 || String(user.firstname).length > 25;
   const lastnameError =
     String(user.lastname).length <= 0 || String(user.lastname).length > 255;
-  const emailErrorOne = allUsers.some((u) =>
-    isNewUser ? String(u.email).trim() === String(user.email).trim() : false
+  const emailError = allUsers.some((u) =>
+    isNewUser
+      ? String(u.email).trim().toLowerCase() ===
+        String(user.email).trim().toLowerCase()
+      : false
   );
-  const emailErrorTwo = String(user.email).length <= 0;
   const statusError = user.id === authUser.id && String(user.status) === "D";
-  const adminError =
-    user.id === authUser.id &&
-    Boolean(user.admin) ===
-      true; /*TODO: if row edited==self, admin was false, user sets admin=true, then print message "You cant grant yourself administrator permissions!" */
 
+  /* TODO: if row edited==self, admin was false, user sets admin=true, then print message "You cant grant yourself administrator permissions!" and stop
+   const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
+  const prevVal = usePrevious(user.admin);
+  
+  const adminError = () => {
+    if (Boolean(user.admin) === true) {
+      if (Boolean(prevVal) === false) {
+        if (user.id === authUser.id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }; */
+
+  const isValid = () => {
+    const checkEmailIsValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!user.firstname) {
+      setErrorChecking({ ...errorChecking, one: "Firstname can't be blank !" });
+      return false;
+    }
+    if (!user.lastname) {
+      setErrorChecking({ ...errorChecking, two: "Lastname can't be blank!" });
+      return false;
+    }
+    if (!user.email) {
+      setErrorChecking({ ...errorChecking, three: "Email can't be blank!" });
+      return false;
+    }
+    if (!checkEmailIsValid.test(String(user.email).toLowerCase())) {
+      setErrorChecking({ ...errorChecking, five: "Invalid email" });
+      return false;
+    }
+    if (!user.type) {
+      setErrorChecking({ ...errorChecking, four: "Please select a type!" });
+      return false;
+    }
+    return true;
+  };
   const validate = () => {
-    let valide = true;
     if (
       nameError ||
       firstnameError ||
       lastnameError ||
-      emailErrorOne ||
-      emailErrorTwo ||
-      statusError ||
-      adminError
+      emailError ||
+      statusError
     ) {
-      valide = false;
+      return false;
     }
-    return valide;
+    return true;
   };
 
   useEffect(() => {
@@ -158,38 +203,39 @@ const NewOrEditUserModal = ({
     email_forward_user_id: user.email_forward_user_id
   };
   const handleCreateNewOrEditUser = () => {
-    if (isNewUser) {
-      UserService.createNewUser(payload).then(
-        (response) => {
-          setTimeout(() => {
-            dispatch(setSuccess(response.data.message));
-          }, 300);
-        },
-        (error) => {
-          setTimeout(() => {
-            setErrors(error.response.error);
-          }, 300);
-        }
-      );
-    } else {
-      UserService.updateUser(authUser.id, user.id, payload).then(
-        (response) => {
-          setTimeout(() => {
-            dispatch(setSuccess(response.data.message));
-          }, 300);
-        },
-        (error) => {
-          setTimeout(() => {
-            setErrors(error.response.error);
-          }, 300);
-        }
-      );
+    if (isValid()) {
+      if (isNewUser) {
+        UserService.createNewUser(payload).then(
+          (response) => {
+            setTimeout(() => {
+              dispatch(setSuccess(response.data.message));
+            }, 300);
+          },
+          (error) => {
+            setTimeout(() => {
+              setErrors(error.response.error);
+            }, 300);
+          }
+        );
+      } else {
+        UserService.updateUser(authUser.id, user.id, payload).then(
+          (response) => {
+            setTimeout(() => {
+              dispatch(setSuccess(response.data.message));
+            }, 300);
+          },
+          (error) => {
+            setTimeout(() => {
+              setErrors(error.response.error);
+            }, 300);
+          }
+        );
+      }
+      handleOnClose();
+      setTimeout(() => {
+        fetchAllUsers();
+      }, 200);
     }
-
-    handleOnClose();
-    setTimeout(() => {
-      fetchAllUsers();
-    }, 200);
   };
 
   const handleOnChange = (event) => {
@@ -200,6 +246,7 @@ const NewOrEditUserModal = ({
         ? event.target.checked
         : event.target.value.trim()
     });
+    setErrorChecking(errorsInitialState);
   };
 
   const handleKeyUp = (event) => {
@@ -246,8 +293,9 @@ const NewOrEditUserModal = ({
                     InputLabelProps={{
                       shrink: true
                     }}
-                    error={nameError || firstnameError}
+                    error={errorChecking.one || nameError || firstnameError}
                     helperText={
+                      (errorChecking.one && errorChecking.one) ||
                       (nameError &&
                         "This firstname and lastname already exists!") ||
                       (firstnameError &&
@@ -269,8 +317,9 @@ const NewOrEditUserModal = ({
                     InputLabelProps={{
                       shrink: true
                     }}
-                    error={nameError || lastnameError}
+                    error={errorChecking.two || nameError || lastnameError}
                     helperText={
+                      (errorChecking.two && errorChecking.two) ||
                       (nameError &&
                         "This firstname and lastname already exists!") ||
                       (lastnameError &&
@@ -307,10 +356,13 @@ const NewOrEditUserModal = ({
                     InputLabelProps={{
                       shrink: true
                     }}
-                    error={emailErrorOne || emailErrorTwo}
+                    error={
+                      errorChecking.three || emailError || errorChecking.five
+                    }
                     helperText={
-                      (emailErrorOne && "This email already exists!") ||
-                      (emailErrorTwo && "Email can't be empty!")
+                      (errorChecking.three && errorChecking.three) ||
+                      (emailError && "This email already exists!") ||
+                      (errorChecking.five && errorChecking.five)
                     }
                   />
                 </FormControl>
@@ -410,6 +462,8 @@ const NewOrEditUserModal = ({
                     SelectProps={{
                       native: true
                     }}
+                    error={errorChecking.four}
+                    helperText={errorChecking.four && errorChecking.four}
                   >
                     <option aria-label="None" value="" />
                     <option aria-label="None" value="PP">
@@ -550,14 +604,14 @@ const NewOrEditUserModal = ({
                   }
                   label="Administrator"
                 />
-                {adminError && (
+                {/*TODO {adminError() && (
                   <FormHelperText
                     style={{ textAlign: "center", marginTop: "-3PX" }}
                     error={true}
                   >
                     You can't grant yourself administrator permissions!
                   </FormHelperText>
-                )}
+                )} */}
               </Grid>
             </Grid>
 

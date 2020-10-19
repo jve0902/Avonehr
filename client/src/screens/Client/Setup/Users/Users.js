@@ -79,6 +79,7 @@ const Users = () => {
   useEffect(() => {
     fetchAllUsers();
   }, [isShowDeleted]);
+
   useEffect(() => {
     fetchForwardEmailList();
   }, []);
