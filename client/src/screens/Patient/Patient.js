@@ -1471,7 +1471,7 @@ export default function Patient() {
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    minHeight: "calc(100vh - 171px)"
+    minHeight: "calc(100vh - 163px)"
   },
   noDisplay: {
     display: "none"

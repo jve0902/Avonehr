@@ -121,7 +121,6 @@ const PatientCard = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 100,
     overflowY: "auto",
     background: Colors.white,
     border: "1px solid rgba(38, 38, 38, 0.12)",
