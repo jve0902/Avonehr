@@ -165,6 +165,14 @@ class Patient {
       .then((res) => res.data);
   }
 
+  resetCardsLayout(user_id) {
+    return axios
+      .delete(API_BASE + `/patient-layout/${user_id}`, {
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+
   updateAdminNotes(patient_id, data, noteId) {
     return axios.put(API_BASE + `/patient/${patient_id}/admin-note`, data, {
       headers: authHeader()
