@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -11,12 +11,14 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import clsx from "clsx";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 
 import EmailService from "../../../../services/email.service";
 import Dimmer from "./../../../../components/common/Dimmer";
 import Error from "./../../../../components/common/Error";
-import AuthService from "./../../../../services/auth.service";
+import AuthService from "./../../../../services/patient_portal/auth.service";
 import { resetPasswordSuccess } from "./../../../../store/auth/actions";
 import { setSuccess } from "./../../../../store/common/actions";
 import Success from "./Success";
@@ -49,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
+  withErrors: {
+    opacity: 0.9
+  },
   submit: {
     margin: theme.spacing(3, 0, 2)
   },
@@ -63,12 +68,40 @@ const useStyles = makeStyles((theme) => ({
 const ForgotPassword = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { clientCode } = useParams();
+  const [clientId, setClientId] = React.useState(null);
   const [email, setEmail] = useState("");
   const [errors, setErrors] = React.useState([]);
   const [registrationLink, setRegistrationLink] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [dateOfBirth, handleDateChange] = useState(new Date());
   const success = useSelector((state) => state.common.success, shallowEqual);
+
+  useEffect(() => {
+    AuthService.getClientCode(clientCode).then(
+      (res) => {
+        const { client_id } = res.data[0];
+        setClientId(client_id);
+      },
+      (error) => {
+        console.log("getClientCode error:", error);
+        if (!error.response) {
+          return;
+        }
+        const { data, status } = error.response;
+
+        if (status === 400) {
+          setErrors([
+            {
+              msg: data.message
+            }
+          ]);
+        } else {
+          setErrors([]);
+        }
+      }
+    );
+  }, [clientCode]);
 
   const sendPasswordResetEmail = (e) => {
     e.preventDefault();
@@ -127,7 +160,7 @@ const ForgotPassword = () => {
         <Typography component="h1" variant="h2" className={classes.pageTitle}>
           Patient Forgot password
         </Typography>
-        <Error errors={errors}>
+        <Error errors={errors} variant="filled">
           {registrationLink && (
             <Link href="/signup"> Go to user registration</Link>
           )}
@@ -145,11 +178,15 @@ const ForgotPassword = () => {
               reset instructions.
             </p>
             <form
-              className={classes.form}
+              className={clsx({
+                [classes.form]: true, //always apply
+                [classes.withErrors]: errors.length > 0 //only when isLoading === true
+              })}
               noValidate
               onSubmit={sendPasswordResetEmail}
             >
               <TextField
+                disabled={errors.length > 0}
                 variant="outlined"
                 margin="dense"
                 required
@@ -162,6 +199,7 @@ const ForgotPassword = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
               <KeyboardDatePicker
+                disabled={errors.length > 0}
                 className={classes.dateOfBirth}
                 margin="dense"
                 clearable
@@ -172,6 +210,7 @@ const ForgotPassword = () => {
                 inputVariant="outlined"
               />
               <TextField
+                disabled={errors.length > 0}
                 variant="outlined"
                 margin="dense"
                 required
@@ -184,6 +223,7 @@ const ForgotPassword = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
               <TextField
+                disabled={errors.length > 0}
                 variant="outlined"
                 margin="dense"
                 required
@@ -207,7 +247,7 @@ const ForgotPassword = () => {
               </Button>
               <Grid container className={classes.meta}>
                 <Grid item xs>
-                  <Link href="/login_client" variant="body2">
+                  <Link href={`/login/${clientCode}`} variant="body2">
                     Already have an account? Sign in.
                   </Link>
                 </Grid>
