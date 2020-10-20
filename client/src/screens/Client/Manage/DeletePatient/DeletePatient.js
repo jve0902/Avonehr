@@ -10,10 +10,10 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(.5)
   },
   deleteFields: {
     maxWidth: "500px",

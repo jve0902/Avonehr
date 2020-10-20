@@ -14,10 +14,10 @@ import { AuthConsumer } from "../../../../providers/AuthProvider";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   title: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(.5)
   },
   forms: {
     maxWidth: "150px"

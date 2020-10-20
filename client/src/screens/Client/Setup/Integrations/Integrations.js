@@ -14,14 +14,14 @@ import { setSuccess } from "./../../../../store/common/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(.5)
   },
   form: {
     display: "flex",
