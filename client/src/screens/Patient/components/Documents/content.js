@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Typography, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -17,18 +17,19 @@ import { setError, setSuccess } from "./../../../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
   tab: {
-    padding: "5px 10px 5px 0",
+    paddingBottom: 5,
+    margin: "5px 10px 5px 0",
     fontSize: 12,
     cursor: "pointer"
   },
   tabSelected: {
-    padding: "5px 10px 5px 0",
+    paddingBottom: 5,
+    margin: "5px 10px 5px 0",
     fontSize: 12,
     cursor: "pointer",
-    fontWeight: "bold"
+    borderBottom: `2px solid ${theme.palette.primary.main}`
   },
   tableContainer: {
-    marginTop: theme.spacing(1.5),
     minWidth: 650
   },
   actions: {
@@ -88,31 +89,28 @@ const DocumentsContent = (props) => {
     setTableData([...data]);
   }, [data]);
 
-  const fetchDocuments = useCallback(
-    (selectedTab) => {
-      let tab = "";
-      if (selectedTab === 0) {
-        tab = "All";
-      } else if (selectedTab === 1) {
-        tab = "Labs";
-      } else if (selectedTab === 2) {
-        tab = "Imaging";
-      } else if (selectedTab === 3) {
-        tab = "Uncategorized";
-      } else if (selectedTab === 4) {
-        tab = "Trash";
-      }
-      PatientService.getDocuments(patientId, tab).then((res) => {
-        setTableData(res.data);
-      });
-    },
-    [patientId]
-  );
+
+  const fetchDocuments = (selectedTab) => {
+    if(selectedTab === 0) { //(All)
+      setTableData([...data]);
+    } else if(selectedTab === 1) { //(Labs)
+      let labsData = data.filter(x => x.type === "L")
+      setTableData([...labsData]);
+    } else if(selectedTab === 2) { //(Imaging)
+      let imagingData = data.filter(x => x.type === "I")
+      setTableData([...imagingData]);
+    } else if(selectedTab === 3) { //(Un-Categorized)
+      let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
+      setTableData([...uncategorizedData]);
+    } else if(selectedTab === 4) { //(Declined/Deleted)
+      let deletedData = data.filter(x => x.status === "D")
+      setTableData([...deletedData]);
+    }
+  }
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
-    const tab = "Labs";
-    PatientService.deleteDocument(documentId, tab)
+    PatientService.deleteDocument(patientId, documentId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

@@ -165,6 +165,14 @@ class Patient {
       .then((res) => res.data);
   }
 
+  resetCardsLayout(user_id) {
+    return axios
+      .delete(API_BASE + `/patient-layout/${user_id}`, {
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+
   updateAdminNotes(patient_id, data, noteId) {
     return axios.put(API_BASE + `/patient/${patient_id}/admin-note`, data, {
       headers: authHeader()
@@ -260,9 +268,10 @@ class Patient {
     );
   }
 
-  deleteDocument(patient_id, tab) {
-    return axios.delete(
-      API_BASE + `/patient/documents/${patient_id}/?tab="${tab}"`,
+  deleteDocument(patient_id, document_id) {
+    return axios.put(
+      API_BASE + `/patient/${patient_id}/documents/${document_id}`,
+      null,
       {
         headers: authHeader()
       }

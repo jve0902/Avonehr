@@ -28,7 +28,7 @@ export default function BillingContent(props) {
               className={classes.text12}
               color="textPrimary"
             >
-              $&nbsp;{item.amount}
+              ${item.amount}
             </Typography>
           </Grid>
           <Grid item className={classes.block}>

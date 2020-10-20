@@ -782,7 +782,7 @@ const updateDocuments = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
-      `update lab set deleted=true where id=${id}
+      `update lab set status='D' where id=${id}
       `
     );
 
@@ -1407,6 +1407,32 @@ const getLayout = async (req, res) => {
   }
 };
 
+const deleteLayout = async (req, res) => {
+  const db = makeDb(configuration, res);
+  const { user_id } = req.params;
+
+  try {
+    const dbResponse = await db.query(
+      `delete
+      from user_grid
+      where user_id=${user_id}`
+    );
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Error deleting layout";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const saveLayout = async (req, res) => {
   const { user_id } = req.params;
   const { layout } = req.body;
@@ -1489,6 +1515,7 @@ const appointmentTypes = {
   deleteRequisitions,
   getLayout,
   saveLayout,
+  deleteLayout
 };
 
 module.exports = appointmentTypes;
