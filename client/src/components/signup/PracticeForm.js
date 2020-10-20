@@ -184,7 +184,7 @@ const PracticeForm = ({ onFormSubmit, ...props }) => {
           </Alert>
         ))}
       <TextFieldWithError
-        fieldName="name"
+        fieldName="name" 
         label="Practice Name"
         value={name}
         handleOnChange={(event) => setName(event.target.value)}

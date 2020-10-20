@@ -41,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   indicator: {
-    backgroundColor : theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   }
 }));
 
-const StyledTableCell = withStyles(theme => ({
+const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.grey,
     color: theme.palette.grey,
@@ -86,8 +86,8 @@ const DocumentsContent = (props) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setTableData([...data])
-  }, [data])
+    setTableData([...data]);
+  }, [data]);
 
 
   const fetchDocuments = (selectedTab) => {
@@ -134,7 +134,7 @@ const DocumentsContent = (props) => {
   };
 
   const handleChange = (newValue) => {
-    if(newValue !== tabValue) {
+    if (newValue !== tabValue) {
       fetchDocuments(newValue);
     }
     setTabValue(newValue);
@@ -187,16 +187,16 @@ const DocumentsContent = (props) => {
               <StyledTableCell>Filename</StyledTableCell>
               <StyledTableCell>Type</StyledTableCell>
               <StyledTableCell>Lab Date</StyledTableCell>
-              <StyledTableCell>Physician</StyledTableCell>
-              <StyledTableCell align="center">Conventional Flag</StyledTableCell>
-              <StyledTableCell>Functional Flag</StyledTableCell>
+              <StyledTableCell align="center">
+                Conv Flag
+              </StyledTableCell>
+              <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
               <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.length
-              ?
+            {tableData.length ? (
               tableData.map((row, index) => (
                 <StyledTableRow key={`${row.created}_${index}`}>
                   <TableCell component="th" scope="row">
@@ -209,21 +209,25 @@ const DocumentsContent = (props) => {
                   </TableCell>
                   <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.physician}</TableCell>
-                  <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.note}</TableCell>
 
                   <TableCell className={classes.actions}>
-                    <DeleteIcon onClick={() => onItemDelete(row)} fontSize="small" />
+                    <DeleteIcon
+                      onClick={() => onItemDelete(row)}
+                      fontSize="small"
+                    />
                   </TableCell>
                 </StyledTableRow>
               ))
-              :
+            ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
-                  <Typography align="center" variant="h6">No Documents Found...</Typography>
+                  <Typography align="center" variant="h6">
+                    No Documents Found...
+                  </Typography>
                 </TableCell>
               </StyledTableRow>
-            }
+            )}
           </TableBody>
         </Table>
       </TableContainer>

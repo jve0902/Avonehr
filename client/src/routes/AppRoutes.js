@@ -223,7 +223,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/setup/ctp"
+              path="/setup/ctp-codes"
               component={CTPcodes}
               exact
             />
@@ -247,7 +247,7 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
-              path="/setup/icd"
+              path="/setup/icd-codes"
               component={ICDcodes}
               exact
             />

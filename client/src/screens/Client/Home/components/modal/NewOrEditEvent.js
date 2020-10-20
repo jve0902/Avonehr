@@ -30,6 +30,7 @@ import Alert from "@material-ui/lab/Alert";
 import { KeyboardDateTimePicker } from "@material-ui/pickers";
 import clsx from "clsx";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 import useDebounce from "./../../../../../hooks/useDebounce";
 import * as API from "./../../../../../utils/API";
@@ -101,7 +102,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3)
   },
-  appointmentLength:{}
+  patientLink: {
+    cursor: "pointer",
+    color: theme.palette.text.link
+  }
 }));
 
 const NewOrEditEvent = ({
@@ -117,13 +121,19 @@ const NewOrEditEvent = ({
   ...props
 }) => {
   const classes = useStyles();
+  const history = useHistory();
   const { providers, errors } = props;
   const [provider, setProvider] = React.useState("");
   const [patients, setPatients] = React.useState([]);
   const [selectedPatient, setSelectedPatient] = React.useState("");
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
   const [calEvent, setCalEvent] = useState("");
-  const [appointmentLength] = useState(" ")
+  const [appointmentLength, setAppointmentLeangth] = useState(" ");
+  const [errorText, setErrorText] = useState({
+    title: "",
+    patient: "",
+    error: ""
+  });
 
   useEffect(() => {
     if (isNewEvent) {
@@ -182,46 +192,88 @@ const NewOrEditEvent = ({
   };
 
   const handleSaveOrUpdate = () => {
-
-    props.appointments.map((appointment) =>
-      selectedPatient.includes(appointment.patient_id)
-    );
-    if (isNewEvent) {
-      const payload = {
-        data: {
-          title: calEvent.title,
-          provider: provider,
-          patient: selectedPatient,
-          ApptStatus: calEvent.status,
-          notes: calEvent.notes,
-          start_dt: calEvent.start_dt,
-          end_dt: calEvent.end_dt
+    const submitData = () => {
+      if (isNewEvent) {
+        const payload = {
+          data: {
+            title: calEvent.title,
+            provider: provider,
+            patient: selectedPatient,
+            ApptStatus: calEvent.status,
+            notes: calEvent.notes,
+            start_dt: calEvent.start_dt,
+            end_dt: calEvent.end_dt
+          }
+        };
+        onSave(payload);
+      } else {
+        const payload = {
+          data: {
+            id: props.event.id,
+            title: calEvent.title,
+            providerName: calEvent.provider_name,
+            provider: provider,
+            patient: selectedPatient
+              ? selectedPatient
+              : {
+                id: props.event.patient_id,
+                firstname: props.event.firstname,
+                email: props.event.email
+              },
+            ApptStatus: calEvent.status,
+            notes: calEvent.notes,
+            old_start_dt: moment(props.event.start_dt).format(
+              "YYYY-MM-DD HH:mm"
+            ),
+            old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
+            new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
+            new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
+          }
+        };
+        onEventUpdate(payload);
+      }
+    };
+    const existPatientID = props.appointments
+      .map((appointment) => selectedPatient.id === appointment.patient_id)
+      .includes(true);
+    const startTimeExist = props.appointments
+      // eslint-disable-next-line
+      .map((appointment) => calEvent.start_dt == appointment.start_dt)
+      .includes(true);
+    console.log(calEvent.title, calEvent.patient_id);
+    if (!calEvent.title || selectedPatient.length === 0) {
+      if (!calEvent.title && selectedPatient.length === 0) {
+        setErrorText({
+          ...errorText,
+          title: "Enter your title",
+          patient: "Please select from here"
+        });
+      } else {
+        if (!calEvent.title) {
+          setErrorText({
+            ...errorText,
+            title: "Enter your title",
+            patient: ""
+          });
         }
-      };
-      onSave(payload);
+        if (selectedPatient.length === 0) {
+          setErrorText({
+            ...errorText,
+            patient: "Please select from here",
+            title: ""
+          });
+        }
+      }
     } else {
-      const payload = {
-        data: {
-          id: props.event.id,
-          title: calEvent.title,
-          providerName: calEvent.provider_name,
-          provider: provider,
-          patient: selectedPatient
-            ? selectedPatient
-            : {
-              id: props.event.patient_id,
-              firstname: props.event.firstname,
-              email: props.event.email
-            },
-          ApptStatus: calEvent.status,
-          notes: calEvent.notes,
-          old_start_dt: moment(props.event.start_dt).format("YYYY-MM-DD HH:mm"),
-          old_end_dt: moment(props.event.end_dt).format("YYYY-MM-DD HH:mm"),
-          new_start_dt: moment(calEvent.start_dt).format("YYYY-MM-DD HH:mm"),
-          new_end_dt: moment(calEvent.end_dt).format("YYYY-MM-DD HH:mm")
+      if (existPatientID) {
+        if (startTimeExist) {
+          setErrorText({ ...errorText, error: "This time is not available" });
+        } else {
+          submitData();
         }
-      };
-      onEventUpdate(payload);
+      } else {
+        submitData();
+      }
     }
   };
 
@@ -286,6 +338,8 @@ const NewOrEditEvent = ({
                 autoComplete="title"
                 autoFocus
                 onChange={(event) => handleOnChange(event)}
+                error={errorText.title.length > 0}
+                helperText={errorText.title.length > 0 && errorText.title}
               />
             </FormControl>
             <div className={classes.datePickers}>
@@ -315,6 +369,7 @@ const NewOrEditEvent = ({
               <KeyboardDateTimePicker
                 clearable
                 className={classes.startdatePicker}
+                ampm={false}
                 variant="outlined"
                 id="start-date-picker-inline"
                 label="End"
@@ -326,8 +381,14 @@ const NewOrEditEvent = ({
                     ...calEvent,
                     [property]: date
                   });
+                  const length = moment(date).diff(
+                    calEvent.start_dt,
+                    "minutes"
+                  );
+                  setAppointmentLeangth(length);
                 }}
-                minDate={new Date()}
+                minD
+                ate={new Date()}
                 onError={console.log}
                 disablePast
                 format="yyyy/MM/dd HH:mm"
@@ -341,12 +402,12 @@ const NewOrEditEvent = ({
                 margin="dense"
                 className={classes.appointmentLength}
                 size="small"
-                id="title"
+                id="appointmentLength"
                 label="Appointment Length"
-                name="title"
-                autoComplete="title"
+                name="appointmentLength"
+                autoComplete="appointmentLength"
                 onChange={(event) => handleOnChange(event)}
-                disabled 
+                disabled
               />
             </div>
             <FormControl className={classes.statuses}>
@@ -413,6 +474,8 @@ const NewOrEditEvent = ({
                 name="patient"
                 autoComplete="patient"
                 onChange={(event) => setPatientSearchTerm(event.target.value)}
+                error={errorText.patient.length > 0}
+                helperText={errorText.patient.length > 0 && errorText.patient}
               />
               {patients.length > 0 && !selectedPatient && (
                 <Card className={classes.patientListCard}>
@@ -447,6 +510,26 @@ const NewOrEditEvent = ({
               value={calEvent.notes}
               onChange={(event) => handleOnChange(event)}
             />
+          </div>
+          <div>
+            <Typography
+              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              component="p"
+              variant="body2"
+              color="textPrimary"
+              className={classes.patientLink}
+            >
+              Go to patient page
+            </Typography>
+            <Typography
+              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              component="p"
+              variant="body2"
+              color="textPrimary"
+              className={classes.patientLink}
+            >
+              Go to patient page in new tab
+            </Typography>
           </div>
         </div>
       </DialogContent>

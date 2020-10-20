@@ -11,14 +11,14 @@ import _ from "lodash";
 import { AuthConsumer } from "./../../../../providers/AuthProvider";
 import AppointmentService from "./../../../../services/appointmentType.service";
 import { Appointments } from "./components";
-import DeleteAppointmentModal from "./components/modal/DeleteAppointment";
-import NewOrEditAppointment from "./components/modal/NewOrEditAppointment";
+import DeleteAppointmentModal from "./components/modal/DeleteAppointmentType";
+import NewOrEditAppointment from "./components/modal/NewOrEditAppointmentType";
 //import Video from "./../../../../components/videos/Video";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   uploadButtons: {
     display: "flex",
@@ -65,7 +65,7 @@ export default function AppointmentTypes(props) {
     const appointmentById = appointments.filter(
       (appointment) => appointment.id === id
     );
-    if(!!appointmentById) {
+    if (!!appointmentById) {
       setSelectedAppointment(_.head(appointmentById));
     }
   };

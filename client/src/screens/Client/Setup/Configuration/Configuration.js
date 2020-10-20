@@ -24,7 +24,7 @@ import ConfigModal from "./modal";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   uploadButtons: {
     display: "flex",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(.5)
   },
   form: {
     display: "flex",

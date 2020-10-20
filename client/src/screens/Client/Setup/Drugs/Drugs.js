@@ -13,10 +13,10 @@ import Drugstable from "./components/Drugstable";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(.5)
   },
   action: {
     textTransform: "none",

@@ -17,18 +17,17 @@ import NumberFormat from "react-number-format";
 import Accounting from "../../../../services/accountingSearch.service";
 import AccountingSearchResults from "./components";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "40px 0px"
+    padding: "25px 0px"
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 180
   },
   title: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(0.5)
   },
   form: {
     display: "flex",
