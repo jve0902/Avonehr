@@ -103,7 +103,7 @@ const DocumentsContent = (props) => {
       let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
       setTableData([...uncategorizedData]);
     } else if(selectedTab === 4) { //(Declined/Deleted)
-      let deletedData = data.filter(x => x.type === "D")
+      let deletedData = data.filter(x => x.status === "D")
       setTableData([...deletedData]);
     }
   }

@@ -782,7 +782,7 @@ const updateDocuments = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
-      `update lab set deleted=true where id=${id}
+      `update lab set status='D' where id=${id}
       `
     );
 
