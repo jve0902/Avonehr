@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Typography, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -79,7 +79,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const DocumentsContent = (props) => {
-  const { data, reloadData, patientId } = props;
+  const { data, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
@@ -90,23 +90,23 @@ const DocumentsContent = (props) => {
   }, [data])
 
 
-  const fetchDocuments = useCallback((selectedTab) => {
-    let tab = "";
-    if(selectedTab === 0) {
-      tab = "All";
-    } else if(selectedTab === 1) {
-      tab = "Labs";
-    } else if(selectedTab === 2) {
-      tab = "Imaging";
-    } else if(selectedTab === 3) {
-      tab = "Uncategorized";
-    } else if(selectedTab === 4) {
-      tab = "Trash";
+  const fetchDocuments = (selectedTab) => {
+    if(selectedTab === 0) { //(All)
+      setTableData([...data]);
+    } else if(selectedTab === 1) { //(Labs)
+      let labsData = data.filter(x => x.type === "L")
+      setTableData([...labsData]);
+    } else if(selectedTab === 2) { //(Imaging)
+      let imagingData = data.filter(x => x.type === "I")
+      setTableData([...imagingData]);
+    } else if(selectedTab === 3) { //(Un-Categorized)
+      let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
+      setTableData([...uncategorizedData]);
+    } else if(selectedTab === 4) { //(Declined/Deleted)
+      let deletedData = data.filter(x => x.type === "D")
+      setTableData([...deletedData]);
     }
-    PatientService.getDocuments(patientId, tab).then((res) => {
-      setTableData(res.data);
-    });
-  }, [patientId])
+  }
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
