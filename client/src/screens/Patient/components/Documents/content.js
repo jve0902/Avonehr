@@ -225,7 +225,6 @@ const DocumentsContent = (props) => {
                       :
                       <TableCell>{row.note}</TableCell>
                   }
-                  {/* <TableCell>{row.note}</TableCell> */}
 
                   <TableCell className={classes.actions}>
                     <DeleteIcon
