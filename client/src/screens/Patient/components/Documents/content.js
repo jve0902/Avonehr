@@ -79,7 +79,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const DocumentsContent = (props) => {
-  const { data, reloadData } = props;
+  const { data, reloadData, patientId } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
@@ -110,8 +110,7 @@ const DocumentsContent = (props) => {
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
-    const tab = "Labs";
-    PatientService.deleteDocument(documentId, tab)
+    PatientService.deleteDocument(patientId, documentId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
