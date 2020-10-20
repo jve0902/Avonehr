@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 
+import Tooltip from "../../../../components/common/CustomTooltip";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 
@@ -40,8 +41,11 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "12px"
     }
   },
-  indicator: {
-    backgroundColor: theme.palette.primary.main
+  overFlowControl: {
+    maxWidth: "30px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
   }
 }));
 
@@ -208,7 +212,20 @@ const DocumentsContent = (props) => {
                   </TableCell>
                   <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.physician}</TableCell>
-                  <TableCell>{row.note}</TableCell>
+                  {
+                    !!row.note && row.note.length > 10
+                      ?
+                      <Tooltip title={row.note}>
+                        <TableCell
+                          className={classes.overFlowControl}
+                        >
+                          {row.note}
+                        </TableCell>
+                      </Tooltip>
+                      :
+                      <TableCell>{row.note}</TableCell>
+                  }
+                  {/* <TableCell>{row.note}</TableCell> */}
 
                   <TableCell className={classes.actions}>
                     <DeleteIcon
