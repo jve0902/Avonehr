@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 
+import Tooltip from "../../../../components/common/CustomTooltip";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 
@@ -40,8 +41,11 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "12px"
     }
   },
-  indicator: {
-    backgroundColor: theme.palette.primary.main
+  overFlowControl: {
+    maxWidth: "30px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
   }
 }));
 
@@ -86,23 +90,25 @@ const DocumentsContent = (props) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setTableData([...data]);
+    let filteredDeletedDocumets = data.filter(x => x.status !== "D");
+    setTableData([...filteredDeletedDocumets]);
   }, [data]);
 
 
   const fetchDocuments = (selectedTab) => {
-    if(selectedTab === 0) { //(All)
-      setTableData([...data]);
-    } else if(selectedTab === 1) { //(Labs)
+    if (selectedTab === 0) { //(All)
+      let allData = data.filter(x => x.status !== "D")
+      setTableData([...allData]);
+    } else if (selectedTab === 1) { //(Labs)
       let labsData = data.filter(x => x.type === "L")
       setTableData([...labsData]);
-    } else if(selectedTab === 2) { //(Imaging)
+    } else if (selectedTab === 2) { //(Imaging)
       let imagingData = data.filter(x => x.type === "I")
       setTableData([...imagingData]);
-    } else if(selectedTab === 3) { //(Un-Categorized)
+    } else if (selectedTab === 3) { //(Un-Categorized)
       let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
       setTableData([...uncategorizedData]);
-    } else if(selectedTab === 4) { //(Declined/Deleted)
+    } else if (selectedTab === 4) { //(Declined/Deleted)
       let deletedData = data.filter(x => x.status === "D")
       setTableData([...deletedData]);
     }
@@ -191,7 +197,10 @@ const DocumentsContent = (props) => {
               </StyledTableCell>
               <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
-              <StyledTableCell align="center">Actions</StyledTableCell>
+              {
+                tabValue !== 4 && (
+                  <StyledTableCell align="center">Actions</StyledTableCell>
+                )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -208,21 +217,38 @@ const DocumentsContent = (props) => {
                   </TableCell>
                   <TableCell>{row.physician}</TableCell>
                   <TableCell>{row.physician}</TableCell>
-                  <TableCell>{row.note}</TableCell>
-
-                  <TableCell className={classes.actions}>
-                    <DeleteIcon
-                      onClick={() => onItemDelete(row)}
-                      fontSize="small"
-                    />
-                  </TableCell>
+                  {
+                    !!row.note && row.note.length > 10
+                      ?
+                      <Tooltip title={row.note}>
+                        <TableCell
+                          className={classes.overFlowControl}
+                        >
+                          {row.note}
+                        </TableCell>
+                      </Tooltip>
+                      :
+                      <TableCell>{row.note}</TableCell>
+                  }
+                  {
+                    tabValue !== 4 && (
+                      <TableCell className={classes.actions}>
+                        {row.status !== "D" && (
+                          <DeleteIcon
+                            onClick={() => onItemDelete(row)}
+                            fontSize="small"
+                          />
+                        )}
+                      </TableCell>
+                    )
+                  }
                 </StyledTableRow>
               ))
             ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
                   <Typography align="center" variant="h6">
-                    No Documents Found...
+                      No Documents Found...
                   </Typography>
                 </TableCell>
               </StyledTableRow>

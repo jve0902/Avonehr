@@ -1306,6 +1306,7 @@ export default function Patient() {
                 data={documents}
                 onClose={toggleDocumentsExpandDialog}
                 patientId={patient_id}
+                reloadData={() => fetchDocuments()}
               />
             }
             applyForm={() => toggleDocumentsExpandDialog()}
