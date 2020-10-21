@@ -90,23 +90,25 @@ const DocumentsContent = (props) => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setTableData([...data]);
+    let filteredDeletedDocumets = data.filter(x => x.status !== "D");
+    setTableData([...filteredDeletedDocumets]);
   }, [data]);
 
 
   const fetchDocuments = (selectedTab) => {
-    if(selectedTab === 0) { //(All)
-      setTableData([...data]);
-    } else if(selectedTab === 1) { //(Labs)
+    if (selectedTab === 0) { //(All)
+      let allData = data.filter(x => x.status !== "D")
+      setTableData([...allData]);
+    } else if (selectedTab === 1) { //(Labs)
       let labsData = data.filter(x => x.type === "L")
       setTableData([...labsData]);
-    } else if(selectedTab === 2) { //(Imaging)
+    } else if (selectedTab === 2) { //(Imaging)
       let imagingData = data.filter(x => x.type === "I")
       setTableData([...imagingData]);
-    } else if(selectedTab === 3) { //(Un-Categorized)
+    } else if (selectedTab === 3) { //(Un-Categorized)
       let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
       setTableData([...uncategorizedData]);
-    } else if(selectedTab === 4) { //(Declined/Deleted)
+    } else if (selectedTab === 4) { //(Declined/Deleted)
       let deletedData = data.filter(x => x.status === "D")
       setTableData([...deletedData]);
     }
@@ -195,7 +197,10 @@ const DocumentsContent = (props) => {
               </StyledTableCell>
               <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
-              <StyledTableCell align="center">Actions</StyledTableCell>
+              {
+                tabValue !== 4 && (
+                  <StyledTableCell align="center">Actions</StyledTableCell>
+                )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -225,20 +230,25 @@ const DocumentsContent = (props) => {
                       :
                       <TableCell>{row.note}</TableCell>
                   }
-
-                  <TableCell className={classes.actions}>
-                    <DeleteIcon
-                      onClick={() => onItemDelete(row)}
-                      fontSize="small"
-                    />
-                  </TableCell>
+                  {
+                    tabValue !== 4 && (
+                      <TableCell className={classes.actions}>
+                        {row.status !== "D" && (
+                          <DeleteIcon
+                            onClick={() => onItemDelete(row)}
+                            fontSize="small"
+                          />
+                        )}
+                      </TableCell>
+                    )
+                  }
                 </StyledTableRow>
               ))
             ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
                   <Typography align="center" variant="h6">
-                    No Documents Found...
+                      No Documents Found...
                   </Typography>
                 </TableCell>
               </StyledTableRow>
