@@ -8,6 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -125,16 +126,13 @@ const AllergiesDetails = (props) => {
               </StyledTableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell
-                className={classes.textCenter}
-                component="td"
-                colSpan="8"
-                scope="row"
-              >
-                No Records found...
+            <StyledTableRow>
+              <TableCell colSpan={5}>
+                <Typography align="center" variant="body1">
+                  No Records Found...
+                </Typography>
               </TableCell>
-            </TableRow>
+            </StyledTableRow>
           )}
         </TableBody>
       </Table>
