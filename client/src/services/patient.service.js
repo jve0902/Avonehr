@@ -270,7 +270,17 @@ class Patient {
 
   deleteDocument(patient_id, document_id) {
     return axios.put(
-      API_BASE + `/patient/${patient_id}/documents/${document_id}`,
+      API_BASE + `/patient/${patient_id}/documents/${document_id}/status/D`,
+      null,
+      {
+        headers: authHeader()
+      }
+    );
+  }
+
+  restoreDocument(patient_id, document_id) {
+    return axios.put(
+      API_BASE + `/patient/${patient_id}/documents/${document_id}/status/A`,
       null,
       {
         headers: authHeader()
