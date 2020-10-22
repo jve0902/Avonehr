@@ -42,7 +42,8 @@ const PatientCard = (props) => {
     editorCancelHandler,
     updateLayoutHandler,
     resetLayoutHandler,
-    isLayoutUpdated
+    isLayoutUpdated,
+    isDraggable
   } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,7 +77,7 @@ const PatientCard = (props) => {
           Reset Layout
         </MenuItem>
       </Menu>
-      <Card className={classes.root} variant="outlined">
+      <Card className={isDraggable ? classes.root : classes.minHeightCard} variant="outlined">
         {/* drag-handle className is important for the header as it makes the header draggable only */}
         <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
@@ -165,6 +166,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
     marginBottom: 6
   },
+  minHeightCard: {
+    overflowY: "auto",
+    background: Colors.white,
+    border: "1px solid rgba(38, 38, 38, 0.12)",
+    borderRadius: 4,
+    marginBottom: 6,
+    minHeight: 100
+  },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 34,
@@ -243,6 +252,7 @@ PatientCard.defaultProps = {
   updateLayoutHandler: () => { },
   resetLayoutHandler: () => { },
   isLayoutUpdated: false,
+  isDraggable: true,
 };
 
 PatientCard.propTypes = {
@@ -264,6 +274,7 @@ PatientCard.propTypes = {
   updateLayoutHandler: PropTypes.func,
   resetLayoutHandler: PropTypes.func,
   isLayoutUpdated: PropTypes.bool,
+  isDraggable: PropTypes.bool,
 };
 
 // export default rglDynamicHeight(PatientCard);

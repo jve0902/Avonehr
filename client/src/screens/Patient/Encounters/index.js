@@ -159,6 +159,7 @@ const Form = (props) => {
               primaryButtonText={item.primaryButtonText}
               secondaryButtonText={item.secondaryButtonText}
               iconHandler={() => console.log(item.title)}
+              isDraggable={false}
             />
           ))}
 

@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   resMessage: {
     fontSize: 12
+  },
+  icon: {
+    cursor: "pointer"
   }
 }));
 
@@ -258,12 +261,14 @@ const DocumentsContent = (props) => {
                     {row.status == "D"
                       ? (
                         <RestoreIcon
+                          className={classes.icon}
                           onClick={() => onItemRestore(row.id)}
                           fontSize="small"
                         />
                       )
                       : (
                         <DeleteIcon
+                          className={classes.icon}
                           onClick={() => onItemDelete(row)}
                           fontSize="small"
                         />
