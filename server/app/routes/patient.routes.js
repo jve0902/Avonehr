@@ -99,7 +99,7 @@ router.get(
   Patient.getDocuments
 );
 router.put(
-  "/patient/:id/documents/:id",
+  "/patient/:id/documents/:id/status/:type",
   [authJwt.verifyToken],
   Patient.updateDocuments
 );
