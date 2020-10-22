@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap"
+  },
+  resMessage: {
+    fontSize: 12
   }
 }));
 
@@ -247,7 +250,7 @@ const DocumentsContent = (props) => {
             ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
-                  <Typography align="center" variant="h6">
+                  <Typography className={classes.resMessage} align="center">
                       No Documents Found...
                   </Typography>
                 </TableCell>
