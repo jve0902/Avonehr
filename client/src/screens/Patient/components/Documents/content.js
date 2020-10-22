@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Typography, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
+import RestoreIcon from "@material-ui/icons/RestorePage";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 
@@ -91,14 +92,8 @@ const DocumentsContent = (props) => {
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
   const [tableData, setTableData] = useState([]);
-
-  useEffect(() => {
-    let filteredDeletedDocumets = data.filter(x => x.status !== "D");
-    setTableData([...filteredDeletedDocumets]);
-  }, [data]);
-
-
-  const fetchDocuments = (selectedTab) => {
+  
+  const fetchDocuments = useCallback((selectedTab) => {
     if (selectedTab === 0) { //(All)
       let allData = data.filter(x => x.status !== "D")
       setTableData([...allData]);
@@ -115,11 +110,40 @@ const DocumentsContent = (props) => {
       let deletedData = data.filter(x => x.status === "D")
       setTableData([...deletedData]);
     }
-  }
+  }, [data])
+
+  useEffect(() => {
+    fetchDocuments(tabValue);
+  }, [data, tabValue, fetchDocuments]);
+
 
   const onItemDelete = (selectedItem) => {
     const documentId = selectedItem.id || 1;
     PatientService.deleteDocument(patientId, documentId)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        reloadData();
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage
+          })
+        );
+      });
+  };
+
+
+  const onItemRestore = (selectedItemId) => {
+    PatientService.restoreDocument(patientId, selectedItemId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -200,10 +224,7 @@ const DocumentsContent = (props) => {
               </StyledTableCell>
               <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
-              {
-                tabValue !== 4 && (
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-                )}
+              <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -233,18 +254,21 @@ const DocumentsContent = (props) => {
                       :
                       <TableCell>{row.note}</TableCell>
                   }
-                  {
-                    tabValue !== 4 && (
-                      <TableCell className={classes.actions}>
-                        {row.status !== "D" && (
-                          <DeleteIcon
-                            onClick={() => onItemDelete(row)}
-                            fontSize="small"
-                          />
-                        )}
-                      </TableCell>
-                    )
-                  }
+                  <TableCell className={classes.actions}>
+                    {row.status == "D"
+                      ? (
+                        <RestoreIcon
+                          onClick={() => onItemRestore(row.id)}
+                          fontSize="small"
+                        />
+                      )
+                      : (
+                        <DeleteIcon
+                          onClick={() => onItemDelete(row)}
+                          fontSize="small"
+                        />
+                      )}
+                  </TableCell>
                 </StyledTableRow>
               ))
             ) : (
