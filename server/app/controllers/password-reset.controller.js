@@ -127,7 +127,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
 const sendRecoveryEmail = async (user, res) => {
   const accesstToken = usePasswordHashToMakeToken(user);
-  const url = getPasswordResetURL(user, accesstToken);
+  const url = getPasswordResetURL(user, "user", accesstToken);
   const emailTemplate = resetPasswordTemplate(user, url);
 
   if (process.env.NODE_ENV === "development") {

@@ -31,9 +31,11 @@ exports.sendPasswordResetEmail = async (req, res) => {
   const db = makeDb(configuration, res);
   //Check where user already signed up or not
   const { email } = req.params;
+  const data = req.body.patient;
+
   const patientRows = await db.query(
-    "SELECT id, firstname, lastname, email, password, login_dt, created FROM patient WHERE email = ? LIMIT 1",
-    [email]
+    "SELECT id, firstname, lastname, email, password, login_dt, created FROM patient WHERE email = ? and dob = ? and lastname = ? and postal = ? LIMIT 1",
+    [email, data.dob, data.lastname, data.postal]
   );
   if (patientRows.length < 1) {
     errorMessage.message =
@@ -73,7 +75,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
 const sendRecoveryEmail = async (user, res) => {
   const accesstToken = usePasswordHashToMakeToken(user);
-  const url = getPasswordResetURL(user, accesstToken);
+  const url = getPasswordResetURL(user, "patient", accesstToken);
   const emailTemplate = resetPasswordTemplate(user, url);
 
   if (process.env.NODE_ENV === "development") {
@@ -121,31 +123,31 @@ exports.receiveNewPassword = async (req, res) => {
   }
 
   const db = makeDb(configuration, res);
-  const { userId, token } = req.params;
+  const { patientId, token } = req.params;
   const { password } = req.body;
 
-  //find user with reset_password_token AND userId
+  //find patient with reset_password_token AND patientId
   //check token expires validity
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
-  const userRows = await db.query(
-    `SELECT id, email, reset_password_token, reset_password_expires FROM user WHERE id=${userId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
+  const patientRows = await db.query(
+    `SELECT id, email, reset_password_token, reset_password_expires FROM patient WHERE id=${patientId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
   );
-  let user = userRows[0];
+  let patient = patientRows[0];
 
-  if (!user) {
-    errorMessage.message = "User not found";
-    errorMessage.user = user;
+  if (!patient) {
+    errorMessage.message = "Patient not found";
+    errorMessage.patient = patient;
     return res.status(status.notfound).send(errorMessage);
   }
 
   //if all set then accept new password
   const hashedPassword = bcrypt.hashSync(password, 8);
 
-  const updateUserResponse = await db.query(
+  const updatePatientResponse = await db.query(
     `UPDATE user SET password='${hashedPassword}', reset_password_token=NULL, reset_password_expires=NULL WHERE id =${user.id}`
   );
 
-  if (updateUserResponse.affectedRows) {
+  if (updatePatientResponse.affectedRows) {
     successMessage.message = "Password changed succesfullly!";
     return res.status(status.success).send(successMessage);
   }

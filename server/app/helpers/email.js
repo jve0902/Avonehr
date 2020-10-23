@@ -46,8 +46,12 @@ const signUpConfirmationTemplate = (user, url) => {
 const getEmailVerificationURL = (user, token) =>
   `${process.env.CLIENT_URL}/email/confirmation/${user.id}/${token}`;
 
-const getPasswordResetURL = (user, token) =>
-  `${process.env.CLIENT_URL}/password/reset/${user.id}/${token}`;
+const getPasswordResetURL = (user, userType, token) => {
+  if (userType === "patient") {
+    return `${process.env.CLIENT_URL}/patient/password/reset/${user.id}/${token}`;
+  }
+  return `${process.env.CLIENT_URL}/password/reset/${user.id}/${token}`;
+};
 
 const resetPasswordTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN;

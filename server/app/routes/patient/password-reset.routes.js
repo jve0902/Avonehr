@@ -10,7 +10,7 @@ router.post(
 
 //Forget password reset
 router.post(
-  "/auth/patient/reset/:userId/:token",
+  "/auth/patient/reset/:patientId/:token",
   controller.receiveNewPassword
 );
 
