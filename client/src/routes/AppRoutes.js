@@ -66,6 +66,7 @@ import {
   PatientProfile,
   PatientForms
 } from "../screens/patient-portal";
+import PatientResetPassword from "../screens/patient-portal/ResetPassword";
 import ProcessLab from "../screens/ProcessLab";
 import ProcessMessage from "../screens/ProcessMessage";
 import ResetPassword from "../screens/ResetPassword";
@@ -321,6 +322,12 @@ class AppRouter extends Component {
               layout={PlainPatientPortal}
               path="/forgot/:clientCode"
               component={PatientForgotPassword}
+            />
+            <RouteWithLayout
+              layout={PlainPatientPortal}
+              path="/patient/password/reset/:patientId/:token"
+              component={PatientResetPassword}
+              exact
             />
             <PrivateRouteWithLayout
               layout={WithLeftSidebar}

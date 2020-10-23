@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,17 +15,30 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Success = ({ header, loginText }) => {
+const Success = ({ header, loginText, client }) => {
   const classes = useStyles();
+  console.log("client:", client);
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <p>
-          {header} <Link href="/login_client">{loginText}</Link>
+          {header} <Link href={`/login/${client.code}`}>{loginText}</Link>
         </p>
       </CardContent>
     </Card>
   );
+};
+
+Success.propTypes = {
+  loginText: PropTypes.string.isRequired,
+  header: PropTypes.string.isRequired,
+  client: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      code: PropTypes.string.isRequired
+    })
+  )
 };
 
 export default Success;

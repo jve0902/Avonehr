@@ -130,7 +130,7 @@ exports.receiveNewPassword = async (req, res) => {
   //check token expires validity
   const now = moment().format("YYYY-MM-DD HH:mm:ss");
   const patientRows = await db.query(
-    `SELECT id, email, reset_password_token, reset_password_expires FROM patient WHERE id=${patientId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
+    `SELECT id, email, client_id, reset_password_token, reset_password_expires FROM patient WHERE id=${patientId} AND reset_password_token='${token}' AND reset_password_expires > '${now}'`
   );
   let patient = patientRows[0];
 
@@ -140,15 +140,19 @@ exports.receiveNewPassword = async (req, res) => {
     return res.status(status.notfound).send(errorMessage);
   }
 
+  const client = await db.query(
+    `SELECT id, name, code from client WHERE id=${patient.client_id}`
+  );
   //if all set then accept new password
   const hashedPassword = bcrypt.hashSync(password, 8);
 
   const updatePatientResponse = await db.query(
-    `UPDATE user SET password='${hashedPassword}', reset_password_token=NULL, reset_password_expires=NULL WHERE id =${user.id}`
+    `UPDATE patient SET password='${hashedPassword}', reset_password_token=NULL, reset_password_expires=NULL WHERE id =${patient.id}`
   );
 
   if (updatePatientResponse.affectedRows) {
     successMessage.message = "Password changed succesfullly!";
+    successMessage.data = { client: client[0] };
     return res.status(status.success).send(successMessage);
   }
 };
