@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Typography, Grid } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
+import RestoreIcon from "@material-ui/icons/RestorePage";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 
@@ -46,6 +47,12 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap"
+  },
+  resMessage: {
+    fontSize: 12
+  },
+  icon: {
+    cursor: "pointer"
   }
 }));
 
@@ -88,14 +95,8 @@ const DocumentsContent = (props) => {
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
   const [tableData, setTableData] = useState([]);
-
-  useEffect(() => {
-    let filteredDeletedDocumets = data.filter(x => x.status !== "D");
-    setTableData([...filteredDeletedDocumets]);
-  }, [data]);
-
-
-  const fetchDocuments = (selectedTab) => {
+  
+  const fetchDocuments = useCallback((selectedTab) => {
     if (selectedTab === 0) { //(All)
       let allData = data.filter(x => x.status !== "D")
       setTableData([...allData]);
@@ -112,11 +113,17 @@ const DocumentsContent = (props) => {
       let deletedData = data.filter(x => x.status === "D")
       setTableData([...deletedData]);
     }
-  }
+  }, [data])
 
-  const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(patientId, documentId)
+  useEffect(() => {
+    fetchDocuments(tabValue);
+  }, [data, tabValue, fetchDocuments]);
+
+  const updateDocumentStatusHandler = (selectedItemId, status) => {
+    const reqBody = {
+      type: status
+    }
+    PatientService.updateDocument(patientId, selectedItemId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -197,10 +204,7 @@ const DocumentsContent = (props) => {
               </StyledTableCell>
               <StyledTableCell>Func Flag</StyledTableCell>
               <StyledTableCell>Notes</StyledTableCell>
-              {
-                tabValue !== 4 && (
-                  <StyledTableCell align="center">Actions</StyledTableCell>
-                )}
+              <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -230,24 +234,29 @@ const DocumentsContent = (props) => {
                       :
                       <TableCell>{row.note}</TableCell>
                   }
-                  {
-                    tabValue !== 4 && (
-                      <TableCell className={classes.actions}>
-                        {row.status !== "D" && (
-                          <DeleteIcon
-                            onClick={() => onItemDelete(row)}
-                            fontSize="small"
-                          />
-                        )}
-                      </TableCell>
-                    )
-                  }
+                  <TableCell className={classes.actions}>
+                    {row.status == "D"
+                      ? (
+                        <RestoreIcon
+                          className={classes.icon}
+                          onClick={() => updateDocumentStatusHandler(row.id, "A")}
+                          fontSize="small"
+                        />
+                      )
+                      : (
+                        <DeleteIcon
+                          className={classes.icon}
+                          onClick={() => updateDocumentStatusHandler(row.id, "D")}
+                          fontSize="small"
+                        />
+                      )}
+                  </TableCell>
                 </StyledTableRow>
               ))
             ) : (
               <StyledTableRow>
                 <TableCell colSpan={10}>
-                  <Typography align="center" variant="h6">
+                  <Typography className={classes.resMessage} align="center">
                       No Documents Found...
                   </Typography>
                 </TableCell>

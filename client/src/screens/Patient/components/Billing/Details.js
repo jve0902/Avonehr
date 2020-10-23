@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 
 import { Typography } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,7 +8,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 
 import PatientService from "../../../../services/patient.service";
@@ -52,7 +50,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const BillingDetails = (props) => {
-  const { reloadData, patientId } = props;
+  const { patientId } = props;
   const classes = useStyles();
   const [billings, setBillings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

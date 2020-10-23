@@ -18,6 +18,7 @@ import CardIcon from "@material-ui/icons/CreditCard";
 import DesktopIcon from "@material-ui/icons/DesktopMac";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SaveLayoutIcon from "@material-ui/icons/Save";
+import clsx from "clsx";
 import PropTypes from "prop-types";
 
 import Colors from "../../theme/colors";
@@ -42,7 +43,8 @@ const PatientCard = (props) => {
     editorCancelHandler,
     updateLayoutHandler,
     resetLayoutHandler,
-    isLayoutUpdated
+    isLayoutUpdated,
+    hasMinHeight
   } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,7 +78,12 @@ const PatientCard = (props) => {
           Reset Layout
         </MenuItem>
       </Menu>
-      <Card className={classes.root} variant="outlined">
+      <Card
+        className={clsx({
+          [classes.root]: true, //always apply
+          [classes.minHeightCard]: hasMinHeight //only when isLoading === true
+        })}
+        variant="outlined">
         {/* drag-handle className is important for the header as it makes the header draggable only */}
         <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
@@ -165,6 +172,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
     marginBottom: 6
   },
+  minHeightCard: {
+    minHeight: 100
+  },
   titleContainer: {
     borderBottom: `1px solid ${Colors.border}`,
     minHeight: 34,
@@ -243,6 +253,7 @@ PatientCard.defaultProps = {
   updateLayoutHandler: () => { },
   resetLayoutHandler: () => { },
   isLayoutUpdated: false,
+  hasMinHeight: false,
 };
 
 PatientCard.propTypes = {
@@ -264,6 +275,7 @@ PatientCard.propTypes = {
   updateLayoutHandler: PropTypes.func,
   resetLayoutHandler: PropTypes.func,
   isLayoutUpdated: PropTypes.bool,
+  hasMinHeight: PropTypes.bool,
 };
 
 // export default rglDynamicHeight(PatientCard);

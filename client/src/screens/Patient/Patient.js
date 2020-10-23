@@ -963,7 +963,7 @@ export default function Patient() {
             applyForm={() => toggleFormsExpandDialog()}
             cancelForm={() => toggleFormsExpandDialog()}
             hideActions={true}
-            size={"lg"}
+            size={"md"}
           />
         )
       }
@@ -1131,7 +1131,7 @@ export default function Patient() {
             applyForm={() => toggleEncountersExpandDialog()}
             cancelForm={() => toggleEncountersExpandDialog()}
             hideActions={true}
-            size={"md"}
+            size={"lg"}
           />
         )
       }
@@ -1186,7 +1186,7 @@ export default function Patient() {
             applyForm={() => toggleMessageExpandDialog()}
             cancelForm={() => toggleMessageExpandDialog()}
             hideActions={true}
-            size={"md"}
+            size={"lg"}
           />
         )
       }

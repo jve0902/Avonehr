@@ -779,10 +779,11 @@ const getDocuments = async (req, res) => {
 
 const updateDocuments = async (req, res) => {
   const { id } = req.params;
+  const { type } = req.body;
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
-      `update lab set status='D' where id=${id}
+      `update lab set status='${type}' where id=${id}
       `
     );
 
