@@ -779,7 +779,7 @@ const getDocuments = async (req, res) => {
 
 const updateDocuments = async (req, res) => {
   const { id } = req.params;
-  const { type } = req.params;
+  const { type } = req.body;
   const db = makeDb(configuration, res);
   try {
     const updateResponse = await db.query(
