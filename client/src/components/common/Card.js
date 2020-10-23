@@ -18,6 +18,7 @@ import CardIcon from "@material-ui/icons/CreditCard";
 import DesktopIcon from "@material-ui/icons/DesktopMac";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SaveLayoutIcon from "@material-ui/icons/Save";
+import clsx from "clsx";
 import PropTypes from "prop-types";
 
 import Colors from "../../theme/colors";
@@ -43,7 +44,7 @@ const PatientCard = (props) => {
     updateLayoutHandler,
     resetLayoutHandler,
     isLayoutUpdated,
-    isDraggable
+    hasMinHeight
   } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -77,7 +78,12 @@ const PatientCard = (props) => {
           Reset Layout
         </MenuItem>
       </Menu>
-      <Card className={isDraggable ? classes.root : classes.minHeightCard} variant="outlined">
+      <Card
+        className={clsx({
+          [classes.root]: true, //always apply
+          [classes.minHeightCard]: hasMinHeight //only when isLoading === true
+        })}
+        variant="outlined">
         {/* drag-handle className is important for the header as it makes the header draggable only */}
         <Grid container justify="space-between" alignItems="center" className={`drag-handle ${classes.titleContainer} ${showActions ? classes.leftPadding : classes.fullPadding}`}>
           <Typography className={classes.title}>
@@ -167,11 +173,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 6
   },
   minHeightCard: {
-    overflowY: "auto",
-    background: Colors.white,
-    border: "1px solid rgba(38, 38, 38, 0.12)",
-    borderRadius: 4,
-    marginBottom: 6,
     minHeight: 100
   },
   titleContainer: {
@@ -252,7 +253,7 @@ PatientCard.defaultProps = {
   updateLayoutHandler: () => { },
   resetLayoutHandler: () => { },
   isLayoutUpdated: false,
-  isDraggable: true,
+  hasMinHeight: false,
 };
 
 PatientCard.propTypes = {
@@ -274,7 +275,7 @@ PatientCard.propTypes = {
   updateLayoutHandler: PropTypes.func,
   resetLayoutHandler: PropTypes.func,
   isLayoutUpdated: PropTypes.bool,
-  isDraggable: PropTypes.bool,
+  hasMinHeight: PropTypes.bool,
 };
 
 // export default rglDynamicHeight(PatientCard);
