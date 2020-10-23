@@ -119,34 +119,11 @@ const DocumentsContent = (props) => {
     fetchDocuments(tabValue);
   }, [data, tabValue, fetchDocuments]);
 
-
-  const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(patientId, documentId)
-      .then((response) => {
-        dispatch(setSuccess(`${response.data.message}`));
-        reloadData();
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        let severity = "error";
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage
-          })
-        );
-      });
-  };
-
-
-  const onItemRestore = (selectedItemId) => {
-    PatientService.restoreDocument(patientId, selectedItemId)
+  const updateDocumentStatusHandler = (selectedItemId, status) => {
+    const reqBody = {
+      type: status
+    }
+    PatientService.updateDocument(patientId, selectedItemId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -262,14 +239,14 @@ const DocumentsContent = (props) => {
                       ? (
                         <RestoreIcon
                           className={classes.icon}
-                          onClick={() => onItemRestore(row.id)}
+                          onClick={() => updateDocumentStatusHandler(row.id, "A")}
                           fontSize="small"
                         />
                       )
                       : (
                         <DeleteIcon
                           className={classes.icon}
-                          onClick={() => onItemDelete(row)}
+                          onClick={() => updateDocumentStatusHandler(row.id, "D")}
                           fontSize="small"
                         />
                       )}
