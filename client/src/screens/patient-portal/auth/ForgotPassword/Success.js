@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Success = ({ header, loginText, client }) => {
   const classes = useStyles();
-  console.log("client:", client);
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
@@ -34,7 +33,7 @@ Success.propTypes = {
   header: PropTypes.string.isRequired,
   client: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
+      client_id: PropTypes.string,
       name: PropTypes.string,
       code: PropTypes.string.isRequired
     })

@@ -17,7 +17,7 @@ exports.getClientByCode = async (req, res) => {
   const { c } = req.query;
   try {
     const dbResponse = await db.query(
-      `select id client_id, name from client where code='${c}'`
+      `select id client_id, name, code from client where code='${c}'`
     );
     console.log("dbResponse", dbResponse);
     if (!dbResponse) {

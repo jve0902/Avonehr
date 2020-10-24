@@ -12,8 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import clsx from "clsx";
+import moment from "moment";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import EmailService from "../../../../services/email.service";
 import Dimmer from "./../../../../components/common/Dimmer";
@@ -69,19 +70,20 @@ const ForgotPassword = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { clientCode } = useParams();
-  const [clientId, setClientId] = React.useState(null);
+  const [client, setClient] = React.useState(null);
   const [email, setEmail] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [postal, setPostal] = useState("");
   const [errors, setErrors] = React.useState([]);
   const [registrationLink, setRegistrationLink] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [dateOfBirth, handleDateChange] = useState(new Date());
+  const [dob, handleDateChange] = useState(new Date());
   const success = useSelector((state) => state.common.success, shallowEqual);
 
   useEffect(() => {
     AuthService.getClientCode(clientCode).then(
       (res) => {
-        const { client_id } = res.data[0];
-        setClientId(client_id);
+        setClient(res.data[0]);
       },
       (error) => {
         console.log("getClientCode error:", error);
@@ -106,7 +108,13 @@ const ForgotPassword = () => {
   const sendPasswordResetEmail = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    AuthService.passwordChangeRequest(email).then(
+    AuthService.passwordChangeRequest(email, {
+      patient: {
+        dob: moment(dob).format("YYYY-MM-DD"),
+        lastname: lastname,
+        postal: postal
+      }
+    }).then(
       (response) => {
         setIsLoading(false);
         dispatch(resetPasswordSuccess());
@@ -162,13 +170,14 @@ const ForgotPassword = () => {
         </Typography>
         <Error errors={errors} variant="filled">
           {registrationLink && (
-            <Link href="/signup"> Go to user registration</Link>
+            <Link href={`/signup/${clientCode}`}> Go to user registration</Link>
           )}
         </Error>
         {success && (
           <Success
             header="If that account in our system then we have sent an email with instructions to reset your password!"
             loginText="Sign back in"
+            client={client}
           />
         )}
         {!success && (
@@ -195,6 +204,7 @@ const ForgotPassword = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
                 autoFocus
                 onChange={(event) => setEmail(event.target.value)}
               />
@@ -203,10 +213,10 @@ const ForgotPassword = () => {
                 className={classes.dateOfBirth}
                 margin="dense"
                 clearable
-                value={dateOfBirth}
-                placeholder="10/10/2018"
+                value={dob}
+                placeholder="2018/10/10"
                 onChange={(date) => handleDateChange(date)}
-                format="MM-dd-yyyy"
+                format="yyyy-MM-dd"
                 inputVariant="outlined"
               />
               <TextField
@@ -219,8 +229,9 @@ const ForgotPassword = () => {
                 label="Last name"
                 name="lastname"
                 autoComplete="lastname"
+                value={lastname}
                 autoFocus
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setLastname(event.target.value)}
               />
               <TextField
                 disabled={errors.length > 0}
@@ -232,8 +243,9 @@ const ForgotPassword = () => {
                 label="Zipcode"
                 name="zipcode"
                 autoComplete="zipcode"
+                value={postal}
                 autoFocus
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setPostal(event.target.value)}
               />
               <Button
                 type="submit"

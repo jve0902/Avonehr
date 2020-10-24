@@ -14,7 +14,6 @@ import { useParams } from "react-router-dom";
 import Error from "./../../components/common/Error";
 import Success from "./../../screens/patient-portal/auth/ForgotPassword/Success";
 import AuthService from "./../../services/patient_portal/auth.service";
-//import AuthService from "./../../services/auth.service";
 import { setSuccess } from "./../../store/common/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +50,6 @@ const PatientResetPassword = () => {
     e.preventDefault();
     AuthService.resetPassword(patientId, token, password).then(
       (response) => {
-        console.log("change password response", response);
         dispatch(setSuccess(`${response.data.message}`));
         setClient(response.data.data.client);
       },
