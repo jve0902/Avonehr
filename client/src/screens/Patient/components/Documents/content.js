@@ -235,7 +235,7 @@ const DocumentsContent = (props) => {
                       <TableCell>{row.note}</TableCell>
                   }
                   <TableCell className={classes.actions}>
-                    {row.status == "D"
+                    {row.status === "D"
                       ? (
                         <RestoreIcon
                           className={classes.icon}
