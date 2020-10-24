@@ -782,10 +782,17 @@ const updateDocuments = async (req, res) => {
   const { type } = req.body;
   const db = makeDb(configuration, res);
   try {
-    const updateResponse = await db.query(
-      `update lab set status='${type}' where id=${id}
-      `
-    );
+    const now = moment().format("YYYY-MM-DD HH:mm:ss");
+    let $sql = `update lab set status='${type}',`;
+    if (type === "D") {
+      $sql = $sql + ` deleted_dt='${now}' `;
+    } else if (type === "A") {
+      $sql = $sql + ` deleted_dt=null`;
+    }
+
+    $sql = $sql + ` where id=${id}`;
+
+    const updateResponse = await db.query($sql);
 
     if (!updateResponse.affectedRows) {
       errorMessage.error = "Update not successful";
