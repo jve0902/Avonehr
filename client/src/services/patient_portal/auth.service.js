@@ -30,6 +30,16 @@ class PatientAuthService {
   register(patient) {
     return axios.post(API_BASE + "/auth/patient/signup", patient);
   }
+
+  passwordChangeRequest(email, data) {
+    return axios.post(API_BASE + `/auth/patient/reset_password/${email}`, data);
+  }
+
+  resetPassword(patientId, token, password) {
+    return axios.post(API_BASE + `/auth/patient/reset/${patientId}/${token}`, {
+      password: password
+    });
+  }
 }
 
 export default new PatientAuthService();

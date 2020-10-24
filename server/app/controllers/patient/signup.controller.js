@@ -17,7 +17,7 @@ exports.getClientByCode = async (req, res) => {
   const { c } = req.query;
   try {
     const dbResponse = await db.query(
-      `select id client_id, name from client where code='${c}'`
+      `select id client_id, name, code from client where code='${c}'`
     );
     console.log("dbResponse", dbResponse);
     if (!dbResponse) {
@@ -25,7 +25,7 @@ exports.getClientByCode = async (req, res) => {
       return res.status(status.notfound).send(errorMessage);
     }
     if (dbResponse.length === 0) {
-      errorMessage.message = "Something went wrong with your login URL!";
+      errorMessage.message = "Something went wrong with your URL!";
       return res.status(status.bad).send(errorMessage);
     }
     successMessage.data = dbResponse;
