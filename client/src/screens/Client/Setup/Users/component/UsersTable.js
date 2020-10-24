@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   IconButton,
   makeStyles,
@@ -10,7 +12,6 @@ import {
   TableRow,
   withStyles
 } from "@material-ui/core";
-import React from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import moment from "moment";
 
@@ -89,26 +90,26 @@ const UsersTable = ({ users, handleOnEditClick }) => {
                   {user.status === "A"
                     ? "Active"
                     : user.status === "I"
-                    ? "Inactive"
-                    : "Deleted"}
+                      ? "Inactive"
+                      : "Deleted"}
                 </TableCell>
                 <TableCell>
                   {user.type === "PP"
                     ? "Primary Provider"
                     : user.type === "SP"
-                    ? "Secondary Provider"
-                    : user.type === "A"
-                    ? "Administrative"
-                    : user.type === "L"
-                    ? "Limited"
-                    : ""}
+                      ? "Secondary Provider"
+                      : user.type === "A"
+                        ? "Administrative"
+                        : user.type === "L"
+                          ? "Limited"
+                          : ""}
                 </TableCell>
                 <TableCell>
                   {user.schedule === "F"
                     ? "Full"
                     : user.schedule === "H"
-                    ? "Half"
-                    : "Quarter"}
+                      ? "Half"
+                      : "Quarter"}
                 </TableCell>
                 <TableCell>{user.appointments ? "Yes" : "No"}</TableCell>
                 <TableCell>{user.admin ? "Yes" : "No"}</TableCell>
