@@ -174,7 +174,7 @@ router.get(
   Patient.getMedications
 );
 router.delete(
-  "/medications/:encounter_id/:drug_id/:drug_strength_id",
+  "/patient/:patient_id/medications/",
   [authJwt.verifyToken],
   Patient.deleteMedications
 );
