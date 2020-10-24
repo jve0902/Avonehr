@@ -1279,7 +1279,7 @@ const getMedications = async (req, res) => {
 };
 
 const deleteMedications = async (req, res) => {
-  const { encounter_id, drug_id, drug_strength_id } = req.params;
+  const { encounter_id, drug_id, drug_strength_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const deleteResponse = await db.query(`
