@@ -66,19 +66,20 @@ const Users = () => {
     );
   };
 
-  useEffect(() => {
-    const fetchAllUsers = () => {
-      UsersService.getAllUsers().then((res) => {
-        const users = res.data.data;
+  const fetchAllUsers = () => {
+    UsersService.getAllUsers().then((res) => {
+      const users = res.data.data;
+      setAllUsers(users);
+      if (isShowDeleted === false) {
+        let tempUsers = users.filter((user) => user.status !== "D");
+        setAllUsers(tempUsers);
+      } else {
         setAllUsers(users);
-        if (isShowDeleted === false) {
-          let tempUsers = users.filter((user) => user.status !== "D");
-          setAllUsers(tempUsers);
-        } else {
-          setAllUsers(users);
-        }
-      });
-    };
+      }
+    });
+  };
+
+  useEffect(() => {
     fetchAllUsers();
   }, [isShowDeleted]);
 
