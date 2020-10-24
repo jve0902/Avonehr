@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-import DateFnsUtils from "@date-io/date-fns";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import moment from "moment";
@@ -109,18 +107,16 @@ const NewMessage = (props) => {
         </Grid>
 
         <Grid className={classes.dateInput}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              required
-              margin="dense"
-              id="date-picker-dialog"
-              label="Select Notification Date"
-              format="dd/MM/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
-              minDate={currentDate}
-            />
-          </MuiPickersUtilsProvider>
+          <KeyboardDatePicker
+            required
+            margin="dense"
+            id="date-picker-dialog"
+            label="Select Notification Date"
+            format="dd/MM/yyyy"
+            value={selectedDate}
+            onChange={handleDateChange}
+            minDate={currentDate}
+          />
         </Grid>
 
         {
