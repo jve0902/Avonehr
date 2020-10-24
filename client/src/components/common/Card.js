@@ -81,7 +81,7 @@ const PatientCard = (props) => {
       <Card
         className={clsx({
           [classes.root]: true, //always apply
-          [classes.minHeightCard]: hasMinHeight //only when isLoading === true
+          [classes.minHeightCard]: hasMinHeight //only when hasMinHeight === true
         })}
         variant="outlined">
         {/* drag-handle className is important for the header as it makes the header draggable only */}

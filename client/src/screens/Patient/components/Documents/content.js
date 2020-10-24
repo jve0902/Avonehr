@@ -101,13 +101,13 @@ const DocumentsContent = (props) => {
       let allData = data.filter(x => x.status !== "D")
       setTableData([...allData]);
     } else if (selectedTab === 1) { //(Labs)
-      let labsData = data.filter(x => x.type === "L")
+      let labsData = data.filter(x => x.type === "L" && x.status !== "D")
       setTableData([...labsData]);
     } else if (selectedTab === 2) { //(Imaging)
-      let imagingData = data.filter(x => x.type === "I")
+      let imagingData = data.filter(x => x.type === "I" && x.status !== "D")
       setTableData([...imagingData]);
     } else if (selectedTab === 3) { //(Un-Categorized)
-      let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.type !== "D"))
+      let uncategorizedData = data.filter(x => (x.type !== "L" && x.type !== "M" && x.type !== "I" && x.status !== "D"))
       setTableData([...uncategorizedData]);
     } else if (selectedTab === 4) { //(Declined/Deleted)
       let deletedData = data.filter(x => x.status === "D")
@@ -235,7 +235,7 @@ const DocumentsContent = (props) => {
                       <TableCell>{row.note}</TableCell>
                   }
                   <TableCell className={classes.actions}>
-                    {row.status == "D"
+                    {row.status === "D"
                       ? (
                         <RestoreIcon
                           className={classes.icon}
