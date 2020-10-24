@@ -148,7 +148,6 @@ const PatientLogin = () => {
             <div className={classes.Logo}>
               <img
                 src={
-                  //TODO:: Fix this LOGO url
                   process.env.REACT_APP_API_URL +
                   `static/client/c${clientId}_logo.png`
                 }
