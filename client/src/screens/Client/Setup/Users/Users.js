@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 import {
   Button,
   Container,
@@ -11,11 +9,15 @@ import {
   Switch,
   withStyles
 } from "@material-ui/core";
-import { AuthConsumer } from "../../../../providers/AuthProvider";
 import { green, grey } from "@material-ui/core/colors";
-import UsersTable from "./component/UsersTable";
-import NewOrEditUserModal from "./component/modal/NewOrEditUserModal";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import _ from "lodash";
+
+import { AuthConsumer } from "../../../../providers/AuthProvider";
 import UsersService from "../../../../services/users.service";
+import NewOrEditUserModal from "./component/modal/NewOrEditUserModal";
+import UsersTable from "./component/UsersTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,18 +60,6 @@ const Users = () => {
   const [userValues, setUserValues] = useState("");
   const [isShowDeleted, setIsShowDeleted] = useState(false);
 
-  const fetchAllUsers = () => {
-    UsersService.getAllUsers().then((res) => {
-      const users = res.data.data;
-      setAllUsers(users);
-      if (isShowDeleted === false) {
-        let tempUsers = users.filter((user) => user.status !== "D");
-        setAllUsers(tempUsers);
-      } else {
-        setAllUsers(users);
-      }
-    });
-  };
   const fetchForwardEmailList = () => {
     UsersService.getForwardEmailList().then((res) =>
       setForwardEmailList(res.data.data)
@@ -77,6 +67,18 @@ const Users = () => {
   };
 
   useEffect(() => {
+    const fetchAllUsers = () => {
+      UsersService.getAllUsers().then((res) => {
+        const users = res.data.data;
+        setAllUsers(users);
+        if (isShowDeleted === false) {
+          let tempUsers = users.filter((user) => user.status !== "D");
+          setAllUsers(tempUsers);
+        } else {
+          setAllUsers(users);
+        }
+      });
+    };
     fetchAllUsers();
   }, [isShowDeleted]);
 
@@ -100,7 +102,7 @@ const Users = () => {
     setIsOpen(true);
     setIsNewUser(false);
     const selectUserById = allUsers.filter((user) => user.id === id);
-    selectUserById && setUserValues(_.head(selectUserById));
+    return selectUserById && setUserValues(_.head(selectUserById));
   };
 
   return (
