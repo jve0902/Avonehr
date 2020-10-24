@@ -56,6 +56,7 @@ app.use(baseAPIPath, require("./app/routes/users.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/login.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/home.routes"));
+app.use(baseAPIPath, require("./app/routes/patient/password-reset.routes"));
 
 app.use(baseAPIPath, require("./app/routes/myself.routes"));
 

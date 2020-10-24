@@ -4,6 +4,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -47,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  meta: {
+    textAlign: "right",
+    "& a": {
+      color: theme.palette.text.secondary
+    }
   }
 }));
 
@@ -206,6 +214,13 @@ const PatientLogin = () => {
                   Sign In
                 </Button>
               </form>
+              <Grid container className={classes.meta}>
+                <Grid item xs>
+                  <Link href={`/forgot/${clientCode}`} variant="body2">
+                    Forgot your password? Reset here.
+                  </Link>
+                </Grid>
+              </Grid>
             </div>
           </Container>
         );
