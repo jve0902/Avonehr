@@ -51,8 +51,9 @@ const getPatient = async (req, res) => {
   const { patient_id } = req.params;
   try {
     const dbResponse = await db.query(
-      `select p.firstname, p.lastname, p.gender, p.dob, p.phone_home, p.phone_cell, p.email, concat(u.firstname, ' ', u.lastname) provider, p.client_id
-        , p.admin_note, p.medical_note
+      `select p.firstname, p.middlename, p.lastname, p.gender, p.dob, p.ssn, p.preferred_name, p.referred_by, p.phone_home, p.phone_cell, p.phone_work, p.email, concat(u.firstname, ' ', u.lastname) provider, p.client_id
+        , p.admin_note, p.medical_note, p.address, p.address2, p.city, p.postal, p.state, p.emergency_firstname, p.emergency_middlename, p.emergency_lastname, p.emergency_relationship, p.emergency_email,
+        p.emergency_phone, p.insurance_name, p.insurance_group, p.insurance_member, p.insurance_phone, p.insurance_desc, p.height, p.waist, p.weight, p.medical_note
         from patient p
         left join user u on u.id=p.user_id
         where p.client_id=${req.client_id}
@@ -1516,7 +1517,7 @@ const appointmentTypes = {
   deleteRequisitions,
   getLayout,
   saveLayout,
-  deleteLayout
+  deleteLayout,
 };
 
 module.exports = appointmentTypes;
