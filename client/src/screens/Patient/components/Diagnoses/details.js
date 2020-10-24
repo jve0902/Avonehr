@@ -68,8 +68,9 @@ const DiagnosesDetails = (props) => {
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
+    const encounterId = selectedItem.id || 1; //encounter id not present
+    const icdId = selectedItem.icd_id;
+    PatientService.deleteDiagnoses(encounterId, icdId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
