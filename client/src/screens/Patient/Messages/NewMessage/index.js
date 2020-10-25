@@ -111,7 +111,7 @@ const NewMessage = (props) => {
             required
             margin="dense"
             id="date-picker-dialog"
-            label="Select Notification Date"
+            label="Notification Date"
             format="dd/MM/yyyy"
             value={selectedDate}
             onChange={handleDateChange}
@@ -133,7 +133,7 @@ const NewMessage = (props) => {
           justify="space-between"
         >
           <Button variant="outlined" type="submit">
-            Save
+            Send
           </Button>
           <Button variant="outlined" onClick={() => onClose()}>
             Cancel

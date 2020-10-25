@@ -104,7 +104,6 @@ export default function BasicInfo(props) {
                       />
                     ) : (
                       <TextField
-                        // className={classes.select}
                         select
                         placeholder={item.label}
                         label={item.label}
@@ -146,7 +145,6 @@ export default function BasicInfo(props) {
                       />
                     ) : (
                       <TextField
-                        // className={classes.select}
                         select
                         placeholder={item.label}
                         label={item.label}
@@ -186,7 +184,6 @@ export default function BasicInfo(props) {
                       />
                     ) : (
                       <TextField
-                        // className={classes.select}
                         select
                         placeholder={item.label}
                         label={item.label}
