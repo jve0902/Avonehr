@@ -212,4 +212,6 @@ router.delete(
   Patient.deleteLayout
 );
 
+router.get("/drug/search", [authJwt.verifyToken], Patient.getDrugs);
+
 module.exports = router;

@@ -141,6 +141,7 @@ class Patient {
 
   //search methods
   searchAllergies(data) {
+    // Wrong API call!!!
     return axios
       .post(API_BASE + `/patient/allergies/search`, data, {
         headers: authHeader()
@@ -148,9 +149,10 @@ class Patient {
       .then((res) => res.data);
   }
 
-  searchDiagnosis(data) {
+  searchDiagnosis(patient_id, data) {
+    // Wrong API call!!!
     return axios
-      .post(API_BASE + `/patient/diagnoses/search`, data, {
+      .post(API_BASE + `/patient/${patient_id}/diagnoses/search`, data, {
         headers: authHeader()
       })
       .then((res) => res.data);

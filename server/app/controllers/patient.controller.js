@@ -1482,6 +1482,35 @@ const saveLayout = async (req, res) => {
   }
 };
 
+const getDrugs = async (req, res) => {
+  const db = makeDb(configuration, res);
+
+  const { query } = req.query;
+  let $sql;
+  try {
+    $sql = `select id, name
+    from drug
+    where name like '${query}%'
+    order by name
+    limit 10`;
+
+    const dbResponse = await db.query($sql);
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.error("err:", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1525,6 +1554,7 @@ const appointmentTypes = {
   getLayout,
   saveLayout,
   deleteLayout,
+  getDrugs,
 };
 
 module.exports = appointmentTypes;
