@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+
 import {
   Button,
   colors,
@@ -7,7 +9,6 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
-  FormHelperText,
   Grid,
   makeStyles,
   Switch,
@@ -16,11 +17,11 @@ import {
 } from "@material-ui/core";
 import { green, grey } from "@material-ui/core/colors";
 import Alert from "@material-ui/lab/Alert";
-import React, { useEffect, useRef, useState } from "react";
+import moment from "moment";
 import { useDispatch } from "react-redux";
+
 import UserService from "../../../../../../services/users.service";
 import { setSuccess } from "../../../../../../store/common/actions";
-import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -145,7 +146,7 @@ const NewOrEditUserModal = ({
   }; */
 
   const isValid = () => {
-    const checkEmailIsValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const checkEmailIsValid = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!user.firstname) {
       setErrorChecking({ ...errorChecking, one: "Firstname can't be blank !" });
       return false;

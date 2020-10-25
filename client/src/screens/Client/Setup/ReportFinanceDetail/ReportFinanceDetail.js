@@ -1,9 +1,14 @@
+import {
+  Container,
+  CssBaseline,
+  Grid,
+  makeStyles,
+  Typography
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import { Container, CssBaseline, Grid, makeStyles } from "@material-ui/core";
 import { AuthConsumer } from "../../../../providers/AuthProvider";
-import AccountingTypesTable from "./component/AccountingTypesTable";
-import AccountingTypesService from "../../../../services/accountingTypes.service";
+import FinanceDetailTable from "./component/FinanceDetailTable";
+import ReportFinanceDetailService from "../../../../services/reportFinanceDetail.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,18 +20,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AccountingTypes() {
+export default function ReportFinanceDetail(props) {
   const classes = useStyles();
-  const [accountingTypes, setAccountingTypes] = useState([]);
+  const [financeDetail, setFinanceDetail] = useState([]);
+  const { dateFrom, dateTo } = props.match.params;
 
-  const getAccountingTypes = () => {
-    AccountingTypesService.getAccountingTypes().then((res) =>
-      setAccountingTypes(res.data.data)
-    );
+  const getReportFinanceDetails = () => {
+    ReportFinanceDetailService.getReportFinanceDetail(
+      dateFrom,
+      dateTo
+    ).then((res) => setFinanceDetail(res.data.data));
   };
 
   useEffect(() => {
-    getAccountingTypes();
+    getReportFinanceDetails();
   }, []);
 
   return (
@@ -43,12 +50,12 @@ export default function AccountingTypes() {
                   color="textPrimary"
                   className={classes.title}
                 >
-                  Transaction types
+                  Report Finance Detail
                 </Typography>
                 <Typography component="p" variant="body2" color="textPrimary">
-                  This page is to manage transaction types
+                  This page is used to display the Report Finance Detail
                 </Typography>
-                <AccountingTypesTable result={accountingTypes} />
+                <FinanceDetailTable financeDetail={financeDetail} />
               </Grid>
             </Grid>
           </Container>

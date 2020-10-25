@@ -111,7 +111,7 @@ const Reports = ({ reports, ...props }) => {
                 className={classes.detailLink}
                 onClick={() =>
                   history.push(
-                    `/reports/report-finance-detail/${report.year}/${report.month}`
+                    `/reports/report-finance-detail/${props.dateFrom}/${props.dateTo}`
                   )
                 }
                 padding="checkbox"
