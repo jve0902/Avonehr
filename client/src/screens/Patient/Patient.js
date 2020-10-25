@@ -894,7 +894,7 @@ export default function Patient() {
         <Dialog
           open={showPatientInfoDialog}
           title={" "}
-          message={<BasicInfo />}
+          message={<BasicInfo formData={patientData} />}
           applyForm={() => togglePatientInfoDialog()}
           cancelForm={() => togglePatientInfoDialog()}
           hideActions={true}
@@ -1206,6 +1206,8 @@ export default function Patient() {
             <MedicationsDetails
               data={medications}
               onClose={toggleMedicationExpandDialog}
+              reloadData={() => fetchMedications()}
+              patientId={patient_id}
             />
           }
           applyForm={() => toggleMedicationExpandDialog()}
