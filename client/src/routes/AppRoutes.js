@@ -73,6 +73,7 @@ import ResetPassword from "../screens/ResetPassword";
 // import UserSignUp from "../screens/Auth/UserSignUp";
 import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
 import RouteWithLayout from "./RouteWithLayout";
+import ReportFinanceDetail from "../screens/Client/Setup/ReportFinanceDetail/index";
 
 const history = createBrowserHistory();
 
@@ -197,6 +198,12 @@ class AppRouter extends Component {
               layout={Dashboard}
               path="/reports/report-finance"
               component={ReportFinance}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
+              path="/reports/report-finance-detail/:dateFrom/:dateTo"
+              component={ReportFinanceDetail}
               exact
             />
             <PrivateRouteWithLayout
