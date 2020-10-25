@@ -1,7 +1,7 @@
 "use strict";
 const express = require("express");
 const { authJwt } = require("../../app/middlewares");
-const AccountingTypes = require("../controllers/accountoing-types.controller");
+const AccountingTypes = require("../controllers/accounting-types.controller");
 const router = express.Router();
 
 router.get(

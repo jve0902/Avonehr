@@ -25,7 +25,7 @@ export default function ReportFinanceDetail(props) {
   const [financeDetail, setFinanceDetail] = useState([]);
   const { dateFrom, dateTo } = props.match.params;
 
-  const getReportFinanceDetail = () => {
+  const getReportFinanceDetails = () => {
     ReportFinanceDetailService.getReportFinanceDetail(
       dateFrom,
       dateTo
@@ -33,10 +33,8 @@ export default function ReportFinanceDetail(props) {
   };
 
   useEffect(() => {
-    getReportFinanceDetail();
-  }, []);
-
-  console.log(financeDetail);
+    getReportFinanceDetails();
+  }, [getReportFinanceDetails]);
 
   return (
     <AuthConsumer>

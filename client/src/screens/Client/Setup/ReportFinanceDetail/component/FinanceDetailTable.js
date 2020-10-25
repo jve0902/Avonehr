@@ -89,9 +89,7 @@ const FinanceDetailTable = ({ financeDetail }) => {
               </StyledTableCell>
               <StyledTableCell padding="checkbox">Date</StyledTableCell>
               <StyledTableCell padding="checkbox">Amount</StyledTableCell>
-              <StyledTableCell padding="checkbox" align="center">
-                Note
-              </StyledTableCell>
+              <StyledTableCell padding="checkbox">Note</StyledTableCell>
               <StyledTableCell padding="checkbox">CPT Name</StyledTableCell>
               <StyledTableCell padding="checkbox">Created</StyledTableCell>
               <StyledTableCell padding="checkbox">Patient</StyledTableCell>
@@ -121,7 +119,6 @@ const FinanceDetailTable = ({ financeDetail }) => {
                   <LightTooltip title={detail.note}>
                     <TableCell
                       padding="checkbox"
-                      align="center"
                       className={classes.overFlowControl}
                     >
                       {detail.note || ""}
@@ -130,13 +127,11 @@ const FinanceDetailTable = ({ financeDetail }) => {
                 ) : (
                   <TableCell
                     padding="checkbox"
-                    align="center"
                     className={classes.overFlowControl}
                   >
                     {detail.note || ""}
                   </TableCell>
                 )}
-                {/* <TableCell padding="checkbox">{detail.note}</TableCell> */}
                 <TableCell padding="checkbox">{detail.cpt_name}</TableCell>
                 <TableCell padding="checkbox">
                   {detail.created ? moment(detail.created).format("lll") : ""}

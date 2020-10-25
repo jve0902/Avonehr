@@ -60,6 +60,7 @@ const PortalHeader = () => {
         setUpdatedUser(portal.updated_user);
         setHeader(portal.header);
         setPortalId(portal.id);
+        return portal;
       });
     });
   };
