@@ -199,6 +199,12 @@ class AppRouter extends Component {
             />
             <PrivateRouteWithLayout
               layout={Dashboard}
+              path="/reports/report-finance-detail/:dateFrom/:dateTo"
+              component={ReportFinanceDetail}
+              exact
+            />
+            <PrivateRouteWithLayout
+              layout={Dashboard}
               path="/setup/integrations"
               component={Integrations}
               exact

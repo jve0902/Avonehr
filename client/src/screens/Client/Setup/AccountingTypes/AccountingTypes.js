@@ -29,8 +29,6 @@ export default function AccountingTypes() {
     getAccountingTypes();
   }, []);
 
-  console.log(accountingTypes);
-
   return (
     <AuthConsumer>
       {({ user }) => (

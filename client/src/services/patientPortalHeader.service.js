@@ -8,6 +8,11 @@ class PatientPortalHeader {
       headers: authHeader()
     });
   }
+  editClientPortalHeader(id, data) {
+    return axios.put(`${API_BASE}/patient-portal-header/${id}`, data, {
+      headers: authHeader()
+    });
+  }
 }
 
 export default new PatientPortalHeader();

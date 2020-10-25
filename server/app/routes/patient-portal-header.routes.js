@@ -8,5 +8,10 @@ router.get(
   [authJwt.verifyToken],
   ClientPortalHeader.getClientPortalHeader
 );
+router.put(
+  "/patient-portal-header/:id",
+  [authJwt.verifyToken],
+  ClientPortalHeader.editClientPortalHeader
+);
 
 module.exports = router;

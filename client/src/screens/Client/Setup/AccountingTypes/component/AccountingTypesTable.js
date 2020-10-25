@@ -15,16 +15,8 @@ import NumberFormat from "react-number-format";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
-    minWidth: 450,
+    minWidth: 650,
     marginTop: theme.spacing(2)
-  },
-  actions: {
-    textAlign: "center",
-    display: "flex",
-    border: "none",
-    "& button": {
-      fontSize: "12px"
-    }
   }
 }));
 
@@ -50,8 +42,7 @@ const StyledTableRow = withStyles((theme) => ({
       fontSize: 12
     },
     "& td": {
-      fontSize: 12,
-      height: "50px"
+      fontSize: 12
     }
   }
 }))(TableRow);
@@ -61,35 +52,39 @@ const AccountingTypesTable = ({ result }) => {
   return (
     <div>
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Type</StyledTableCell>
-              <StyledTableCell>Ammount</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell>Note</StyledTableCell>
-              <StyledTableCell>Client</StyledTableCell>
-              <StyledTableCell>Created</StyledTableCell>
-              <StyledTableCell>Created By</StyledTableCell>
-              <StyledTableCell>Updated</StyledTableCell>
-              <StyledTableCell>Updated By</StyledTableCell>
+              <StyledTableCell padding="checkbox">Type</StyledTableCell>
+              <StyledTableCell padding="checkbox">Amount</StyledTableCell>
+              <StyledTableCell padding="checkbox">Status</StyledTableCell>
+              <StyledTableCell padding="checkbox">Note</StyledTableCell>
+              <StyledTableCell padding="checkbox">Client</StyledTableCell>
+              <StyledTableCell padding="checkbox">Created</StyledTableCell>
+              <StyledTableCell padding="checkbox">Created By</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated</StyledTableCell>
+              <StyledTableCell padding="checkbox">Updated By</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {result.map((type) => (
               <StyledTableRow key={type.id}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {type.name}
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   <NumberFormat
-                    value={type.ammount}
+                    value={type.amount}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   {type.status === "A"
                     ? "Active"
                     : type.status === "I"
@@ -98,18 +93,18 @@ const AccountingTypesTable = ({ result }) => {
                     ? "Deleted"
                     : ""}
                 </TableCell>
-                <TableCell>{type.note}</TableCell>
+                <TableCell padding="checkbox">{type.note || ""}</TableCell>
                 <TableCell>
                   {type.client_name === null ? "All" : type.client_name}
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   {type.created ? moment(type.created).format("lll") : ""}
                 </TableCell>
-                <TableCell>{type.created_user}</TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">{type.created_user}</TableCell>
+                <TableCell padding="checkbox">
                   {type.updated ? moment(type.updated).format("lll") : ""}
                 </TableCell>
-                <TableCell>{type.updated_user}</TableCell>
+                <TableCell padding="checkbox">{type.updated_user}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   withStyles
 } from "@material-ui/core";
 import React from "react";
@@ -19,17 +20,15 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 450,
     marginTop: theme.spacing(2)
   },
-  actions: {
-    textAlign: "center",
-    display: "flex",
-    border: "none",
-    "& button": {
-      fontSize: "12px"
-    }
-  },
   detailLink: {
     color: theme.palette.text.link,
     cursor: "pointer"
+  },
+  overFlowControl: {
+    maxWidth: "130px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
   }
 }));
 
@@ -61,6 +60,15 @@ const StyledTableRow = withStyles((theme) => ({
   }
 }))(TableRow);
 
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 13
+  }
+}))(Tooltip);
+
 const FinanceDetailTable = ({ financeDetail }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -68,30 +76,40 @@ const FinanceDetailTable = ({ financeDetail }) => {
   return (
     <div>
       <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table className={classes.table} aria-label="a dense table">
+        <Table
+          size="small"
+          className={classes.table}
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Encounter Tile</StyledTableCell>
-              <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Amount</StyledTableCell>
-              <StyledTableCell>Note</StyledTableCell>
-              <StyledTableCell>CPT Name</StyledTableCell>
-              <StyledTableCell>Created</StyledTableCell>
-              <StyledTableCell>Patient</StyledTableCell>
+              <StyledTableCell padding="checkbox">Name</StyledTableCell>
+              <StyledTableCell padding="checkbox">
+                Encounter Tile
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox">Date</StyledTableCell>
+              <StyledTableCell padding="checkbox">Amount</StyledTableCell>
+              <StyledTableCell padding="checkbox" align="center">
+                Note
+              </StyledTableCell>
+              <StyledTableCell padding="checkbox">CPT Name</StyledTableCell>
+              <StyledTableCell padding="checkbox">Created</StyledTableCell>
+              <StyledTableCell padding="checkbox">Patient</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {financeDetail.map((detail) => (
               <StyledTableRow key={detail.id}>
-                <TableCell component="th" scope="row">
+                <TableCell padding="checkbox" component="th" scope="row">
                   {detail.name}
                 </TableCell>
-                <TableCell>{detail.encounter_title}</TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
+                  {detail.encounter_title}
+                </TableCell>
+                <TableCell padding="checkbox">
                   {detail.dt ? moment(detail.dt).format("lll") : ""}
                 </TableCell>
-                <TableCell>
+                <TableCell padding="checkbox">
                   <NumberFormat
                     value={detail.amount}
                     displayType={"text"}
@@ -99,12 +117,32 @@ const FinanceDetailTable = ({ financeDetail }) => {
                     prefix={"$"}
                   />
                 </TableCell>
-                <TableCell>{detail.note}</TableCell>
-                <TableCell>{detail.cpt_name}</TableCell>
-                <TableCell>
+                {detail.note && detail.note.length > 40 ? (
+                  <LightTooltip title={detail.note}>
+                    <TableCell
+                      padding="checkbox"
+                      align="center"
+                      className={classes.overFlowControl}
+                    >
+                      {detail.note || ""}
+                    </TableCell>
+                  </LightTooltip>
+                ) : (
+                  <TableCell
+                    padding="checkbox"
+                    align="center"
+                    className={classes.overFlowControl}
+                  >
+                    {detail.note || ""}
+                  </TableCell>
+                )}
+                {/* <TableCell padding="checkbox">{detail.note}</TableCell> */}
+                <TableCell padding="checkbox">{detail.cpt_name}</TableCell>
+                <TableCell padding="checkbox">
                   {detail.created ? moment(detail.created).format("lll") : ""}
                 </TableCell>
                 <TableCell
+                  padding="checkbox"
                   className={classes.detailLink}
                   onClick={() => history.push(`/patient/${detail.hyperlink}`)}
                 >

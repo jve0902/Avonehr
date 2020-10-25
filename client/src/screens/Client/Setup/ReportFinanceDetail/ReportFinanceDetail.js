@@ -36,6 +36,8 @@ export default function ReportFinanceDetail(props) {
     getReportFinanceDetail();
   }, []);
 
+  console.log(financeDetail);
+
   return (
     <AuthConsumer>
       {({ user }) => (
