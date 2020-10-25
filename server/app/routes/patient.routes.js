@@ -73,6 +73,11 @@ router.get(
   [authJwt.verifyToken],
   Patient.getBilling
 );
+router.post(
+  "/patient/:patient_id/billing",
+  [authJwt.verifyToken],
+  Patient.createBilling
+);
 router.get(
   "/patient/:patient_id/allergies",
   [authJwt.verifyToken],

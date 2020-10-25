@@ -599,6 +599,33 @@ const getBilling = async (req, res) => {
   }
 };
 
+const createBilling = () => async (req, res) => {
+  console.log("working");
+  const { patient_id } = req.params;
+  const { dt, type_id, amount, payment_type, note } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into tran (patient_id, user_id, client_id, dt, type_id, amount, payment_type, note, created, created_user_id) values 
+        (${patient_id}, ${req.user_id}, ${req.client_id}, ${dt}, ${type_id}, ${amount}, ${payment_type}, ${note}, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const getAllergies = async (req, res) => {
   const { patient_id } = req.params;
   const db = makeDb(configuration, res);
@@ -1557,6 +1584,7 @@ const appointmentTypes = {
   patientHandouts,
   DeletePatientHandouts,
   getBilling,
+  createBilling,
   getAllergies,
   deleteAllergy,
   searchAllergies,
