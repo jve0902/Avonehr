@@ -288,12 +288,8 @@ class Patient {
   }
 
   deleteMedications(patient_id, reqBody) {
-    const user = JSON.parse(localStorage.getItem("user"))
-
     return axios.delete(API_BASE + `/patient/${patient_id}/medications/`, {
-      headers: {
-        "x-access-token": user.accessToken
-      },
+      headers: authHeader(),
       data: {
         data: reqBody
       }
