@@ -213,5 +213,6 @@ router.delete(
 );
 
 router.get("/drug/search", [authJwt.verifyToken], Patient.getDrugs);
+router.get("/icd/search", [authJwt.verifyToken], Patient.getIcds);
 
 module.exports = router;
