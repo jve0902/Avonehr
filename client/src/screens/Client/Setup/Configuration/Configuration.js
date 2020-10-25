@@ -389,7 +389,7 @@ export default function Configuration(props) {
                 size="small"
                 id="patientPortal"
                 disabled={true}
-                label="Patient Portal"
+                label="Patient Portal Login"
                 className={`${classes.textField} `}
                 name="patientPortal"
                 autoComplete="patientPortal"
