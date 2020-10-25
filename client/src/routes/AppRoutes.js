@@ -71,6 +71,7 @@ import ResetPassword from "../screens/ResetPassword";
 // import UserSignUp from "../screens/Auth/UserSignUp";
 import PrivateRouteWithLayout from "./PrivateRouteWithLayout";
 import RouteWithLayout from "./RouteWithLayout";
+import ReportFinanceDetail from "../screens/Client/Setup/ReportFinanceDetail/index";
 
 const history = createBrowserHistory();
 
