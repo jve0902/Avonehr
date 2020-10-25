@@ -60,12 +60,6 @@ const Users = () => {
   const [userValues, setUserValues] = useState("");
   const [isShowDeleted, setIsShowDeleted] = useState(false);
 
-  const fetchForwardEmailList = () => {
-    UsersService.getForwardEmailList().then((res) =>
-      setForwardEmailList(res.data.data)
-    );
-  };
-
   const fetchAllUsers = () => {
     UsersService.getAllUsers().then((res) => {
       const users = res.data.data;
@@ -82,6 +76,12 @@ const Users = () => {
   useEffect(() => {
     fetchAllUsers();
   }, [isShowDeleted]);
+
+  const fetchForwardEmailList = () => {
+    UsersService.getForwardEmailList().then((res) =>
+      setForwardEmailList(res.data.data)
+    );
+  };
 
   useEffect(() => {
     fetchForwardEmailList();
