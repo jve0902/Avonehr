@@ -39,6 +39,7 @@ exports.getClientByCode = async (req, res) => {
   }
 };
 
+exports.patientSignatureUpload = () => {};
 /**
  * This function let client and user to signup into the system.
  * @param {object} req
