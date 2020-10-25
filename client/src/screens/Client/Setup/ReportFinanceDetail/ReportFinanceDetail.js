@@ -34,7 +34,7 @@ export default function ReportFinanceDetail(props) {
 
   useEffect(() => {
     getReportFinanceDetails();
-  }, [getReportFinanceDetails]);
+  }, []);
 
   return (
     <AuthConsumer>
