@@ -599,6 +599,33 @@ const getBilling = async (req, res) => {
   }
 };
 
+const createBilling = () => async (req, res) => {
+  console.log("working");
+  const { patient_id } = req.params;
+  const { dt, type_id, amount, payment_type, note } = req.body.data;
+  const db = makeDb(configuration, res);
+  try {
+    const insertResponse = await db.query(
+      `insert into tran (patient_id, user_id, client_id, dt, type_id, amount, payment_type, note, created, created_user_id) values 
+        (${patient_id}, ${req.user_id}, ${req.client_id}, ${dt}, ${type_id}, ${amount}, ${payment_type}, ${note}, now(), ${req.user_id})`
+    );
+
+    if (!insertResponse.affectedRows) {
+      errorMessage.error = "Insert not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = insertResponse;
+    successMessage.message = "Insert successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Insert not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const getAllergies = async (req, res) => {
   const { patient_id } = req.params;
   const db = makeDb(configuration, res);
@@ -1038,7 +1065,8 @@ const createMessage = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into message (subject, message, unread_notify_dt, client_id, created, created_user_id, patient_id_from) values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, now(), ${req.user_id}, ${patient_id})`
+      `insert into message (subject, message, unread_notify_dt, client_id, user_id_to, user_id_from, created, created_user_id, patient_id_from)
+         values ( '${subject}', '${message}', '${unread_notify_dt}', ${req.client_id}, ${patient_id}, ${req.user_id}, now(), ${req.user_id}, ${patient_id})`
     );
 
     if (!insertResponse.affectedRows) {
@@ -1482,6 +1510,64 @@ const saveLayout = async (req, res) => {
   }
 };
 
+const getDrugs = async (req, res) => {
+  const db = makeDb(configuration, res);
+
+  const { query } = req.query;
+  let $sql;
+  try {
+    $sql = `select id, name
+    from drug
+    where name like '${query}%'
+    order by name
+    limit 10`;
+
+    const dbResponse = await db.query($sql);
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.error("err:", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
+const getIcds = async (req, res) => {
+  const db = makeDb(configuration, res);
+
+  const { query } = req.query;
+  let $sql;
+  try {
+    $sql = `select id, name
+    from icd
+    where name like '%${query}%'
+    order by name
+    limit 10`;
+
+    const dbResponse = await db.query($sql);
+
+    if (!dbResponse) {
+      errorMessage.error = "None found";
+      return res.status(status.notfound).send(errorMessage);
+    }
+    successMessage.data = dbResponse;
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.error("err:", err);
+    errorMessage.error = "Select not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const appointmentTypes = {
   getPatient,
   search,
@@ -1498,6 +1584,7 @@ const appointmentTypes = {
   patientHandouts,
   DeletePatientHandouts,
   getBilling,
+  createBilling,
   getAllergies,
   deleteAllergy,
   searchAllergies,
@@ -1525,6 +1612,8 @@ const appointmentTypes = {
   getLayout,
   saveLayout,
   deleteLayout,
+  getDrugs,
+  getIcds,
 };
 
 module.exports = appointmentTypes;

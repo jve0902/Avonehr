@@ -73,6 +73,11 @@ router.get(
   [authJwt.verifyToken],
   Patient.getBilling
 );
+router.post(
+  "/patient/:patient_id/billing",
+  [authJwt.verifyToken],
+  Patient.createBilling
+);
 router.get(
   "/patient/:patient_id/allergies",
   [authJwt.verifyToken],
@@ -211,5 +216,8 @@ router.delete(
   [authJwt.verifyToken],
   Patient.deleteLayout
 );
+
+router.get("/drug/search", [authJwt.verifyToken], Patient.getDrugs);
+router.get("/icd/search", [authJwt.verifyToken], Patient.getIcds);
 
 module.exports = router;
