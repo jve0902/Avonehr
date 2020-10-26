@@ -1254,10 +1254,12 @@ const deleteDiagnose = async (req, res) => {
 
 const createDiagnoses = async (req, res) => {
   const { patient_id } = req.params;
+  const { icd_id } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into patient_icd (client_id, user_id, patient_id, active, encounter_id, created, created_user_id) values (${req.client_id}, ${req.user_id}, ${patient_id}, true, 0, now(), ${req.user_id})`
+      `insert into patient_icd (client_id, user_id, patient_id, active, encounter_id, icd_id, created, created_user_id)
+       values (${req.client_id}, ${req.user_id}, ${patient_id}, true, 1, '${icd_id}', now(), ${req.user_id})`
     );
 
     if (!insertResponse.affectedRows) {
