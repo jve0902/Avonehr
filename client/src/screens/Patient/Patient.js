@@ -966,7 +966,12 @@ export default function Patient() {
         <Dialog
           open={showNewTransactionDialog}
           title={" "}
-          message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
+          message={
+            <NewTransactionForm
+              onClose={toggleNewTransactionDialog}
+              patientId={patient_id}
+              reloadData={fetchBillings}
+            />}
           applyForm={() => toggleNewTransactionDialog()}
           cancelForm={() => toggleNewTransactionDialog()}
           hideActions={true}

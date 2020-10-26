@@ -15,12 +15,20 @@ export const TransactionFormFields = [
     type: null,
     options: [
       {
-        label: "Fees",
+        label: "Service",
         value: 1
       },
       {
-        label: "Advance",
+        label: "Refund",
         value: 2
+      },
+      {
+        label: "Payment",
+        value: 3
+      },
+      {
+        label: "Credit",
+        value: 4
       }
     ]
   },
