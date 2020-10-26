@@ -1164,6 +1164,7 @@ export default function Patient() {
             <DiagnosesForm
               onClose={toggleDiagnosesDialog}
               patientId={patient_id}
+              reloadData={fetchDiagnoses}
             />
           }
           applyForm={() => toggleDiagnosesDialog()}
