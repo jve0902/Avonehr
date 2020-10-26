@@ -212,6 +212,24 @@ class Patient {
     );
   }
 
+  createDiagnoses(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/diagnoses`, data, {
+      headers: authHeader()
+    });
+  }
+
+  createMedication(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/medication`, data, {
+      headers: authHeader()
+    });
+  }
+
+  createBilling(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/billing`, data, {
+      headers: authHeader()
+    });
+  }
+
   createDocuments(patient_id, data) {
     return axios.post(API_BASE + `/patient/${patient_id}/documents/`, data, {
       headers: authHeader()
@@ -220,12 +238,6 @@ class Patient {
 
   createAllergy(data) {
     return axios.post(API_BASE + `/patient/allergies`, data, {
-      headers: authHeader()
-    });
-  }
-
-  createDiagnoses(data) {
-    return axios.post(API_BASE + `/patient/diagnoses`, data, {
       headers: authHeader()
     });
   }
