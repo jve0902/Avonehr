@@ -1,7 +1,7 @@
 export const TransactionFormFields = [
   {
-    name: "dob",
-    id: "dob",
+    name: "date",
+    id: "date",
     label: "Date",
     baseType: "input",
     type: "date",
@@ -16,11 +16,11 @@ export const TransactionFormFields = [
     options: [
       {
         label: "Fees",
-        value: "fees"
+        value: 1
       },
       {
         label: "Advance",
-        value: "advance"
+        value: 2
       }
     ]
   },
@@ -49,11 +49,11 @@ export const TransactionFormFields = [
     options: [
       {
         label: "Advance",
-        value: "advance"
+        value: "A"
       },
       {
         label: "Credit",
-        value: "credit"
+        value: "C"
       }
     ]
   }
