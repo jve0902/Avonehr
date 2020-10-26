@@ -69,6 +69,11 @@ router.delete(
   Patient.DeletePatientHandouts
 );
 router.get(
+  "/patient/:patient_id/tran-types",
+  [authJwt.verifyToken],
+  Patient.getTranType
+);
+router.get(
   "/patient/:patient_id/billing",
   [authJwt.verifyToken],
   Patient.getBilling
