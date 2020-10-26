@@ -149,10 +149,17 @@ class Patient {
       .then((res) => res.data);
   }
 
-  searchDiagnosis(patient_id, data) {
-    // Wrong API call!!!
+  searchICD(query) {
     return axios
-      .post(API_BASE + `/patient/${patient_id}/diagnoses/search`, data, {
+      .get(API_BASE + `/icd/search/?query=${query}`, {
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+
+  searchDrugs(query) {
+    return axios
+      .get(API_BASE + `/drug/search/?query=${query}`, {
         headers: authHeader()
       })
       .then((res) => res.data);
