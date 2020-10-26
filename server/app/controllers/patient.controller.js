@@ -599,15 +599,21 @@ const getBilling = async (req, res) => {
   }
 };
 
-const createBilling = () => async (req, res) => {
-  console.log("working");
+const createBilling = async (req, res) => {
   const { patient_id } = req.params;
-  const { dt, type_id, amount, payment_type, note } = req.body.data;
+  let { dt, type_id, amount, payment_type, note } = req.body.data;
+
   const db = makeDb(configuration, res);
+
+  if (!payment_type) {
+    payment_type = null;
+  } else {
+    payment_type = `'${payment_type}'`;
+  }
   try {
     const insertResponse = await db.query(
       `insert into tran (patient_id, user_id, client_id, dt, type_id, amount, payment_type, note, created, created_user_id) values 
-        (${patient_id}, ${req.user_id}, ${req.client_id}, ${dt}, ${type_id}, ${amount}, ${payment_type}, ${note}, now(), ${req.user_id})`
+        (${patient_id}, ${req.user_id}, ${req.client_id}, '${dt}', ${type_id}, ${amount}, ${payment_type}, '${note}', now(), ${req.user_id})`
     );
 
     if (!insertResponse.affectedRows) {
