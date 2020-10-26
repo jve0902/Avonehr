@@ -60,7 +60,7 @@ router.delete(
 router.get("/patient-handout", [authJwt.verifyToken], Patient.patientHandouts);
 router.post(
   "/patient/:patient_id/patient-handout",
-  [authJwt.verifyToken, validation.validate("CreatePatientHandouts")],
+  [authJwt.verifyToken],
   Patient.CreatePatientHandouts
 );
 router.delete(
