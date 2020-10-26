@@ -12,7 +12,7 @@ export default function BillingContent(props) {
   return (
     <>
       {data.map((item) => (
-        <Grid key={item.tran_type} container className={classes.inputRow}>
+        <Grid key={item.dt} container className={classes.inputRow}>
           <Grid item className={classes.block}>
             <Typography
               component="span"

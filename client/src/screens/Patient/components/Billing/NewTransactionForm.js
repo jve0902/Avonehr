@@ -18,7 +18,7 @@ import { setError, setSuccess } from "./../../../../store/common/actions";
 const NewTransactionForm = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose, patientId } = props;
+  const { onClose, patientId, reloadData } = props;
 
   const [formFields, setFormFields] = useState({
     date: "",
@@ -51,6 +51,7 @@ const NewTransactionForm = (props) => {
     PatientService.createBilling(patientId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
+        reloadData();
         onClose();
       })
       .catch((error) => {
