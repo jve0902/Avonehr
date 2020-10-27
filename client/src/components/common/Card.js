@@ -44,9 +44,11 @@ const PatientCard = (props) => {
     updateLayoutHandler,
     resetLayoutHandler,
     isLayoutUpdated,
+    contentToggleHandler,
     hasMinHeight
   } = props;
 
+  const [contentTogglerState, setContentTogglerState] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -109,6 +111,21 @@ const PatientCard = (props) => {
                 onClick: iconHandler,
                 className: classes.icon
               })
+            )
+          }
+          {
+            title === "Diagnoses" && (
+              <Button
+                variant="text"
+                disableRipple={true}
+                className={classes.button}
+                onClick={() => {
+                  setContentTogglerState(prevState => !prevState);
+                  contentToggleHandler(!contentTogglerState);
+                }}
+              >
+                  Show {contentTogglerState ? "In-Active" : "Active"}
+              </Button>
             )
           }
           {
@@ -253,6 +270,7 @@ PatientCard.defaultProps = {
   updateLayoutHandler: () => { },
   resetLayoutHandler: () => { },
   isLayoutUpdated: false,
+  contentToggleHandler: () => { },
   hasMinHeight: false,
 };
 
@@ -275,6 +293,7 @@ PatientCard.propTypes = {
   updateLayoutHandler: PropTypes.func,
   resetLayoutHandler: PropTypes.func,
   isLayoutUpdated: PropTypes.bool,
+  contentToggleHandler: PropTypes.func,
   hasMinHeight: PropTypes.bool,
 };
 
