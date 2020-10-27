@@ -341,8 +341,8 @@ export default function Patient() {
     });
   }, [patient_id]);
 
-  const fetchDiagnoses = useCallback(() => {
-    PatientService.getDiagnoses(patient_id).then((res) => {
+  const fetchDiagnoses = useCallback((status) => {
+    PatientService.getDiagnoses(patient_id, status).then((res) => {
       setDiagnoses(res.data);
     });
   }, [patient_id]);
@@ -854,7 +854,7 @@ export default function Patient() {
       fetchEncounters();
       fetchMedicalNotes();
       fetchMessages();
-      fetchDiagnoses();
+      fetchDiagnoses(true);
       fetchMedications();
       fetchRequisitions();
       fetchTests();
@@ -1164,7 +1164,7 @@ export default function Patient() {
             <DiagnosesForm
               onClose={toggleDiagnosesDialog}
               patientId={patient_id}
-              reloadData={fetchDiagnoses}
+              reloadData={fetchDiagnoses(true)}
             />
           }
           applyForm={() => toggleDiagnosesDialog()}
@@ -1182,7 +1182,7 @@ export default function Patient() {
             <DiagnosesDetails
               data={diagnoses}
               onClose={toggleDiagnosesExpandDialog}
-              reloadData={() => fetchDiagnoses()}
+              reloadData={() => fetchDiagnoses(true)}
             />
           }
           applyForm={() => toggleDiagnosesExpandDialog()}
@@ -1399,6 +1399,7 @@ export default function Patient() {
                         ? `Balance $${patientBalance}`
                         : ""
                     }
+                    contentToggleHandler={(value) => fetchDiagnoses(value)}
                   />
                 </Grid>
               );
