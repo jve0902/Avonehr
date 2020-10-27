@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   makeStyles,
   Paper,
@@ -10,7 +12,6 @@ import {
   Tooltip,
   withStyles
 } from "@material-ui/core";
-import React from "react";
 import moment from "moment";
 import NumberFormat from "react-number-format";
 import { useHistory } from "react-router-dom";
@@ -139,7 +140,7 @@ const FinanceDetailTable = ({ financeDetail }) => {
                 <TableCell
                   padding="checkbox"
                   className={classes.detailLink}
-                  onClick={() => history.push(`/patient/${detail.hyperlink}`)}
+                  onClick={() => history.push(`/patients/${detail.hyperlink}`)}
                 >
                   {detail.patient_name}
                 </TableCell>

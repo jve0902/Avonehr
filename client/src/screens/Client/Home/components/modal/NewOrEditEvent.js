@@ -513,7 +513,7 @@ const NewOrEditEvent = ({
           </div>
           <div>
             <Typography
-              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              onClick={() => history.push(`/patients/${selectedPatient}`)}
               component="p"
               variant="body2"
               color="textPrimary"
@@ -522,7 +522,7 @@ const NewOrEditEvent = ({
               Go to patient page
             </Typography>
             <Typography
-              onClick={() => history.push(`/patient/${selectedPatient}`)}
+              onClick={() => history.push(`/patients/${selectedPatient}`)}
               component="p"
               variant="body2"
               color="textPrimary"
