@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { Button, Grid, Typography, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,16 +20,15 @@ const HandoutsForm = (props) => {
   const [allHandouts, setAllHandouts] = useState([]);
   const [selectedHandout, setSelectedHandout] = useState(null);
 
-  useEffect(() => {
-    fetchAllHandouts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchAllHandouts = () => {
+  const fetchAllHandouts = useCallback(() => {
     PatientService.getAllHandouts().then((res) => {
       setAllHandouts(res.data);
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAllHandouts();
+  }, [fetchAllHandouts]);
 
   const createPatientHandoutHandler = () => {
     if(!!selectedHandout) {
