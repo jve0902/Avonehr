@@ -1211,7 +1211,7 @@ const getDiagnoses = async (req, res) => {
 };
 
 const updateDiagnose = async (req, res) => {
-  const { encounter_id, icd_id } = req.params;
+  const { patient_id, icd_id } = req.params;
   const { active, is_primary } = req.body.data;
   const db = makeDb(configuration, res);
   try {
@@ -1226,7 +1226,7 @@ const updateDiagnose = async (req, res) => {
     }
     $sql =
       $sql +
-      `where encounter_id=${encounter_id}
+      `where patient_id=${patient_id}
         and icd_id='${icd_id}'`;
 
     const updateResponse = await db.query($sql);
@@ -1248,13 +1248,13 @@ const updateDiagnose = async (req, res) => {
 };
 
 const deleteDiagnose = async (req, res) => {
-  const { encounter_id, icd_id } = req.params;
+  const { patient_id, icd_id } = req.params;
   const db = makeDb(configuration, res);
   try {
     const deleteResponse = await db.query(`
        delete 
         from patient_icd
-        where encounter_id=${encounter_id}
+        where patient_id=${patient_id}
         and icd_id='${icd_id}'
     `);
 
@@ -1281,8 +1281,8 @@ const createDiagnoses = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const insertResponse = await db.query(
-      `insert into patient_icd (client_id, user_id, patient_id, active, encounter_id, icd_id, created, created_user_id)
-       values (${req.client_id}, ${req.user_id}, ${patient_id}, true, 1, '${icd_id}', now(), ${req.user_id})`
+      `insert into patient_icd (patient_id, icd_id, active, client_id, user_id, encounter_id, created, created_user_id)
+       values (${patient_id}, '${icd_id}', true, ${req.client_id}, ${req.user_id}, 1, now(), ${req.user_id})`
     );
 
     if (!insertResponse.affectedRows) {
