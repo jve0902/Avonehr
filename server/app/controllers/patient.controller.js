@@ -830,16 +830,20 @@ const getDocuments = async (req, res) => {
 };
 
 const updateDocuments = async (req, res) => {
+  if (!req.body.data) {
+    errorMessage.error = "Body content can not be empty";
+    return res.status(status.error).send(errorMessage);
+  }
   const { id } = req.params;
-  const { type } = req.body;
+  const { type } = req.body.data;
   const db = makeDb(configuration, res);
   try {
     const now = moment().format("YYYY-MM-DD HH:mm:ss");
-    let $sql = `update lab set status='${type}',`;
+    let $sql = `update lab set status='${type}'`;
     if (type === "D") {
-      $sql = $sql + ` deleted_dt='${now}' `;
+      $sql = $sql + `, deleted_dt='${now}' `;
     } else if (type === "A") {
-      $sql = $sql + ` deleted_dt=null`;
+      $sql = $sql + `, deleted_dt=null`;
     }
 
     $sql = $sql + ` where id=${id}`;
