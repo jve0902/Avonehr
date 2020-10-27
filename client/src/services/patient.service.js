@@ -16,9 +16,9 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getAllHandouts(patient_id) {
+  getAllHandouts() {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/handouts`, {
+      .get(API_BASE + `/patient-handout`, {
         headers: authHeader()
       })
       .then((res) => res.data);

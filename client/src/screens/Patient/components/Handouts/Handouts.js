@@ -18,6 +18,7 @@ const HandoutsForm = (props) => {
   const dispatch = useDispatch();
   const { onClose, reloadData, patientId } = props;
   const [allHandouts, setAllHandouts] = useState([]);
+  const [selectedHandout, setSelectedHandout] = useState(null);
 
   useEffect(() => {
     fetchAllHandouts();
@@ -25,42 +26,55 @@ const HandoutsForm = (props) => {
   }, []);
 
   const fetchAllHandouts = () => {
-    PatientService.getAllHandouts(patientId).then((res) => {
+    PatientService.getAllHandouts().then((res) => {
       setAllHandouts(res.data);
     });
   };
 
   const createPatientHandoutHandler = () => {
-    const reqBody = {
-      data: {
-        patient_id: patientId,
-        handout_id: 1
-      }
-    };
-    // TODO:: static for the time being - discussion required
-
-    PatientService.createPatientHandout(patientId, reqBody)
-      .then((response) => {
-        dispatch(setSuccess(`${response.data.message}`));
-        reloadData();
-        onClose();
-      })
-      .catch((error) => {
-        const resMessage =
+    if(!!selectedHandout) {
+    // we don't have the selected row id, so calculating the row id
+      let userSelection = allHandouts.filter(x => x.filename === selectedHandout)
+      const reqBody = {
+        data: {
+          handout_id: userSelection[0].id
+        }
+      };
+      PatientService.createPatientHandout(patientId, reqBody)
+        .then((response) => {
+          dispatch(setSuccess(`${response.data.message}`));
+          reloadData();
+          onClose();
+        })
+        .catch((error) => {
+          const resMessage =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
           error.message ||
           error.toString();
-        let severity = "error";
-        dispatch(
-          setError({
-            severity: severity,
-            message: resMessage
-          })
-        );
-      });
+          let severity = "error";
+          dispatch(
+            setError({
+              severity: severity,
+              message: resMessage
+            })
+          );
+        });
+    } else {
+      dispatch(
+        setError({
+          severity: "error",
+          message: "Checkbox selection is required"
+        })
+      );
+    }
   };
+
+  const onCheckboxClick = (e) => {
+    const { name } = e.target;
+    setSelectedHandout(name);
+  }
 
   return (
     <>
@@ -75,10 +89,9 @@ const HandoutsForm = (props) => {
               <TableRow key={`${row.created}_${index}`}>
                 <TableCell padding="checkbox">
                   <Checkbox
-                  // indeterminate={numSelected > 0 && numSelected < rowCount}
-                  // checked={rowCount > 0 && numSelected === rowCount}
-                  // onChange={onSelectAllClick}
-                  // inputProps={{ 'aria-label': 'select all desserts' }}
+                    name={row.filename}
+                    checked={selectedHandout === row.filename}
+                    onChange={onCheckboxClick}
                   />
                 </TableCell>
                 <TableCell component="th" scope="row">
