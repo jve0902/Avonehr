@@ -51,10 +51,13 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2)
   },
   meta: {
-    textAlign: "right",
     "& a": {
-      color: theme.palette.text.secondary
+      color: theme.palette.text.secondary,
+      fontSize: "12px"
     }
+  },
+  forgotPass: {
+    textAlign: "right"
   }
 }));
 
@@ -215,9 +218,14 @@ const PatientLogin = () => {
                 </Button>
               </form>
               <Grid container className={classes.meta}>
-                <Grid item xs>
+                <Grid item xs={6}>
+                  <Link href={`/signup/${clientCode}`} variant="body2">
+                    Don't have an account? Register.
+                  </Link>
+                </Grid>
+                <Grid item xs={6} className={classes.forgotPass}>
                   <Link href={`/forgot/${clientCode}`} variant="body2">
-                    Forgot your password? Reset here.
+                    Forgot your password? Reset.
                   </Link>
                 </Grid>
               </Grid>
