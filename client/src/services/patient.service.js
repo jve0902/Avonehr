@@ -110,9 +110,9 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getDiagnoses(patient_id) {
+  getDiagnoses(patient_id, active) {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/diagnoses/?active=true`, {
+      .get(API_BASE + `/patient/${patient_id}/diagnoses/?active=${active}`, {
         headers: authHeader()
       })
       .then((res) => res.data);
