@@ -164,12 +164,12 @@ router.get(
   Patient.getDiagnoses
 );
 router.put(
-  "/diagnoses/:encounter_id/:icd_id",
+  "/patient/:patient_id/diagnoses/:icd_id",
   [authJwt.verifyToken],
   Patient.updateDiagnose
 );
 router.delete(
-  "/diagnoses/:encounter_id/:icd_id",
+  "/patient/:patient_id/diagnoses/:icd_id",
   [authJwt.verifyToken],
   Patient.deleteDiagnose
 );
