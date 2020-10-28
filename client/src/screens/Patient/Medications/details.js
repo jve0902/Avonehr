@@ -63,13 +63,17 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const MedicationsDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, patientId, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
+    const reqBody = {
+      encounter_id: selectedItem.encounterId || 1,
+      drug_id: selectedItem.drugId || 1,
+      drug_strength_id: selectedItem.drugStrengthId || 1
+    }
+    PatientService.deleteMedications(patientId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();

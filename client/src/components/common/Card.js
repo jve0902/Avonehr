@@ -21,6 +21,7 @@ import SaveLayoutIcon from "@material-ui/icons/Save";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 
+import useDidMountEffect from "../../hooks/useDidMountEffect"
 import Colors from "../../theme/colors";
 
 const PatientCard = (props) => {
@@ -44,9 +45,11 @@ const PatientCard = (props) => {
     updateLayoutHandler,
     resetLayoutHandler,
     isLayoutUpdated,
+    contentToggleHandler,
     hasMinHeight
   } = props;
 
+  const [contentTogglerState, setContentTogglerState] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -64,6 +67,11 @@ const PatientCard = (props) => {
   }
 
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
+
+  useDidMountEffect(() => {
+    // This will only be called when 'contentTogglerState' changes, not on initial render
+    contentToggleHandler(contentTogglerState);
+  }, [contentTogglerState]);
 
   return (
     <>
@@ -109,6 +117,20 @@ const PatientCard = (props) => {
                 onClick: iconHandler,
                 className: classes.icon
               })
+            )
+          }
+          {
+            title === "Diagnoses" && (
+              <Button
+                variant="text"
+                disableRipple={true}
+                className={classes.button}
+                onClick={() => {
+                  setContentTogglerState(prevState => !prevState);
+                }}
+              >
+                Show {contentTogglerState ? "In-Active" : "Active"}
+              </Button>
             )
           }
           {
@@ -253,6 +275,7 @@ PatientCard.defaultProps = {
   updateLayoutHandler: () => { },
   resetLayoutHandler: () => { },
   isLayoutUpdated: false,
+  contentToggleHandler: () => { },
   hasMinHeight: false,
 };
 
@@ -275,6 +298,7 @@ PatientCard.propTypes = {
   updateLayoutHandler: PropTypes.func,
   resetLayoutHandler: PropTypes.func,
   isLayoutUpdated: PropTypes.bool,
+  contentToggleHandler: PropTypes.func,
   hasMinHeight: PropTypes.bool,
 };
 

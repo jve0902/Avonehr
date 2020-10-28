@@ -496,7 +496,7 @@ const patientHandouts = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const dbResponse = await db.query(
-      `select h.id, h.filename, ph.created, concat(u.firstname, ' ', u.lastname) name
+      `select h.id, h.filename, h.created, concat(u.firstname, ' ', u.lastname) name
         from handout h
         left join patient_handout ph on h.id=ph.handout_id
         left join user u on u.id=ph.created_user_id

@@ -16,9 +16,9 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getAllHandouts(patient_id) {
+  getAllHandouts() {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/handouts`, {
+      .get(API_BASE + `/patient-handout`, {
         headers: authHeader()
       })
       .then((res) => res.data);
@@ -110,9 +110,9 @@ class Patient {
       })
       .then((res) => res.data);
   }
-  getDiagnoses(patient_id) {
+  getDiagnoses(patient_id, active) {
     return axios
-      .get(API_BASE + `/patient/${patient_id}/diagnoses/?active=true`, {
+      .get(API_BASE + `/patient/${patient_id}/diagnoses/?active=${active}`, {
         headers: authHeader()
       })
       .then((res) => res.data);
@@ -149,10 +149,17 @@ class Patient {
       .then((res) => res.data);
   }
 
-  searchDiagnosis(patient_id, data) {
-    // Wrong API call!!!
+  searchICD(query) {
     return axios
-      .post(API_BASE + `/patient/${patient_id}/diagnoses/search`, data, {
+      .get(API_BASE + `/icd/search/?query=${query}`, {
+        headers: authHeader()
+      })
+      .then((res) => res.data);
+  }
+
+  searchDrugs(query) {
+    return axios
+      .get(API_BASE + `/drug/search/?query=${query}`, {
         headers: authHeader()
       })
       .then((res) => res.data);
@@ -212,6 +219,24 @@ class Patient {
     );
   }
 
+  createDiagnoses(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/diagnoses`, data, {
+      headers: authHeader()
+    });
+  }
+
+  createMedication(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/medication`, data, {
+      headers: authHeader()
+    });
+  }
+
+  createBilling(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/billing`, data, {
+      headers: authHeader()
+    });
+  }
+
   createDocuments(patient_id, data) {
     return axios.post(API_BASE + `/patient/${patient_id}/documents/`, data, {
       headers: authHeader()
@@ -220,12 +245,6 @@ class Patient {
 
   createAllergy(data) {
     return axios.post(API_BASE + `/patient/allergies`, data, {
-      headers: authHeader()
-    });
-  }
-
-  createDiagnoses(data) {
-    return axios.post(API_BASE + `/patient/diagnoses`, data, {
       headers: authHeader()
     });
   }
@@ -282,21 +301,20 @@ class Patient {
 
   deleteDiagnoses(encounter_id, icd_id) {
     return axios.delete(
-      API_BASE + `/patient/diagnoses/${encounter_id}/${icd_id}`,
+      API_BASE + `/diagnoses/${encounter_id}/${icd_id}`,
       {
         headers: authHeader()
       }
     );
   }
 
-  deleteMedications(encounter_id, drug_id, drug_strength_id) {
-    return axios.delete(
-      API_BASE +
-        `/patient/medications/${encounter_id}/${drug_id}/${drug_strength_id}`,
-      {
-        headers: authHeader()
+  deleteMedications(patient_id, reqBody) {
+    return axios.delete(API_BASE + `/patient/${patient_id}/medications/`, {
+      headers: authHeader(),
+      data: {
+        data: reqBody
       }
-    );
+    });
   }
 
   deleteRequisitions(encounter_id, cpt_id) {

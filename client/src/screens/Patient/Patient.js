@@ -341,8 +341,8 @@ export default function Patient() {
     });
   }, [patient_id]);
 
-  const fetchDiagnoses = useCallback(() => {
-    PatientService.getDiagnoses(patient_id).then((res) => {
+  const fetchDiagnoses = useCallback((status) => {
+    PatientService.getDiagnoses(patient_id, status).then((res) => {
       setDiagnoses(res.data);
     });
   }, [patient_id]);
@@ -854,7 +854,7 @@ export default function Patient() {
       fetchEncounters();
       fetchMedicalNotes();
       fetchMessages();
-      fetchDiagnoses();
+      fetchDiagnoses(true);
       fetchMedications();
       fetchRequisitions();
       fetchTests();
@@ -894,7 +894,7 @@ export default function Patient() {
         <Dialog
           open={showPatientInfoDialog}
           title={" "}
-          message={<BasicInfo />}
+          message={<BasicInfo formData={patientData} />}
           applyForm={() => togglePatientInfoDialog()}
           cancelForm={() => togglePatientInfoDialog()}
           hideActions={true}
@@ -966,7 +966,12 @@ export default function Patient() {
         <Dialog
           open={showNewTransactionDialog}
           title={" "}
-          message={<NewTransactionForm onClose={toggleNewTransactionDialog} />}
+          message={
+            <NewTransactionForm
+              onClose={toggleNewTransactionDialog}
+              patientId={patient_id}
+              reloadData={fetchBillings}
+            />}
           applyForm={() => toggleNewTransactionDialog()}
           cancelForm={() => toggleNewTransactionDialog()}
           hideActions={true}
@@ -1159,6 +1164,7 @@ export default function Patient() {
             <DiagnosesForm
               onClose={toggleDiagnosesDialog}
               patientId={patient_id}
+              reloadData={fetchDiagnoses(true)}
             />
           }
           applyForm={() => toggleDiagnosesDialog()}
@@ -1176,6 +1182,7 @@ export default function Patient() {
             <DiagnosesDetails
               data={diagnoses}
               onClose={toggleDiagnosesExpandDialog}
+              reloadData={() => fetchDiagnoses(true)}
             />
           }
           applyForm={() => toggleDiagnosesExpandDialog()}
@@ -1189,7 +1196,12 @@ export default function Patient() {
         <Dialog
           open={showMedicationDialog}
           title={" "}
-          message={<MedicationsForm onClose={toggleMedicationDialog} />}
+          message={
+            <MedicationsForm
+              patientId={patient_id}
+              onClose={toggleMedicationDialog}
+            />
+          }
           applyForm={() => toggleMedicationDialog()}
           cancelForm={() => toggleMedicationDialog()}
           hideActions={true}
@@ -1205,6 +1217,8 @@ export default function Patient() {
             <MedicationsDetails
               data={medications}
               onClose={toggleMedicationExpandDialog}
+              reloadData={() => fetchMedications()}
+              patientId={patient_id}
             />
           }
           applyForm={() => toggleMedicationExpandDialog()}
@@ -1390,6 +1404,7 @@ export default function Patient() {
                         ? `Balance $${patientBalance}`
                         : ""
                     }
+                    contentToggleHandler={(value) => fetchDiagnoses(value)}
                   />
                 </Grid>
               );
