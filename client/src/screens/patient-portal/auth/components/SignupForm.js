@@ -115,6 +115,19 @@ const SignupForm = (props) => {
 
     const formData = new FormData();
     formData.append("canvasImage", blob);
+
+    PatientAuthService.upload({
+      data: {
+        imgBase64: signatureRef.getTrimmedCanvas().toDataURL("image/png")
+      }
+    }).then(
+      (response) => {
+        console.log("response:", response);
+      },
+      (error) => {
+        console.log("error:", error);
+      }
+    );
   };
   const patientErrors =
     props.errors && props.errors.filter((err) => err.param.includes("patient"));
@@ -243,7 +256,8 @@ const SignupForm = (props) => {
         referred_by: formFields.referred_by,
         height: formFields.height,
         waist: formFields.waist,
-        weight: formFields.weigh
+        weight: formFields.weigh,
+        imgBase64: signatureRef.getTrimmedCanvas().toDataURL("image/png")
       }
     };
     onFormSubmit(formData);

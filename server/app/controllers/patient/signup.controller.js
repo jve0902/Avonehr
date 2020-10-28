@@ -1,10 +1,7 @@
 "use strict";
-
-const jwt = require("jsonwebtoken");
+const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const { validationResult } = require("express-validator");
-const config = require("./../../../config");
 const { configuration, makeDb } = require("../../db/db.js");
 const {
   errorMessage,
@@ -39,7 +36,6 @@ exports.getClientByCode = async (req, res) => {
   }
 };
 
-exports.patientSignatureUpload = () => {};
 /**
  * This function let client and user to signup into the system.
  * @param {object} req
@@ -54,7 +50,11 @@ exports.patientSignup = async (req, res) => {
 
   patient.password = bcrypt.hashSync(patient.password, 8);
 
-  const existingPatientRows = await db.query(
+  const signature = patient.imgBase64;
+
+  delete patient["imgBase64"];
+
+  const existingPatientRows = db.query(
     `SELECT 1 FROM patient WHERE client_id='${patient.client_id}' and  (email='${patient.email}' or ssn='${patient.ssn}') LIMIT 1`
   );
 
@@ -81,6 +81,34 @@ exports.patientSignup = async (req, res) => {
     }
 
     if (patientResponse.insertId) {
+      //TODO:: Check signature and upload
+      if (signature) {
+        const base64Data = signature.replace(/^data:image\/png;base64,/, "");
+        const dest =
+          process.env.SIGNATURE_UPLOAD_DIR +
+          "/" +
+          "signature_" +
+          patientResponse.insertId +
+          ".png";
+        fs.writeFile(dest, base64Data, "base64", async function (err) {
+          if (err) {
+            errorMessage.error = err.message;
+            return res.status(status.error).send(errorMessage);
+          }
+          if (!err) {
+            const newDb = makeDb(configuration, res);
+            const updateResponse = await newDb.query(
+              `update patient
+                  set signature='${dest}'
+                  where id=${patientResponse.insertId}
+                `
+            );
+            if (!updateResponse.affectedRows) {
+              console.error("There was a problem to save signature");
+            }
+          }
+        });
+      }
       successMessage.message = "User succesfullly registered!";
       successMessage.data = patientResponse;
       res.status(status.created).send(successMessage);
