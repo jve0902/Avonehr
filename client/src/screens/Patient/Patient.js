@@ -1196,7 +1196,12 @@ export default function Patient() {
         <Dialog
           open={showMedicationDialog}
           title={" "}
-          message={<MedicationsForm onClose={toggleMedicationDialog} />}
+          message={
+            <MedicationsForm
+              patientId={patient_id}
+              onClose={toggleMedicationDialog}
+            />
+          }
           applyForm={() => toggleMedicationDialog()}
           cancelForm={() => toggleMedicationDialog()}
           hideActions={true}
