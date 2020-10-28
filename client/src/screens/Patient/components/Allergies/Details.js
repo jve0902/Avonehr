@@ -66,13 +66,13 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const AllergiesDetails = (props) => {
-  const { data, reloadData } = props;
+  const { data, patientId, reloadData } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const onItemDelete = (selectedItem) => {
-    const documentId = selectedItem.id || 1;
-    PatientService.deleteDocument(documentId)
+    const allergyId = selectedItem.drug_id;
+    PatientService.deleteAllergy(patientId, allergyId)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
         reloadData();
@@ -129,7 +129,7 @@ const AllergiesDetails = (props) => {
             <StyledTableRow>
               <TableCell colSpan={5}>
                 <Typography align="center" variant="body1">
-                  No Records Found...
+                    No Records Found...
                 </Typography>
               </TableCell>
             </StyledTableRow>

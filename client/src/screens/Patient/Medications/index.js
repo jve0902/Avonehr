@@ -8,7 +8,7 @@ import Select from "react-select";
 
 import PatientService from "../../../services/patient.service";
 import { setError, setSuccess } from "../../../store/common/actions";
-import SelectCustomStyles from "../../../styles/SelectCustomStyles"
+import SelectCustomStyles from "../../../styles/SelectCustomStyles";
 
 const Medications = (props) => {
   const classes = useStyles();
