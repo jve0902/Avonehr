@@ -34,7 +34,6 @@ const Medications = (props) => {
         drug_id: selectedMedication.id
       }
     };
-    debugger
     PatientService.createMedication(patientId, reqBody)
       .then((response) => {
         dispatch(setSuccess(`${response.data.message}`));
@@ -69,8 +68,8 @@ const Medications = (props) => {
           <Select
             value={selectedMedication}
             options={medications.length ? medications : []}
-            getOptionLabel ={(option) => option.name}
-            getOptionValue ={(option) => option.id}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}
             onChange={(value) => setSelectedMedication(value)}
             styles={SelectCustomStyles}
             isClearable={true}
