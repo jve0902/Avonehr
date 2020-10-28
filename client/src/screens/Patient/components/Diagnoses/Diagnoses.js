@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { TextField, Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import _ from "lodash";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 
@@ -19,15 +18,6 @@ const Diagnoses = (props) => {
   useEffect(() => {
     fetchDiagnosis("");
   }, []);
-
-  const handleInputChnage = (e) => {
-    const { value } = e.target;
-    debouncedSearchDiagnosis(value);
-  };
-
-  const debouncedSearchDiagnosis = _.debounce((query) => {
-    fetchDiagnosis(query);
-  }, 1000);
 
   const fetchDiagnosis = (searchText) => {
     PatientService.searchICD(searchText).then((res) => {
