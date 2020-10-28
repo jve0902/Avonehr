@@ -196,8 +196,8 @@ export default function Patient() {
     PatientService.getCardsLayout(user_id).then((res) => {
       let layout =
         res.data.length &&
-        res.data[0].layout &&
-        res.data[0].layout !== "undefined"
+          res.data[0].layout &&
+          res.data[0].layout !== "undefined"
           ? JSON.parse(res.data[0].layout)
           : null;
       if (!!layout) {
@@ -926,7 +926,7 @@ export default function Patient() {
             <AdminNotesHistory
               onClose={toggleAdminHistoryDialog}
               data={adminNotesHistory}
-              //onLoad={() => fetchPatientHistory()}
+            //onLoad={() => fetchPatientHistory()}
             />
           }
           applyForm={() => toggleAdminHistoryDialog()}
@@ -1164,7 +1164,7 @@ export default function Patient() {
             <DiagnosesForm
               onClose={toggleDiagnosesDialog}
               patientId={patient_id}
-              reloadData={fetchDiagnoses(true)}
+              reloadData={() => fetchDiagnoses(true)}
             />
           }
           applyForm={() => toggleDiagnosesDialog()}
