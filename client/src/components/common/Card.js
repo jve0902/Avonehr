@@ -21,6 +21,7 @@ import SaveLayoutIcon from "@material-ui/icons/Save";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 
+import useDidMountEffect from "../../hooks/useDidMountEffect"
 import Colors from "../../theme/colors";
 
 const PatientCard = (props) => {
@@ -66,6 +67,11 @@ const PatientCard = (props) => {
   }
 
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
+  
+  useDidMountEffect(() => {
+    // This will only be called when 'contentTogglerState' changes, not on initial render
+    contentToggleHandler(contentTogglerState);
+  }, [contentTogglerState]);   
 
   return (
     <>
@@ -121,7 +127,6 @@ const PatientCard = (props) => {
                 className={classes.button}
                 onClick={() => {
                   setContentTogglerState(prevState => !prevState);
-                  contentToggleHandler(!contentTogglerState);
                 }}
               >
                   Show {contentTogglerState ? "In-Active" : "Active"}
