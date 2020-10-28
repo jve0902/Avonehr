@@ -69,8 +69,8 @@ const Diagnoses = (props) => {
             <Select
               value={selectedDiagnosis}
               options={diagnosis.length ? diagnosis : []}
-              getOptionLabel ={(option) => option.name}
-              getOptionValue ={(option) => option.id}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
               onChange={(value) => setSelectedDiagnoses(value)}
             />
           </Grid>

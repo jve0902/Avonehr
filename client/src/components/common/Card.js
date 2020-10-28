@@ -67,11 +67,11 @@ const PatientCard = (props) => {
   }
 
   const menuIcons = { DesktopIcon, CardIcon, AddIcon };
-  
+
   useDidMountEffect(() => {
     // This will only be called when 'contentTogglerState' changes, not on initial render
     contentToggleHandler(contentTogglerState);
-  }, [contentTogglerState]);   
+  }, [contentTogglerState]);
 
   return (
     <>
@@ -129,7 +129,7 @@ const PatientCard = (props) => {
                   setContentTogglerState(prevState => !prevState);
                 }}
               >
-                  Show {contentTogglerState ? "In-Active" : "Active"}
+                Show {contentTogglerState ? "In-Active" : "Active"}
               </Button>
             )
           }

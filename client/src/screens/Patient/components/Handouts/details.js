@@ -126,7 +126,7 @@ const HandoutsDetails = (props) => {
             <StyledTableRow>
               <TableCell colSpan={4}>
                 <Typography align="center" variant="body1">
-                No Records Found...
+                  No Records Found...
                 </Typography>
               </TableCell>
             </StyledTableRow>

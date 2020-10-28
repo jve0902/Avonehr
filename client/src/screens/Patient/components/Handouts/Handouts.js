@@ -31,8 +31,8 @@ const HandoutsForm = (props) => {
   }, [fetchAllHandouts]);
 
   const createPatientHandoutHandler = () => {
-    if(!!selectedHandout) {
-    // we don't have the selected row id, so calculating the row id
+    if (!!selectedHandout) {
+      // we don't have the selected row id, so calculating the row id
       let userSelection = allHandouts.filter(x => x.filename === selectedHandout)
       const reqBody = {
         data: {
@@ -47,11 +47,11 @@ const HandoutsForm = (props) => {
         })
         .catch((error) => {
           const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
           let severity = "error";
           dispatch(
             setError({
