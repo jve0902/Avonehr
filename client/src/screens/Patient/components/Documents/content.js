@@ -95,7 +95,7 @@ const DocumentsContent = (props) => {
   const classes = useStyles();
   const [tabValue, setTabValue] = useState(0);
   const [tableData, setTableData] = useState([]);
-  
+
   const fetchDocuments = useCallback((selectedTab) => {
     if (selectedTab === 0) { //(All)
       let allData = data.filter(x => x.status !== "D")
@@ -121,7 +121,9 @@ const DocumentsContent = (props) => {
 
   const updateDocumentStatusHandler = (selectedItemId, status) => {
     const reqBody = {
-      type: status
+      data: {
+        type: status
+      }
     }
     PatientService.updateDocument(patientId, selectedItemId, reqBody)
       .then((response) => {
