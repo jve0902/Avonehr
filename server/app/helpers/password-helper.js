@@ -1,4 +1,3 @@
-"use strict";
 const jwt = require("jsonwebtoken");
 
 /**
@@ -10,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const usePasswordHashToMakeToken = (user) => {
   const passwordHash = user.password;
   const userId = user.id;
-  const secret = passwordHash + "-" + user.created;
+  const secret = `${passwordHash}-${user.created}`;
   const token = jwt.sign({ userId }, secret, {
     expiresIn: 3600, // 1 hour
   });

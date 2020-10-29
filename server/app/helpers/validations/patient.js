@@ -1,6 +1,4 @@
-"use strict";
-
-const { body, check, param } = require("express-validator");
+const { check, param } = require("express-validator");
 
 exports.validate = (method) => {
   switch (method) {
@@ -57,5 +55,7 @@ exports.validate = (method) => {
           .withMessage("email status can not empty!"),
       ];
     }
+    default:
+      return false;
   }
 };

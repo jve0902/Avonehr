@@ -1,6 +1,7 @@
 const express = require("express");
-const { authJwt } = require("../../app/middlewares");
+const { authJwt } = require("../middlewares");
 const ClientPortalHeader = require("../controllers/patient-portal-header.controller");
+
 const router = express.Router();
 
 router.get(

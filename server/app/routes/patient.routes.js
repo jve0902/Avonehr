@@ -1,9 +1,8 @@
-"use strict";
-
 const express = require("express");
-const { authJwt } = require("../../app/middlewares");
+const { authJwt } = require("../middlewares");
 const Patient = require("../controllers/patient.controller.js");
-const validation = require("./../helpers/validations/patient.js");
+const validation = require("../helpers/validations/patient.js");
+
 const router = express.Router();
 
 router.get("/patient/:patient_id", [authJwt.verifyToken], Patient.getPatient);
