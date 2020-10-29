@@ -298,9 +298,9 @@ class Patient {
     );
   }
 
-  deleteDiagnoses(encounter_id, icd_id) {
+  deleteDiagnoses(patient_id, icd_id) {
     return axios.delete(
-      API_BASE + `/diagnoses/${encounter_id}/${icd_id}`,
+      API_BASE + `/patient/${patient_id}/diagnoses/${icd_id}`,
       {
         headers: authHeader()
       }
