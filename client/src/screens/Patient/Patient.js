@@ -1189,6 +1189,7 @@ export default function Patient() {
               data={diagnoses}
               onClose={toggleDiagnosesExpandDialog}
               reloadData={() => fetchDiagnoses(true)}
+              patientId={patient_id}
             />
           }
           applyForm={() => toggleDiagnosesExpandDialog()}

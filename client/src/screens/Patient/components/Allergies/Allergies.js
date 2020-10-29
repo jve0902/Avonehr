@@ -95,6 +95,7 @@ const Allergies = (props) => {
             <ListItem
               onClick={() => setSelectedAllergy(allergy)}
               key={allergy.id}
+              disableGutters={true}
               button
             >
               <ListItemText primary={allergy.name} />
