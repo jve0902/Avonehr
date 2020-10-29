@@ -15,7 +15,7 @@
   },
   "rules": {
     "prettier/prettier": "error",
-    "camelcase": 0
-   
+    "camelcase": 0,
+    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }]
   }
 }
