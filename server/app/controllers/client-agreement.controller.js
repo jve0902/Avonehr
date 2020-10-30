@@ -10,7 +10,7 @@ const getAgreement = async (req, res) => {
        where created = (
          select max(created)
          from contract
-         ) \n`
+         )`
     );
     const dbResponse = rows[0];
 
