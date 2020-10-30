@@ -16,6 +16,7 @@
   "rules": {
     "prettier/prettier": "error",
     "camelcase": 0,
-    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }]
+    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }],
+    "prefer-destructuring": ["error", {"object": true, "array": false}]
   }
 }
