@@ -292,7 +292,7 @@ const SignupForm = (props) => {
                   />
                 ) : (
                   <TextField
-                    // className={classes.select}
+                      // className={classes.select}
                     size="small"
                     variant="outlined"
                     select
@@ -404,7 +404,7 @@ const SignupForm = (props) => {
                   <TextField
                     size="small"
                     variant="outlined"
-                    // className={classes.select}
+                      // className={classes.select}
                     select
                     placeholder={item.label}
                     label={item.label}
@@ -594,7 +594,7 @@ const SignupForm = (props) => {
               </IconButton>
             </Grid>
             {signature ? (
-              <img className={classes.sigImage} src={signature} />
+              <img alt="signature" className={classes.sigImage} src={signature} />
             ) : null}
           </Grid>
           <Grid container justify="flex-end" className={classes.signupActions}>

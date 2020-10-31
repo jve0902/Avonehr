@@ -1,3 +1,5 @@
+import React, { useCallback, useEffect, useState } from "react";
+
 import {
   Container,
   CssBaseline,
@@ -5,10 +7,10 @@ import {
   makeStyles,
   Typography
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+
 import { AuthConsumer } from "../../../../providers/AuthProvider";
-import FinanceDetailTable from "./component/FinanceDetailTable";
 import ReportFinanceDetailService from "../../../../services/reportFinanceDetail.service";
+import FinanceDetailTable from "./component/FinanceDetailTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,16 +27,16 @@ export default function ReportFinanceDetail(props) {
   const [financeDetail, setFinanceDetail] = useState([]);
   const { dateFrom, dateTo } = props.match.params;
 
-  const getReportFinanceDetails = () => {
+  const getReportFinanceDetails = useCallback(() => {
     ReportFinanceDetailService.getReportFinanceDetail(
       dateFrom,
       dateTo
     ).then((res) => setFinanceDetail(res.data.data));
-  };
+  }, [dateFrom, dateTo]);
 
   useEffect(() => {
     getReportFinanceDetails();
-  }, []);
+  }, [getReportFinanceDetails]);
 
   return (
     <AuthConsumer>
