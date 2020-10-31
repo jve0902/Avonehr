@@ -127,6 +127,11 @@ router.get(
   [authJwt.verifyToken],
   Patient.getEncounters
 );
+router.delete(
+  "/patient/:patient_id/encounters/:id",
+  [authJwt.verifyToken],
+  Patient.deleteEncounter
+);
 router.get(
   "/patient/:patient_id/medical-notes/history",
   [authJwt.verifyToken],

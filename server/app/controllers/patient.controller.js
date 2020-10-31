@@ -989,6 +989,32 @@ const getEncounters = async (req, res) => {
   }
 };
 
+const deleteEncounter = async (req, res) => {
+  const { id } = req.params;
+
+  const db = makeDb(configuration, res);
+  try {
+    // Call DB query without assigning into a variable
+    const deleteResponse = await db.query(`
+      delete from encounter where id=${id}
+    `);
+
+    if (!deleteResponse.affectedRows) {
+      errorMessage.error = "Deletion not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = deleteMsgResponse;
+    successMessage.message = "Delete successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    errorMessage.error = "Delete not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
+
 const getMedicalNotesHistory = async (req, res) => {
   const db = makeDb(configuration, res);
   const { patient_id } = req.params;
@@ -1622,6 +1648,7 @@ const appointmentTypes = {
   checkDocument,
   createDocuments,
   getEncounters,
+  deleteEncounter,
   getMedicalNotesHistory,
   medicalNotesHistoryUpdate,
   getMessages,
