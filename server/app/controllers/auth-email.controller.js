@@ -78,10 +78,11 @@ exports.verifyConfirmation = async (req, res) => {
       }
       // update email_confirm_dt if it's null and remove token
       const now = moment().format("YYYY-MM-DD HH:mm:ss");
-      const userUpdate = await db.query(
+      await db.query(
         `UPDATE user SET email_confirm_dt='${now}', token=null WHERE id = ?`,
         [req.params.userId]
       );
+
       user.email_confirm_dt = now;
       successMessage.data = user;
       successMessage.message = "Your Email address successfully verified!";
@@ -130,7 +131,7 @@ exports.sendSignupConfirmationEmail = async (req, res) => {
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
   // update token field on that user table
-  const userUpdate = await db.query(
+  await db.query(
     `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
   );
 
@@ -179,7 +180,7 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   } else {
     accesstToken = usePasswordHashToMakeToken(user);
     // update token field on that user table
-    const userUpdate = await db.query(
+    await db.query(
       `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
     );
   }
@@ -187,6 +188,9 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   const emailTemplate = signUpConfirmationTemplate(user, url);
   // send mail with defined transport object
   const info = await transporter.sendMail(emailTemplate);
+  if (info) {
+    console.info("Email sent:", info);
+  }
 
   successMessage.message =
     "We have email verification link on your email address!";
