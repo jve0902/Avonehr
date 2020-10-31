@@ -78,13 +78,11 @@ exports.verifyConfirmation = async (req, res) => {
       }
       // update email_confirm_dt if it's null and remove token
       const now = moment().format("YYYY-MM-DD HH:mm:ss");
-      const userUpdate = await db.query(
+      await db.query(
         `UPDATE user SET email_confirm_dt='${now}', token=null WHERE id = ?`,
         [req.params.userId]
       );
-      if (userUpdate.affectedRows) {
-        console.info("Successfully user updated!");
-      }
+
       user.email_confirm_dt = now;
       successMessage.data = user;
       successMessage.message = "Your Email address successfully verified!";
@@ -133,13 +131,10 @@ exports.sendSignupConfirmationEmail = async (req, res) => {
   const emailTemplate = signUpConfirmationTemplate(user, url);
 
   // update token field on that user table
-  const userUpdate = await db.query(
+  await db.query(
     `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
   );
 
-  if (userUpdate.affectedRows) {
-    console.info("Successfully user updated!");
-  }
   // send mail with defined transport object
   const info = await transporter.sendMail(emailTemplate);
 
@@ -185,12 +180,9 @@ exports.resendSignupConfirmationEmail = async (req, res) => {
   } else {
     accesstToken = usePasswordHashToMakeToken(user);
     // update token field on that user table
-    const userUpdate = await db.query(
+    await db.query(
       `UPDATE user SET token='${accesstToken}' WHERE id =${user.id}`
     );
-    if (userUpdate.affectedRows) {
-      console.info("Successfully user updated!");
-    }
   }
   const url = getEmailVerificationURL(user, accesstToken);
   const emailTemplate = signUpConfirmationTemplate(user, url);

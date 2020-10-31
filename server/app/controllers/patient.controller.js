@@ -1,4 +1,3 @@
-"use strict";
 const multer = require("multer");
 const moment = require("moment");
 const fs = require("fs");
@@ -13,31 +12,28 @@ const storage = multer.diskStorage({
     fs.access(dest, function (error) {
       if (error) {
         console.log("Directory does not exist.");
-        return fs.mkdir(dest, (error) => cb(error, dest));
-      } else {
-        console.log("Directory exists.");
-        return cb(null, dest);
+        return fs.mkdir(dest, (err) => cb(err, dest));
       }
+      console.log("Directory exists.");
+      return cb(null, dest);
     });
   },
   filename: (req, file, cb) => {
-    const fileName =
-      "pid" +
-      req.body.patient_id +
-      "_" +
-      file.originalname.split(" ").join("-");
+    const fileName = `pid${req.body.patient_id}_${file.originalname
+      .split(" ")
+      .join("-")}`;
     cb(null, fileName);
   },
 });
 
 const upload = multer({
-  storage: storage,
+  storage,
   limits: { fileSize: 5000000 },
   fileFilter: (req, file, cb) => {
     if (file.originalname.startsWith("pid")) {
       return cb(new Error("File name should not start with pid"));
     }
-    if (file.mimetype == "application/pdf" || file.mimetype == "text/*") {
+    if (file.mimetype === "application/pdf" || file.mimetype === "text/*") {
       cb(null, true);
     } else {
       cb(null, false);
@@ -60,9 +56,10 @@ const getPatient = async (req, res) => {
         and p.id=${patient_id}
       `
     );
-    const userLogResponse = await db.query(
-      `insert into user_log values (1, 1, now(), 1, null)`
-    );
+
+    // Call DB query without assigning into a variable
+    await db.query(`insert into user_log values (1, 1, now(), 1, null)`);
+
     const functionalRange = await db.query(
       `select functional_range
         from client
@@ -312,7 +309,8 @@ const adminNoteupdate = async (req, res) => {
 
   const db = makeDb(configuration, res);
   try {
-    const patientHistory = await db.query(
+    // Call DB query without assigning into a variable
+    await db.query(
       `insert into patient_history (id, admin_note, created, created_user_id) values (${patient_id}, '${old_admin_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
@@ -619,7 +617,8 @@ const getBilling = async (req, res) => {
 
 const createBilling = async (req, res) => {
   const { patient_id } = req.params;
-  let { dt, type_id, amount, payment_type, note } = req.body.data;
+  const { dt, type_id, amount, note } = req.body.data;
+  let { payment_type } = req.body.data;
 
   const db = makeDb(configuration, res);
 
@@ -796,19 +795,17 @@ const getDocuments = async (req, res) => {
       left join cpt c on c.id=lc.cpt_id
       where l.patient_id=${patient_id} \n`;
     if (tab === "Labs") {
-      $sql = $sql + "and l.type='L' and l.deleted=false \n";
+      $sql += "and l.type='L' and l.deleted=false \n";
     } else if (tab === "Imaging") {
-      $sql = $sql + "and l.type='I' and l.deleted=false \n";
+      $sql += "and l.type='I' and l.deleted=false \n";
     } else if (tab === "Misc") {
-      $sql = $sql + "and l.type='M' and l.deleted=false \n";
+      $sql += "and l.type='M' and l.deleted=false \n";
     } else if (tab === "Uncategorized") {
-      $sql = $sql + "and l.type is null and l.deleted=false \n";
+      $sql += "and l.type is null and l.deleted=false \n";
     } else if (tab === "Trash") {
-      $sql = $sql + "and l.deleted=true \n";
+      $sql += "and l.deleted=true \n";
     }
-    $sql =
-      $sql +
-      `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.note
+    $sql += `group by l.id, l.created, l.filename, right(l.filename,3), l.lab_dt, l.physician, l.note
         order by l.created desc
         limit 200`;
 
@@ -841,12 +838,12 @@ const updateDocuments = async (req, res) => {
     const now = moment().format("YYYY-MM-DD HH:mm:ss");
     let $sql = `update lab set status='${type}'`;
     if (type === "D") {
-      $sql = $sql + `, deleted_dt='${now}' `;
+      $sql += `, deleted_dt='${now}' `;
     } else if (type === "A") {
-      $sql = $sql + `, deleted_dt=null`;
+      $sql += `, deleted_dt=null`;
     }
 
-    $sql = $sql + ` where id=${id}`;
+    $sql += ` where id=${id}`;
 
     const updateResponse = await db.query($sql);
 
@@ -894,6 +891,16 @@ const checkDocument = async (req, res) => {
 };
 
 const documentUpload = upload.single("file");
+
+const removeFile = (file) => {
+  fs.unlink(file.path, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    console.log(file.path, "removed successfully!");
+  });
+};
+
 const createDocuments = async (req, res) => {
   documentUpload(req, res, async (err) => {
     if (err) {
@@ -943,22 +950,12 @@ const createDocuments = async (req, res) => {
       successMessage.data = insertResponse;
       successMessage.message = "Insert successful";
       return res.status(status.created).send(successMessage);
-    } catch (err) {
-      console.log("err", err);
+    } catch (excepErr) {
       errorMessage.error = "Insert not successful";
       return res.status(status.error).send(errorMessage);
     } finally {
       await db.close();
     }
-  });
-};
-
-const removeFile = (file) => {
-  fs.unlink(file.path, (err) => {
-    if (err) {
-      console.error(err);
-    }
-    console.log(file.path, "removed successfully!");
   });
 };
 
@@ -1027,7 +1024,8 @@ const medicalNotesHistoryUpdate = async (req, res) => {
 
   const db = makeDb(configuration, res);
   try {
-    const patientHistory = await db.query(
+    // Call DB query without assigning into a variable
+    await db.query(
       `insert into patient_history (id, medical_note, created, created_user_id) values (${patient_id}, '${old_medical_note}', now(), ${req.user_id})`
     );
     const updateResponse = await db.query(
@@ -1122,8 +1120,9 @@ const deleteMessage = async (req, res) => {
   const { id } = req.params;
   const db = makeDb(configuration, res);
   try {
-    const deleteMsgHistoryResponse = await db.query(`
-      delete from message_history where id=${id}
+    // Call DB query without assigning into a variable
+    await db.query(`
+      delete from message_history where message_id=${id}
     `);
     const deleteMsgResponse = await db.query(`
        delete from message where id=${id}
@@ -1223,14 +1222,12 @@ const updateDiagnose = async (req, res) => {
 
     $sql = `update patient_icd \n`;
     if (typeof active !== "undefined") {
-      $sql = $sql + `set active=${active} \n`;
+      $sql += `set active=${active} \n`;
     }
     if (typeof is_primary !== "undefined") {
-      $sql = $sql + `set is_primary=${is_primary} \n`;
+      $sql += `set is_primary=${is_primary} \n`;
     }
-    $sql =
-      $sql +
-      `where patient_id=${patient_id}
+    $sql += `where patient_id=${patient_id}
         and icd_id='${icd_id}'`;
 
     const updateResponse = await db.query($sql);

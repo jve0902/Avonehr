@@ -1,4 +1,3 @@
-"use strict";
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
@@ -65,24 +64,24 @@ const createNewUser = async (req, res) => {
     return res.status(status.bad).send(errorMessage);
   }
   const db = makeDb(configuration, res);
-  let user = req.body;
-
-  (user.client_id = req.client_id),
-    (user.firstname = req.body.firstname),
-    (user.lastname = req.body.lastname),
-    (user.title = req.body.title),
-    (user.email = req.body.email),
-    (user.phone = req.body.phone),
-    (user.note = req.body.note),
-    (user.status = req.body.status),
-    (user.appointments = req.body.appointments),
-    (user.type = req.body.type),
-    (user.schedule = req.body.schedule),
-    (user.admin = req.body.admin),
-    (user.email_forward_user_id = req.body.email_forward_user_id),
-    (user.created = new Date()),
-    (user.created_user_id = req.user_id);
-  (user.updated = new Date()), (user.updated_user_id = req.user_id);
+  const user = req.body;
+  user.client_id = req.client_id;
+  user.firstname = req.body.firstname;
+  user.lastname = req.body.lastname;
+  user.title = req.body.title;
+  user.email = req.body.email;
+  user.phone = req.body.phone;
+  user.note = req.body.note;
+  user.status = req.body.status;
+  user.appointments = req.body.appointments;
+  user.type = req.body.type;
+  user.schedule = req.body.schedule;
+  user.admin = req.body.admin;
+  user.email_forward_user_id = req.body.email_forward_user_id;
+  user.created = new Date();
+  user.created_user_id = req.user_id;
+  user.updated = new Date();
+  user.updated_user_id = req.user_id;
 
   try {
     const dbResponse = await db.query("insert into user set ?", user);
@@ -112,21 +111,21 @@ const updateUser = async (req, res) => {
   }
 
   const db = makeDb(configuration, res);
-  let user = req.body;
+  const user = req.body;
 
-  (user.firstname = req.body.firstname),
-    (user.lastname = req.body.lastname),
-    (user.title = req.body.title),
-    (user.email = req.body.email),
-    (user.phone = req.body.phone),
-    (user.note = req.body.note),
-    (user.status = req.body.status),
-    (user.appointments = req.body.appointments),
-    (user.type = req.body.type),
-    (user.schedule = req.body.schedule),
-    (user.admin = req.body.admin),
-    (user.email_forward_user_id = req.body.email_forward_user_id),
-    (user.updated = new Date());
+  user.firstname = req.body.firstname;
+  user.lastname = req.body.lastname;
+  user.title = req.body.title;
+  user.email = req.body.email;
+  user.phone = req.body.phone;
+  user.note = req.body.note;
+  user.status = req.body.status;
+  user.appointments = req.body.appointments;
+  user.type = req.body.type;
+  user.schedule = req.body.schedule;
+  user.admin = req.body.admin;
+  user.email_forward_user_id = req.body.email_forward_user_id;
+  user.updated = new Date();
   user.updated_user_id = req.user_id;
 
   try {
