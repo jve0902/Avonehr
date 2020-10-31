@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-import { Grid, Typography, Button } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemText
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 
+import SelectCustomStyles from "../../../../styles/SelectCustomStyles";
 import PatientService from "./../../../../services/patient.service";
 import { setError, setSuccess } from "./../../../../store/common/actions";
 
@@ -72,7 +80,22 @@ const Diagnoses = (props) => {
               getOptionLabel={(option) => option.name}
               getOptionValue={(option) => option.id}
               onChange={(value) => setSelectedDiagnoses(value)}
+              styles={SelectCustomStyles}
+              isClearable={true}
             />
+
+            <List component="ul">
+              {diagnosis.map((diagnose) => (
+                <ListItem
+                  onClick={() => setSelectedDiagnoses(diagnose)}
+                  key={diagnose.id}
+                  disableGutters={true}
+                  button
+                >
+                  <ListItemText primary={diagnose.name} />
+                </ListItem>
+              ))}
+            </List>
           </Grid>
         </Grid>
         <Grid item lg={8}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import {
   Button,
@@ -60,7 +60,7 @@ const Users = () => {
   const [userValues, setUserValues] = useState("");
   const [isShowDeleted, setIsShowDeleted] = useState(false);
 
-  const fetchAllUsers = () => {
+  const fetchAllUsers = useCallback(() => {
     UsersService.getAllUsers().then((res) => {
       const users = res.data.data;
       setAllUsers(users);
@@ -71,11 +71,11 @@ const Users = () => {
         setAllUsers(users);
       }
     });
-  };
+  }, [isShowDeleted]);
 
   useEffect(() => {
     fetchAllUsers();
-  }, [isShowDeleted]);
+  }, [isShowDeleted, fetchAllUsers]);
 
   const fetchForwardEmailList = () => {
     UsersService.getForwardEmailList().then((res) =>

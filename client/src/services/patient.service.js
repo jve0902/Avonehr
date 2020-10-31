@@ -141,9 +141,8 @@ class Patient {
 
   //search methods
   searchAllergies(data) {
-    // Wrong API call!!!
     return axios
-      .post(API_BASE + `/patient/allergies/search`, data, {
+      .post(API_BASE + `/allergies/search`, data, {
         headers: authHeader()
       })
       .then((res) => res.data);
@@ -243,8 +242,8 @@ class Patient {
     });
   }
 
-  createAllergy(data) {
-    return axios.post(API_BASE + `/patient/allergies`, data, {
+  createAllergy(patient_id, data) {
+    return axios.post(API_BASE + `/patient/${patient_id}/allergies`, data, {
       headers: authHeader()
     });
   }
@@ -264,7 +263,7 @@ class Patient {
 
   deleteAllergy(patient_id, drug_id) {
     return axios.delete(
-      API_BASE + `/patient/allergies/${patient_id}/${drug_id}`,
+      API_BASE + `/patient/${patient_id}/allergies/${drug_id}`,
       {
         headers: authHeader()
       }
@@ -299,9 +298,9 @@ class Patient {
     );
   }
 
-  deleteDiagnoses(encounter_id, icd_id) {
+  deleteDiagnoses(patient_id, icd_id) {
     return axios.delete(
-      API_BASE + `/diagnoses/${encounter_id}/${icd_id}`,
+      API_BASE + `/patient/${patient_id}/diagnoses/${icd_id}`,
       {
         headers: authHeader()
       }

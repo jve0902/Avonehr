@@ -1014,7 +1014,11 @@ export default function Patient() {
           open={showAllergyDialog}
           title={" "}
           message={
-            <Allergies onClose={toggleAllergyDialog} patientId={patient_id} />
+            <Allergies
+              onClose={toggleAllergyDialog}
+              patientId={patient_id}
+              reloadData={() => fetchAllergies()}
+            />
           }
           applyForm={() => toggleAllergyDialog()}
           cancelForm={() => toggleAllergyDialog()}
@@ -1031,6 +1035,8 @@ export default function Patient() {
             <AllergiesDetails
               data={allergies}
               onClose={toggleAllergyExpandDialog}
+              patientId={patient_id}
+              reloadData={() => fetchAllergies()}
             />
           }
           applyForm={() => toggleAllergyExpandDialog()}
@@ -1183,6 +1189,7 @@ export default function Patient() {
               data={diagnoses}
               onClose={toggleDiagnosesExpandDialog}
               reloadData={() => fetchDiagnoses(true)}
+              patientId={patient_id}
             />
           }
           applyForm={() => toggleDiagnosesExpandDialog()}

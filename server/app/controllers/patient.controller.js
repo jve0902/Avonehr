@@ -1123,7 +1123,7 @@ const deleteMessage = async (req, res) => {
   const db = makeDb(configuration, res);
   try {
     const deleteMsgHistoryResponse = await db.query(`
-      delete from message_history where message_id=${id}
+      delete from message_history where id=${id}
     `);
     const deleteMsgResponse = await db.query(`
        delete from message where id=${id}
