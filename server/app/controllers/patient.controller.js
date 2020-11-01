@@ -989,6 +989,61 @@ const getEncounters = async (req, res) => {
   }
 };
 
+const updateEncounter = async (req, res) => {
+  const { patient_id, id } = req.params;
+  const {
+    dt,
+    type_id,
+    title,
+    notes,
+    treatment,
+    read_dt,
+    lab_bill_to,
+  } = req.body.data;
+
+  const db = makeDb(configuration, res);
+  try {
+    let $sql;
+
+    $sql = `update encounter set title='${title}', notes='${notes}', treatment='${treatment}' `;
+
+    if (typeof dt !== "undefined") {
+      $sql += `, dt='${moment(dt).format("YYYY-MM-DD HH:mm:ss")}'`;
+    }
+    if (typeof type_id !== "undefined") {
+      $sql += `, type_id=${type_id}`;
+    }
+    if (typeof read_dt !== "undefined") {
+      $sql += `, read_dt='${moment(read_dt).format("YYYY-MM-DD HH:mm:ss")}'`;
+    }
+
+    if (typeof lab_bill_to !== "undefined") {
+      $sql += `, lab_bill_to=${lab_bill_to}`;
+    }
+
+    $sql += `, updated='${moment().format(
+      "YYYY-MM-DD HH:mm:ss"
+    )}', updated_user_id=${
+      req.user_id
+    } where patient_id=${patient_id} and id=${id}`;
+
+    const updateResponse = await db.query($sql);
+    if (!updateResponse.affectedRows) {
+      errorMessage.error = "Update not successful";
+      return res.status(status.notfound).send(errorMessage);
+    }
+
+    successMessage.data = updateResponse;
+    successMessage.message = "Update successful";
+    return res.status(status.created).send(successMessage);
+  } catch (err) {
+    console.log("err", err);
+    errorMessage.error = "Update not successful";
+    return res.status(status.error).send(errorMessage);
+  } finally {
+    await db.close();
+  }
+};
 const deleteEncounter = async (req, res) => {
   const { id } = req.params;
 
@@ -1056,8 +1111,8 @@ const medicalNotesHistoryUpdate = async (req, res) => {
     );
     const updateResponse = await db.query(
       `update patient
-            set medical_note='${medical_note}'
-            where id=${patient_id}
+        set medical_note='${medical_note}'
+        where id=${patient_id}
       `
     );
 
@@ -1648,6 +1703,7 @@ const appointmentTypes = {
   checkDocument,
   createDocuments,
   getEncounters,
+  updateEncounter,
   deleteEncounter,
   getMedicalNotesHistory,
   medicalNotesHistoryUpdate,
