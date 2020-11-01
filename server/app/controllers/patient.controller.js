@@ -965,7 +965,7 @@ const getEncounters = async (req, res) => {
 
   try {
     const dbResponse = await db.query(
-      `select e.dt, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name, notes, treatment
+      `select e.dt, e.id, e.title, et.name encounter_type, concat(u.firstname, ' ', u.lastname) name, notes, treatment
       from encounter e 
       left join encounter_type et on et.id=e.type_id
       left join user u on u.id=e.user_id
@@ -1023,9 +1023,8 @@ const updateEncounter = async (req, res) => {
 
     $sql += `, updated='${moment().format(
       "YYYY-MM-DD HH:mm:ss"
-    )}', updated_user_id=${
-      req.user_id
-    } where patient_id=${patient_id} and id=${id}`;
+    )}', updated_user_id=${req.user_id
+      } where patient_id=${patient_id} and id=${id}`;
 
     const updateResponse = await db.query($sql);
     if (!updateResponse.affectedRows) {

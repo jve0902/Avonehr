@@ -11,18 +11,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 
-
 import Card from "../../../components/common/Card";
+import PatientService from "../../../services/patient.service";
 import {
   EncountersFormFields,
   EncountersCards
 } from "../../../static/encountersForm";
+import { setError, setSuccess } from "../../../store/common/actions";
 import { resetEncounter } from "../../../store/patient/actions";
 
 const Form = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { onClose } = props;
+  const { onClose, patientId, reloadData } = props;
   const [formFields, setFormFields] = useState({
     title: "",
     type: "",
@@ -60,6 +61,41 @@ const Form = (props) => {
       ...formFields,
       [name]: value
     });
+  };
+
+  const updateEncounter = () => {
+    let encounterId = encounter.id;
+    const reqBody = {
+      data: {
+        dt: formFields.date,
+        title: formFields.title,
+        encounter_type: "",
+        name: formFields.name,
+        notes: formFields.notes,
+        treatment: formFields.treatment,
+      }
+    };
+    PatientService.updateEncounters(patientId, encounterId, reqBody)
+      .then((response) => {
+        dispatch(setSuccess(`${response.data.message}`));
+        reloadData();
+        onClose();
+      })
+      .catch((error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        let severity = "error";
+        dispatch(
+          setError({
+            severity: severity,
+            message: resMessage
+          })
+        );
+      });
   };
 
   return (
@@ -174,7 +210,7 @@ const Form = (props) => {
           ))}
 
           <Grid className={classes.formInput} container justify="space-between">
-            <Button variant="outlined" onClick={() => onClose()}>
+            <Button variant="outlined" onClick={() => updateEncounter()}>
               Save
             </Button>
             <Button variant="outlined" onClick={() => onClose()}>
