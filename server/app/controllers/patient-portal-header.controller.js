@@ -1,4 +1,3 @@
-"use strict";
 const { validationResult } = require("express-validator");
 const { configuration, makeDb } = require("../db/db.js");
 const { errorMessage, successMessage, status } = require("../helpers/status");
@@ -33,10 +32,9 @@ const editClientPortalHeader = async (req, res) => {
   }
 
   const db = makeDb(configuration, res);
-  let client_portal = req.body;
-  
-  (client_portal.header = req.body.header),
-    (client_portal.updated = new Date());
+  const client_portal = req.body;
+  client_portal.header = req.body.header;
+  client_portal.updated = new Date();
   client_portal.updated_user_id = req.user_id;
 
   try {

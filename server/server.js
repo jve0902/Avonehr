@@ -1,7 +1,7 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./config.js");
+
 const app = express();
 
 // Add middleware for parsing URL encoded bodies (which are usually sent by browser)
@@ -56,7 +56,7 @@ app.use(baseAPIPath, require("./app/routes/accounting-types.routes"));
 app.use(baseAPIPath, require("./app/routes/report-finance-detail.routes"));
 app.use(baseAPIPath, require("./app/routes/patient-portal-header.routes"));
 
-//Patient Portal
+// Patient Portal
 app.use(baseAPIPath, require("./app/routes/patient/signup.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/login.routes"));
 app.use(baseAPIPath, require("./app/routes/patient/home.routes"));

@@ -1,4 +1,3 @@
-"use strict";
 const nodemailer = require("nodemailer");
 
 let mailConfig;
@@ -25,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // create reusable transporter object using the default SMTP transport
-let transporter = nodemailer.createTransport(mailConfig);
+const transporter = nodemailer.createTransport(mailConfig);
 
 const signUpConfirmationTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN;
